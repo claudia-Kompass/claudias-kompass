@@ -52,9 +52,9 @@ export default async function handler(req, res) {
     // 5. Finaler Ausgabe-Text
     // --------------------------------------------------
     const content = `
-## Crypto Radar – Morning Analyse (06:00 Uhr)
+## Crypto Radar – Live Analyse
 
-_Datenstand: ${datum} · ${uhrzeit} Uhr (Live-Kurs)_
+_Datenstand: ${datum} · Live-Marktdaten_
 
 ---
 
