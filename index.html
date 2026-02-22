@@ -100,28 +100,28 @@ async function loadDaily() {
       return;
     }
 
-    // Module zusammensetzen
-    let fullContent = `
-      <div class="card">${formatText(data.executive)}</div>
-      <div class="card">${formatText(data.regional)}</div>
-      <div class="card">${formatText(data.weather)}</div>
-      <div class="card">${formatText(data.travel)}</div>
-      <div class="card">${formatText(data.personal)}</div>
-    `;
+    output.innerHTML = `
+      <div class="card">
+        ${data.executive}
+      </div>
 
-    output.innerHTML = fullContent;
+      <div class="card">
+        ${data.regional}
+      </div>
+
+      <div class="card weather-box">
+        ${data.weather}
+      </div>
+
+      ${data.travel}
+
+      <div class="card">
+        ${data.personal}
+      </div>
+    `;
 
   } catch (error) {
     output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
-}
-
-// Markdown-Formatierung entfernen + Zeilen umbrechen
-function formatText(text) {
-  if (!text) return "";
-  return text
-    .replace(/##/g, "")
-    .replace(/###/g, "")
-    .replace(/\n/g, "<br>");
 }
 </script>
