@@ -32,15 +32,15 @@ Sprache: Deutsch.
 
     const data = await response.json();
 
-    // WICHTIG: Neue Responses API korrekt auslesen
+    // Robustes Auslesen der neuen Responses API
     const text =
-  data.output_text ||
-  data.output?.map(o =>
-    o.content?.map(c => c.text).join("")
-  ).join("") ||
-  "Keine Ausgabe erzeugt.";
-  
-    return res.status(200).json({ content: text });
+      data.output?.[0]?.content?.[0]?.text ||
+      data.output_text ||
+      "Keine Ausgabe erzeugt.";
+
+    return res.status(200).json({
+      content: text,
+    });
 
   } catch (error) {
     return res.status(500).json({
