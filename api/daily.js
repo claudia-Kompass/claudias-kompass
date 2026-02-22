@@ -1,41 +1,57 @@
 export default async function handler(req, res) {
+  try {
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd&include_24hr_change=true"
+    );
 
-  function getAmpel(change) {
-    if (change >= 1.5) return "🟢";
-    if (change <= -1.5) return "🔴";
-    return "🟡";
-  }
+    const data = await response.json();
 
-  // Beispielwerte (später dynamisch)
-  const btcPrice = 67941;
-  const btcChange = -0.26;
+    const btc = data.bitcoin;
+    const nexo = data.nexo;
 
-  const nexoPrice = 1.21;
-  const nexoChange = -1.96;
+    function ampel(change) {
+      if (change > 1) return "🟢";
+      if (change < -1) return "🔴";
+      return "🟡";
+    }
 
-  const btcAmpel = getAmpel(btcChange);
-  const nexoAmpel = getAmpel(nexoChange);
+    const now = new Date();
+    const timestamp = now.toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+    });
 
-  const content = `
-## Crypto Radar – 06:00 Uhr
+    const content = `
+## Crypto Radar – 06:00 Uhr Update
+
+Datenstand: ${timestamp}
+
+---
 
 ### Bitcoin (BTC)
-Kurs: ${btcPrice} USD  
-Veränderung: ${btcChange.toFixed(2)} % ${btcAmpel}
+Kurs: ${btc.usd.toLocaleString("en-US")} USD  
+24h Veränderung: ${btc.usd_24h_change.toFixed(2)} % ${ampel(btc.usd_24h_change)}
 
 ---
 
 ### NEXO
-Kurs: ${nexoPrice} USD  
-Veränderung: ${nexoChange.toFixed(2)} % ${nexoAmpel}
+Kurs: ${nexo.usd.toFixed(2)} USD  
+24h Veränderung: ${nexo.usd_24h_change.toFixed(2)} % ${ampel(nexo.usd_24h_change)}
 
 ---
 
-### Strategische Ableitung
-Defensive Haltung beibehalten.  
-Keine impulsiven Entscheidungen.
+### Strategische Einordnung
+
+${btc.usd_24h_change > 0 ? "Bitcoin stabil bis positiv – Markt tendenziell konstruktiv." : "Bitcoin leicht schwächer – vorsichtige Marktphase."}
+
+${nexo.usd_24h_change < -2 ? "NEXO zeigt erhöhte Volatilität – Risiko bewusst managen." : "NEXO im Rahmen normaler Schwankung."}
+
+Strategische Haltung: Keine impulsiven Entscheidungen. Markt beobachten.
 `;
 
-  res.status(200).json({ content });
-
+    res.status(200).json({ content });
+  } catch (error) {
+    res.status(500).json({
+      content: "Live-Kursdaten konnten nicht geladen werden.",
+    });
+  }
 }
