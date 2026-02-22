@@ -8,80 +8,63 @@
 <style>
 body {
   margin: 0;
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
   background: linear-gradient(135deg,#0f172a,#1e293b);
   color: #f8fafc;
-  display: flex;
-  justify-content: center;
   padding: 40px 20px;
 }
 
 .container {
   max-width: 900px;
-  width: 100%;
+  margin: auto;
 }
 
 h1 {
-  font-size: 38px;
+  font-size: 42px;
   color: #facc15;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .subtitle {
   color: #cbd5e1;
-  margin-bottom: 8px;
-}
-
-.edition {
-  color: #94a3b8;
-  font-size: 14px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
   margin-bottom: 30px;
 }
 
-button {
+.button {
   background: #facc15;
   color: #111;
   border: none;
-  padding: 12px 22px;
+  padding: 14px 22px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 30px;
-  transition: 0.2s;
-}
-
-button:hover {
-  background: #fde047;
 }
 
 .card {
   background: #1e293b;
   padding: 40px;
-  border-radius: 14px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  border-radius: 16px;
+  line-height: 1.8;
+  white-space: pre-line;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 .section-title {
   color: #facc15;
   font-size: 24px;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  margin-top: 30px;
 }
 
-hr {
-  border: none;
-  border-top: 1px solid #334155;
+.divider {
+  border-top: 1px solid rgba(255,255,255,0.1);
   margin: 30px 0;
 }
 
 .footer {
-  margin-top: 40px;
-  font-size: 14px;
+  margin-top: 60px;
   color: #94a3b8;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -89,66 +72,53 @@ hr {
 <body>
 
 <div class="container">
+  <h1>Claudias Kompass</h1>
+  <div class="subtitle">Daily Intelligence Brief · 06:00 Uhr Update</div>
 
-<h1>Claudias Kompass</h1>
-<div class="subtitle">Deine tägliche strukturierte Ausrichtung</div>
-<div id="edition" class="edition"></div>
+  <button class="button" onclick="loadDaily()">Neue Ausgabe laden</button>
 
-<button onclick="loadDaily()">Neue Tagesausgabe laden</button>
+  <div id="output" class="card">
+    Bereit für die Tagesanalyse.
+  </div>
 
-<div id="output" class="card">
-Lade deine erste Tagesausgabe...
-</div>
-
-<div class="footer">
-© Claudia Foerstner – Persönlicher Daily Kompass
-</div>
-
+  <div class="footer">
+    © Claudia Foerstner – Persönlicher Executive Kompass
+  </div>
 </div>
 
 <script>
-
-function setEditionDate() {
-  const days = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
-  const months = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
-  
-  const today = new Date();
-  const dayName = days[today.getDay()];
-  const day = today.getDate();
-  const month = months[today.getMonth()];
-  const year = today.getFullYear();
-
-  const formatted = `Daily Edition • ${dayName}, ${day}. ${month} ${year}`;
-  document.getElementById("edition").innerText = formatted;
-}
-
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerText = "Lade Ausgabe...";
+  output.innerHTML = "Lade aktuelle Analyse…";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    let text = data.content || "Keine gültige Ausgabe erhalten.";
+    if (!data.content) {
+      output.innerHTML = "Keine Daten empfangen.";
+      return;
+    }
 
-    text = text
-      .replace(/\*\*(.*?)\*\*/g, '<div class="section-title">$1</div>')
-      .replace(/\n---\n/g, "<hr>")
-      .replace(/\n/g, "<br>");
+    let text = data.content;
 
-    text += "<br><br>✨";
+    // Markdown entfernen
+    text = text.replace(/\*\*/g, "");
+    text = text.replace(/---/g, "");
+
+    // Abschnitte sauber strukturieren
+    text = text.replace(/Inspirierender Gedanke/g, '<div class="section-title">Inspirierender Gedanke</div>');
+    text = text.replace(/Fokus des Tages/g, '<div class="section-title">Fokus des Tages</div>');
+    text = text.replace(/Business-Impuls/g, '<div class="section-title">Business-Impuls</div>');
+    text = text.replace(/Persönliche Reflexionsfrage/g, '<div class="section-title">Persönliche Reflexionsfrage</div>');
+    text = text.replace(/Mini-Challenge/g, '<div class="section-title">Mini-Challenge</div>');
 
     output.innerHTML = text;
 
   } catch (error) {
-    output.innerText = "Verbindung zur API fehlgeschlagen.";
+    output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
 }
-
-setEditionDate();
-loadDaily();
-
 </script>
 
 </body>
