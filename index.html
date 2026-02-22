@@ -89,29 +89,45 @@ h1 {
 <script>
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerHTML = "Lade Analyse...";
+  output.innerHTML = "Lade aktuelle Analyse...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    output.innerHTML = `
-      <div class="card">
-        ${data.executive || ""}
-      </div>
+    if (!data.executive) {
+      output.innerHTML = "Keine Daten empfangen.";
+      return;
+    }
 
-      <div class="card">
-        ${data.regional || ""}
-      </div>
+    function formatSection(text) {
+      return text
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/^_([^_]+)_$/gim, '<div class="meta">$1</div>')
+        .replace(/\n\n/g, '<br><br>');
+    }
 
-      <div class="card">
-        ${data.weather || ""}
-      </div>
+    let html = "";
 
-      <div class="card">
-        ${data.personal || ""}
-      </div>
-    `;
+    if (data.executive) {
+      html += `<div class="card">${formatSection(data.executive)}</div>`;
+    }
+
+    if (data.regional) {
+      html += `<div class="card">${formatSection(data.regional)}</div>`;
+    }
+
+    if (data.weather) {
+      html += `<div class="card">${formatSection(data.weather)}</div>`;
+    }
+
+    if (data.personal) {
+      html += `<div class="card">${formatSection(data.personal)}</div>`;
+    }
+
+    output.innerHTML = html;
+
   } catch (error) {
     output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
