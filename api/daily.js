@@ -126,20 +126,65 @@ Weil sie ständig schwanken.
 `;
 
 /* ======================================
-   TRAVEL
+   TRAVEL SYSTEM – v8.8.1 Claudia
 ====================================== */
 
-const travel = `
-## ✈ Reise-Kompass
-
-### Südtirol – Fokus durch Perspektivwechsel
-
+const travelOptions = [
+  {
+    title: "Südtirol – Fokus durch Perspektivwechsel",
+    text: `
 Wandern entlang der Seiser Alm.
 Runde um den Kalterer See.
 Klare Höhenluft + mediterrane Küche.
 
 Executive-Effekt:
 Distanz schafft Klarheit.
+`
+  },
+  {
+    title: "Kapverden – Semba & Atlantik",
+    text: `
+Semba tanzen am Strand.
+Barfuß im Sand trainieren.
+Salzluft + Rhythmus.
+
+Executive-Effekt:
+Flow ersetzt Druck.
+`
+  },
+  {
+    title: "Andalusien – Salsa & Kultur",
+    text: `
+Salsa Social in Sevilla.
+Tapas & Altstadt.
+Abendlicher Spaziergang durch historische Gassen.
+
+Executive-Effekt:
+Kreativität durch Bewegung.
+`
+  },
+  {
+    title: "Kroatien – Segeln & Schnorcheln",
+    text: `
+Mit dem Segelboot entlang der Küste.
+Schnorcheln im klaren Wasser.
+Camping direkt am Meer.
+
+Executive-Effekt:
+Weite schafft strategischen Blick.
+`
+  }
+];
+
+const dayIndex = new Date().getDate() % travelOptions.length;
+const selectedTravel = travelOptions[dayIndex];
+
+const travel = `
+## ✈ Reise-Kompass
+
+### ${selectedTravel.title}
+
+${selectedTravel.text}
 `;
     /* ======================================
        RESPONSE
