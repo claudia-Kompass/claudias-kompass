@@ -100,36 +100,28 @@ async function loadDaily() {
       return;
     }
 
-    function formatSection(text) {
-      return text
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^_([^_]+)_$/gim, '<div class="meta">$1</div>')
-        .replace(/\n\n/g, '<br><br>');
-    }
+    // Module zusammensetzen
+    let fullContent = `
+      <div class="card">${formatText(data.executive)}</div>
+      <div class="card">${formatText(data.regional)}</div>
+      <div class="card">${formatText(data.weather)}</div>
+      <div class="card">${formatText(data.travel)}</div>
+      <div class="card">${formatText(data.personal)}</div>
+    `;
 
-    let html = "";
-
-    if (data.executive) {
-      html += `<div class="card">${formatSection(data.executive)}</div>`;
-    }
-
-    if (data.regional) {
-      html += `<div class="card">${formatSection(data.regional)}</div>`;
-    }
-
-    if (data.weather) {
-      html += `<div class="card">${formatSection(data.weather)}</div>`;
-    }
-
-    if (data.personal) {
-      html += `<div class="card">${formatSection(data.personal)}</div>`;
-    }
-
-    output.innerHTML = html;
+    output.innerHTML = fullContent;
 
   } catch (error) {
     output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
+}
+
+// Markdown-Formatierung entfernen + Zeilen umbrechen
+function formatText(text) {
+  if (!text) return "";
+  return text
+    .replace(/##/g, "")
+    .replace(/###/g, "")
+    .replace(/\n/g, "<br>");
 }
 </script>
