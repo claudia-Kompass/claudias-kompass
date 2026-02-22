@@ -91,30 +91,34 @@ Lade deine erste Tagesausgabe...
 <script>
 async function loadDaily() {
   const output = document.getElementById("output");
-  const button = document.querySelector("button");
-
-  button.disabled = true;
-  button.innerText = "Wird geladen...";
-  output.innerText = "Claudias Kompass wird erstellt...";
+  output.innerHTML = "Lade Tagesausgabe...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    if (data.content) {
-      output.innerText = data.content;
-    } else {
+    if (!data.content) {
       output.innerText = "Keine gültige Ausgabe erhalten.";
+      return;
     }
+
+    let text = data.content;
+
+    // Markdown zu HTML umwandeln
+    text = text
+      .replace(/\*\*(.*?)\*\*/g, "<h2>$1</h2>")
+      .replace(/---/g, "<hr>")
+      .replace(/\n/g, "<br>");
+
+    output.innerHTML = text;
 
   } catch (error) {
     output.innerText = "Verbindung zur API fehlgeschlagen.";
   }
-
-  button.disabled = false;
-  button.innerText = "Neue Tagesausgabe laden";
 }
-</script>
+
+loadDaily();
+  </script>
 
 </body>
 </html>
