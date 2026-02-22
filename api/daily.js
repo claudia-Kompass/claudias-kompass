@@ -34,9 +34,12 @@ Sprache: Deutsch.
 
     // WICHTIG: Neue Responses API korrekt auslesen
     const text =
-  data.output?.[0]?.content?.[0]?.text ||
+  data.output_text ||
+  data.output?.map(o =>
+    o.content?.map(c => c.text).join("")
+  ).join("") ||
   "Keine Ausgabe erzeugt.";
-
+  
     return res.status(200).json({ content: text });
 
   } catch (error) {
