@@ -99,26 +99,27 @@ async function loadDaily() {
       output.innerHTML = "Keine Daten empfangen.";
       return;
     }
+output.innerHTML = `
+  <div class="card">
+    ${data.executive}
+  </div>
 
-    output.innerHTML = `
-      <div class="card">
-        ${data.executive}
-      </div>
+  <div class="card">
+    ${data.regional}
+  </div>
 
-      <div class="card">
-        ${data.regional}
-      </div>
+  <div class="card weather-box">
+    ${data.weather}
+  </div>
 
-      <div class="card weather-box">
-        ${data.weather}
-      </div>
+  <div class="card">
+    ${data.travel}
+  </div>
 
-      ${data.travel}
-
-      <div class="card">
-        ${data.personal}
-      </div>
-    `;
+  <div class="card">
+    ${data.personal}
+  </div>
+`;
 
   } catch (error) {
     output.innerHTML = "Verbindung zur API fehlgeschlagen.";
