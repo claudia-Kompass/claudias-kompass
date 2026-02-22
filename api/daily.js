@@ -30,7 +30,9 @@ Sprache: Deutsch.
 
     const data = await response.json();
 
-    const text = data.output_text || "Keine Ausgabe erzeugt.";
+    const text =
+  data.output?.[0]?.content?.[0]?.text ||
+  "Keine Ausgabe erzeugt.";
 
     res.status(200).json({ content: text });
 
