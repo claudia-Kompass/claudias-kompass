@@ -43,7 +43,11 @@ Kurs: ${nexo.usd.toFixed(3)} USD
 Markt beobachten. Keine impulsiven Entscheidungen.
 `;
 
-    res.status(200).json({ content: output });
+res.status(200).json({
+  content: output,
+  executive: output,
+  personal: "<div class='card'><h2>Persönlicher Impuls</h2><p>Bleib klar. Bleib strategisch.</p></div>"
+});
 
   } catch (error) {
     res.status(500).json({
