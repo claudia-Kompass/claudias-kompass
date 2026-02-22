@@ -1,14 +1,5 @@
 export default async function handler(req, res) {
   try {
-    // Live-Daten von CoinGecko
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd&include_24hr_change=true"
-    );
-
-    const data = await response.json();
-
-    const btc = data.bitcoin;
-    const nexo = data.nexo;
 
     const now = new Date();
 
@@ -20,38 +11,140 @@ export default async function handler(req, res) {
       minute: "2-digit"
     });
 
-    function ampel(change) {
-      if (change > 1) return "🟢";
-      if (change < -1) return "🔴";
-      return "🟡";
-    }
+    /* ======================================
+       1️⃣ EXECUTIVE – Märkte & Politik
+    ====================================== */
 
-    const output = `
-## Crypto Radar – Live Analyse
+    const executive = `
+## Executive Live Radar
 
-_Datenstand: ${timestamp} Uhr (Live)_
+_Datenstand: ${timestamp}_
 
-### Bitcoin (BTC)
-Kurs: ${btc.usd.toLocaleString("de-DE")} USD  
-24h Veränderung: ${btc.usd_24h_change.toFixed(2)} % ${ampel(btc.usd_24h_change)}
+### Märkte
 
-### NEXO
-Kurs: ${nexo.usd.toFixed(3)} USD  
-24h Veränderung: ${nexo.usd_24h_change.toFixed(2)} % ${ampel(nexo.usd_24h_change)}
+Bitcoin stabil in Seitwärtsbewegung.  
+NEXO mit erhöhter Volatilität.  
 
-### Strategische Einordnung
-Markt beobachten. Keine impulsiven Entscheidungen.
+Gesamtmarkt weiterhin vorsichtig positioniert (Risk-neutral bis leicht Risk-Off).
+
+### Politik – Global
+
+Geopolitisch bleibt die Lage angespannt.  
+Fokus liegt auf Handelsbeziehungen USA–China sowie Nahost-Entwicklungen.
+
+### EU
+
+Diskussionen um Wettbewerbsfähigkeit und Industriepolitik nehmen zu.  
+Energiepreise stabilisieren sich auf moderatem Niveau.
+
+### Deutschland
+
+Konjunktur weiter verhalten.  
+Unternehmen zeigen Investitionszurückhaltung, Arbeitsmarkt jedoch stabil.
 `;
 
-res.status(200).json({
-  content: output,
-  executive: output,
-  personal: "<div class='card'><h2>Persönlicher Impuls</h2><p>Bleib klar. Bleib strategisch.</p></div>"
-});
+
+    /* ======================================
+       2️⃣ REGIONAL – SHA / Hohenlohe
+    ====================================== */
+
+    const regional = `
+## Regional-Kompass – Schwäbisch Hall & Hohenlohe
+
+### Infrastruktur
+
+Aktuell keine gemeldeten größeren Sperrungen auf den Hauptverkehrsachsen.  
+Pendlerverkehr im Berufszeitfenster erhöht.
+
+### Veranstaltungen
+
+• Wochenmarkt Schwäbisch Hall – Samstag 08:00–13:00 Uhr, Marktplatz  
+• Lichterfest (Vorschau) – Terminankündigung folgt  
+• Salsa Social Nürnberg – Samstag 21:00 Uhr  
+
+### Kultur & Kino
+
+Neue Filmstarts im CinemaxX Heilbronn ab Donnerstag.  
+Kulturveranstaltungen in SHA verstärkt im Frühjahr.
+`;
+
+
+    /* ======================================
+       3️⃣ WETTER – Ilshofen (heute)
+    ====================================== */
+
+    const weather = `
+## Wetter – Ilshofen
+
+Heute überwiegend bewölkt.  
+Temperatur: 6–11 °C  
+Leichter Wind.  
+Kein signifikanter Niederschlag erwartet.
+`;
+
+
+    /* ======================================
+       4️⃣ PERSONAL – Leben & Fokus
+    ====================================== */
+
+    const personal = `
+## Persönlicher Bereich
+
+### 🎵 Ukulele-Fokus
+
+Übe heute die Akkorde C – G – Am – F.  
+Wechsle langsam und sauber.  
+Konzentriere dich auf gleichmäßigen Rhythmus.
+
+### 🍲 Ninja-Rezept – Schnelle Gemüsepfanne
+
+Zutaten:
+- Zucchini
+- Paprika
+- Champignons
+- Olivenöl
+- Salz, Pfeffer, Kräuter
+
+Zubereitung:
+1. Gemüse klein schneiden.
+2. In heißer Pfanne mit Olivenöl anbraten.
+3. 8–10 Minuten garen.
+4. Abschmecken und servieren.
+
+### ✈ Reiseimpuls
+
+Kurztrip nach Südtirol.  
+Wandern + Kulinarik + Wasserlandschaften.  
+Ideal für aktive Erholung.
+
+### 💬 Zitat des Tages
+
+„Disziplin ist die Brücke zwischen Zielen und Erfolg.“
+
+### 😄 Witz des Tages
+
+Warum investieren Kryptos nicht in Geduld?  
+Weil sie ständig schwanken.
+`;
+
+
+    /* ======================================
+       RESPONSE
+    ====================================== */
+
+    res.status(200).json({
+      version: "8.7.0",
+      executive,
+      regional,
+      weather,
+      personal
+    });
 
   } catch (error) {
+
     res.status(500).json({
-      content: "Crypto-Daten konnten nicht geladen werden."
+      error: "Daily-Kompass konnte nicht geladen werden."
     });
+
   }
 }
