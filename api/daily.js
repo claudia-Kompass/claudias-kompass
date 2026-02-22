@@ -111,12 +111,6 @@ Zubereitung:
 3. 8–10 Minuten garen.
 4. Abschmecken und servieren.
 
-### ✈ Reiseimpuls
-
-Kurztrip nach Südtirol.  
-Wandern + Kulinarik + Wasserlandschaften.  
-Ideal für aktive Erholung.
-
 ### 💬 Zitat des Tages
 
 „Disziplin ist die Brücke zwischen Zielen und Erfolg.“
@@ -127,18 +121,34 @@ Warum investieren Kryptos nicht in Geduld?
 Weil sie ständig schwanken.
 `;
 
+/* ======================================
+   TRAVEL
+====================================== */
 
+const travel = `
+## ✈ Reise-Kompass
+
+### Südtirol – Fokus durch Perspektivwechsel
+
+Wandern entlang der Seiser Alm.
+Runde um den Kalterer See.
+Klare Höhenluft + mediterrane Küche.
+
+Executive-Effekt:
+Distanz schafft Klarheit.
+`;
     /* ======================================
        RESPONSE
     ====================================== */
 
     res.status(200).json({
-      version: "8.7.0",
-      executive,
-      regional,
-      weather,
-      personal
-    });
+  version: "8.7.1",
+  executive,
+  regional,
+  weather,
+  personal,
+  travel
+});
 
   } catch (error) {
 
