@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-4.1-mini",
@@ -26,20 +26,26 @@ Inhalte:
 
 Ton: Klar, hochwertig, ruhig, inspirierend.
 Sprache: Deutsch.
-`
-      })
+        `,
+      }),
     });
 
     const data = await response.json();
 
+    // WICHTIG: Neue Responses API korrekt auslesen
     const text =
       data.output_text ||
-      data.output?.[0]?.content?.map(c => c.text).join("") ||
+      data.output?.map(o =>
+        o.content?.map(c => c.text).join("")
+      ).join("") ||
       "Keine Ausgabe erzeugt.";
 
     return res.status(200).json({ content: text });
 
   } catch (error) {
-    return res.status(500).json({ error: "Fehler bei der Generierung." });
+    return res.status(500).json({
+      error: "Serverfehler",
+      details: error.message,
+    });
   }
 }
