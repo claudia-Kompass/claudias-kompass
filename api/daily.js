@@ -143,7 +143,7 @@ Flow ersetzt Druck.
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
   },
   {
-    title: "Andalusien – Salsa & Kultur",
+    title: " Salsa & Kultur",
     tags: ["salsa", "kultur", "stadt"],
     budget: "mittel",
     level: "kreativ",
@@ -158,7 +158,7 @@ Bewegung aktiviert Kreativität.
     image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
   },
   {
-    title: "Kroatien – Segeln & Schnorcheln",
+    title: "Segeln & Schnorcheln",
     tags: ["segeln", "schnorcheln", "camping"],
     budget: "flexibel",
     level: "freiheitsmodus",
@@ -199,10 +199,11 @@ const travel = `
 
 ### ${selected.title}
 
-![travel-image](${selected.image})
+<img src="${selected.image}" 
+     style="width:100%; border-radius:12px; margin:15px 0;" />
 
 ${selected.text}
-`
+`;
 
     /* ===============================
        RESPONSE
