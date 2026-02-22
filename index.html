@@ -34,11 +34,11 @@ h1 {
 
 .card {
   background: #1e293b;
-  padding: 30px;
+  padding: 35px;
   border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   line-height: 1.7;
-  white-space: pre-wrap;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  white-space: normal;
 }
 
 button {
@@ -62,6 +62,19 @@ button:hover {
   font-size: 14px;
   color: #94a3b8;
 }
+
+/* Premium Formatierung */
+h2 {
+  color: #facc15;
+  margin-top: 30px;
+  font-size: 22px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin: 25px 0;
+}
 </style>
 </head>
 
@@ -74,7 +87,7 @@ button:hover {
   <button onclick="loadDaily()">Neue Tagesausgabe laden</button>
 
   <div id="output" class="card">
-Lade deine erste Tagesausgabe...
+    Lade deine erste Tagesausgabe...
   </div>
 
   <div class="footer">
@@ -83,25 +96,29 @@ Lade deine erste Tagesausgabe...
 </div>
 
 <script>
+function formatContent(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<h2>$1</h2>")
+    .replace(/\n---\n/g, "<hr>")
+    .replace(/\n\n/g, "<br><br>");
+}
+
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerText = "Lade...";
+  output.innerHTML = "Lade neue Tagesausgabe...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    console.log("API Antwort:", data);
-
     if (data.content) {
-      output.innerText = data.content;
+      output.innerHTML = formatContent(data.content);
     } else {
-      output.innerText = "Keine gültige Ausgabe erhalten.";
+      output.innerHTML = "Keine gültige Ausgabe erhalten.";
     }
 
   } catch (error) {
-    console.error("Fehler:", error);
-    output.innerText = "Verbindung zur API fehlgeschlagen.";
+    output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
 }
 </script>
