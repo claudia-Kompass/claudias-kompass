@@ -194,19 +194,16 @@ const selected =
     ? filteredOptions[Math.floor(Math.random() * filteredOptions.length)]
     : travelOptions[Math.floor(Math.random() * travelOptions.length)]
 
+
 const travel = `
-TEST
-`;
 ## ✈ Reise-Kompass
 
 ### ${selected.title}
 
-<img src="${selected.image}" 
-style="width:100%; border-radius:12px; margin:15px 0;" />
+<img src="${selected.image}" style="width:100%; border-radius:12px; margin:15px 0;" />
 
 ${selected.text}
 `;
-
     /* ===============================
        RESPONSE
     =============================== */
