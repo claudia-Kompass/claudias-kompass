@@ -8,7 +8,7 @@
 <style>
 body {
   margin: 0;
-  font-family: Georgia, serif;
+  font-family: 'Georgia', serif;
   background: linear-gradient(135deg,#0f172a,#1e293b);
   color: #f8fafc;
   display: flex;
@@ -17,18 +17,26 @@ body {
 }
 
 .container {
-  max-width: 850px;
+  max-width: 900px;
   width: 100%;
 }
 
 h1 {
-  font-size: 34px;
-  margin-bottom: 5px;
+  font-size: 38px;
   color: #facc15;
+  margin-bottom: 10px;
 }
 
 .subtitle {
   color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.edition {
+  color: #94a3b8;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   margin-bottom: 30px;
 }
 
@@ -50,24 +58,24 @@ button:hover {
 
 .card {
   background: #1e293b;
-  padding: 35px;
+  padding: 40px;
   border-radius: 14px;
   line-height: 1.7;
-  white-space: normal;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  white-space: pre-wrap;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
-.card h2 {
+.section-title {
   color: #facc15;
-  margin-top: 30px;
+  font-size: 24px;
+  margin-top: 40px;
   margin-bottom: 10px;
-  font-size: 22px;
 }
 
 hr {
   border: none;
   border-top: 1px solid #334155;
-  margin: 25px 0;
+  margin: 30px 0;
 }
 
 .footer {
@@ -81,42 +89,66 @@ hr {
 <body>
 
 <div class="container">
-  <h1>Claudias Kompass</h1>
-  <div class="subtitle">Deine tägliche strukturierte Ausrichtung</div>
 
-  <button onclick="loadDaily()">Neue Tagesausgabe laden</button>
+<h1>Claudias Kompass</h1>
+<div class="subtitle">Deine tägliche strukturierte Ausrichtung</div>
+<div id="edition" class="edition"></div>
 
-  <div id="output" class="card">
-    Lade deine erste Tagesausgabe…
-  </div>
+<button onclick="loadDaily()">Neue Tagesausgabe laden</button>
 
-  <div class="footer">
-    © Claudia Foerstner – Persönlicher Daily Kompass
-  </div>
+<div id="output" class="card">
+Lade deine erste Tagesausgabe...
+</div>
+
+<div class="footer">
+© Claudia Foerstner – Persönlicher Daily Kompass
+</div>
+
 </div>
 
 <script>
+
+function setEditionDate() {
+  const days = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+  const months = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  
+  const today = new Date();
+  const dayName = days[today.getDay()];
+  const day = today.getDate();
+  const month = months[today.getMonth()];
+  const year = today.getFullYear();
+
+  const formatted = `Daily Edition • ${dayName}, ${day}. ${month} ${year}`;
+  document.getElementById("edition").innerText = formatted;
+}
+
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerHTML = "Lade Ausgabe…";
+  output.innerText = "Lade Ausgabe...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    const text = data.content || "Keine Ausgabe erzeugt.";
+    let text = data.content || "Keine gültige Ausgabe erhalten.";
 
-    const formatted = text
-      .replace(/\*\*(.*?)\*\*/g, "<h2>$1</h2>")
+    text = text
+      .replace(/\*\*(.*?)\*\*/g, '<div class="section-title">$1</div>')
       .replace(/\n---\n/g, "<hr>")
       .replace(/\n/g, "<br>");
 
-    output.innerHTML = formatted;
+    text += "<br><br>✨";
+
+    output.innerHTML = text;
 
   } catch (error) {
-    output.innerHTML = "Verbindung zur API fehlgeschlagen.";
+    output.innerText = "Verbindung zur API fehlgeschlagen.";
   }
 }
+
+setEditionDate();
+loadDaily();
+
 </script>
 
 </body>
