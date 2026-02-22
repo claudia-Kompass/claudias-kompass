@@ -22,8 +22,8 @@ body {
 }
 
 h1 {
-  font-size: 34px;
-  margin-bottom: 10px;
+  font-size: 36px;
+  margin-bottom: 5px;
   color: #facc15;
 }
 
@@ -36,44 +36,37 @@ h1 {
   background: #1e293b;
   padding: 35px;
   border-radius: 14px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  line-height: 1.7;
-  white-space: normal;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  margin-top: 25px;
 }
 
 button {
   background: #facc15;
   color: #111;
   border: none;
-  padding: 12px 20px;
+  padding: 14px 26px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin-bottom: 25px;
   transition: 0.2s;
+  font-size: 16px;
 }
 
 button:hover {
   background: #fde047;
 }
 
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .footer {
-  margin-top: 40px;
+  margin-top: 50px;
   font-size: 14px;
   color: #94a3b8;
-}
-
-/* Premium Formatierung */
-h2 {
-  color: #facc15;
-  margin-top: 30px;
-  font-size: 22px;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  margin: 25px 0;
 }
 </style>
 </head>
@@ -87,39 +80,39 @@ hr {
   <button onclick="loadDaily()">Neue Tagesausgabe laden</button>
 
   <div id="output" class="card">
-    Lade deine erste Tagesausgabe...
+Lade deine erste Tagesausgabe...
   </div>
 
   <div class="footer">
-    © Claudia Foerstner – Persönlicher Daily Kompass
+    © Claudia Foerstner – Persönlicher Daily Compass
   </div>
 </div>
 
 <script>
-function formatContent(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, "<h2>$1</h2>")
-    .replace(/\n---\n/g, "<hr>")
-    .replace(/\n\n/g, "<br><br>");
-}
-
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerHTML = "Lade neue Tagesausgabe...";
+  const button = document.querySelector("button");
+
+  button.disabled = true;
+  button.innerText = "Wird geladen...";
+  output.innerText = "Claudias Kompass wird erstellt...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
     if (data.content) {
-      output.innerHTML = formatContent(data.content);
+      output.innerText = data.content;
     } else {
-      output.innerHTML = "Keine gültige Ausgabe erhalten.";
+      output.innerText = "Keine gültige Ausgabe erhalten.";
     }
 
   } catch (error) {
-    output.innerHTML = "Verbindung zur API fehlgeschlagen.";
+    output.innerText = "Verbindung zur API fehlgeschlagen.";
   }
+
+  button.disabled = false;
+  button.innerText = "Neue Tagesausgabe laden";
 }
 </script>
 
