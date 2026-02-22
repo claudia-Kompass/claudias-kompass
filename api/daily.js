@@ -199,15 +199,8 @@ const travel = `
 
 ### ${selected.title}
 
-<img src="${selected.image}" style="width:100%; border-radius:12px; margin:15px 0;" />
-
-${selected.text}
-`;
-
-### ${selected.title}
-
 <img src="${selected.image}" 
-     style="width:100%; border-radius:12px; margin:15px 0;" />
+style="width:100%; border-radius:12px; margin:15px 0;" />
 
 ${selected.text}
 `;
