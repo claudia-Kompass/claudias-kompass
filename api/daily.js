@@ -172,7 +172,7 @@ Weite schafft Überblick.
 `,
     image: "https://images.unsplash.com/photo-1493558103817-58b2924bce98"
   }
-]
+];
 
 /* === Persönliche Parameter === */
 
