@@ -1,4 +1,8 @@
 export default async function handler(req, res) {
+
+  // Kein Browser-Cache
+  res.setHeader("Cache-Control", "no-store");
+  
   try {
 
     const now = new Date();
