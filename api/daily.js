@@ -195,6 +195,8 @@ const selected =
     : travelOptions[Math.floor(Math.random() * travelOptions.length)]
 
 const travel = `
+TEST
+`;
 ## ✈ Reise-Kompass
 
 ### ${selected.title}
