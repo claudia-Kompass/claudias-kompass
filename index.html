@@ -7,60 +7,60 @@
 
 <style>
 body {
-    margin: 0;
-    font-family: 'Georgia', serif;
-    background: linear-gradient(135deg,#0f172a,#1e293b);
-    color: #f8fafc;
-    display: flex;
-    justify-content: center;
-    padding: 40px 20px;
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(135deg,#0f172a,#1e293b);
+  color: #f8fafc;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
 }
 
 .container {
-    max-width: 850px;
-    width: 100%;
+  max-width: 850px;
+  width: 100%;
 }
 
 h1 {
-    font-size: 34px;
-    margin-bottom: 10px;
-    color: #facc15;
+  font-size: 34px;
+  margin-bottom: 10px;
+  color: #facc15;
 }
 
 .subtitle {
-    color: #cbd5e1;
-    margin-bottom: 40px;
+  color: #cbd5e1;
+  margin-bottom: 40px;
 }
 
 .card {
-    background: #1e293b;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-    line-height: 1.7;
-    white-space: pre-wrap;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 button {
-    background: #facc15;
-    color: #111;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 25px;
-    transition: 0.2s;
+  background: #facc15;
+  color: #111;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 25px;
+  transition: 0.2s;
 }
 
 button:hover {
-    background: #fde047;
+  background: #fde047;
 }
 
 .footer {
-    margin-top: 40px;
-    font-size: 14px;
-    color: #94a3b8;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #94a3b8;
 }
 </style>
 </head>
@@ -68,21 +68,43 @@ button:hover {
 <body>
 
 <div class="container">
-    <h1>Claudias Kompass</h1>
-    <div class="subtitle">Deine tägliche strukturierte Ausrichtung</div>
+  <h1>Claudias Kompass</h1>
+  <div class="subtitle">Deine tägliche strukturierte Ausrichtung</div>
 
-    <button onclick="loadDaily()">Neue Tagesausgabe laden</button>
+  <button onclick="loadDaily()">Neue Tagesausgabe laden</button>
 
-    <div id="output" class="card">
-        Lade deine erste Tagesausgabe...
-    </div>
+  <div id="output" class="card">
+Lade deine erste Tagesausgabe...
+  </div>
 
-    <div class="footer">
-        © Claudia Foerstner – Persönlicher Daily Compass
-    </div>
+  <div class="footer">
+    © Claudia Foerstner – Persönlicher Daily Kompass
+  </div>
 </div>
 
 <script>
 async function loadDaily() {
-    const output = document.getElementById("output");
-    output.innerText
+  const output = document.getElementById("output");
+  output.innerText = "Lade...";
+
+  try {
+    const response = await fetch("/api/daily");
+    const data = await response.json();
+
+    console.log("API Antwort:", data);
+
+    if (data.content) {
+      output.innerText = data.content;
+    } else {
+      output.innerText = "Keine gültige Ausgabe erhalten.";
+    }
+
+  } catch (error) {
+    console.error("Fehler:", error);
+    output.innerText = "Verbindung zur API fehlgeschlagen.";
+  }
+}
+</script>
+
+</body>
+</html>
