@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
+
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -31,13 +32,14 @@ Sprache: Deutsch.
 
     const data = await response.json();
 
-const text =
-  data.output?.[0]?.content?.[0]?.text ||
-  "Keine Ausgabe erzeugt.";
+    const text =
+      data.output_text ||
+      data.output?.[0]?.content?.map(c => c.text).join("") ||
+      "Keine Ausgabe erzeugt.";
 
-res.status(200).json({ content: text });
-    
+    return res.status(200).json({ content: text });
+
   } catch (error) {
-    res.status(500).json({ error: "Fehler bei der Generierung." });
+    return res.status(500).json({ error: "Fehler bei der Generierung." });
   }
 }
