@@ -89,37 +89,31 @@ h1 {
 <script>
 async function loadDaily() {
   const output = document.getElementById("output");
-  output.innerHTML = "Lade aktuelle Analyse…";
+  output.innerHTML = "Lade Analyse...";
 
   try {
     const response = await fetch("/api/daily");
     const data = await response.json();
 
-    if (!data.content) {
-      output.innerHTML = "Keine Daten empfangen.";
-      return;
-    }
+    output.innerHTML = `
+      <div class="card">
+        ${data.executive || ""}
+      </div>
 
-    let text = data.content;
+      <div class="card">
+        ${data.regional || ""}
+      </div>
 
-    // Markdown entfernen
-    text = text.replace(/\*\*/g, "");
-    text = text.replace(/---/g, "");
+      <div class="card">
+        ${data.weather || ""}
+      </div>
 
-    // Abschnitte sauber strukturieren
-    text = text.replace(/Inspirierender Gedanke/g, '<div class="section-title">Inspirierender Gedanke</div>');
-    text = text.replace(/Fokus des Tages/g, '<div class="section-title">Fokus des Tages</div>');
-    text = text.replace(/Business-Impuls/g, '<div class="section-title">Business-Impuls</div>');
-    text = text.replace(/Persönliche Reflexionsfrage/g, '<div class="section-title">Persönliche Reflexionsfrage</div>');
-    text = text.replace(/Mini-Challenge/g, '<div class="section-title">Mini-Challenge</div>');
-
-    output.innerHTML = text;
-
+      <div class="card">
+        ${data.personal || ""}
+      </div>
+    `;
   } catch (error) {
     output.innerHTML = "Verbindung zur API fehlgeschlagen.";
   }
 }
 </script>
-
-</body>
-</html>
