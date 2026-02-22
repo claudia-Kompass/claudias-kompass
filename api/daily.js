@@ -106,87 +106,116 @@ Zubereitung:
 ### 😄 Witz des Tages
 Warum investieren Kryptos nicht in Geduld?
 Weil sie ständig schwanken.
-`;
 
-    /* ===============================
-       5️⃣ TRAVEL SYSTEM – v8.8.1 Claudia
-    =============================== */
+/* ===============================
+   TRAVEL SYSTEM – v9.0.0 Claudia
+================================ */
 
-    const travelOptions = [
-
-      {
-        title: "Südtirol – Fokus durch Perspektivwechsel",
-        text: `
-Wandern entlang der Seiser Alm.
+const travelOptions = [
+  {
+    title: "Südtirol – Fokus & Klarheit",
+    tags: ["wandern", "natur", "kulinarik"],
+    budget: "mittel",
+    level: "regeneration",
+    text: `
+Wanderung auf der Seiser Alm.
 Runde um den Kalterer See.
-Klare Höhenluft + mediterrane Küche.
+Mediterrane Küche + klare Höhenluft.
 
 Executive-Effekt:
-Distanz schafft Klarheit.
-`
-      },
-
-      {
-        title: "Kapverden – Semba & Atlantik",
-        text: `
-Semba tanzen am Strand.
-Barfuß im Sand trainieren.
-Salzluft + Rhythmus.
+Distanz schafft strategische Klarheit.
+`,
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+  },
+  {
+    title: "Kapverden – Semba & Atlantik",
+    tags: ["semba", "tanzen", "wasser"],
+    budget: "mittel",
+    level: "flow",
+    text: `
+Semba am Strand.
+Barfußtraining im Sand.
+Atlantikluft + Rhythmus.
 
 Executive-Effekt:
 Flow ersetzt Druck.
-`
-      },
-
-      {
-        title: "Andalusien – Salsa & Kultur",
-        text: `
+`,
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+  },
+  {
+    title: "Andalusien – Salsa & Kultur",
+    tags: ["salsa", "kultur", "stadt"],
+    budget: "mittel",
+    level: "kreativ",
+    text: `
 Salsa Social in Sevilla.
 Tapas & Altstadt.
 Abendlicher Spaziergang durch historische Gassen.
 
 Executive-Effekt:
-Kreativität durch Bewegung.
-`
-      },
-
-      {
-        title: "Kroatien – Segeln & Schnorcheln",
-        text: `
-Mit dem Segelboot entlang der Küste.
+Bewegung aktiviert Kreativität.
+`,
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+  },
+  {
+    title: "Kroatien – Segeln & Schnorcheln",
+    tags: ["segeln", "schnorcheln", "camping"],
+    budget: "flexibel",
+    level: "freiheitsmodus",
+    text: `
+Segeln entlang der Adriaküste.
 Schnorcheln im klaren Wasser.
 Camping direkt am Meer.
 
 Executive-Effekt:
-Weite schafft strategischen Blick.
-`
-      }
+Weite schafft Überblick.
+`,
+    image: "https://images.unsplash.com/photo-1493558103817-58b2924bce98"
+  }
+]
 
-    ];
+/* === Persönliche Parameter === */
 
-    const randomTravel =
-      travelOptions[Math.floor(Math.random() * travelOptions.length)];
+const travelProfile = {
+  budget: "mittel",        // niedrig | mittel | flexibel
+  mood: "kreativ",         // kreativ | flow | regeneration | freiheitsmodus
+  hobbyFocus: "tanzen"     // tanzen | wasser | natur | kultur
+}
 
-    const travel = `
+/* === Auswahl-Logik === */
+
+const filteredOptions = travelOptions.filter(option =>
+  (option.budget === travelProfile.budget || option.budget === "flexibel") &&
+  option.tags.includes(travelProfile.hobbyFocus)
+)
+
+const selected =
+  filteredOptions.length > 0
+    ? filteredOptions[Math.floor(Math.random() * filteredOptions.length)]
+    : travelOptions[Math.floor(Math.random() * travelOptions.length)]
+
+const travel = `
 ## ✈ Reise-Kompass
 
-### ${randomTravel.title}
+### ${selected.title}
 
-${randomTravel.text}
-`;
+![travel-image](${selected.image})
+
+${selected.text}
+`
 
     /* ===============================
        RESPONSE
     =============================== */
 
     res.status(200).json({
-      version: "8.8.1",
-      executive,
-      regional,
-      weather,
-      personal,
-      travel
-    });
+  version: "9.0.0",
+  executive,
+  regional,
+  weather,
+  personal,
+  travel
+});
 
   } catch (error) {
 
