@@ -1,12 +1,7 @@
 export default async function handler(req, res) {
-
-  // Kein Browser-Cache
-  res.setHeader("Cache-Control", "no-store");
-  
   try {
 
     const now = new Date();
-
     const timestamp = now.toLocaleString("de-DE", {
       day: "2-digit",
       month: "2-digit",
@@ -15,9 +10,9 @@ export default async function handler(req, res) {
       minute: "2-digit"
     });
 
-    /* ======================================
+    /* ===============================
        1️⃣ EXECUTIVE – Märkte & Politik
-    ====================================== */
+    =============================== */
 
     const executive = `
 ## Executive Live Radar
@@ -26,78 +21,68 @@ _Datenstand: ${timestamp}_
 
 ### Märkte
 
-Bitcoin stabil in Seitwärtsbewegung.  
-NEXO mit erhöhter Volatilität.  
+Bitcoin stabil in Seitwärtsbewegung.
+NEXO mit erhöhter Volatilität.
 
 Gesamtmarkt weiterhin vorsichtig positioniert (Risk-neutral bis leicht Risk-Off).
 
 ### Politik – Global
 
-Geopolitisch bleibt die Lage angespannt.  
+Geopolitisch bleibt die Lage angespannt.
 Fokus liegt auf Handelsbeziehungen USA–China sowie Nahost-Entwicklungen.
 
 ### EU
 
-Diskussionen um Wettbewerbsfähigkeit und Industriepolitik nehmen zu.  
-Energiepreise stabilisieren sich auf moderatem Niveau.
+Diskussionen um Wettbewerbsfähigkeit und Industriepolitik nehmen zu.
 
 ### Deutschland
 
-Konjunktur weiter verhalten.  
+Konjunktur weiter verhalten.
 Unternehmen zeigen Investitionszurückhaltung, Arbeitsmarkt jedoch stabil.
 `;
 
-
-    /* ======================================
-       2️⃣ REGIONAL – SHA / Hohenlohe
-    ====================================== */
+    /* ===============================
+       2️⃣ REGIONAL – SHA & Umfeld
+    =============================== */
 
     const regional = `
 ## Regional-Kompass – Schwäbisch Hall & Hohenlohe
 
 ### Infrastruktur
-
-Aktuell keine gemeldeten größeren Sperrungen auf den Hauptverkehrsachsen.  
+Aktuell keine gemeldeten größeren Sperrungen auf den Hauptverkehrsachsen.
 Pendlerverkehr im Berufszeitfenster erhöht.
 
 ### Veranstaltungen
 
 • Wochenmarkt Schwäbisch Hall – Samstag 08:00–13:00 Uhr, Marktplatz  
-• Lichterfest (Vorschau) – Terminankündigung folgt  
 • Salsa Social Nürnberg – Samstag 21:00 Uhr  
-
-### Kultur & Kino
-
-Neue Filmstarts im CinemaxX Heilbronn ab Donnerstag.  
-Kulturveranstaltungen in SHA verstärkt im Frühjahr.
+• Kinostarts im CineMaxX Heilbronn – ab Donnerstag  
+• Kulturveranstaltungen in SHA verstärkt im Frühjahr
 `;
 
-
-    /* ======================================
-       3️⃣ WETTER – Ilshofen (heute)
-    ====================================== */
+    /* ===============================
+       3️⃣ WETTER – Ilshofen
+    =============================== */
 
     const weather = `
 ## Wetter – Ilshofen
 
-Heute überwiegend bewölkt.  
-Temperatur: 6–11 °C  
-Leichter Wind.  
+Heute überwiegend bewölkt.
+Temperatur: 6–11 °C
+Leichter Wind.
 Kein signifikanter Niederschlag erwartet.
 `;
 
-
-    /* ======================================
-       4️⃣ PERSONAL – Leben & Fokus
-    ====================================== */
+    /* ===============================
+       4️⃣ PERSONAL
+    =============================== */
 
     const personal = `
 ## Persönlicher Bereich
 
 ### 🎵 Ukulele-Fokus
-
-Übe heute die Akkorde C – G – Am – F.  
-Wechsle langsam und sauber.  
+Übe heute die Akkorde C – G – Am – F.
+Wechsle langsam und sauber.
 Konzentriere dich auf gleichmäßigen Rhythmus.
 
 ### 🍲 Ninja-Rezept – Schnelle Gemüsepfanne
@@ -116,23 +101,22 @@ Zubereitung:
 4. Abschmecken und servieren.
 
 ### 💬 Zitat des Tages
-
 „Disziplin ist die Brücke zwischen Zielen und Erfolg.“
 
 ### 😄 Witz des Tages
-
-Warum investieren Kryptos nicht in Geduld?  
+Warum investieren Kryptos nicht in Geduld?
 Weil sie ständig schwanken.
 `;
 
-/* ======================================
-   TRAVEL SYSTEM – v8.8.1 Claudia
-====================================== */
+    /* ===============================
+       5️⃣ TRAVEL SYSTEM – v8.8.1 Claudia
+    =============================== */
 
-const travelOptions = [
-  {
-    title: "Südtirol – Fokus durch Perspektivwechsel",
-    text: `
+    const travelOptions = [
+
+      {
+        title: "Südtirol – Fokus durch Perspektivwechsel",
+        text: `
 Wandern entlang der Seiser Alm.
 Runde um den Kalterer See.
 Klare Höhenluft + mediterrane Küche.
@@ -140,10 +124,11 @@ Klare Höhenluft + mediterrane Küche.
 Executive-Effekt:
 Distanz schafft Klarheit.
 `
-  },
-  {
-    title: "Kapverden – Semba & Atlantik",
-    text: `
+      },
+
+      {
+        title: "Kapverden – Semba & Atlantik",
+        text: `
 Semba tanzen am Strand.
 Barfuß im Sand trainieren.
 Salzluft + Rhythmus.
@@ -151,10 +136,11 @@ Salzluft + Rhythmus.
 Executive-Effekt:
 Flow ersetzt Druck.
 `
-  },
-  {
-    title: "Andalusien – Salsa & Kultur",
-    text: `
+      },
+
+      {
+        title: "Andalusien – Salsa & Kultur",
+        text: `
 Salsa Social in Sevilla.
 Tapas & Altstadt.
 Abendlicher Spaziergang durch historische Gassen.
@@ -162,10 +148,11 @@ Abendlicher Spaziergang durch historische Gassen.
 Executive-Effekt:
 Kreativität durch Bewegung.
 `
-  },
-  {
-    title: "Kroatien – Segeln & Schnorcheln",
-    text: `
+      },
+
+      {
+        title: "Kroatien – Segeln & Schnorcheln",
+        text: `
 Mit dem Segelboot entlang der Küste.
 Schnorcheln im klaren Wasser.
 Camping direkt am Meer.
@@ -173,31 +160,33 @@ Camping direkt am Meer.
 Executive-Effekt:
 Weite schafft strategischen Blick.
 `
-  }
-];
+      }
 
-const dayIndex = new Date().getDate() % travelOptions.length;
-const selectedTravel = travelOptions[dayIndex];
+    ];
 
-const travel = `
+    const randomTravel =
+      travelOptions[Math.floor(Math.random() * travelOptions.length)];
+
+    const travel = `
 ## ✈ Reise-Kompass
 
-### ${selectedTravel.title}
+### ${randomTravel.title}
 
-${selectedTravel.text}
+${randomTravel.text}
 `;
-    /* ======================================
+
+    /* ===============================
        RESPONSE
-    ====================================== */
+    =============================== */
 
     res.status(200).json({
-  version: "8.7.1",
-  executive,
-  regional,
-  weather,
-  personal,
-  travel
-});
+      version: "8.8.1",
+      executive,
+      regional,
+      weather,
+      personal,
+      travel
+    });
 
   } catch (error) {
 
