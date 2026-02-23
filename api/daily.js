@@ -1,4 +1,3 @@
-
 import { getExecutive } from "../lib/executive.js";
 import { getWeather } from "../lib/weather.js";
 
