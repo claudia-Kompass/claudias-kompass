@@ -1,5 +1,6 @@
+
 import { getExecutive } from "../lib/executive.js";
-// import { getWeather } from "../lib/weather.js";
+import { getWeather } from "../lib/weather.js";
 
 export default async function handler(req, res) {
   try {
@@ -7,7 +8,7 @@ export default async function handler(req, res) {
     const weather = await getWeather();
 
     res.status(200).json({
-      version: "1.1.1",
+      version: "1.2.0",
       executive,
       regional: "Test OK",
       weather,
