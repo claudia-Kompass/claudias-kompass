@@ -105,19 +105,38 @@ button:hover {
 }
   
 async function loadData() {
-  const res = await fetch('/api/daily');
-  const data = await 
-    <div class="section">
-  ${formatMarkdown(data.executive)}
-</div>
+  try {
+    const res = await fetch('/api/daily');
+    const data = await res.json();
 
-${formatMarkdown(data.executive || "")}
-${formatMarkdown(data.regional || "")}
-${formatMarkdown(data.weather || "")}
-${formatMarkdown(data.personal || "")}
-${formatMarkdown(data.travel || "")}            
-</div>
-`;
+    document.getElementById("meta").innerText =
+      "06:00 CET · Version " + (data.version || "");
+
+    document.getElementById("content").innerHTML = `
+      <div class="section">
+        ${formatMarkdown(data.executive || "")}
+      </div>
+
+      <div class="section">
+        ${formatMarkdown(data.regional || "")}
+      </div>
+
+      <div class="section">
+        ${formatMarkdown(data.weather || "")}
+      </div>
+
+      <div class="section">
+        ${formatMarkdown(data.personal || "")}
+      </div>
+
+      <div class="section travel">
+        ${formatMarkdown(data.travel || "")}
+      </div>
+    `;
+  } catch (err) {
+    console.error(err);
+    document.getElementById("meta").innerText = "Fehler beim Laden";
+  }
 }
 
 loadData();
