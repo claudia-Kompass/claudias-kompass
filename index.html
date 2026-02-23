@@ -123,6 +123,12 @@ button:hover {
   .replace(/^_(.*)_$/gim, '<div class="meta">$1</div>')
   .replace(/\n\n/g, '<br><br>')
   .replace(/\n/g, '<br>');
+    }
+function barHeight(temp) {
+  const min = 0;
+  const max = 30;
+  const percent = (temp - min) / (max - min);
+  return Math.max(4, percent * 60);
 }
   
 async function loadData() {
