@@ -94,40 +94,38 @@ button:hover {
 
 <script>
   function formatMarkdown(text) {
+  if (!text) return "";
+
   return text
     .replace(/^### (.*$)/gim, '<h3>$1</h3>')
     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^_(.*)_$/gim, '<div class="meta">$1</div>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
     .replace(/\n\n/g, '<br><br>')
     .replace(/\n/g, '<br>');
-  }
+}
+  
 async function loadData() {
   const res = await fetch('/api/daily');
-  const data = await res.json();
+  const data = await 
+    <div class="section">
+  ${formatMarkdown(data.executive)}
+</div>
 
-  document.getElementById("meta").innerText =
-    "06:00 CET · Version " + data.version;
+<div class="section">
+  ${formatMarkdown(data.regional)}
+</div>
 
-  document.getElementById("content").innerHTML = `
-  <div class="section">
-    ${formatMarkdown(data.executive)}
-  </div>
+<div class="section">
+  ${formatMarkdown(data.weather)}
+</div>
 
-  <div class="section">
-    ${data.regional.replace(/\n/g, "<br>")}
-  </div>
+<div class="section">
+  ${formatMarkdown(data.personal)}
+</div>
 
-  <div class="section">
-    ${data.weather.replace(/\n/g, "<br>")}
-  </div>
-
-  <div class="section">
-    ${data.personal.replace(/\n/g, "<br>")}
-  </div>
-
-  <div class="section travel">
-    ${data.travel.replace(/\n/g, "<br>")}
-  </div>
+<div class="section travel">
+  ${formatMarkdown(data.travel)}
+</div>
 `;
 }
 
