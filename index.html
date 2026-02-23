@@ -101,26 +101,26 @@ async function loadData() {
     "06:00 CET · Version " + data.version;
 
   document.getElementById("content").innerHTML = `
-    <div class="section">
-      ${data.executive}
-    </div>
+  <div class="section">
+    ${data.executive.replace(/\n/g, "<br>")}
+  </div>
 
-    <div class="section">
-      ${data.regional}
-    </div>
+  <div class="section">
+    ${data.regional.replace(/\n/g, "<br>")}
+  </div>
 
-    <div class="section">
-      ${data.weather}
-    </div>
+  <div class="section">
+    ${data.weather.replace(/\n/g, "<br>")}
+  </div>
 
-    <div class="section">
-      ${data.personal}
-    </div>
+  <div class="section">
+    ${data.personal.replace(/\n/g, "<br>")}
+  </div>
 
-    <div class="section travel">
-      ${data.travel}
-    </div>
-  `;
+  <div class="section travel">
+    ${data.travel.replace(/\n/g, "<br>")}
+  </div>
+`;
 }
 
 loadData();
