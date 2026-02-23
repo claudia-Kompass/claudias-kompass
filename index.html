@@ -136,8 +136,39 @@ async function loadData() {
       </div>
 
       <div class="section">
-        ${formatMarkdown(data.weather || "")}
-      </div>
+  <h2>Wetter – ${data.weather.location}</h2>
+
+  <div class="weather-head">
+    <div class="weather-icon">
+      ${weatherIcon(data.weather.code)}
+    </div>
+    <div style="font-size:28px; font-weight:600;">
+      ${data.weather.temp}
+    </div>
+  </div>
+
+  <div>${data.weather.condition}</div>
+
+  <div style="margin-top:8px; color:#9aa3b2;">
+    Wind: ${data.weather.wind} ·
+    Luftfeuchte: ${data.weather.humidity}
+  </div>
+
+  <div class="weather-trend">
+    <div class="trend-item">
+      <div>09:00</div>
+      <div>${data.weather.trend.morning}°C</div>
+    </div>
+    <div class="trend-item">
+      <div>15:00</div>
+      <div>${data.weather.trend.afternoon}°C</div>
+    </div>
+    <div class="trend-item">
+      <div>21:00</div>
+      <div>${data.weather.trend.evening}°C</div>
+    </div>
+  </div>
+</div>
 
       <div class="section">
         ${formatMarkdown(data.personal || "")}
