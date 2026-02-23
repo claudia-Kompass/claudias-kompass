@@ -111,20 +111,11 @@ async function loadData() {
   ${formatMarkdown(data.executive)}
 </div>
 
-<div class="section">
-  ${formatMarkdown(data.regional)}
-</div>
-
-<div class="section">
-  ${formatMarkdown(data.weather)}
-</div>
-
-<div class="section">
-  ${formatMarkdown(data.personal)}
-</div>
-
-<div class="section travel">
-  ${formatMarkdown(data.travel)}
+${formatMarkdown(data.executive || "")}
+${formatMarkdown(data.regional || "")}
+${formatMarkdown(data.weather || "")}
+${formatMarkdown(data.personal || "")}
+${formatMarkdown(data.travel || "")}            
 </div>
 `;
 }
