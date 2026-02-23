@@ -109,13 +109,13 @@ button:hover {
 <script>
   function formatMarkdown(text) {
   if (!text) return "";
-
-  return text
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    .replace(/\n\n/g, '<br><br>')
-    .replace(/\n/g, '<br>');
+    return text
+  .replace(/^### (.*)$/gim, '<h3>$1</h3>')
+  .replace(/^## (.*)$/gim, '<h2>$1</h2>')
+  .replace(/^# (.*)$/gim, '<h1>$1</h1>')
+  .replace(/^_(.*)_$/gim, '<div class="meta">$1</div>')
+  .replace(/\n\n/g, '<br><br>')
+  .replace(/\n/g, '<br>');
 }
   
 async function loadData() {
