@@ -93,6 +93,14 @@ button:hover {
 </div>
 
 <script>
+  function formatMarkdown(text) {
+  return text
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^_(.*)_$/gim, '<div class="meta">$1</div>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+  }
 async function loadData() {
   const res = await fetch('/api/daily');
   const data = await res.json();
@@ -102,7 +110,7 @@ async function loadData() {
 
   document.getElementById("content").innerHTML = `
   <div class="section">
-    ${data.executive.replace(/\n/g, "<br>")}
+    ${formatMarkdown(data.executive)}
   </div>
 
   <div class="section">
