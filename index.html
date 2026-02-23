@@ -138,7 +138,18 @@ async function loadData() {
     document.getElementById("meta").innerText = "Fehler beim Laden";
   }
 }
-
+function weatherIcon(code) {
+  const map = {
+    1000: "☀️",
+    1003: "🌤️",
+    1006: "☁️",
+    1009: "🌥️",
+    1183: "🌧️",
+    1189: "🌦️",
+    1210: "🌨️"
+  };
+  return map[code] || "🌡️";
+}
 loadData();
 </script>
 
