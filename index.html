@@ -151,8 +151,6 @@ const tAfternoon = afternoon.temp ?? 0;
 const tEvening = evening.temp ?? 0;
     const now = new Date();
 
-const now = new Date();
-
 const timeString = now.toLocaleTimeString("de-DE", {
   timeZone: "Europe/Berlin",
   hour: "2-digit",
@@ -163,12 +161,6 @@ document.getElementById("meta").innerText =
   `${timeString} · Version ${data.version || ""}`;
 })
 .formatToParts(now)
-.find(p => p.type === "timeZoneName").value;
-
-document.getElementById("meta").innerText =
-  `${timeString} ${tz} · Version ${data.version || ""}`;
-
-    document.getElementById("content").innerHTML = `
       <div class="section">
         ${formatMarkdown(data.executive || "")}
       </div>
