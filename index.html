@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Claudias Kompass</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -15,44 +15,13 @@ body {
   color: #e6e6e6;
 }
 
-.weather-icon {
-  font-size: 32px;
-}
-  .weather-detail {
-  margin-top: 22px;
-}
-
-.weather-detail .label {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #f0d48a;
-}
-
-.weather-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.weather-time {
-  width: 60px;
-  color: #9aa3b2;
-}
-
-.weather-temp {
-  font-weight: 600;
-  font-size: 17px;
-}
 .container {
   max-width: 760px;
   margin: 40px auto;
   background: #171a21;
   padding: 40px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
 h1 {
@@ -87,12 +56,6 @@ h1 {
   color: #ffffff;
 }
 
-.travel img {
-  width: 100%;
-  border-radius: 10px;
-  margin: 20px 0;
-}
-
 button {
   background: #f0d48a;
   color: #0f1115;
@@ -107,90 +70,47 @@ button {
 button:hover {
   background: #e6c46f;
 }
+
+.weather-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.travel img {
+  width: 100%;
+  border-radius: 10px;
+  margin: 20px 0;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-
-<h1>Claudias Kompass</h1>
-<div class="meta" id="meta">Lädt...</div>
-
-<button onclick="loadData()">Neue Ausgabe</button>
-
-<div id="content"></div>
-
+  <h1>Claudias Kompass</h1>
+  <div class="meta" id="meta">Lädt...</div>
+  <button onclick="loadData()">Neue Ausgabe</button>
+  <div id="content"></div>
 </div>
 
-  <script>
-  function formatMarkdown(text) {
+<script>
+
+function formatMarkdown(text) {
   if (!text) return "";
-    return text
-  .replace(/^### (.*)$/gim, '<h3>$1</h3>')
-  .replace(/^## (.*)$/gim, '<h2>$1</h2>')
-  .replace(/^# (.*)$/gim, '<h1>$1</h1>')
-  .replace(/^_(.*)_$/gim, '<div class="meta">$1</div>')
-  .replace(/\n\n/g, '<br><br>')
-  .replace(/\n/g, '<br>');
-    }
-  function weatherIcon(code) {
+  return text
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function weatherIcon(code) {
   if (!code) return "☁️";
   if (code === 1183) return "🌧️";
   if (code === 1153) return "🌦️";
   if (code === 1030) return "🌫️";
   return "☁️";
-  }
-async function loadData() {
-  try {
-    const res = await fetch('/api/daily');
-    const data = await res.json();
-    const morning = data.weather?.trend?.morning || {};
-const afternoon = data.weather?.trend?.afternoon || {};
-const evening = data.weather?.trend?.evening || {};
-
-const mIcon = weatherIcon(morning.code);
-const aIcon = weatherIcon(afternoon.code);
-const eIcon = weatherIcon(evening.code);
-    const tMorning = morning.temp ?? 0;
-const tAfternoon = afternoon.temp ?? 0;
-const tEvening = evening.temp ?? 0;
-    const now = new Date();
-
-const timeString = now.toLocaleTimeString("de-DE", {
-  timeZone: "Europe/Berlin",
-  hour: "2-digit",
-  minute: "2-digit"
-});
-    
-document.getElementById("meta").innerText =
-  `${timeString} · Version ${data.version || ""}`;
-    document.getElementById("content").innerHTML = `
-  <div class="section">
-    ${formatMarkdown(data.executive || "")}
-  </div>
-
-  <div class="section">
-    ${formatMarkdown(data.regional || "")}
-  </div>
-
-  ${renderWeather(data.weather)}
-
-  <div class="section">
-    ${formatMarkdown(data.personal || "")}
-  </div>
-
-  <div class="section travel">
-    ${formatMarkdown(data.travel || "")}
-  </div>
-`;
-
-} catch (err) {
-  console.error(err);
-  document.getElementById("meta").innerText = "Fehler beim Laden";
-}
-}
-
 }
 
 function renderWeather(weather) {
@@ -199,19 +119,59 @@ function renderWeather(weather) {
   return `
     <div class="section">
       <h2>Wetter – ${weather.location}</h2>
-
-      <div class="weather-head">
-        <div class="weather-icon">
-          ${weatherIcon(weather.code)}
-        </div>
-        <div>
-          <div>${weather.temp}</div>
-          <div>${weather.condition}</div>
-        </div>
+      <div class="weather-icon">
+        ${weatherIcon(weather.code)}
       </div>
+      <div>${weather.temp}</div>
+      <div>${weather.condition}</div>
     </div>
   `;
 }
 
+async function loadData() {
+  try {
+    const res = await fetch('/api/daily');
+    const data = await res.json();
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString("de-DE", {
+      timeZone: "Europe/Berlin",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    document.getElementById("meta").innerText =
+      `${timeString} • Version ${data.version || ""}`;
+
+    document.getElementById("content").innerHTML = `
+      <div class="section">
+        ${formatMarkdown(data.executive || "")}
+      </div>
+
+      <div class="section">
+        ${formatMarkdown(data.regional || "")}
+      </div>
+
+      ${renderWeather(data.weather)}
+
+      <div class="section">
+        ${formatMarkdown(data.personal || "")}
+      </div>
+
+      <div class="section travel">
+        ${formatMarkdown(data.travel || "")}
+      </div>
+    `;
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("meta").innerText = "Fehler beim Laden";
+  }
+}
+
 loadData();
+
 </script>
+
+</body>
+</html>
