@@ -133,7 +133,7 @@ Salvador da Bahia – Wasser & Rhythmus.
     console.error("GLOBAL API ERROR:", err);
 
     return res.status(200).json({
-      version: "8.8.0-fallback",
+      version: "9.0.0-fallback",
       timestamp: "",
       executive: "System stabil – Inhalte temporär nicht verfügbar.",
       regional: "",
