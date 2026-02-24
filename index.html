@@ -118,7 +118,9 @@ const evening = data.weather?.trend?.evening || {};
 const mIcon = weatherIcon(morning.code);
 const aIcon = weatherIcon(afternoon.code);
 const eIcon = weatherIcon(evening.code);
-    
+    const tMorning = morning.temp ?? 0;
+const tAfternoon = afternoon.temp ?? 0;
+const tEvening = evening.temp ?? 0;
     document.getElementById("meta").innerText =
       "06:00 CET · Version " + (data.version || "");
 
