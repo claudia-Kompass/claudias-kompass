@@ -149,8 +149,16 @@ const eIcon = weatherIcon(evening.code);
     const tMorning = morning.temp ?? 0;
 const tAfternoon = afternoon.temp ?? 0;
 const tEvening = evening.temp ?? 0;
-    document.getElementById("meta").innerText =
-  (data.timestamp || "--:--") + " CET · Version " + (data.version || "");
+    const now = new Date();
+
+const timeString = now.toLocaleTimeString("de-DE", {
+  timeZone: "Europe/Berlin",
+  hour: "2-digit",
+  minute: "2-digit"
+});
+
+document.getElementById("meta").innerText =
+  `${timeString} CET · Version ${data.version || ""}`;
 
     document.getElementById("content").innerHTML = `
       <div class="section">
