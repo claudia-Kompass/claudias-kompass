@@ -129,9 +129,13 @@ async function loadData() {
   try {
     const res = await fetch('/api/daily');
     const data = await res.json();
-const tMorning = data.weather?.trend?.morning ?? 0;
-const tAfternoon = data.weather?.trend?.afternoon ?? 0;
-const tEvening = data.weather?.trend?.evening ?? 0;
+    const morning = data.weather?.trend?.morning || {};
+const afternoon = data.weather?.trend?.afternoon || {};
+const evening = data.weather?.trend?.evening || {};
+
+const mIcon = weatherIcon(morning.code);
+const aIcon = weatherIcon(afternoon.code);
+const eIcon = weatherIcon(evening.code);
 
 const temps = [tMorning, tAfternoon, tEvening];
 const maxTemp = Math.max(...temps);
