@@ -165,7 +165,8 @@ const timeString = now.toLocaleTimeString("de-DE", {
     
 document.getElementById("meta").innerText =
   `${timeString} ·Version ${data.version || ""}`;
-document.getElementById("content").innerHTML = `
+
+    document.getElementById("content").innerHTML = `
   <div class="section">
     ${formatMarkdown(data.executive || "")}
   </div>
@@ -184,6 +185,7 @@ document.getElementById("content").innerHTML = `
     ${formatMarkdown(data.travel || "")}
   </div>
 `;
+
 } catch (err) {
   console.error(err);
   document.getElementById("meta").innerText = "Fehler beim Laden";
