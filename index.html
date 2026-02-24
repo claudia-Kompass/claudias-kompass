@@ -164,8 +164,7 @@ const timeString = now.toLocaleTimeString("de-DE", {
 });
     
 document.getElementById("meta").innerText =
-  `${timeString} · Version ${data.version || ""}`;
-    
+  `${timeString} · Version ${data.version 
 document.getElementById("content").innerHTML = `
   <div class="section">
     ${formatMarkdown(data.executive || "")}
@@ -178,6 +177,13 @@ document.getElementById("content").innerHTML = `
   ${renderWeather(data.weather)}
 
   <div class="section">
+    ${formatMarkdown(data.personal || "")}
+  </div>
+
+  <div class="section travel">
+    ${formatMarkdown(data.travel || "")}
+  </div>
+`;                    
     ${formatMarkdown(data.personal || "")}
   </div>
 
