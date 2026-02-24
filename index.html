@@ -175,8 +175,7 @@ document.getElementById("content").innerHTML = `
     ${formatMarkdown(data.regional || "")}
   </div>
 
-  <div class="section">
-    <h2>Wetter – ${data.weather.location}</h2>
+  ${renderWeather(data.weather)}
 
     <div class="weather-head">
       <div class="weather-icon">
@@ -201,6 +200,28 @@ document.getElementById("content").innerHTML = `
   console.error(err);
   document.getElementById("meta").innerText = "Fehler beim Laden";
 }
+}
+
+}
+
+function renderWeather(weather) {
+  if (!weather) return "";
+
+  return `
+    <div class="section">
+      <h2>Wetter – ${weather.location}</h2>
+
+      <div class="weather-head">
+        <div class="weather-icon">
+          ${weatherIcon(weather.code)}
+        </div>
+        <div>
+          <div>${weather.temp}</div>
+          <div>${weather.condition}</div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 loadData();
