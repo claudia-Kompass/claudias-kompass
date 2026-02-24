@@ -1,11 +1,11 @@
 // ===============================
 // CLAUDIAS KOMPASS – DAILY API
-// Version 8.8.0 – Stable Core
+// Version 9.0.0 – Stable Core
 // ===============================
 
 export default async function handler(req, res) {
   try {
-    const version = "8.8.0";
+    const version = "9.0.0";
 
     // ---- Zeit ----
     const now = new Date();
