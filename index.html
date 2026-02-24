@@ -168,7 +168,7 @@ async function loadData() {
         ${formatMarkdown(data.regional || "")}
       </div>
 
-      ${renderWeather(data.weather)}
+      ${renderWeather(data.weather, data.weather?.trend)}
 
       <div class="section">
         ${formatMarkdown(data.personal || "")}
