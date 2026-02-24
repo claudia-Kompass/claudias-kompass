@@ -9,10 +9,12 @@ export default async function handler(req, res) {
 
     // ---- Zeit ----
     const now = new Date();
-    const timestamp = now.toLocaleTimeString("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+
+const timestamp = now.toLocaleTimeString("de-DE", {
+  timeZone: "Europe/Berlin",
+  hour: "2-digit",
+  minute: "2-digit"
+});
 
     // ===============================
     // WEATHER
