@@ -213,4 +213,8 @@ document.getElementById("content").innerHTML = `
     ${formatMarkdown(data.travel || "")}
   </div>
 `;
-
+} catch (err) {
+    console.error(err);
+    document.getElementById("meta").innerText = "Fehler beim Laden";
+}
+}
