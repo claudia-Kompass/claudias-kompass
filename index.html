@@ -134,7 +134,13 @@ button:hover {
   .replace(/\n\n/g, '<br><br>')
   .replace(/\n/g, '<br>');
     }
-  
+  function weatherIcon(code) {
+  if (!code) return "☁️";
+  if (code === 1183) return "🌧️";
+  if (code === 1153) return "🌦️";
+  if (code === 1030) return "🌫️";
+  return "☁️";
+  }
 async function loadData() {
   try {
     const res = await fetch('/api/daily');
