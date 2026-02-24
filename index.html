@@ -150,7 +150,7 @@ const eIcon = weatherIcon(evening.code);
 const tAfternoon = afternoon.temp ?? 0;
 const tEvening = evening.temp ?? 0;
     document.getElementById("meta").innerText =
-      "06:00 CET · Version " + (data.version || "");
+  (data.timestamp || "--:--") + " CET · Version " + (data.version || "");
 
     document.getElementById("content").innerHTML = `
       <div class="section">
