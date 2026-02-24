@@ -125,18 +125,22 @@ button:hover {
   .replace(/\n/g, '<br>');
     }
   
-function barHeight(temp) {
-  const min = 0;
-  const max = 30;
-  const percent = (temp - min) / (max - min);
-  return Math.max(4, percent * 60);
-}
-  
 async function loadData() {
   try {
     const res = await fetch('/api/daily');
     const data = await res.json();
+const tMorning = data.weather?.trend?.morning ?? 0;
+const tAfternoon = data.weather?.trend?.afternoon ?? 0;
+const tEvening = data.weather?.trend?.evening ?? 0;
 
+const temps = [tMorning, tAfternoon, tEvening];
+const maxTemp = Math.max(...temps);
+const minTemp = Math.min(...temps);
+const range = maxTemp - minTemp || 1;
+
+function barHeight(temp) {
+  return 12 + ((temp - minTemp) / range) * 28;
+}
     document.getElementById("meta").innerText =
       "06:00 CET · Version " + (data.version || "");
 
@@ -167,37 +171,9 @@ async function loadData() {
     Wind: ${data.weather.wind} ·
     Luftfeuchte: ${data.weather.humidity}
   </div>
-const tMorning = data.weather.trend.morning;
-const tAfternoon = data.weather.trend.afternoon;
-const tEvening = data.weather.trend.evening;
 
-const temps = [tMorning, tAfternoon, tEvening];
-const maxTemp = Math.max(...temps);
-const minTemp = Math.min(...temps);
-const range = maxTemp - minTemp || 1;
-
-function barHeight(temp) {
   return 12 + ((temp - minTemp) / range) * 28;
 }
-<div class="weather-trend">
-
-  <div class="trend-item">
-    <div>09:00</div>
-    <div class="trend-bar" style="height:${barHeight(tMorning)}px"></div>
-    <div>${tMorning}°C</div>
-  </div>
-
-  <div class="trend-item">
-    <div>15:00</div>
-    <div class="trend-bar" style="height:${barHeight(tAfternoon)}px"></div>
-    <div>${tAfternoon}°C</div>
-  </div>
-
-  <div class="trend-item">
-    <div>21:00</div>
-    <div class="trend-bar" style="height:${barHeight(tEvening)}px"></div>
-    <div>${tEvening}°C</div>
-  </div>
 
 </div>
 </div>
