@@ -1,11 +1,11 @@
 // ===============================
 // CLAUDIAS KOMPASS – DAILY API
-// Version 9.0.0 – Stable Core
+// Version 10.0.0 – Stable Core
 // ===============================
 
 export default async function handler(req, res) {
   try {
-    const version = "9.0.0";
+    const version = "10.0.0";
 
     // ---- Zeit ----
     const now = new Date();
@@ -133,7 +133,7 @@ Salvador da Bahia – Wasser & Rhythmus.
     console.error("GLOBAL API ERROR:", err);
 
     return res.status(200).json({
-      version: "9.0.0-fallback",
+      version: "10.0.0-fallback",
       timestamp: "",
       executive: "System stabil – Inhalte temporär nicht verfügbar.",
       regional: "",
