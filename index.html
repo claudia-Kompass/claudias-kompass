@@ -112,7 +112,23 @@ function weatherIcon(code) {
   if (code === 1030) return "🌫️";
   return "☁️";
 }
+function translateCondition(text) {
+  const map = {
+    "Partly cloudy": "Teilweise bewölkt",
+    "Light rain": "Leichter Regen",
+    "Moderate rain": "Mäßiger Regen",
+    "Heavy rain": "Starker Regen",
+    "Cloudy": "Bewölkt",
+    "Overcast": "Bedeckt",
+    "Sunny": "Sonnig",
+    "Clear": "Klar",
+    "Mist": "Dunst",
+    "Fog": "Nebel",
+    "Snow": "Schnee"
+  };
 
+  return map[text] || text;
+}
 function renderWeather(weather) {
   if (!weather) return "";
 
@@ -123,7 +139,8 @@ function renderWeather(weather) {
         ${weatherIcon(weather.code)}
       </div>
       <div>${weather.temp}</div>
-      <div>${weather.condition}</div>
+      <div>${translateCondition(weather.condition)}</div>
+      const LANG = "de";
     </div>
   `;
 }
