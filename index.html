@@ -159,83 +159,58 @@ const timeString = now.toLocaleTimeString("de-DE", {
 
 document.getElementById("meta").innerText =
   `${timeString} · Version ${data.version || ""}`;
-})
-.formatToParts(now)
-      <div class="section">
-        ${formatMarkdown(data.executive || "")}
+
+document.getElementById("content").innerHTML = `
+  <div class="section">
+    ${formatMarkdown(data.executive || "")}
+  </div>
+
+  <div class="section">
+    ${formatMarkdown(data.regional || "")}
+  </div>
+
+  <div class="section">
+    <h2>Wetter – ${data.weather.location}</h2>
+
+    <div class="weather-head">
+      <div class="weather-icon">
+        ${weatherIcon(data.weather.code)}
       </div>
-
-      <div class="section">
-        ${formatMarkdown(data.regional || "")}
+      <div>
+        <div>${data.weather.temp}</div>
+        <div>${data.weather.condition}</div>
       </div>
-
-      <div class="section">
-  <h2>Wetter – ${data.weather.location}</h2>
-
-  <div class="weather-head">
-    <div class="weather-icon">
-      ${weatherIcon(data.weather.code)}
     </div>
-    <div style="font-size:28px; font-weight:600;">
-      ${data.weather.temp}
+
+    <div class="weather-detail">
+      <div class="label">Tagesverlauf</div>
+
+      <div class="weather-row">
+        <div class="weather-time">09:00</div>
+        <div>${mIcon}</div>
+        <div class="weather-temp">${tMorning ?? "-"}°C</div>
+      </div>
+
+      <div class="weather-row">
+        <div class="weather-time">15:00</div>
+        <div>${aIcon}</div>
+        <div class="weather-temp">${tAfternoon ?? "-"}°C</div>
+      </div>
+
+      <div class="weather-row">
+        <div class="weather-time">21:00</div>
+        <div>${eIcon}</div>
+        <div class="weather-temp">${tEvening ?? "-"}°C</div>
+      </div>
     </div>
   </div>
 
-  <div>${data.weather.condition}</div>
-
-  <div class="weather-detail">
-  <div class="label">Tagesverlauf</div>
-
-  <div class="weather-row">
-    <div class="weather-time">09:00</div>
-    <div>${mIcon}</div>
-    <div class="weather-temp">${morning.temp ?? "-"}°C</div>
+  <div class="section">
+    ${formatMarkdown(data.personal || "")}
   </div>
 
-  <div class="weather-row">
-    <div class="weather-time">15:00</div>
-    <div>${aIcon}</div>
-    <div class="weather-temp">${afternoon.temp ?? "-"}°C</div>
+  <div class="section travel">
+    ${formatMarkdown(data.travel || "")}
   </div>
+`;
 
-  <div class="weather-row">
-    <div class="weather-time">21:00</div>
-    <div>${eIcon}</div>
-    <div class="weather-temp">${evening.temp ?? "-"}°C</div>
-  </div>
-</div>
-  </div>
-</div>
-
-      <div class="section">
-        ${formatMarkdown(data.personal || "")}
-      </div>
-
-      <div class="section travel">
-        ${formatMarkdown(data.travel || "")}
-      </div>
-    `;
-  } catch (err) {
-    console.error(err);
-    document.getElementById("meta").innerText = "Fehler beim Laden";
-  }
-}
-function weatherIcon(code) {
-  const map = {
-  1000: "☀️",
-  1003: "🌤️",
-  1006: "☁️",
-  1009: "🌥️",
-  1030: "🌫️",
-  1153: "🌦️",
-  1183: "🌧️",
-  1189: "🌧️",
-  1210: "🌨️"
-};
-  return map[code] || "🌡️";
-}
-loadData();
-</script>
-
-</body>
-</html>
