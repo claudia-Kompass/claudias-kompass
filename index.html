@@ -171,7 +171,27 @@ function barHeight(temp) {
     Wind: ${data.weather.wind} ·
     Luftfeuchte: ${data.weather.humidity}
   </div>
+<div class="weather-trend">
 
+  <div class="trend-item">
+    <div>09:00</div>
+    <div class="trend-bar" style="height:${barHeight(tMorning)}px"></div>
+    <div>${tMorning}°C</div>
+  </div>
+
+  <div class="trend-item">
+    <div>15:00</div>
+    <div class="trend-bar" style="height:${barHeight(tAfternoon)}px"></div>
+    <div>${tAfternoon}°C</div>
+  </div>
+
+  <div class="trend-item">
+    <div>21:00</div>
+    <div class="trend-bar" style="height:${barHeight(tEvening)}px"></div>
+    <div>${tEvening}°C</div>
+  </div>
+
+</div>
 </div>
 </div>
 
