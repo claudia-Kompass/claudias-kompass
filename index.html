@@ -148,13 +148,25 @@ const tEvening = evening.temp ?? 0;
   <div>${data.weather.condition}</div>
 
   <div class="weather-detail">
-    Wind: ${data.weather.wind} ·
-    Luftfeuchte: ${data.weather.humidity}
-    <div style="margin-top:20px; font-size:14px;">
-  <div style="margin-bottom:6px; font-weight:600;">Tagesverlauf</div>
-  <div>09:00  ${mIcon}  ${morning.temp ?? "-"}°C</div>
-  <div>15:00  ${aIcon}  ${afternoon.temp ?? "-"}°C</div>
-  <div>21:00  ${eIcon}  ${evening.temp ?? "-"}°C</div>
+  <div class="label">Tagesverlauf</div>
+
+  <div class="weather-row">
+    <div class="weather-time">09:00</div>
+    <div>${mIcon}</div>
+    <div class="weather-temp">${morning.temp ?? "-"}°C</div>
+  </div>
+
+  <div class="weather-row">
+    <div class="weather-time">15:00</div>
+    <div>${aIcon}</div>
+    <div class="weather-temp">${afternoon.temp ?? "-"}°C</div>
+  </div>
+
+  <div class="weather-row">
+    <div class="weather-time">21:00</div>
+    <div>${eIcon}</div>
+    <div class="weather-temp">${evening.temp ?? "-"}°C</div>
+  </div>
 </div>
   </div>
 </div>
