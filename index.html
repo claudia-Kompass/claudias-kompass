@@ -164,7 +164,7 @@ const timeString = now.toLocaleTimeString("de-DE", {
 });
     
 document.getElementById("meta").innerText =
-  `${timeString} · Version ${data.version 
+  `${timeString} ·Version ${data.version || ""}`;
 document.getElementById("content").innerHTML = `
   <div class="section">
     ${formatMarkdown(data.executive || "")}
