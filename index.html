@@ -155,10 +155,15 @@ const timeString = now.toLocaleTimeString("de-DE", {
   timeZone: "Europe/Berlin",
   hour: "2-digit",
   minute: "2-digit"
-});
+const tz = Intl.DateTimeFormat("de-DE", {
+  timeZone: "Europe/Berlin",
+  timeZoneName: "short"
+})
+.formatToParts(now)
+.find(p => p.type === "timeZoneName").value;
 
 document.getElementById("meta").innerText =
-  `${timeString} CET · Version ${data.version || ""}`;
+  `${timeString} ${tz} · Version ${data.version || ""}`;
 
     document.getElementById("content").innerHTML = `
       <div class="section">
