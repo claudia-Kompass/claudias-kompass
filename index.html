@@ -129,20 +129,62 @@ function translateCondition(text) {
 
   return map[text] || text;
 }
-function renderWeather(weather) {
+function renderWeather(weather, trend) {
   if (!weather) return "";
+
+  const morning = trend?.morning;
+  const afternoon = trend?.afternoon;
+  const evening = trend?.evening;
 
   return `
     <div class="section">
       <h2>Wetter – ${weather.location}</h2>
+
       <div class="weather-icon">
         ${weatherIcon(weather.code)}
       </div>
-      <div>${weather.temp}</div>
-      <div>${translateCondition(weather.condition)}</div>
+
+      <div style="font-size:28px;font-weight:600;">
+        ${weather.temp}
+      </div>
+
+      <div>
+        ${translateCondition(weather.condition)}
+      </div>
+
+      ${
+        trend
+          ? `
+        <div style="margin-top:25px;">
+          <div style="font-weight:600;margin-bottom:10px;">
+            Tagesverlauf
+          </div>
+
+          <div class="weather-row">
+            <div class="weather-time">09:00</div>
+            <div>${weatherIcon(morning?.code)}</div>
+            <div class="weather-temp">${morning?.temp}°C</div>
+          </div>
+
+          <div class="weather-row">
+            <div class="weather-time">15:00</div>
+            <div>${weatherIcon(afternoon?.code)}</div>
+            <div class="weather-temp">${afternoon?.temp}°C</div>
+          </div>
+
+          <div class="weather-row">
+            <div class="weather-time">21:00</div>
+            <div>${weatherIcon(evening?.code)}</div>
+            <div class="weather-temp">${evening?.temp}°C</div>
+          </div>
+        </div>
+      `
+          : ""
+      }
     </div>
   `;
 }
+
 
 async function loadData() {
   try {
