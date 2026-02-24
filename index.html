@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+9<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
@@ -151,13 +151,16 @@ const tAfternoon = afternoon.temp ?? 0;
 const tEvening = evening.temp ?? 0;
     const now = new Date();
 
+const now = new Date();
+
 const timeString = now.toLocaleTimeString("de-DE", {
   timeZone: "Europe/Berlin",
   hour: "2-digit",
   minute: "2-digit"
-const tz = Intl.DateTimeFormat("de-DE", {
-  timeZone: "Europe/Berlin",
-  timeZoneName: "short"
+});
+
+document.getElementById("meta").innerText =
+  `${timeString} · Version ${data.version || ""}`;
 })
 .formatToParts(now)
 .find(p => p.type === "timeZoneName").value;
