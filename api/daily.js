@@ -104,12 +104,40 @@ const marketTimestamp = new Date().toLocaleTimeString("de-DE", {
   hour: "2-digit",
   minute: "2-digit"
 });
-crypto: {
-  bitcoin,
-  nexo
-},
-marketTime: marketTimestamp,
-  } catch (err) {
+    return res.status(200).json({
+  version,
+  timestamp,
+  weather,
+  finance,
+  crypto: {
+    btc: {
+      value: bitcoin.price,
+      change: bitcoin.change,
+      direction: bitcoin.direction
+    },
+    nexo: {
+      value: nexo.price,
+      change: nexo.change,
+      direction: nexo.direction
+    }
+  },
+  marketTime: marketTimestamp,
+  executive,
+  regional,
+  personal,
+  travel
+});
+    try {
+   ...
+   bitcoin bauen
+   nexo bauen
+   marketTimestamp bauen
+
+   return res.status(200).json({...});
+}
+catch (err) {
+   return fallback
+}
 
     console.error("GLOBAL API ERROR:", err);
 
