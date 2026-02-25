@@ -7,100 +7,36 @@ export default async function handler(req, res) {
 
   try {
 
-    const version = "10.0.0";
-    const now = new Date();
+  const version = "10.0.0";
+  const timestamp = new Date().toLocaleTimeString("de-DE", {
+    timeZone: "Europe/Berlin",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 
-    const timestamp = now.toLocaleTimeString("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+  const weather = {
+    location: "Ilshofen",
+    temp: 20,
+    condition: "Sonnig"
+  };
 
-    // ===== WEATHER =====
-    let weather = {
-      location: "Ilshofen",
-      temp: "-",
-      condition: "Keine Daten",
-      wind: "-",
-      humidity: "-",
-      code: 1000,
-      trend: {}
-    };
+  const finance = {
+    dax: { value: 17850, change: 0.4 }
+  };
 
-    try {
-   const apiKey = process.env.WEATHER_API_KEY;
-
-   if (apiKey) {
-      const response = await fetch(...);
-      if (response.ok) {
-         const data = await response.json();
-         weather = { ... };
-      }
-   }
-
-} catch (weatherError) {
-   console.error("Weather error:", weatherError);
-}
-
-    // ===== FINANCE (DUMMY) =====
-    const finance = {
-      dax: { value: 17850, change: +0.4 },
-      sp500: { value: 5120, change: -0.2 },
-      eurusd: { value: 1.08, change: +0.1 }
-    };
-
-    // ===== CRYPTO (DUMMY) =====
-    const crypto = {
-      btc: { value: 64200, change: +1.2 },
-      eth: { value: 3480, change: -0.6 }
-    };
-
-    return res.status(200).json({
-      version,
-      timestamp,
-      weather,
-      finance,
-      
-
-  timeZone: "Europe/Berlin",
-  hour: "2-digit",
-  minute: "2-digit"
-});
-    return res.status(200).json({
-  version,
-  timestamp,
-  weather,
-  finance,
-  crypto: {
-    btc: {
-      value: bitcoin.price,
-      change: bitcoin.change,
-      direction: bitcoin.direction
-    },
-    nexo: {
-      value: nexo.price,
-      change: nexo.change,
-      direction: nexo.direction
-    }
-  },
-  marketTime: marketTimestamp,
-  executive,
-  regional,
-  personal,
-  travel
-});
-
-} catch (err) {
-
-  console.error("GLOBAL API ERROR:", err);
+  const crypto = {
+    btc: { value: 64000, change: 1.2 }
+  };
 
   return res.status(200).json({
-    version: "fallback",
-    timestamp: "",
-    weather: {},
-    finance: {},
-    crypto: {}
+    version,
+    timestamp,
+    weather,
+    finance,
+    crypto
   });
-}
 
-}
+} catch (err) {
+  console.error(err);
+  return res.status(500).json({ error: "fail" });
+  }
