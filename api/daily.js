@@ -156,20 +156,13 @@ crypto
     console.error("GLOBAL API ERROR:", err);
 
     return res.status(200).json({
-      version: "10.0.0-fallback",
-      timestamp: "",
-      executive: "System stabil – Inhalte temporär nicht verfügbar.",
-      regional: "",
-      weather: {
-        location: "Ilshofen",
-        temp: "-",
-        condition: "Keine Daten",
-        wind: "-",
-        humidity: "-",
-        trend: {}
-      },
-      personal: "",
-      travel: ""
-    });
-  }
-}
+  version,
+  timestamp,
+  finance,
+  crypto,
+  executive: executive || "",
+  regional: regional || "",
+  weather: weather || {},
+  personal: personal || "",
+  travel: travel || ""
+});
