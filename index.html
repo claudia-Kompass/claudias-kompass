@@ -268,13 +268,6 @@ async function loadData() {
     const res = await fetch('/api/daily');
     const data = await res.json();
 
-    const now = new Date();
-    const timeString = now.toLocaleTimeString("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
 const now = new Date();
 
 const dateString = now.toLocaleDateString("de-DE", {
