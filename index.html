@@ -210,7 +210,7 @@ function translateCondition(text) {
 
   return map[text] || text;
 }
-function renderWeather(weather, trend) {
+function renderWeather(weather) {
   if (!weather) return "";
 
   const morning = trend?.morning;
@@ -323,7 +323,7 @@ async function loadData() {
         ${formatMarkdown(data.regional || "")}
       </div>
 
-      ${renderWeather(data.weather, data.weather?.trend)}
+${renderWeather(data.weather)}
       ${renderFinance(data.markets)}
       ${renderCrypto(data.crypto)}
       <div class="section">
