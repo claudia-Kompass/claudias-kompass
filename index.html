@@ -263,7 +263,6 @@ function renderWeather(weather, trend) {
   `;
 }
 
-
 async function loadData() {
   try {
     const res = await fetch('/api/daily');
@@ -276,32 +275,23 @@ async function loadData() {
       minute: "2-digit"
     });
 
-    document.getElementById("meta").innerText =
-      `${timeString} • Version ${data.version || ""}`;
+const now = new Date();
 
-    document.getElementById("content").innerHTML = `
-      <div class="section">
-        ${formatMarkdown(data.executive || "")}
-      </div>
+const dateString = now.toLocaleDateString("de-DE", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+});
 
-      <div class="section">
-        ${formatMarkdown(data.regional || "")}
-      </div>
+const timeString = now.toLocaleTimeString("de-DE", {
+  timeZone: "Europe/Berlin",
+  hour: "2-digit",
+  minute: "2-digit"
+});
 
-      ${renderWeather(data.weather, data.weather?.trend)}
-
-      <div class="section">
-        ${formatMarkdown(data.personal || "")}
-      </div>
-
-      <div class="section travel">
-        ${formatMarkdown(data.travel || "")}
-      </div>
-    `;
-
-  } catch (err) {
-    console.error(err);
-    document.getElementById("meta").innerText = "Fehler beim Laden";
+document.getElementById("meta-date").innerText = dateString;
+document.getElementById("meta-time").innerText = " • " + timeString;
   }
 }
 
