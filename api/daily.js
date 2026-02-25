@@ -143,8 +143,6 @@ Salvador da Bahia – Wasser & Rhythmus.
     return res.status(200).json({
       version,
       timestamp,
-      finance,
-crypto
       executive: executive || "",
       regional: regional || "",
       weather: weather || {},
@@ -154,15 +152,4 @@ crypto
 
   } catch (err) {
     console.error("GLOBAL API ERROR:", err);
-
-    return res.status(200).json({
-  version,
-  timestamp,
-  finance,
-  crypto,
-  executive: executive || "",
-  regional: regional || "",
-  weather: weather || {},
-  personal: personal || "",
-  travel: travel || ""
 });
