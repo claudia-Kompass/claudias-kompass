@@ -268,15 +268,14 @@ function renderWeather(weather, trend) {
           </div>
 
         </div>
-      `function renderFinance(finance) {
-  if (!finance) return "";
+      function renderFinance(markets) {
+  if (!markets) return "";
 
   return `
     <div class="section">
-      <h2>Finanzmärkte</h2>
-      <div>DAX: ${finance.dax.value} (${finance.dax.change}%)</div>
-      <div>S&P 500: ${finance.sp500.value} (${finance.sp500.change}%)</div>
-      <div>EUR/USD: ${finance.eurusd.value} (${finance.eurusd.change}%)</div>
+      <h2>Märkte</h2>
+      <div>DAX: ${markets.dax.level} (${markets.dax.change})</div>
+      <div>EUR/USD: ${markets.eurusd.level} (${markets.eurusd.change})</div>
     </div>
   `;
 }
