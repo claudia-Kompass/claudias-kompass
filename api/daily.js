@@ -74,12 +74,13 @@ export default async function handler(req, res) {
         crypto = {
           btc: {
             value: data.bitcoin.eur,
-            change: data.bitcoin.eur_24h_change,
+            change: Number(cryptoData.bitcoin.eur_24h_change.toFixed(2)),
             direction: ampel(data.bitcoin.eur_24h_change)
+            price: Math.round(cryptoData.bitcoin.eur),
           },
           nexo: {
             value: data.nexo.eur,
-            change: data.nexo.eur_24h_change,
+            change: Number(cryptoData.nexo.eur_24h_change.toFixed(2)),
             direction: ampel(data.nexo.eur_24h_change)
           }
         };
