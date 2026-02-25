@@ -126,15 +126,18 @@ const marketTimestamp = new Date().toLocaleTimeString("de-DE", {
   regional,
   personal,
   travel
+});
 
-    console.error("GLOBAL API ERROR:", err);
+} catch (err) {
+  console.error("GLOBAL API ERROR:", err);
 
-    return res.status(200).json({
-      version: "10.0.0-fallback",
-      timestamp: "",
-      weather: {},
-      finance: {},
-      crypto: {}
-    });
-  }
+  return res.status(200).json({
+    version: "fallback",
+    timestamp: "",
+    weather: {},
+    finance: {},
+    crypto: {}
+  });
+}
+
 }
