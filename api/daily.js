@@ -129,6 +129,7 @@ const marketTimestamp = new Date().toLocaleTimeString("de-DE", {
 });
 
 } catch (err) {
+
   console.error("GLOBAL API ERROR:", err);
 
   return res.status(200).json({
