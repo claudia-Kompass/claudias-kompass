@@ -310,8 +310,8 @@ function renderCrypto(crypto) {
   return `
     <div class="section">
       <h2>Krypto</h2>
-      <div>Bitcoin: ${crypto.btc.value} (${crypto.btc.change}%)</div>
-      <div>Ethereum: ${crypto.eth.value} (${crypto.eth.change}%)</div>
+      <div>Bitcoin: ${Math.round(crypto.bitcoin.price)} € (${crypto.bitcoin.change.toFixed(2)}%)</div>
+      <div>NEXO: ${crypto.nexo.price.toFixed(3)} € (${crypto.nexo.change.toFixed(2)}%)</div>
     </div>
   `;
 }
