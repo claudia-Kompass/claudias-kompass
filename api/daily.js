@@ -1,4 +1,4 @@
-// ===============================
+8// ===============================
 // CLAUDIAS KOMPASS – DAILY API
 // Version 10.0.0 – Stable Core
 // ===============================
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
   });
 
 } catch (err) {
-  console.error(err);
+  console.log(err);
   return res.status(500).json({ error: "fail" });
-  }
+}
+}
