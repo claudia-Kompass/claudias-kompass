@@ -39,8 +39,8 @@ export default async function handler(req, res) {
             location: data.location.name,
             temp: data.current.temp_c,
             condition: data.current.condition.text,
-            wind: data.current.wind_kph,
-            humidity: data.current.humidity
+            wind: `${data.current.wind_kph} km/h`,
+humidity: `${data.current.humidity}%`
           };
         }
       }
@@ -56,37 +56,38 @@ export default async function handler(req, res) {
       return "neutral";
     }
 
-    // ================= CRYPTO =================
+// ================= CRYPTO =================
 
-    let crypto = {
-      btc: {},
-      nexo: {}
-    };
+let crypto = {};
 
-    try {
-      const cryptoRes = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
-      );
+try {
+  const cryptoRes = await fetch(
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
+  );
 
-      if (cryptoRes.ok) {
-        const data = await cryptoRes.json();
+  if (cryptoRes.ok) {
+    const data = await cryptoRes.json();
 
-        crypto = {
-  btc: {
-    value: Math.round(data.bitcoin.eur),
-    change: Number(data.bitcoin.eur_24h_change.toFixed(2)),
-    direction: ampel(data.bitcoin.eur_24h_change)
-  },
-  nexo: {
-    value: Number(data.nexo.eur.toFixed(4)),
-    change: Number(data.nexo.eur_24h_change.toFixed(2)),
-    direction: ampel(data.nexo.eur_24h_change)
-  }
-};
+    const btcChange = Number(data.bitcoin.eur_24h_change.toFixed(2));
+    const nexoChange = Number(data.nexo.eur_24h_change.toFixed(2));
+
+    crypto = {
+      btc: {
+        price: Math.round(data.bitcoin.eur),
+        change: btcChange > 0 ? `+${btcChange}%` : `${btcChange}%`,
+        direction: ampel(btcChange)
+      },
+      nexo: {
+        price: Number(data.nexo.eur.toFixed(3)),
+        change: nexoChange > 0 ? `+${nexoChange}%` : `${nexoChange}%`,
+        direction: ampel(nexoChange)
       }
-    } catch (cryptoError) {
-      console.error("Crypto error:", cryptoError);
-    }
+    };
+  }
+
+} catch (cryptoError) {
+  console.error("Crypto error:", cryptoError);
+}
 
     // ================= RESPONSE =================
 
