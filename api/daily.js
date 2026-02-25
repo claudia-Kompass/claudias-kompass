@@ -60,35 +60,8 @@ export default async function handler(req, res) {
       timestamp,
       weather,
       finance,
-      // ===============================
-// CRYPTO MODULE – v10.2.0
-// ===============================
+      
 
-const cryptoRes = await fetch(
-  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
-);
-
-const cryptoData = await cryptoRes.json();
-
-function ampelfarbe(change) {
-  if (change > 0.5) return "up";
-  if (change < -0.5) return "down";
-  return "neutral";
-}
-
-const bitcoin = {
-  price: cryptoData.bitcoin.eur,
-  change: cryptoData.bitcoin.eur_24h_change,
-  direction: ampelfarbe(cryptoData.bitcoin.eur_24h_change)
-};
-
-const nexo = {
-  price: cryptoData.nexo.eur,
-  change: cryptoData.nexo.eur_24h_change,
-  direction: ampelfarbe(cryptoData.nexo.eur_24h_change)
-};
-
-const marketTimestamp = new Date().toLocaleTimeString("de-DE", {
   timeZone: "Europe/Berlin",
   hour: "2-digit",
   minute: "2-digit"
