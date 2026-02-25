@@ -69,6 +69,27 @@ const timestamp = now.toLocaleTimeString("de-DE", {
       console.error("Weather API Error:", err);
     }
 
+// ===============================
+// FINANCE (DUMMY)
+// ===============================
+
+const finance = {
+  dax: { value: 17850, change: +0.4 },
+  sp500: { value: 5120, change: -0.2 },
+  eurusd: { value: 1.08, change: +0.1 }
+};
+
+// ===============================
+// CRYPTO (DUMMY)
+// ===============================
+
+const crypto = {
+  btc: { value: 64200, change: +1.2 },
+  eth: { value: 3480, change: -0.6 }
+};
+
+
+    
     // ===============================
     // EXECUTIVE
     // ===============================
@@ -122,6 +143,8 @@ Salvador da Bahia – Wasser & Rhythmus.
     return res.status(200).json({
       version,
       timestamp,
+      finance,
+crypto
       executive: executive || "",
       regional: regional || "",
       weather: weather || {},
