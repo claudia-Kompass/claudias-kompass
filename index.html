@@ -26,11 +26,25 @@ body {
 }
 
 .meta {
-  font-size: 16px;
-  color: #e8dcc0;
-  margin-top: 6px;
+  margin-top: 10px;
   margin-bottom: 28px;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
+}
+
+#meta-date {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+#meta-time {
+  margin-left: 8px;
+  color: #e8dcc0;
+}
+
+#meta-version {
+  margin-left: 12px;
+  font-size: 14px;
+  opacity: 0.6;
 }
 
 .meta::before {
@@ -148,7 +162,11 @@ Formed by places. Guided by perspective.
 ">
 „Geprägt von Orten. Geleitet von Perspektive.“
 </div>
-  <div class="meta" id="meta">Lädt...</div>
+<div class="meta">
+  <span id="meta-date"></span>
+  <span id="meta-time"></span>
+  <span id="meta-version">Version 10.0.0</span>
+</div>
   <button onclick="loadData()">Neue Ausgabe</button>
   <div id="content"></div>
 </div>
