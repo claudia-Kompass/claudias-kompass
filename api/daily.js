@@ -118,7 +118,7 @@ const markets = {
   marketTime: timestamp,
   weather,
   crypto,
-  markets,
+  markets
 });
 
   } catch (err) {
