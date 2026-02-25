@@ -89,14 +89,30 @@ try {
   console.error("Crypto error:", cryptoError);
 }
 
+// ================= MARKETS =================
+
+const markets = {
+  dax: {
+    level: 18500,
+    change: "+0.3%",
+    direction: "neutral"
+  },
+  eurusd: {
+    level: 1.08,
+    change: "-0.2%",
+    direction: "neutral"
+  }
+};
+    
     // ================= RESPONSE =================
 
     return res.status(200).json({
-      version,
-      marketTime: timestamp,
-      weather,
-      crypto
-    });
+  version,
+  marketTime: timestamp,
+  weather,
+  crypto,
+  markets
+});
 
   } catch (err) {
     console.error("GLOBAL ERROR:", err);
