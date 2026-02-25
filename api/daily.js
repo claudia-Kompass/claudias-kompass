@@ -72,18 +72,17 @@ export default async function handler(req, res) {
         const data = await cryptoRes.json();
 
         crypto = {
-          btc: {
-            value: data.bitcoin.eur,
-            change: Number(cryptoData.bitcoin.eur_24h_change.toFixed(2)),
-            direction: ampel(data.bitcoin.eur_24h_change)
-            price: Math.round(cryptoData.bitcoin.eur),
-          },
-          nexo: {
-            value: data.nexo.eur,
-            change: Number(cryptoData.nexo.eur_24h_change.toFixed(2)),
-            direction: ampel(data.nexo.eur_24h_change)
-          }
-        };
+  btc: {
+    value: Math.round(data.bitcoin.eur),
+    change: Number(data.bitcoin.eur_24h_change.toFixed(2)),
+    direction: ampel(data.bitcoin.eur_24h_change)
+  },
+  nexo: {
+    value: Number(data.nexo.eur.toFixed(4)),
+    change: Number(data.nexo.eur_24h_change.toFixed(2)),
+    direction: ampel(data.nexo.eur_24h_change)
+  }
+};
       }
     } catch (cryptoError) {
       console.error("Crypto error:", cryptoError);
