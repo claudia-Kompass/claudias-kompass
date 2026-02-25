@@ -114,6 +114,32 @@ button:hover {
 }
 </style>
 </head>
+
+<script>
+async function loadData() {
+  try {
+    const res = await fetch("/api/daily");
+    const data = await res.json();
+
+    document.getElementById("content").innerHTML = `
+      <h3>Märkte</h3>
+      DAX ${data.markets.dax.level} (${data.markets.dax.change})<br>
+      EUR/USD ${data.markets.eurusd.level} (${data.markets.eurusd.change})
+
+      <h3 style="margin-top:20px;">Crypto</h3>
+      BTC ${data.crypto.btc.price}€ (${data.crypto.btc.change})<br>
+      NEXO ${data.crypto.nexo.price}€ (${data.crypto.nexo.change})
+    `;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.querySelector("button").addEventListener("click", loadData);
+</script>
+
+
+  
 <!-- ================= BODY ================= -->
 <body>
 
