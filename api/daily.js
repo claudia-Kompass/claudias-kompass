@@ -1,7 +1,7 @@
-// ===============================
+// =====================================
 // CLAUDIAS KOMPASS – DAILY API
-// Version 11.0.0 – Stable Core
-// ===============================
+// Version 11.1.0 – Stable
+// =====================================
 
 async function getCrypto() {
   try {
@@ -9,31 +9,37 @@ async function getCrypto() {
       "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
     );
 
+    if (!res.ok) return null;
+
     const data = await res.json();
 
     return {
       bitcoin: {
-        price: data.bitcoin.eur,
-        change: data.bitcoin.eur_24h_change
+        price: Math.round(data.bitcoin.eur),
+        change: Number(data.bitcoin.eur_24h_change.toFixed(2))
       },
       nexo: {
-        price: data.nexo.eur,
-        change: data.nexo.eur_24h_change
+        price: Number(data.nexo.eur.toFixed(3)),
+        change: Number(data.nexo.eur_24h_change.toFixed(2))
       }
     };
-
   } catch (err) {
     console.error("Crypto API error:", err);
     return null;
   }
 }
 
-export default async function handler(req, res) {
-  const cryptoData = await getCrypto();
-  try {
-    const version = "11.0.0";
-    const now = new Date();
+function ampel(change) {
+  if (change > 0.5) return "up";
+  if (change < -0.5) return "down";
+  return "neutral";
+}
 
+export default async function handler(req, res) {
+  try {
+    const version = "11.1.0";
+
+    const now = new Date();
     const timestamp = now.toLocaleTimeString("de-DE", {
       timeZone: "Europe/Berlin",
       hour: "2-digit",
@@ -66,7 +72,7 @@ export default async function handler(req, res) {
             temp: data.current.temp_c,
             condition: data.current.condition.text,
             wind: `${data.current.wind_kph} km/h`,
-humidity: `${data.current.humidity}%`
+            humidity: `${data.current.humidity}%`
           };
         }
       }
@@ -74,52 +80,54 @@ humidity: `${data.current.humidity}%`
       console.error("Weather error:", weatherError);
     }
 
-    // ================= AMPEL =================
+    // ================= CRYPTO =================
 
-    function ampel(change) {
-      if (change > 0.5) return "up";
-      if (change < -0.5) return "down";
-      return "neutral";
+    const cryptoData = await getCrypto();
+
+    let crypto = {
+      btc: null,
+      nexo: null
+    };
+
+    if (cryptoData) {
+      crypto = {
+        btc: {
+          price: cryptoData.bitcoin.price,
+          change: `${cryptoData.bitcoin.change}%`,
+          direction: ampel(cryptoData.bitcoin.change)
+        },
+        nexo: {
+          price: cryptoData.nexo.price,
+          change: `${cryptoData.nexo.change}%`,
+          direction: ampel(cryptoData.nexo.change)
+        }
+      };
     }
 
-// ================= CRYPTO =================
+    // ================= FIXE MÄRKTE =================
 
-const markets = cryptoData
-  ? `
-## Märkte – Crypto
+    const markets = {
+      dax: {
+        level: 18500,
+        change: "+0.3%",
+        direction: "neutral"
+      },
+      eurusd: {
+        level: 1.08,
+        change: "-0.2%",
+        direction: "neutral"
+      }
+    };
 
-Bitcoin – ${Math.round(cryptoData.bitcoin.price)}€ ${cryptoData.bitcoin.change >= 0 ? "●" : "●"} ${cryptoData.bitcoin.change.toFixed(1)}%
-
-NEXO – ${cryptoData.nexo.price.toFixed(3)}€ ${cryptoData.nexo.change >= 0 ? "●" : "●"} ${cryptoData.nexo.change.toFixed(1)}%
-
-_Stand: letzter verfügbarer Marktpreis (Live API)_
-`
-  : "## Märkte – Crypto\nDaten aktuell nicht verfügbar.";
-    
-// ================= MARKETS =================
-
-const markets = {
-  dax: {
-    level: 18500,
-    change: "+0.3%",
-    direction: "neutral"
-  },
-  eurusd: {
-    level: 1.08,
-    change: "-0.2%",
-    direction: "neutral"
-  }
-};
-    
     // ================= RESPONSE =================
 
     return res.status(200).json({
-  version,
-  marketTime: timestamp,
-  weather,
-  crypto,
-  markets
-});
+      version,
+      marketTime: timestamp,
+      weather,
+      crypto,
+      markets
+    });
 
   } catch (err) {
     console.error("GLOBAL ERROR:", err);
