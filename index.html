@@ -223,7 +223,7 @@ function renderWeather(weather, trend) {
       </div>
 
       <div style="font-size:28px;font-weight:600;">
-        ${weather.temp}
+        ${Math.round(weather.temp)}°C
       </div>
 
       <div>
@@ -241,20 +241,27 @@ function renderWeather(weather, trend) {
           <div class="weather-row">
             <div class="weather-time">09:00</div>
             <div>${weatherIcon(morning?.code)}</div>
-            <div class="weather-temp">${morning?.temp}°C</div>
+            <div class="weather-temp">
+              ${morning?.temp !== undefined ? Math.round(morning.temp) + "°C" : "-"}
+            </div>
           </div>
 
           <div class="weather-row">
             <div class="weather-time">15:00</div>
             <div>${weatherIcon(afternoon?.code)}</div>
-            <div class="weather-temp">${afternoon?.temp}°C</div>
+            <div class="weather-temp">
+              ${afternoon?.temp !== undefined ? Math.round(afternoon.temp) + "°C" : "-"}
+            </div>
           </div>
 
           <div class="weather-row">
             <div class="weather-time">21:00</div>
             <div>${weatherIcon(evening?.code)}</div>
-            <div class="weather-temp">${evening?.temp}°C</div>
+            <div class="weather-temp">
+              ${evening?.temp !== undefined ? Math.round(evening.temp) + "°C" : "-"}
+            </div>
           </div>
+
         </div>
       `
           : ""
