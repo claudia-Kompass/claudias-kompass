@@ -223,7 +223,9 @@ function renderWeather(weather, trend) {
       </div>
 
       <div style="font-size:28px;font-weight:600;">
-  ${Math.round(weather.temp_c ?? weather.temp ?? 0)}°C
+  ${typeof weather.temp === "number" 
+      ? Math.round(weather.temp) + "°C" 
+      : "--"}
 </div>
 
       <div>
