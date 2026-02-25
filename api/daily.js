@@ -126,18 +126,6 @@ const marketTimestamp = new Date().toLocaleTimeString("de-DE", {
   regional,
   personal,
   travel
-});
-    try {
-   ...
-   bitcoin bauen
-   nexo bauen
-   marketTimestamp bauen
-
-   return res.status(200).json({...});
-}
-catch (err) {
-   return fallback
-}
 
     console.error("GLOBAL API ERROR:", err);
 
