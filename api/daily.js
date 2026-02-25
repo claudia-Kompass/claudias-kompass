@@ -43,7 +43,7 @@ const timestamp = now.toLocaleTimeString("de-DE", {
 
           weather = {
             location: data.location?.name || "Ilshofen",
-            temp: data.current?.temp_c + "°C",
+            temp: data.current?.temp_c,
             condition: data.current?.condition?.text || "",
             wind: data.current?.wind_kph + " km/h",
             humidity: data.current?.humidity + "%",
