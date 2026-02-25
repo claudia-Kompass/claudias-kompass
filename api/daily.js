@@ -3,7 +3,33 @@
 // Version 11.0.0 – Stable Core
 // ===============================
 
+async function getCrypto() {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
+    );
+
+    const data = await res.json();
+
+    return {
+      bitcoin: {
+        price: data.bitcoin.eur,
+        change: data.bitcoin.eur_24h_change
+      },
+      nexo: {
+        price: data.nexo.eur,
+        change: data.nexo.eur_24h_change
+      }
+    };
+
+  } catch (err) {
+    console.error("Crypto API error:", err);
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
+  const cryptoData = await getCrypto();
   try {
     const version = "11.0.0";
     const now = new Date();
@@ -58,37 +84,18 @@ humidity: `${data.current.humidity}%`
 
 // ================= CRYPTO =================
 
-let crypto = {};
+const markets = cryptoData
+  ? `
+## Märkte – Crypto
 
-try {
-  const cryptoRes = await fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
-  );
+Bitcoin – ${Math.round(cryptoData.bitcoin.price)}€ ${cryptoData.bitcoin.change >= 0 ? "●" : "●"} ${cryptoData.bitcoin.change.toFixed(1)}%
 
-  if (cryptoRes.ok) {
-    const data = await cryptoRes.json();
+NEXO – ${cryptoData.nexo.price.toFixed(3)}€ ${cryptoData.nexo.change >= 0 ? "●" : "●"} ${cryptoData.nexo.change.toFixed(1)}%
 
-    const btcChange = Number(data.bitcoin.eur_24h_change.toFixed(2));
-    const nexoChange = Number(data.nexo.eur_24h_change.toFixed(2));
-
-    crypto = {
-      btc: {
-        price: Math.round(data.bitcoin.eur),
-        change: btcChange > 0 ? `+${btcChange}%` : `${btcChange}%`,
-        direction: ampel(btcChange)
-      },
-      nexo: {
-        price: Number(data.nexo.eur.toFixed(3)),
-        change: nexoChange > 0 ? `+${nexoChange}%` : `${nexoChange}%`,
-        direction: ampel(nexoChange)
-      }
-    };
-  }
-
-} catch (cryptoError) {
-  console.error("Crypto error:", cryptoError);
-}
-
+_Stand: letzter verfügbarer Marktpreis (Live API)_
+`
+  : "## Märkte – Crypto\nDaten aktuell nicht verfügbar.";
+    
 // ================= MARKETS =================
 
 const markets = {
@@ -111,7 +118,7 @@ const markets = {
   marketTime: timestamp,
   weather,
   crypto,
-  markets
+  markets,
 });
 
   } catch (err) {
