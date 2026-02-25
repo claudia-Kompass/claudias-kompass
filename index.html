@@ -265,7 +265,32 @@ function renderWeather(weather, trend) {
           </div>
 
         </div>
-      `
+      `function renderFinance(finance) {
+  if (!finance) return "";
+
+  return `
+    <div class="section">
+      <h2>Finanzmärkte</h2>
+      <div>DAX: ${finance.dax.value} (${finance.dax.change}%)</div>
+      <div>S&P 500: ${finance.sp500.value} (${finance.sp500.change}%)</div>
+      <div>EUR/USD: ${finance.eurusd.value} (${finance.eurusd.change}%)</div>
+    </div>
+  `;
+}
+
+function renderCrypto(crypto) {
+  if (!crypto) return "";
+
+  return `
+    <div class="section">
+      <h2>Krypto</h2>
+      <div>Bitcoin: ${crypto.btc.value} (${crypto.btc.change}%)</div>
+      <div>Ethereum: ${crypto.eth.value} (${crypto.eth.change}%)</div>
+    </div>
+  `;
+}
+
+        
           : ""
       }
     </div>
@@ -304,7 +329,8 @@ async function loadData() {
       </div>
 
       ${renderWeather(data.weather, data.weather?.trend)}
-
+${renderFinance(data.finance)}
+${renderCrypto(data.crypto)}
       <div class="section">
         ${formatMarkdown(data.personal || "")}
       </div>
