@@ -348,8 +348,8 @@ async function loadData() {
       </div>
 
       ${renderWeather(data.weather, data.weather?.trend)}
-${renderFinance(data.markets)}
-${renderCrypto(data.crypto)}
+      ${renderFinance(data.markets)}
+      ${renderCrypto(data.crypto)}
       <div class="section">
         ${formatMarkdown(data.personal || "")}
       </div>
