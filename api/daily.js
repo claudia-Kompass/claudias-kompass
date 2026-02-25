@@ -28,30 +28,19 @@ export default async function handler(req, res) {
     };
 
     try {
-      const apiKey = process.env.WEATHER_API_KEY;
+   const apiKey = process.env.WEATHER_API_KEY;
 
-      if (apiKey) {
-        const response = await fetch(
-          `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Ilshofen&days=1&aqi=no&alerts=no`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          weather = {
-            location: data.location?.name || "Ilshofen",
-            temp: data.current?.temp_c,
-            condition: data.current?.condition?.text || "",
-            wind: data.current?.wind_kph + " km/h",
-            humidity: data.current?.humidity + "%",
-            code: data.current?.condition?.code,
-            trend: {}
-          };
-        }
+   if (apiKey) {
+      const response = await fetch(...);
+      if (response.ok) {
+         const data = await response.json();
+         weather = { ... };
       }
-    } catch (err) {
-      console.error("Weather API Error:", err);
-    }
+   }
+
+} catch (weatherError) {
+   console.error("Weather error:", weatherError);
+}
 
     // ===== FINANCE (DUMMY) =====
     const finance = {
