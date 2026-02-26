@@ -97,20 +97,20 @@ const weatherTrend = {
       nexo: null
     };
 
-    if (cryptoData) {
-      crypto = {
-        btc: {
-          price: cryptoData.bitcoin.price,
-          change: `${cryptoData.bitcoin.change}%`,
-          direction: ampel(cryptoData.bitcoin.change)
-        },
-        nexo: {
-          price: cryptoData.nexo.price,
-          change: `${cryptoData.nexo.change}%`,
-          direction: ampel(cryptoData.nexo.change)
-        }
-      };
+    if (cryptoData && cryptoData.bitcoin && cryptoData.nexo) {
+  crypto = {
+    btc: {
+      price: cryptoData.bitcoin.price,
+      change: `${cryptoData.bitcoin.change}%`,
+      direction: ampel(Number(cryptoData.bitcoin.change))
+    },
+    nexo: {
+      price: cryptoData.nexo.price,
+      change: `${cryptoData.nexo.change}%`,
+      direction: ampel(Number(cryptoData.nexo.change))
     }
+  };
+}
 
     // ================= FIXE MÄRKTE =================
 
