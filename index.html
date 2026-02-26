@@ -265,7 +265,6 @@ async function loadData() {
         ${formatMarkdown(data.travel || "## Travel\nNoch keine Ausgabe vorhanden.")}
       </div>
     `;
-
   } catch (err) {
     console.error("Fehler beim Laden:", err);
     document.getElementById("content").innerHTML =
