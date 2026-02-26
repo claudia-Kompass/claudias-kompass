@@ -4,47 +4,12 @@
 // =====================================
 
 async function getCrypto() {
-  try {
-    const res = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
-    );
-
-    if (!res.ok) return null;
-
-    const data = await res.json();
-
-    return {
-      bitcoin: {
-        price: Math.round(data.bitcoin.eur),
-        change: Number(data.bitcoin.eur_24h_change.toFixed(2))
-      },
-      nexo: {
-        price: Number(data.nexo.eur.toFixed(3)),
-        change: Number(data.nexo.eur_24h_change.toFixed(2))
-      }
-    };
-  } catch (err) {
-    console.error("Crypto API error:", err);
-    return null;
-  }
+  return {
+    bitcoin: { price: 57000, change: 1.5 },
+    nexo: { price: 0.73, change: 0.8 }
+  };
 }
-
-function ampel(change) {
-  if (change > 0.5) return "up";
-  if (change < -0.5) return "down";
-  return "neutral";
-}
-
-module.exports = async function handler(req, res) {
-  try {
-    const version = "11.1.0";
-
-    const now = new Date();
-    const timestamp = now.toLocaleTimeString("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+      
 
     // ================= WEATHER =================
 
