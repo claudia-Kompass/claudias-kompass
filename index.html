@@ -191,6 +191,20 @@ function formatMarkdown(text) {
     .replace(/\n/g, "<br>");
 }
 
+function getWeatherIcon(condition) {
+  if (!condition) return "☁️";
+
+  const c = condition.toLowerCase();
+
+  if (c.includes("klar") || c.includes("sun")) return "☀️";
+  if (c.includes("wolke") || c.includes("cloud")) return "☁️";
+  if (c.includes("regen") || c.includes("rain")) return "🌧️";
+  if (c.includes("snow")) return "❄️";
+  if (c.includes("thunder")) return "⛈️";
+
+  return "🌤️";
+}
+  
 function renderWeather(weather, weatherTrend) {
   if (!weather) return "";
 
