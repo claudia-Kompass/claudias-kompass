@@ -35,7 +35,7 @@ function ampel(change) {
   return "neutral";
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     const version = "11.1.0";
 
