@@ -224,11 +224,65 @@ function renderWeather(weather, weatherTrend) {
 function renderTrendBlock(time, data) {
   if (!data) return "";
 
+  const icon = getWeatherIcon(data.condition);
+
+  // Farb-Logik nach Tageszeit
+  let glowColor = "rgba(255,255,255,0.18)";
+
+  if (time === "09:00") {
+    glowColor = "rgba(240,212,138,0.35)"; // warm gold
+  }
+
+  if (time === "15:00") {
+    glowColor = "rgba(255,255,255,0.25)"; // neutral
+  }
+
+  if (time === "21:00") {
+    glowColor = "rgba(160,190,255,0.30)"; // kühler Abend
+  }
+
+  // Wenn Regen → leicht kühler
+  if (data.condition && data.condition.toLowerCase().includes("rain")) {
+    glowColor = "rgba(120,170,255,0.35)";
+  }
+
   return `
-    <div style="flex:1;text-align:center;">
-      <div style="font-size:13px;opacity:0.7;">${time}</div>
-      <div style="font-size:18px;font-weight:600;">${data.temp}°</div>
-      <div style="font-size:13px;opacity:0.7;">
+    <div style="
+      flex:1;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+    ">
+      <div style="
+        font-size:12px;
+        opacity:0.6;
+        letter-spacing:0.5px;
+      ">
+        ${time}
+      </div>
+
+      <div style="
+        font-size:28px;
+        line-height:1;
+        text-shadow: 0 0 10px ${glowColor};
+      ">
+        ${icon}
+      </div>
+
+      <div style="
+        font-size:18px;
+        font-weight:600;
+      ">
+        ${data.temp}°
+      </div>
+
+      <div style="
+        font-size:13px;
+        opacity:0.65;
+        min-height:18px;
+      ">
         ${data.condition}
       </div>
     </div>
