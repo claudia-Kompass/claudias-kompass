@@ -202,7 +202,19 @@ function renderWeather(weather) {
   `;
 }
 
+function renderTrendBlock(time, data) {
+  if (!data) return "";
 
+  return `
+    <div style="flex:1;text-align:center;">
+      <div style="font-size:13px;opacity:0.7;">${time}</div>
+      <div style="font-size:18px;font-weight:600;">${data.temp}°</div>
+      <div style="font-size:13px;opacity:0.7;">
+        ${data.condition}
+      </div>
+    </div>
+  `;
+}
   
 function renderFinance(markets) {
   if (!markets) return "";
