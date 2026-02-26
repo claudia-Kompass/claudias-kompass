@@ -5,11 +5,10 @@
 
 async function getCrypto() {
   return {
-    bitcoin: { price: 57000, change: 1.5 },
+    bitcoin: { price: 57000, change: 1.2 },
     nexo: { price: 0.73, change: 0.8 }
   };
 }
-      
 
     // ================= WEATHER =================
 
