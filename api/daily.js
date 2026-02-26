@@ -61,8 +61,7 @@ export default async function handler(req, res) {
 
       if (apiKey) {
         const response = await fetch(
-          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Ilshofen`
-        );
+          `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Ilshofen&days=1&aqi=no&alerts=no
 
         if (response.ok) {
           const data = await response.json();
