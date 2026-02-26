@@ -189,15 +189,45 @@ function formatMarkdown(text) {
     .replace(/\n/g, "<br>");
 }
 
-function renderWeather(weather) {
+function renderWeather(weather, trend) {
   if (!weather) return "";
+
+  const m = trend?.morning;
+  const a = trend?.afternoon;
+  const e = trend?.evening;
+
   return `
     <div class="section">
-      <h2>Wetter</h2>
-      <div>${weather.location}</div>
-      <div>${weather.temp}°C – ${weather.condition}</div>
-      <div>Wind: ${weather.wind} km/h</div>
-      <div>Luftfeuchte: ${weather.humidity}</div>
+      <h2>Wetter – ${weather.location}</h2>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div class="weather-icon">${weatherIcon(weather.code)}</div>
+        <div style="font-size:28px;font-weight:600;">
+          ${typeof weather.temp === "number" ? Math.round(weather.temp) + "°C" : "--"}
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        ${translateCondition(weather.condition)}
+      </div>
+
+      ${
+        trend
+          ? `
+        <div style="margin-top:20px;">
+          <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
+            Tagesverlauf
+          </div>
+
+          <div style="display:flex;justify-content:space-between;gap:12px;">
+            ${renderTrendBlock("09:00", m)}
+            ${renderTrendBlock("15:00", a)}
+            ${renderTrendBlock("21:00", e)}
+          </div>
+        </div>
+      `
+          : ""
+      }
     </div>
   `;
 }
