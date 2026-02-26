@@ -232,6 +232,31 @@ function renderWeather(weather, trend) {
   `;
 }
 
+function renderTrendBlock(time, data) {
+  if (!data) return "";
+
+  return `
+    <div style="
+      flex:1;
+      text-align:center;
+      background:#141821;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #2a2f3a;
+    ">
+      <div style="color:#9aa3b2;font-size:14px;margin-bottom:6px;">
+        ${time}
+      </div>
+      <div style="font-size:22px;margin-bottom:6px;">
+        ${weatherIcon(data.code)}
+      </div>
+      <div style="font-weight:600;">
+        ${Math.round(data.temp)}°C
+      </div>
+    </div>
+  `;
+}
+  
 function renderFinance(markets) {
   if (!markets) return "";
   return `
