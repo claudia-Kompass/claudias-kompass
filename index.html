@@ -210,24 +210,18 @@ function renderWeather(weather, trend) {
         ${translateCondition(weather.condition)}
       </div>
 
-      ${
-        trend
-          ? `
-        <div style="margin-top:20px;">
-          <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
-            Tagesverlauf
-          </div>
-
-          <div style="display:flex;justify-content:space-between;gap:12px;">
-            ${renderTrendBlock("09:00", m)}
-            ${renderTrendBlock("15:00", a)}
-            ${renderTrendBlock("21:00", e)}
-          </div>
-        </div>
-      `
-          : ""
-      }
+      ${trend ? `
+  <div style="margin-top:20px;">
+    <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
+      Tagesverlauf
     </div>
+
+    <div style="display:flex;justify-content:space-between;gap:12px;">
+      ${renderTrendBlock("09:00", m)}
+      ${renderTrendBlock("15:00", a)}
+      ${renderTrendBlock("21:00", e)}
+    </div>
+` : ""}
   `;
 }
 
