@@ -1,408 +1,136 @@
 <!DOCTYPE html>
 <html lang="de">
-  <!-- force deploy -->
-  <!-- redeploy trigger -->
-<!-- ================= HEAD ================= -->
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GLOBAL SOUL – Claudia’s Daily Compass</title>
+<title>GLOBAL SOUL</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-<!-- ================= STYLE ================= -->
 <style>
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #0f1115;
-  color: #e6e6e6;
+  margin:0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg,#0f172a,#1e293b);
+  color:#f1f5f9;
 }
 
 .container {
-  max-width: 760px;
-  margin: 40px auto;
-  background: #171a21;
-  padding: 40px;
-  border-radius: 14px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
 }
 
-.meta {
-  margin-top: 10px;
-  margin-bottom: 28px;
-  letter-spacing: 0.5px;
+h1 {
+  font-size:36px;
+  letter-spacing:2px;
+  margin-bottom:8px;
+  color:#e8dcc0;
 }
 
-#meta-date {
-  font-weight: 700;
-  color: #ffffff;
-}
-
-#meta-time {
-  margin-left: 8px;
-  color: #e8dcc0;
-}
-
-#meta-version {
-  margin-left: 12px;
-  font-size: 14px;
-  opacity: 0.6;
-}
-
-.meta::before {
-  content: "Edition • ";
-  opacity: 0.6;
+.subtitle {
+  font-style:italic;
+  opacity:.8;
+  margin-bottom:30px;
 }
 
 .section {
-  margin-bottom: 40px;
+  margin-top:40px;
 }
 
 .section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  border-bottom: 1px solid #2a2f3a;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-  color: #f0d48a;
-  letter-spacing: 1px;
-}
-
-.section h3 {
-  font-weight: 600;
-  margin-top: 15px;
-  color: #ffffff;
-}
-
-button {
-  background: #f0d48a;
-  color: #0f1115;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-button:hover {
-  background: #e6c46f;
-}
-
-.weather-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.travel img {
-  width: 100%;
-  border-radius: 10px;
-  margin: 20px 0;
-}
-  .weather-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.weather-time {
-  width: 60px;
-  color: #9aa3b2;
-}
-
-.weather-temp {
-  font-weight: 600;
+  color:#e8dcc0;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding-bottom:8px;
 }
 
 .trend-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-top: 10px;
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:30px;
+  margin-top:15px;
 }
 
 .trend-block {
-  text-align: center;
+  text-align:center;
 }
 
 .trend-time {
-  font-size: 12px;
-  opacity: 0.6;
-  margin-bottom: 8px;
+  font-size:12px;
+  opacity:.6;
+  margin-bottom:6px;
 }
 
-.trend-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-top: 10px;
-}
-  
 .trend-icon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.04);
-  border-radius: 14px;
-  margin: 0 auto 10px auto;
+  font-size:28px;
+  margin-bottom:6px;
 }
 
-.trend-temp {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.trend-condition {
-  font-size: 12px;
-  opacity: 0.65;
+button {
+  margin-top:30px;
+  padding:10px 20px;
+  border:none;
+  background:#e8dcc0;
+  color:#0f172a;
+  font-weight:600;
+  cursor:pointer;
 }
 </style>
+</head>
 
-  
-<!-- ================= BODY ================= -->
 <body>
-
 <div class="container">
-  <h1 style="
-  font-family: 'Playfair Display', serif;
-  letter-spacing: 2px;
-  font-size: 36px;
-  margin-bottom: 6px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-    color:#e8dcc0;
-">
-  <span style="font-size:28px;">🌍</span>
-  GLOBAL SOUL
-    
-</h1>
+  <h1>🌍 GLOBAL SOUL</h1>
+  <div class="subtitle">Claudia’s Daily Compass</div>
 
-<div style="
-  font-size: 18px;
-  color: #e8dcc0;
-  font-style: italic;
-  margin-bottom: 14px;
-  letter-spacing: 0.6px;
-">
-Claudia’s Daily Compass
-</div>
-<div style="
-  font-size: 17px;
-  color: #ffffff;
-  margin-bottom: 6px;
-  letter-spacing: 0.4px;
-  opacity: 0.95;
-">
-Formed by places. Guided by perspective.
+  <div id="content">Lade Daten…</div>
+
+  <button onclick="loadData()">Neue Ausgabe</button>
 </div>
 
-<div style="
-  font-size: 17px;
-  color: #e8dcc0;
-  font-style: italic;
-  margin-bottom: 22px;
-  letter-spacing: 0.4px;
-  opacity: 0.85;
-">
-„Geprägt von Orten. Geleitet von Perspektive.“
-</div>
-
-<div class="meta">
-  <span id="meta-date"></span>
-  <span id="meta-time"></span>
-  <span id="meta-version">Version 10.0.0</span>
-</div>
-
-<div id="content"></div>
-
-  
-<!-- ================= SCRIPT ================= -->
-  
 <script>
-  console.log("SCRIPT START");
-  
-function formatMarkdown(text) {
-  if (!text) return "";
-  return text
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-    .replace(/\n\n/g, "<br><br>")
-    .replace(/\n/g, "<br>");
-}
-
-function getWeatherIcon(condition) {
-    if (!condition) return sunIcon();
-
-    const c = condition.toLowerCase();
-
-    if (c.includes("klar") || c.includes("sun")) return sunIcon();
-    if (c.includes("wolke") || c.includes("cloud")) return cloudIcon();
-    if (c.includes("regen") || c.includes("rain")) return rainIcon();
-    if (c.includes("snow")) return snowIcon();
-    if (c.includes("thunder")) return stormIcon();
-
-    return sunIcon();
-}
-
-function sunIcon() {
-    return `
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f0d48a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="4"/>
-        <line x1="12" y1="1" x2="12" y2="4"/>
-        <line x1="12" y1="20" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="4" y2="12"/>
-        <line x1="20" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
-        <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
-    </svg>`;
-}
-
-function cloudIcon() {
-    return `
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#cfd6e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
-    </svg>`;
-}
-
-function rainIcon() {
-    return `
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#7fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
-        <line x1="8" y1="19" x2="8" y2="22"/>
-        <line x1="12" y1="19" x2="12" y2="22"/>
-        <line x1="16" y1="19" x2="16" y2="22"/>
-    </svg>`;
-}
-
-function snowIcon() {
-    return `
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#bcd4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="20" r="1"/>
-        <circle cx="8" cy="20" r="1"/>
-        <circle cx="16" cy="20" r="1"/>
-    </svg>`;
-}
-
-function stormIcon() {
-    return `
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#9ec5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
-        <polyline points="13 18 10 22 14 22 11 26"/>
-    </svg>`;
-}
-  
-function renderWeather(weather, weatherTrend) {
-  if (!weather) return "";
-
-  return `
-    <div class="section">
-      <h2>Wetter</h2>
-      <div>${weather.location}</div>
-      <div style="font-size:22px;font-weight:600;">
-        ${weather.temp}°C
-      </div>
-      <div style="opacity:0.8;margin-bottom:16px;">
-        ${weather.condition}
-      </div>
-
-      ${weatherTrend ? `
-        <div style="margin-top:20px;">
-          <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
-            Tagesverlauf
-          </div>
-          <div class="trend-grid">
-  `;
-}
-
-return `
-  <div class="trend-block">
-    <div class="trend-time">${time}</div>
-    <div class="trend-icon">
-      ${icon}
-    </div>
-    <div class="trend-temp">${data.temp}°</div>
-    <div class="trend-condition">${data.condition}</div>
-  </div>
-`;
-  
-function renderFinance(markets) {
-  if (!markets) return "";
-  return `
-    <div class="section">
-      <h2>Märkte</h2>
-      <div>DAX: ${markets.dax.level} (${markets.dax.change})</div>
-      <div>EUR/USD: ${markets.eurusd.level} (${markets.eurusd.change})</div>
-    </div>
-  `;
-}
-
-function renderCrypto(crypto) {
-  if (!crypto) return "";
-  return `
-    <div class="section">
-      <h2>Krypto</h2>
-      <div>Bitcoin: ${crypto.btc.price} € (${crypto.btc.change})</div>
-      <div>NEXO: ${crypto.nexo.price} € (${crypto.nexo.change})</div>
-    </div>
-  `;
-}
-
 async function loadData() {
   try {
     const res = await fetch("/api/daily");
     const data = await res.json();
 
-    const now = new Date();
-
-    const dateString = now.toLocaleDateString("de-DE", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-
-    const timeString = now.toLocaleTimeString("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    document.getElementById("meta-date").innerText = dateString;
-    document.getElementById("meta-time").innerText = " • " + timeString;
-
     document.getElementById("content").innerHTML = `
       <div class="section">
-        ${formatMarkdown(data.executive || "## Executive\nNoch keine Ausgabe vorhanden.")}
+        <h2>Wetter</h2>
+        <div>${data.weather.location}</div>
+        <div style="font-size:22px;font-weight:600">
+          ${data.weather.temp}°C
+        </div>
+        <div style="opacity:.7;margin-bottom:10px">
+          ${data.weather.condition}
+        </div>
+
+        <div class="trend-grid">
+          ${Object.values(data.weatherTrend).map(t => `
+            <div class="trend-block">
+              <div class="trend-time">${t.time}</div>
+              <div class="trend-icon">☀️</div>
+              <div>${t.temp}°</div>
+              <div style="font-size:12px;opacity:.6">
+                ${t.condition}
+              </div>
+            </div>
+          `).join("")}
+        </div>
       </div>
 
       <div class="section">
-        ${formatMarkdown(data.regional || "## Regional\nNoch keine Ausgabe vorhanden.")}
+        <h2>Märkte</h2>
+        <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change})</div>
+        <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change})</div>
       </div>
-
-      ${renderWeather(data.weather, data.weatherTrend)}
-      ${renderFinance(data.markets)}
-      ${renderCrypto(data.crypto)}
 
       <div class="section">
-        ${formatMarkdown(data.personal || "## Personal\nNoch keine Ausgabe vorhanden.")}
-      </div>
-
-      <div class="section travel">
-        ${formatMarkdown(data.travel || "## Travel\nNoch keine Ausgabe vorhanden.")}
+        <h2>Krypto</h2>
+        <div>Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change})</div>
+        <div>NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change})</div>
       </div>
     `;
   } catch (err) {
-    console.error("Fehler beim Laden:", err);
-    document.getElementById("content").innerHTML =
-      "<div class='section'>Fehler beim Laden der Daten.</div>";
+    document.getElementById("content").innerHTML = "Fehler beim Laden.";
   }
 }
 
@@ -410,4 +138,3 @@ loadData();
 </script>
 </body>
 </html>
-
