@@ -192,17 +192,66 @@ function formatMarkdown(text) {
 }
 
 function getWeatherIcon(condition) {
-  if (!condition) return "☁️";
+    if (!condition) return sunIcon();
 
-  const c = condition.toLowerCase();
+    const c = condition.toLowerCase();
 
-  if (c.includes("klar") || c.includes("sun")) return "☀️";
-  if (c.includes("wolke") || c.includes("cloud")) return "☁️";
-  if (c.includes("regen") || c.includes("rain")) return "🌧️";
-  if (c.includes("snow")) return "❄️";
-  if (c.includes("thunder")) return "⛈️";
+    if (c.includes("klar") || c.includes("sun")) return sunIcon();
+    if (c.includes("wolke") || c.includes("cloud")) return cloudIcon();
+    if (c.includes("regen") || c.includes("rain")) return rainIcon();
+    if (c.includes("snow")) return snowIcon();
+    if (c.includes("thunder")) return stormIcon();
 
-  return "🌤️";
+    return sunIcon();
+}
+
+function sunIcon() {
+    return `
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f0d48a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="1" x2="12" y2="4"/>
+        <line x1="12" y1="20" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="4" y2="12"/>
+        <line x1="20" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+        <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+    </svg>`;
+}
+
+function cloudIcon() {
+    return `
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#cfd6e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
+    </svg>`;
+}
+
+function rainIcon() {
+    return `
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#7fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
+        <line x1="8" y1="19" x2="8" y2="22"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="16" y1="19" x2="16" y2="22"/>
+    </svg>`;
+}
+
+function snowIcon() {
+    return `
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#bcd4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="20" r="1"/>
+        <circle cx="8" cy="20" r="1"/>
+        <circle cx="16" cy="20" r="1"/>
+    </svg>`;
+}
+
+function stormIcon() {
+    return `
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#9ec5ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.7 1.5A4 4 0 0 0 8 17.5z"/>
+        <polyline points="13 18 10 22 14 22 11 26"/>
+    </svg>`;
 }
   
 function renderWeather(weather, weatherTrend) {
@@ -246,25 +295,6 @@ function renderTrendBlock(time, data) {
 
   const icon = getWeatherIcon(data.condition);
 
-  // Farb-Logik nach Tageszeit
-  let glowColor = "rgba(255,255,255,0.18)";
-
-  if (time === "09:00") {
-    glowColor = "rgba(240,212,138,0.35)"; // warm gold
-  }
-
-  if (time === "15:00") {
-    glowColor = "rgba(255,255,255,0.25)"; // neutral
-  }
-
-  if (time === "21:00") {
-    glowColor = "rgba(160,190,255,0.30)"; // kühler Abend
-  }
-
-  // Wenn Regen → leicht kühler
-  if (data.condition && data.condition.toLowerCase().includes("rain")) {
-    glowColor = "rgba(120,170,255,0.35)";
-  }
 
   return `
     <div style="
