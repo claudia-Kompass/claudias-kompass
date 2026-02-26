@@ -65,7 +65,16 @@ export default async function handler(req, res) {
 
         if (response.ok) {
           const data = await response.json();
+const hours = data.forecast.forecastday[0].hour;
 
+const findHour = (target) =>
+  hours.find(h => h.time.includes(target));
+
+const weatherTrend = {
+  morning: findHour("09:00"),
+  afternoon: findHour("15:00"),
+  evening: findHour("21:00")
+};
           weather = {
             location: data.location.name,
             temp: data.current.temp_c,
@@ -121,12 +130,13 @@ export default async function handler(req, res) {
     // ================= RESPONSE =================
 
     return res.status(200).json({
-      version,
-      marketTime: timestamp,
-      weather,
-      crypto,
-      markets
-    });
+  version,
+  marketTime: timestamp,
+  weather,
+  weatherTrend,
+  crypto,
+  markets
+});
 
   } catch (err) {
     console.error("GLOBAL ERROR:", err);
