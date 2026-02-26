@@ -191,87 +191,18 @@ function formatMarkdown(text) {
     .replace(/\n/g, "<br>");
 }
 
-function renderWeather(weather, trend) {
+function renderWeather(weather) {
   if (!weather) return "";
-
-  const m = trend?.morning;
-  const a = trend?.afternoon;
-  const e = trend?.evening;
-
   return `
     <div class="section">
-      <h2>Wetter – ${weather.location}</h2>
-
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-        <div class="weather-icon">${weatherIcon(weather.code)}</div>
-        <div style="font-size:28px;font-weight:600;">
-          ${typeof weather.temp === "number" ? Math.round(weather.temp) + "°C" : "--"}
-        </div>
-      </div>
-
-      <div style="margin-bottom:18px;">
-        ${translateCondition(weather.condition)}
-      </div>
-
-      ${trend ? `
-  <div style="margin-top:20px;">
-    <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
-      Tagesverlauf
-    </div>
-
-    <div style="display:flex;justify-content:space-between;gap:12px;">
-      ${renderTrendBlock("09:00", m)}
-      ${renderTrendBlock("15:00", a)}
-      ${renderTrendBlock("21:00", e)}
-    </div>
-` : ""}
-  `;
-}
-
-function renderTrendBlock(time, data) {
-  if (!data) return "";
-
-  return `
-    <div style="
-      flex:1;
-      text-align:center;
-      background:linear-gradient(145deg,#171c26,#131720);
-      padding:16px 14px;
-      border-radius:14px;
-      border:1px solid rgba(240,212,138,0.15);
-      box-shadow:0 6px 18px rgba(0,0,0,0.35);
-      transition:all 0.2s ease;
-    ">
-      <div style="
-        color:#9aa3b2;
-        font-size:13px;
-        letter-spacing:1px;
-        margin-bottom:8px;
-      ">
-        ${time}
-      </div>
-
-      <div style="
-        font-size:26px;
-        margin-bottom:6px;
-      ">
-        ${weatherIcon(data.code)}
-      </div>
-
-      <div style="
-        font-weight:600;
-        font-size:18px;
-        color:#f0d48a;
-      ">
-        ${Math.round(data.temp)}°C
-      </div>
+      <h2>Wetter Test</h2>
+      <div>${weather.location}</div>
+      <div>${weather.temp}</div>
     </div>
   `;
 }
 
-.weather-row:hover {
-  transform: translateY(-2px);
-}
+
   
 function renderFinance(markets) {
   if (!markets) return "";
