@@ -291,67 +291,41 @@ function renderWeather(weather, weatherTrend) {
 }
 
 function renderTrendBlock(time, data) {
-  if (!data) return "";
+    if (!data) return "";
 
-  const icon = getWeatherIcon(data.condition);
+    const icon = getWeatherIcon(data.condition);
 
-
-  return `
-    <div style="
-        flex:1;
-        text-align:center;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        gap:8px;
-    ">
-
+    return `
         <div style="
-            font-size:12px;
-            opacity:0.6;
-            letter-spacing:0.5px;
-        ">
-            ${time}
-        </div>
-
-        <div style="
-            width:48px;
-            height:48px;
+            flex:1;
             display:flex;
+            flex-direction:column;
             align-items:center;
-            justify-content:center;
+            gap:8px;
         ">
+            <div style="font-size:12px; opacity:0.6;">
+                ${time}
+            </div>
+
             <div style="
-                font-size:30px;
-                line-height:1;
+                width:48px;
+                height:48px;
                 display:flex;
                 align-items:center;
                 justify-content:center;
             ">
                 ${icon}
             </div>
-        </div>
 
-        <div style="
-            font-size:18px;
-            font-weight:600;
-        ">
-            ${data.temp}°
-        </div>
+            <div style="font-size:14px; font-weight:600;">
+                ${data.temp}°
+            </div>
 
-        <div style="
-            font-size:13px;
-            opacity:0.65;
-            min-height:18px;
-        ">
-            ${data.condition}
+            <div style="font-size:12px; opacity:0.65;">
+                ${data.condition}
+            </div>
         </div>
-
-    </div>
-`;
-      </div>
-    </div>
-  `;
+    `;
 }
   
 function renderFinance(markets) {
