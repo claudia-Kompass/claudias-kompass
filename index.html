@@ -311,21 +311,7 @@ function renderWeather(weather, weatherTrend) {
           <div style="font-weight:600;margin-bottom:12px;color:#e8dcc0;">
             Tagesverlauf
           </div>
-          <div style="
-display:flex;
-justify-content:flex-start;
-align-items:flex-start;
-gap:40px;
-margin-top:10px;
-padding-left:4px;
-">
-            ${renderTrendBlock("09:00", weatherTrend.morning)}
-            ${renderTrendBlock("15:00", weatherTrend.afternoon)}
-            ${renderTrendBlock("21:00", weatherTrend.evening)}
-          </div>
-        </div>
-      ` : ""}
-    </div>
+          <div class="trend-grid">
   `;
 }
 
