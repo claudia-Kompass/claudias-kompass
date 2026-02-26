@@ -264,22 +264,22 @@ async function loadData() {
 
     document.getElementById("content").innerHTML = `
       <div class="section">
-        ${formatMarkdown(data.executive || "")}
+        ${formatMarkdown(data.executive || "## Executive\nNoch keine Ausgabe vorhanden.")}
       </div>
 
       <div class="section">
-        ${formatMarkdown(data.regional || "")}
+        ${formatMarkdown(data.regional || "## Executive\nNoch keine Ausgabe vorhanden.")}
       </div>
 
 ${renderWeather(data.weather)}
       ${renderFinance(data.markets)}
       ${renderCrypto(data.crypto)}
       <div class="section">
-        ${formatMarkdown(data.personal || "")}
+        ${formatMarkdown(data.personal || "## Executive\nNoch keine Ausgabe vorhanden.")}
       </div>
 
       <div class="section travel">
-        ${formatMarkdown(data.travel || "")}
+        ${formatMarkdown(data.travel || "## Executive\nNoch keine Ausgabe vorhanden.")}
       </div>
     `;
 
