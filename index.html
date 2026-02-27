@@ -240,10 +240,11 @@ function getIcon(condition, time) {
 }
 
 function cryptoAmpel(change) {
-  const val = parseFloat(change);
-  if (val > 1) return "🟢";
-  if (val < -1) return "🔴";
-  return "🟡";
+    const val = parseFloat(change);
+
+    if (val > 1) return '<span class="ampel green"></span>';
+    if (val < -1) return '<span class="ampel red"></span>';
+    return '<span class="ampel yellow"></span>';
 }
 
 async function loadData() {
