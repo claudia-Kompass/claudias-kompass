@@ -152,8 +152,22 @@ button {
 <div class="container">
   <h1>🌍 GLOBAL SOUL</h1>
   <div class="subtitle">Claudia’s Daily Compass</div>
-  <div class="claim-en">Rooted in values. Open to the world.</div>
-  <div class="claim-de">Verwurzelt in Werten. Offen für die Welt.</div>
+  <div style="
+  font-size:17px;
+  font-weight:500;
+  color:#ffffff;
+  margin-bottom:4px;
+">
+  Zwischen Heimat und Horizont.
+</div>
+
+<div style="
+  font-size:14px;
+  color:#9aa3b2;
+  margin-bottom:20px;
+">
+  between home and horizon
+</div>
   
   <div id="metaInfo" class="meta-info"></div>
   <div id="content"></div>
@@ -186,23 +200,7 @@ async function loadData() {
 
 const now = new Date();
 
-const dateStr = now.toLocaleDateString("de-DE", {
-    weekday: "long",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-});
 
-const timeStr = now.toLocaleTimeString("de-DE", {
-    hour: "2-digit",
-    minute: "2-digit"
-});
-
-document.getElementById("metaInfo").innerHTML = `
-  Letzte Aktualisierung<br>
-${dateStr} · ${timeStr} Uhr <span class="meta-version">v${data.version}</span>
-`;
-  
   document.getElementById("content").innerHTML = `
   
   <h2>Märkte</h2>
