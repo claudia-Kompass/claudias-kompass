@@ -155,17 +155,16 @@ async function loadData() {
     NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
   </div>
 
-  <h2>Wetter</h2>
-  <div style="font-size:20px; margin-top:10px;">
-    ${data.weather.location}
-  </div>
-  <div style="font-size:40px; font-weight:700;">
-    ${data.weather.temp}°C
-  </div>
-  <div style="font-size:20px; font-weight:500; opacity:0.9; margin-bottom:30px;">
-    ${data.weather.condition}
-  </div>
-
+<h2>Wetter</h2>
+<div class="weather-location">
+  ${data.weather.location}
+</div>
+<div class="weather-temp-main">
+  ${data.weather.temp}°C
+</div>
+<div class="weather-condition">
+  ${data.weather.condition}
+</div>
   <div style="display:flex; gap:70px; margin-left:10px;">
     ${renderTrend(data.weatherTrend.morning)}
     ${renderTrend(data.weatherTrend.afternoon)}
