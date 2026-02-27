@@ -265,9 +265,8 @@ const timeString = now.toLocaleTimeString("de-DE", {
 });
 
 document.getElementById("metaInfo").innerHTML =
-  `${dateString} · ${timeString} Uhr · 
-  <span style="opacity:0.6;font-style:italic;">v${data.version}</span>`;
-
+  `${dateString} · ${timeString} Uhr · ` +
+  `<span class="meta-version">v${data.version}</span>`;
   document.getElementById("content").innerHTML = `
   
   <h2>Märkte</h2>
