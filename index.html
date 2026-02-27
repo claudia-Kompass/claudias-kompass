@@ -38,7 +38,7 @@ h2 {
 }
 
 .weather-location {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .weather-temp-main {
@@ -48,7 +48,7 @@ h2 {
 }
 
 .weather-condition {
-  font-size: 16px;
+  font-size: 18px;
   opacity: 0.85;
   margin-bottom: 25px;
 }
@@ -63,7 +63,7 @@ h2 {
 }
 
 .trend-time {
-  font-size: 14px;
+  font-size: 15px;
   opacity: 0.8;
   margin-bottom: 6px;
 }
@@ -80,7 +80,7 @@ h2 {
 }
 
 .trend-condition {
-  font-size: 13px;
+  font-size: 14px;
   opacity: 0.75;
 }
 
@@ -130,32 +130,32 @@ async function loadData() {
   const data = await res.json();
 
   document.getElementById("content").innerHTML = `
-    <h2>Wetter</h2>
-    <div class="weather-location">${data.weather.location}</div>
-    <div class="weather-temp-main">${data.weather.temp}°C</div>
-    <div class="weather-condition">${data.weather.condition}</div>
 
-    <div class="trend-grid">
-      ${renderTrend(data.weatherTrend.morning)}
-      ${renderTrend(data.weatherTrend.afternoon)}
-      ${renderTrend(data.weatherTrend.evening)}
-    </div>
+  <h2>Märkte</h2>
+  <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)</div>
+  <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)</div>
 
-    <h2>Märkte</h2>
-    <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)</div>
-    <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)</div>
+  <h2>Krypto</h2>
+  <div>
+    ${cryptoAmpel(data.crypto.btc.change)}
+    Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
+  </div>
+  <div>
+    ${cryptoAmpel(data.crypto.nexo.change)}
+    NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
+  </div>
 
-    <h2>Krypto</h2>
-    <div>
-      ${cryptoAmpel(data.crypto.btc.change)}
-      Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
-    </div>
-    <div>
-      ${cryptoAmpel(data.crypto.nexo.change)}
-      NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
-    </div>
-  `;
-}
+  <h2>Wetter</h2>
+  <div class="weather-location">${data.weather.location}</div>
+  <div class="weather-temp-main">${data.weather.temp}°C</div>
+  <div class="weather-condition">${data.weather.condition}</div>
+
+  <div class="trend-grid">
+    ${renderTrend(data.weatherTrend.morning)}
+    ${renderTrend(data.weatherTrend.afternoon)}
+    ${renderTrend(data.weatherTrend.evening)}
+  </div>
+`;
 
 function renderTrend(t) {
   return `
