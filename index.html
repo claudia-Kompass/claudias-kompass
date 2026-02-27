@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <title>GLOBAL SOUL</title>
 
+  
 <style>
 body {
   margin: 0;
@@ -105,15 +106,14 @@ button {
 </div>
 
 <script>
-
 function getIcon(condition) {
   if (!condition) return "☀️";
   const c = condition.toLowerCase();
 
   if (c.includes("klar")) return "☀️";
-  if (c.includes("cloud")) return "☁️";
+  if (c.includes("bewölkt") || c.includes("cloud")) return "⛅";
   if (c.includes("regen")) return "🌧️";
-  if (c.includes("snow")) return "❄️";
+  if (c.includes("schnee")) return "❄️";
 
   return "☀️";
 }
@@ -130,45 +130,65 @@ async function loadData() {
   const data = await res.json();
 
   document.getElementById("content").innerHTML = `
-
+  
   <h2>Märkte</h2>
-  <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)</div>
-  <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)</div>
+  <div style="font-size:18px;">
+    DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)
+  </div>
+  <div style="font-size:18px;">
+    EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)
+  </div>
 
   <h2>Krypto</h2>
-  <div>
+  <div style="font-size:18px;">
     ${cryptoAmpel(data.crypto.btc.change)}
     Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
   </div>
-  <div>
+  <div style="font-size:18px;">
     ${cryptoAmpel(data.crypto.nexo.change)}
     NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
   </div>
 
   <h2>Wetter</h2>
-  <div class="weather-location">${data.weather.location}</div>
-  <div class="weather-temp-main">${data.weather.temp}°C</div>
-  <div class="weather-condition">${data.weather.condition}</div>
+  <div style="font-size:20px; margin-top:10px;">
+    ${data.weather.location}
+  </div>
+  <div style="font-size:36px; font-weight:700;">
+    ${data.weather.temp}°C
+  </div>
+  <div style="font-size:18px; opacity:0.85; margin-bottom:25px;">
+    ${data.weather.condition}
+  </div>
 
-  <div class="trend-grid">
+  <div style="display:flex; gap:60px;">
     ${renderTrend(data.weatherTrend.morning)}
     ${renderTrend(data.weatherTrend.afternoon)}
     ${renderTrend(data.weatherTrend.evening)}
   </div>
-`;
+  `;
+}
 
 function renderTrend(t) {
   return `
-    <div class="trend-block">
-      <div class="trend-time">${t.time}</div>
-      <div class="trend-icon">${getIcon(t.condition)}</div>
-      <div class="trend-temp">${t.temp}°</div>
-      <div class="trend-condition">${t.condition}</div>
+    <div style="text-align:left;">
+      <div style="font-size:15px; opacity:0.8; margin-bottom:6px;">
+        ${t.time}
+      </div>
+      <div style="font-size:28px; margin-bottom:6px;">
+        ${getIcon(t.condition)}
+      </div>
+      <div style="font-size:18px; font-weight:600;">
+        ${t.temp}°
+      </div>
+      <div style="font-size:14px; opacity:0.75;">
+        ${t.condition}
+      </div>
     </div>
   `;
 }
 
 loadData();
 </script>
+  
 </body>
 </html>
