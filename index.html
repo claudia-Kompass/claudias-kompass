@@ -150,22 +150,23 @@ async function loadData() {
 
 const now = new Date();
 
-    const dateStr = now.toLocaleDateString("de-DE", {
-        weekday: "long",
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    });
+const dateStr = now.toLocaleDateString("de-DE", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+});
 
-    const timeStr = now.toLocaleTimeString("de-DE", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+const timeStr = now.toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit"
+});
 
-    document.getElementById("metaInfo").innerHTML = `
-        ${dateStr} · ${timeStr} Uhr
-        <div class="meta-version">v12.2.0</div>
-    `;
+document.getElementById("metaInfo").innerHTML = `
+    Letzte Aktualisierung<br>
+    ${dateStr} · ${timeStr} Uhr
+    <div class="meta-version">v${data.version}</div>
+`;
   
   document.getElementById("content").innerHTML = `
   
