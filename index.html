@@ -9,7 +9,7 @@ body {
   margin: 0;
   font-family: system-ui;
   background: linear-gradient(135deg,#0f1a2b,#16263f);
-  color: white;
+  color: #e8dcc0;
 }
 
 .container {
@@ -20,15 +20,20 @@ body {
 
 h1 {
   font-size: 36px;
-  color: #e8dcc0;
   margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 40px;
 }
 
 h2 {
   font-size: 22px;
   font-weight: 600;
   margin-top: 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(232,220,192,0.3);
   padding-bottom: 10px;
 }
 
@@ -37,19 +42,20 @@ h2 {
 }
 
 .weather-temp-main {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
+  color: white;
 }
 
 .weather-condition {
   font-size: 16px;
   opacity: 0.85;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .trend-grid {
   display: flex;
-  gap: 40px;
+  gap: 60px;
 }
 
 .trend-block {
@@ -59,15 +65,27 @@ h2 {
 .trend-time {
   font-size: 14px;
   opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.trend-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
 }
 
 .trend-temp {
   font-size: 18px;
   font-weight: 600;
+  color: white;
+}
+
+.trend-condition {
+  font-size: 13px;
+  opacity: 0.75;
 }
 
 button {
-  margin-top: 30px;
+  margin-top: 40px;
   padding: 12px 20px;
   background: #e8dcc0;
   border: none;
@@ -80,13 +98,33 @@ button {
 <body>
 <div class="container">
   <h1>🌍 GLOBAL SOUL</h1>
-  <div>Claudia’s Daily Compass</div>
+  <div class="subtitle">Claudia’s Daily Compass</div>
 
   <div id="content"></div>
   <button onclick="loadData()">Neue Ausgabe</button>
 </div>
 
 <script>
+
+function getIcon(condition) {
+  if (!condition) return "☀️";
+  const c = condition.toLowerCase();
+
+  if (c.includes("klar")) return "☀️";
+  if (c.includes("cloud")) return "☁️";
+  if (c.includes("regen")) return "🌧️";
+  if (c.includes("snow")) return "❄️";
+
+  return "☀️";
+}
+
+function cryptoAmpel(change) {
+  const val = parseFloat(change);
+  if (val > 1) return "🟢";
+  if (val < -1) return "🔴";
+  return "🟡";
+}
+
 async function loadData() {
   const res = await fetch("/api/daily");
   const data = await res.json();
@@ -108,8 +146,14 @@ async function loadData() {
     <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)</div>
 
     <h2>Krypto</h2>
-    <div>Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)</div>
-    <div>NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)</div>
+    <div>
+      ${cryptoAmpel(data.crypto.btc.change)}
+      Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
+    </div>
+    <div>
+      ${cryptoAmpel(data.crypto.nexo.change)}
+      NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
+    </div>
   `;
 }
 
@@ -117,8 +161,9 @@ function renderTrend(t) {
   return `
     <div class="trend-block">
       <div class="trend-time">${t.time}</div>
+      <div class="trend-icon">${getIcon(t.condition)}</div>
       <div class="trend-temp">${t.temp}°</div>
-      <div>${t.condition}</div>
+      <div class="trend-condition">${t.condition}</div>
     </div>
   `;
 }
