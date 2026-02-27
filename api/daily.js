@@ -52,7 +52,7 @@ module.exports = async function handler(req, res) {
     };
 
     return res.status(200).json({
-      version,
+      version: "12.2.0",
       marketTime,
       weather,
       weatherTrend,
