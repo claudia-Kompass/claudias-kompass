@@ -1,6 +1,6 @@
 module.exports = async function handler(req, res) {
   try {
-    const version = "12.1.0";
+    const version = "12.2.0";
 
     const now = new Date();
     const marketTime = now.toLocaleTimeString("de-DE", {
@@ -20,14 +20,14 @@ module.exports = async function handler(req, res) {
     const weather = {
       location: "Ilshofen",
       temp: currentTemp,
-      condition: "Aktualisiert"
+      condition: "Überwiegend klar"
     };
 
     const weatherTrend = {
-      morning: { time: "09:00", temp: currentTemp - 2, condition: "Trend" },
-      afternoon: { time: "15:00", temp: currentTemp + 5, condition: "Trend" },
-      evening: { time: "21:00", temp: currentTemp, condition: "Trend" }
-    };
+  morning: { time: "09:00", temp: 2, condition: "Klar" },
+  afternoon: { time: "15:00", temp: 9, condition: "Sonnig" },
+  evening: { time: "21:00", temp: 4, condition: "Klar" }
+};
 
     // ---- COINGECKO ----
     const cryptoRes = await fetch(
