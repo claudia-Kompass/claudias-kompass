@@ -2,76 +2,77 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GLOBAL SOUL</title>
 
 <style>
 body {
-  margin:0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg,#0f172a,#1e293b);
-  color:#f1f5f9;
+  margin: 0;
+  font-family: system-ui;
+  background: linear-gradient(135deg,#0f1a2b,#16263f);
+  color: white;
 }
 
 .container {
-  max-width:900px;
-  margin:auto;
-  padding:40px 20px;
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
 }
 
 h1 {
-  font-size:36px;
-  letter-spacing:2px;
-  margin-bottom:8px;
-  color:#e8dcc0;
+  font-size: 36px;
+  color: #e8dcc0;
+  margin-bottom: 5px;
 }
 
-.subtitle {
-  font-style:italic;
-  opacity:.8;
-  margin-bottom:30px;
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 10px;
 }
 
-.section {
-  margin-top:40px;
+.weather-location {
+  font-size: 18px;
 }
 
-.section h2 {
-  color:#e8dcc0;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-  padding-bottom:8px;
+.weather-temp-main {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.weather-condition {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 20px;
 }
 
 .trend-grid {
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:30px;
-  margin-top:15px;
+  display: flex;
+  gap: 40px;
 }
 
 .trend-block {
-  text-align:center;
+  text-align: left;
 }
 
 .trend-time {
-  font-size:12px;
-  opacity:.6;
-  margin-bottom:6px;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
-.trend-icon {
-  font-size:28px;
-  margin-bottom:6px;
+.trend-temp {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 button {
-  margin-top:30px;
-  padding:10px 20px;
-  border:none;
-  background:#e8dcc0;
-  color:#0f172a;
-  font-weight:600;
-  cursor:pointer;
+  margin-top: 30px;
+  padding: 12px 20px;
+  background: #e8dcc0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 </style>
 </head>
@@ -79,59 +80,47 @@ button {
 <body>
 <div class="container">
   <h1>🌍 GLOBAL SOUL</h1>
-  <div class="subtitle">Claudia’s Daily Compass</div>
+  <div>Claudia’s Daily Compass</div>
 
-  <div id="content">Lade Daten…</div>
-
+  <div id="content"></div>
   <button onclick="loadData()">Neue Ausgabe</button>
 </div>
 
 <script>
 async function loadData() {
-  try {
-    const res = await fetch("/api/daily");
-    const data = await res.json();
+  const res = await fetch("/api/daily");
+  const data = await res.json();
 
-    document.getElementById("content").innerHTML = `
-      <div class="section">
-        <h2>Wetter</h2>
-        <div>${data.weather.location}</div>
-        <div style="font-size:22px;font-weight:600">
-          ${data.weather.temp}°C
-        </div>
-        <div style="opacity:.7;margin-bottom:10px">
-          ${data.weather.condition}
-        </div>
+  document.getElementById("content").innerHTML = `
+    <h2>Wetter</h2>
+    <div class="weather-location">${data.weather.location}</div>
+    <div class="weather-temp-main">${data.weather.temp}°C</div>
+    <div class="weather-condition">${data.weather.condition}</div>
 
-        <div class="trend-grid">
-          ${Object.values(data.weatherTrend).map(t => `
-            <div class="trend-block">
-              <div class="trend-time">${t.time}</div>
-              <div class="trend-icon">☀️</div>
-              <div>${t.temp}°</div>
-              <div style="font-size:12px;opacity:.6">
-                ${t.condition}
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
+    <div class="trend-grid">
+      ${renderTrend(data.weatherTrend.morning)}
+      ${renderTrend(data.weatherTrend.afternoon)}
+      ${renderTrend(data.weatherTrend.evening)}
+    </div>
 
-      <div class="section">
-        <h2>Märkte</h2>
-        <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change})</div>
-        <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change})</div>
-      </div>
+    <h2>Märkte</h2>
+    <div>DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)</div>
+    <div>EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)</div>
 
-      <div class="section">
-        <h2>Krypto</h2>
-        <div>Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change})</div>
-        <div>NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change})</div>
-      </div>
-    `;
-  } catch (err) {
-    document.getElementById("content").innerHTML = "Fehler beim Laden.";
-  }
+    <h2>Krypto</h2>
+    <div>Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)</div>
+    <div>NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)</div>
+  `;
+}
+
+function renderTrend(t) {
+  return `
+    <div class="trend-block">
+      <div class="trend-time">${t.time}</div>
+      <div class="trend-temp">${t.temp}°</div>
+      <div>${t.condition}</div>
+    </div>
+  `;
 }
 
 loadData();
