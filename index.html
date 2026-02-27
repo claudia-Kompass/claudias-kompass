@@ -153,14 +153,14 @@ async function loadData() {
   <div style="font-size:20px; margin-top:10px;">
     ${data.weather.location}
   </div>
-  <div style="font-size:36px; font-weight:700;">
+  <div style="font-size:40px; font-weight:700;">
     ${data.weather.temp}°C
   </div>
-  <div style="font-size:18px; opacity:0.85; margin-bottom:25px;">
+  <div style="font-size:20px; font-weight:500; opacity:0.9; margin-bottom:30px;">
     ${data.weather.condition}
   </div>
 
-  <div style="display:flex; gap:60px;">
+  <div style="display:flex; gap:70px; margin-left:10px;">
     ${renderTrend(data.weatherTrend.morning)}
     ${renderTrend(data.weatherTrend.afternoon)}
     ${renderTrend(data.weatherTrend.evening)}
