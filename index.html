@@ -22,6 +22,18 @@ body {
 h1 {
   font-size: 36px;
   margin-bottom: 5px;
+  letter-spacing: 1px;
+  color: #f3ead6;
+  animation: glowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from {
+    text-shadow: 0 0 5px rgba(232,220,192,0.2);
+  }
+  to {
+    text-shadow: 0 0 18px rgba(232,220,192,0.5);
+  }
 }
 
 .subtitle {
