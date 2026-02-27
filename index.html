@@ -167,22 +167,6 @@ const now = new Date();
         <div class="meta-version">v12.2.0</div>
     `;
   
-  const now = new Date();
-const dateString = now.toLocaleDateString("de-DE", {
-  weekday: "long",
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric"
-});
-
-const timeString = now.toLocaleTimeString("de-DE", {
-  hour: "2-digit",
-  minute: "2-digit"
-});
-
-document.getElementById("metaInfo").innerHTML =
-  `${dateString} · ${timeString} Uhr · <span class="meta-version">v${data.version}</span>`;
-
   document.getElementById("content").innerHTML = `
   
   <h2>Märkte</h2>
