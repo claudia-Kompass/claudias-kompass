@@ -281,14 +281,16 @@ document.getElementById("metaInfo").innerHTML =
 </div>
 
   <h2>Krypto</h2>
-  <div class="crypto-line">
-    ${cryptoAmpel(data.crypto.btc.change)}
-    Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
-  </div>
-  <div style="font-size:18px;">
-    ${cryptoAmpel(data.crypto.nexo.change)}
-    NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
-  </div>
+
+<div class="crypto-line">
+  ${cryptoAmpel(data.crypto.btc.change)}
+  Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
+</div>
+
+<div class="crypto-line">
+  ${cryptoAmpel(data.crypto.nexo.change)}
+  NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
+</div>
 
 <h2>Wetter</h2>
 <div class="weather-location">
