@@ -237,12 +237,14 @@ document.getElementById("metaInfo").innerHTML =
   document.getElementById("content").innerHTML = `
   
   <h2>Märkte</h2>
-  <div style="font-size:18px;">
-    DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)
-  </div>
-  <div style="font-size:18px;">
-    EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)
-  </div>
+<div class="markets-line">
+  DAX: ${data.markets.dax.level} 
+  <span style="opacity:0.7">(${data.markets.dax.change}%)</span>
+</div>
+<div class="markets-line">
+  EUR/USD: ${data.markets.eurusd.level} 
+  <span style="opacity:0.7">(${data.markets.eurusd.change}%)</span>
+</div>
 
   <h2>Krypto</h2>
   <div style="font-size:18px;">
