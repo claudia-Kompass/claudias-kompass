@@ -176,12 +176,16 @@ button {
 </div>
 
 <script>
-function getIcon(condition) {
+function getIcon(condition, time) {
   if (!condition) return "☀️";
+
   const c = condition.toLowerCase();
 
+  // Abendregel zuerst prüfen
+  if (time === "21:00" && c.includes("klar")) return "🌙";
+
   if (c.includes("klar")) return "☀️";
-  if (c.includes("bewölkt") || c.includes("cloud")) return "⛅";
+  if (c.includes("bewölkt") || c.includes("cloud")) return "🌤️";
   if (c.includes("regen")) return "🌧️";
   if (c.includes("schnee")) return "❄️";
 
