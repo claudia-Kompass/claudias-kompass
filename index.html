@@ -166,8 +166,7 @@ const timeStr = now.toLocaleTimeString("de-DE", {
 
 document.getElementById("metaInfo").innerHTML = `
   Letzte Aktualisierung<br>
-  ${dateStr} · ${timeStr} Uhr · 
-  <span class="meta-version">v${data.version}</span>
+${dateStr} · ${timeStr} Uhr <span class="meta-version">v${data.version}</span>
 `;
   
   document.getElementById("content").innerHTML = `
