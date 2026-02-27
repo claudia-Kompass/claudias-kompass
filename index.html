@@ -259,6 +259,18 @@ document.getElementById("metaInfo").innerHTML =
 }
 
 function renderTrend(t) {
+
+  let conditionText = t.condition;
+
+  if (t.time === "21:00" && t.condition.toLowerCase().includes("klar")) {
+    conditionText = "Klar";
+  }
+
+  if ((t.time === "09:00" || t.time === "15:00") &&
+      t.condition.toLowerCase().includes("klar")) {
+    conditionText = "Sonnig";
+  }
+
   return `
     <div style="text-align:left;">
       <div style="font-size:15px; opacity:0.8; margin-bottom:6px;">
@@ -271,12 +283,11 @@ function renderTrend(t) {
         ${t.temp}°
       </div>
       <div style="font-size:14px; opacity:0.75;">
-        ${t.condition}
+        ${conditionText}
       </div>
     </div>
   `;
 }
-
 loadData();
 </script>
   
