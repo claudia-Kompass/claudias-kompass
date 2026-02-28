@@ -276,18 +276,17 @@ document.getElementById("metaInfo").innerHTML =
   `${dateString} · ${timeString} Uhr · ` +
   `<span class="meta-version">v${data.version}</span>`;
   document.getElementById("content").innerHTML = `
-  
-  <h2>Märkte</h2>
+<h2>Märkte</h2>
 <div class="markets-line">
-  DAX: ${data.markets.dax.level} 
+  DAX: ${data.markets.dax.level}
   <span style="opacity:0.7">(${data.markets.dax.change}%)</span>
 </div>
 <div class="markets-line">
-  EUR/USD: ${data.markets.eurusd.level} 
+  EUR/USD: ${data.markets.eurusd.level}
   <span style="opacity:0.7">(${data.markets.eurusd.change}%)</span>
 </div>
 
-  <h2>Krypto</h2>
+<h2>Krypto</h2>
 
 <div class="crypto-line">
   ${cryptoAmpel(data.crypto.btc.change)}
@@ -320,11 +319,6 @@ document.getElementById("metaInfo").innerHTML =
 </div>
 <div class="weather-condition">
   ${data.weather.condition}
-</div>
-  <div style="display:flex; gap:70px; margin-left:10px;">
-    ${renderTrend(data.weatherTrend.morning)}
-    ${renderTrend(data.weatherTrend.afternoon)}
-    ${renderTrend(data.weatherTrend.evening)}
 </div>
 `;
 }
