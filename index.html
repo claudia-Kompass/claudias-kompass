@@ -1,141 +1,126 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Soul</title>
+<meta charset="UTF-8" />
+<title>GLOBAL SOUL</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg,#0e2a47 0%,#102f52 50%,#0c223b 100%);
-  color: #f1e8d8;
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(to bottom,#0b1d35,#163a5f);
+  color:#e8dcc0;
 }
 
-/* ===== HERO ===== */
-.hero {
-  padding: 80px 40px 60px 40px;
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 20px;
 }
 
-.hero-inner {
-  max-width: 900px;
+.brand{
+  font-family:'Playfair Display',serif;
+  font-size:48px;
+  letter-spacing:3px;
+  text-shadow:0 0 25px rgba(240,212,138,0.25);
+  margin-bottom:8px;
 }
 
-h1 {
-  font-size: 56px;
-  margin: 0 0 10px 0;
-  letter-spacing: 2px;
-  text-shadow: 0 0 12px rgba(255,220,150,0.5);
+.subtitle{
+  font-size:18px;
+  font-style:italic;
+  margin-bottom:16px;
 }
 
-.subtitle {
-  font-size: 18px;
-  margin: 0;
+.claim-de{font-size:18px;margin-bottom:4px;}
+.claim-en{font-size:14px;opacity:0.7;margin-bottom:10px;}
+
+.meta{
+  margin-top:10px;
+  margin-bottom:25px;
+  font-size:14px;
+  opacity:0.8;
 }
 
-.tagline {
-  margin-top: 15px;
-  font-size: 20px;
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  background:#e8dcc0;
+  cursor:pointer;
 }
 
-.tagline span {
-  font-style: italic;
-  font-size: 16px;
-  opacity: 0.7;
+h2{
+  margin-top:50px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  padding-bottom:8px;
 }
 
-.meta {
-  margin-top: 20px;
-  font-size: 14px;
-  opacity: 0.8;
+.ampel{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  margin-left:8px;
+  box-shadow:0 0 10px rgba(255,255,255,0.5);
 }
 
-button {
-  margin-top: 25px;
-  padding: 10px 18px;
-  background: #e6d7b9;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.green{background:#2ecc71;}
+.red{background:#e74c3c;}
+.yellow{background:#f1c40f;}
+
+.weather-row{
+  display:flex;
+  gap:40px;
+  margin-top:15px;
 }
+.weather-box{text-align:center;}
+.weather-main{font-size:28px;margin-top:10px;}
 
-/* ===== CONTENT ===== */
-.section {
-  max-width: 900px;
-  padding: 20px 40px;
-}
-
-.section h2 {
-  margin-top: 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  padding-bottom: 8px;
-}
-
-/* Ampel */
-.dot {
-  height: 14px;
-  width: 14px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 8px;
-}
-
-.green { background: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
-.red { background: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
-.yellow { background: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
-
-/* Wetter */
-.weather-now {
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.weather-trend {
-  display: flex;
-  gap: 40px;
-}
-
-.weather-block {
-  text-align: center;
-}
-
-.weather-block div:first-child {
-  font-size: 28px;
+.info-link{
+  font-size:12px;
+  margin-left:8px;
+  opacity:0.7;
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<header class="hero">
-  <div class="hero-inner">
-    <h1>🌍 GLOBAL SOUL</h1>
-    <p class="subtitle">Claudia’s Daily Compass</p>
-    <p class="tagline">
-      Zwischen Heimat und Horizont.<br>
-      <span>between home and horizon</span>
-    </p>
-    <div id="metaInfo" class="meta"></div>
-    <button onclick="loadData()">Neue Ausgabe</button>
-  </div>
-</header>
+<h1 class="brand">🌍 GLOBAL SOUL</h1>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="claim-de">Zwischen Heimat und Horizont.</div>
+<div class="claim-en">between home and horizon</div>
+<div class="meta" id="metaInfo"></div>
 
-<div id="content" class="section"></div>
+<button onclick="loadData()">Neue Ausgabe</button>
+
+<h2>Märkte</h2>
+<div id="markets"></div>
+
+<h2>Krypto</h2>
+<div id="crypto"></div>
+
+<h2>Wetter – Ilshofen</h2>
+<div id="weather"></div>
+
+</div>
 
 <script>
-function trendDot(value){
-  if(value > 0.2) return '<span class="dot green"></span>';
-  if(value < -0.2) return '<span class="dot red"></span>';
-  return '<span class="dot yellow"></span>';
+function ampel(change){
+  if(change > 0.5) return "green";
+  if(change < -0.5) return "red";
+  return "yellow";
 }
 
 function weatherIcon(code){
-  if([0,1].includes(code)) return "☀️";
-  if([2,3].includes(code)) return "⛅";
-  if([45,48].includes(code)) return "🌫️";
-  if([51,53,55,61,63,65,80,81,82].includes(code)) return "🌧️";
-  if([71,73,75,85,86].includes(code)) return "❄️";
+  if(code === 0) return "☀️";
+  if(code <= 3) return "⛅";
+  if(code <= 55) return "🌧️";
+  if(code <= 65) return "🌧️";
+  if(code <= 75) return "❄️";
   return "☁️";
 }
 
@@ -143,45 +128,46 @@ async function loadData(){
   const res = await fetch("/api/daily");
   const data = await res.json();
 
-  const now = new Date();
-  const date = now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
-  const time = now.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
-
   document.getElementById("metaInfo").innerHTML =
-    `${date} · ${time} Uhr · v${data.version}`;
+    `${data.date} · ${data.time} Uhr · v${data.version}`;
 
-  document.getElementById("content").innerHTML = `
+  document.getElementById("markets").innerHTML = `
+    DAX: ${data.markets.dax.value}
+    <span class="ampel ${ampel(data.markets.dax.change)}"></span><br>
+    EUR/USD: ${data.markets.eurusd.value}
+    <span class="ampel ${ampel(data.markets.eurusd.change)}"></span>
+  `;
 
-  <h2>Märkte</h2>
-  <div>DAX: ${data.markets.dax.value} ${trendDot(data.markets.dax.change)}</div>
-  <div>EUR/USD: ${data.markets.eurusd.value} ${trendDot(data.markets.eurusd.change)}</div>
+  document.getElementById("crypto").innerHTML = `
+    Bitcoin: €${data.crypto.bitcoin.price}
+    <span class="ampel ${ampel(data.crypto.bitcoin.change)}"></span>
+    <a class="info-link" href="https://www.coingecko.com/de/munze/bitcoin" target="_blank">Info</a><br>
+    Nexo: €${data.crypto.nexo.price}
+    <span class="ampel ${ampel(data.crypto.nexo.change)}"></span>
+    <a class="info-link" href="https://www.coingecko.com/de/munze/nexo" target="_blank">Info</a>
+  `;
 
-  <h2>Krypto</h2>
-  <div>Bitcoin: €${data.markets.bitcoin.price.toFixed(0)} ${trendDot(data.markets.bitcoin.change)}</div>
-  <div>Nexo: €${data.markets.nexo.price.toFixed(3)} ${trendDot(data.markets.nexo.change)}</div>
-
-  <h2>Wetter – ${data.weather.location}</h2>
-  <div class="weather-now">
-    ${weatherIcon(data.weather.code)} ${data.weather.temp}°C
-  </div>
-
-  <div class="weather-trend">
-    <div class="weather-block">
-      <div>${weatherIcon(data.weather.trend.morning.code)}</div>
-      <div>09:00</div>
-      <div>${Math.round(data.weather.trend.morning.temp)}°C</div>
+  document.getElementById("weather").innerHTML = `
+    <div class="weather-main">
+      ${weatherIcon(data.weather.code)} ${data.weather.temp}°C
     </div>
-    <div class="weather-block">
-      <div>${weatherIcon(data.weather.trend.afternoon.code)}</div>
-      <div>15:00</div>
-      <div>${Math.round(data.weather.trend.afternoon.temp)}°C</div>
+    <div class="weather-row">
+      <div class="weather-box">
+        09:00<br>
+        ${weatherIcon(data.weather.trend.morning.code)}<br>
+        ${data.weather.trend.morning.temp}°C
+      </div>
+      <div class="weather-box">
+        15:00<br>
+        ${weatherIcon(data.weather.trend.afternoon.code)}<br>
+        ${data.weather.trend.afternoon.temp}°C
+      </div>
+      <div class="weather-box">
+        21:00<br>
+        ${weatherIcon(data.weather.trend.evening.code)}<br>
+        ${data.weather.trend.evening.temp}°C
+      </div>
     </div>
-    <div class="weather-block">
-      <div>${weatherIcon(data.weather.trend.evening.code)}</div>
-      <div>21:00</div>
-      <div>${Math.round(data.weather.trend.evening.temp)}°C</div>
-    </div>
-  </div>
   `;
 }
 
