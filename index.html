@@ -5,56 +5,48 @@
 <title>GLOBAL SOUL</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: system-ui;
-  background: linear-gradient(135deg,#0f1a2b,#16263f);
-  color: #e8dcc0;
+body{
+  margin:0;
+  font-family:system-ui;
+  background:linear-gradient(135deg,#0f1a2b,#16263f);
+  color:#e8dcc0;
 }
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 40px 20px;
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
 }
-
-h1 {
-  font-size: 40px;
-  margin-bottom: 6px;
-  letter-spacing: 2px;
+h1{
+  font-size:40px;
+  margin-bottom:6px;
 }
-
-.meta {
-  opacity: 0.7;
-  margin-bottom: 40px;
+.meta{
+  opacity:.7;
+  margin-bottom:30px;
 }
-
-h2 {
-  margin-top: 50px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 10px;
+h2{
+  margin-top:45px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  padding-bottom:8px;
 }
-
-.row {
-  margin: 8px 0;
-  font-size: 18px;
+.row{
+  margin:8px 0;
+  font-size:18px;
 }
-
-.trend {
-  display: flex;
-  gap: 30px;
-  margin-top: 10px;
+.trend{
+  display:flex;
+  gap:30px;
+  margin-top:10px;
 }
-
-button {
-  margin-top: 30px;
-  padding: 12px 20px;
-  border: none;
-  background: #e8dcc0;
-  color: #0f1a2b;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
+button{
+  margin-top:30px;
+  padding:12px 20px;
+  border:none;
+  background:#e8dcc0;
+  color:#0f1a2b;
+  font-weight:600;
+  border-radius:6px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -65,10 +57,11 @@ button {
 <h1>🌍 GLOBAL SOUL</h1>
 <div>Claudia’s Daily Compass</div>
 <div>Zwischen Heimat und Horizont.</div>
-<div style="font-style:italic; opacity:0.6;">between home and horizon</div>
+<div style="font-style:italic;opacity:.6;">
+between home and horizon
+</div>
 
 <div class="meta" id="meta"></div>
-
 <div id="content"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
@@ -76,9 +69,10 @@ button {
 </div>
 
 <script>
-function changeColor(value){
-  if(value > 0) return "🟢";
-  if(value < 0) return "🔴";
+
+function iconTrend(v){
+  if(v > 0) return "🟢";
+  if(v < 0) return "🔴";
   return "🟡";
 }
 
@@ -91,29 +85,90 @@ function weatherIcon(code){
 
 async function loadData(){
 
-  const res = await fetch("/api/daily");
-  const data = await res.json();
+  try{
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("de-DE", {weekday:"long", day:"2-digit", month:"2-digit", year:"numeric"});
-  const timeStr = now.toLocaleTimeString("de-DE",{hour:"2-digit", minute:"2-digit"});
+    const res = await fetch("/api/daily");
+    const data = await res.json();
 
-  document.getElementById("meta").innerHTML =
-    `${dateStr} · ${timeStr} Uhr · v${data.version}`;
+    if(!data || !data.markets || !data.weather){
+      document.getElementById("content").innerHTML =
+      "Datenfehler.";
+      return;
+    }
 
-  document.getElementById("content").innerHTML = `
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("de-DE",
+      {weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
+    const timeStr = now.toLocaleTimeString("de-DE",
+      {hour:"2-digit",minute:"2-digit"});
 
-    <h2>Märkte</h2>
-    <div class="row">
-      DAX: ${data.markets.dax.value} ${changeColor(data.markets.dax.change)}
-      (${(data.markets.dax.change*100).toFixed(1)}%)
-    </div>
-    <div class="row">
-      EUR/USD: ${data.markets.eurusd.value} ${changeColor(data.markets.eurusd.change)}
-      (${(data.markets.eurusd.change*100).toFixed(1)}%)
-    </div>
+    document.getElementById("meta").innerHTML =
+      `${dateStr} · ${timeStr} Uhr · v${data.version}`;
 
-    <h2>Krypto</h2>
-    <div class="row">
-      Bitcoin: €${Math.round(data.markets.bitcoin.price)}
-      ${
+    document.getElementById("content").innerHTML = `
+
+      <h2>Märkte</h2>
+
+      <div class="row">
+        DAX: ${data.markets.dax.value}
+        ${iconTrend(data.markets.dax.change)}
+        (${(data.markets.dax.change*100).toFixed(1)}%)
+      </div>
+
+      <div class="row">
+        EUR/USD: ${data.markets.eurusd.value}
+        ${iconTrend(data.markets.eurusd.change)}
+        (${(data.markets.eurusd.change*100).toFixed(1)}%)
+      </div>
+
+      <h2>Krypto</h2>
+
+      <div class="row">
+        Bitcoin: €${Math.round(data.markets.bitcoin.price)}
+        ${iconTrend(data.markets.bitcoin.change)}
+        (${(data.markets.bitcoin.change*100).toFixed(2)}%)
+      </div>
+
+      <div class="row">
+        Nexo: €${data.markets.nexo.price.toFixed(3)}
+        ${iconTrend(data.markets.nexo.change)}
+        (${(data.markets.nexo.change*100).toFixed(2)}%)
+      </div>
+
+      <h2>Wetter – ${data.weather.location}</h2>
+
+      <div class="row">
+        ${weatherIcon(data.weather.code)}
+        ${data.weather.temp}°C
+      </div>
+
+      <div class="trend">
+        <div>
+          09:00<br>
+          ${weatherIcon(data.weather.trend.morning.code)}<br>
+          ${Math.round(data.weather.trend.morning.temp)}°C
+        </div>
+        <div>
+          15:00<br>
+          ${weatherIcon(data.weather.trend.afternoon.code)}<br>
+          ${Math.round(data.weather.trend.afternoon.temp)}°C
+        </div>
+        <div>
+          21:00<br>
+          ${weatherIcon(data.weather.trend.evening.code)}<br>
+          ${Math.round(data.weather.trend.evening.temp)}°C
+        </div>
+      </div>
+    `;
+
+  }catch(e){
+    document.getElementById("content").innerHTML =
+    "Fehler beim Laden.";
+  }
+}
+
+loadData();
+
+</script>
+</body>
+</html>
