@@ -281,14 +281,14 @@ document.getElementById("metaInfo").innerHTML =
 <div class="crypto-line">
   ${cryptoAmpel(data.crypto.btc.change)}
   Bitcoin: ${data.crypto.btc.price} € 
-  (≈ ${(data.crypto.btc.price / data.markets.eurusd.level).toFixed(0)} $)
+  <span class="usd">(≈ ${(data.crypto.btc.price / data.markets.eurusd.level).toFixed(0)} $)</span>
   (${data.crypto.btc.change}%)
 </div>
 
 <div class="crypto-line">
   ${cryptoAmpel(data.crypto.nexo.change)}
   NEXO: ${data.crypto.nexo.price} € 
-  (≈ ${(data.crypto.nexo.price / data.markets.eurusd.level).toFixed(2)} $)
+  <span class="usd">(≈ ${(data.crypto.nexo.price / data.markets.eurusd.level).toFixed(2)} $)</span>
   (${data.crypto.nexo.change}%)
 </div>
 
