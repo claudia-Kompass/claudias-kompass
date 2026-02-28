@@ -3,94 +3,79 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GLOBAL SOUL</title>
+<title>Global Soul</title>
 
 <style>
 body {
-  margin:0;
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(180deg,#0d2742,#143a5b);
-  color:#f1e9d2;
-  padding:40px 20px;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #0f2d4a 0%, #12395c 100%);
+  color: #f5f5f5;
+  padding: 40px;
 }
 
 h1 {
-  font-size:48px;
-  letter-spacing:2px;
-  text-shadow:0 0 20px rgba(255,255,200,0.5);
-  margin:0;
+  font-size: 52px;
+  margin: 0;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255,255,200,0.4);
 }
 
-.sub {
-  margin-top:5px;
-  font-size:18px;
-}
-
-.claim {
-  margin-top:10px;
-  font-size:20px;
-}
-
-.meta {
-  margin-top:5px;
-  font-size:14px;
-  opacity:0.8;
-}
+.subtitle { margin-top: 8px; font-size: 18px; opacity: 0.9; }
+.tagline { margin-top: 6px; font-size: 20px; }
+.meta { margin-top: 8px; opacity: 0.8; }
 
 button {
-  margin-top:20px;
-  padding:10px 18px;
-  border:none;
-  border-radius:8px;
-  background:#e7c97f;
-  font-weight:600;
-  cursor:pointer;
+  margin-top: 20px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  background: #e3c67a;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.section {
-  margin-top:50px;
+section {
+  margin-top: 60px;
 }
 
-.section h2 {
-  border-bottom:1px solid rgba(255,255,255,0.2);
-  padding-bottom:10px;
+h2 {
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 6px;
 }
 
 .row {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  max-width:500px;
-  margin-top:8px;
-  font-size:18px;
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 18px;
 }
 
-.left {
-  display:flex;
-  gap:15px;
+.label {
+  opacity: 0.9;
+}
+
+.value {
+  font-weight: 500;
 }
 
 .ampel {
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  display:inline-block;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-left: 10px;
 }
 
-.green { background:#1fd655; box-shadow:0 0 12px #1fd655; }
-.yellow { background:#ffd500; box-shadow:0 0 12px #ffd500; }
-.red { background:#ff3c3c; box-shadow:0 0 12px #ff3c3c; }
+.green { background: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
+.red { background: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
+.yellow { background: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
 
-a {
-  color:#ffd500;
-  text-decoration:none;
-  font-weight:500;
-}
-
-.weather-hours {
-  display:flex;
-  gap:40px;
-  margin-top:10px;
+.info {
+  margin-left: 10px;
+  color: #e3c67a;
+  text-decoration: none;
+  font-weight: normal;
 }
 </style>
 </head>
@@ -98,79 +83,70 @@ a {
 <body>
 
 <h1>🌍 GLOBAL SOUL</h1>
-<div class="sub">Claudia’s Daily Compass</div>
-<div class="claim">Zwischen Heimat und Horizont.</div>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="tagline"><em>Zwischen Heimat und Horizont.</em></div>
 <div class="meta" id="meta"></div>
-
 <button onclick="location.reload()">Neue Ausgabe</button>
 
-<div class="section">
+<section>
 <h2>Märkte</h2>
-
 <div class="row">
-  <div class="left">
-    <span>DAX:</span>
+  <div class="label">DAX</div>
+  <div class="value">
     <span id="dax"></span>
+    <span class="ampel yellow"></span>
   </div>
-  <span class="ampel yellow"></span>
 </div>
 
 <div class="row">
-  <div class="left">
-    <span>EUR/USD:</span>
+  <div class="label">EUR/USD</div>
+  <div class="value">
     <span id="eurusd"></span>
+    <span class="ampel yellow"></span>
   </div>
-  <span class="ampel yellow"></span>
 </div>
-</div>
+</section>
 
-<div class="section">
+<section>
 <h2>Krypto</h2>
 
 <div class="row">
-  <div class="left">
-    <span>Bitcoin:</span>
+  <div class="label">Bitcoin</div>
+  <div class="value">
     <span id="btc"></span>
-  </div>
-  <div>
     <span id="btcAmpel"></span>
-    <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank">Info</a>
+    <a class="info" href="https://www.coingecko.com/de/coins/bitcoin" target="_blank">Info</a>
   </div>
 </div>
 
 <div class="row">
-  <div class="left">
-    <span>Nexo:</span>
+  <div class="label">Nexo</div>
+  <div class="value">
     <span id="nexo"></span>
-  </div>
-  <div>
     <span id="nexoAmpel"></span>
-    <a href="https://www.coingecko.com/de/coins/nexo" target="_blank">Info</a>
+    <a class="info" href="https://www.coingecko.com/de/coins/nexo" target="_blank">Info</a>
   </div>
 </div>
-</div>
 
-<div class="section">
+</section>
+
+<section>
 <h2>Wetter – Ilshofen</h2>
+<div class="row"><div>Jetzt</div><div id="weatherNow"></div></div>
+<div class="row"><div>09:00</div><div id="morning"></div></div>
+<div class="row"><div>15:00</div><div id="afternoon"></div></div>
+<div class="row"><div>21:00</div><div id="evening"></div></div>
+</section>
 
-<div id="weatherNow"></div>
-
-<div class="weather-hours">
-  <div id="morning"></div>
-  <div id="afternoon"></div>
-  <div id="evening"></div>
-</div>
-</div>
-
-<div class="section">
+<section>
 <h2>Finanzbericht</h2>
-<div id="report"></div>
-</div>
+<div id="report">Marktlage stabil. Fokus auf Volatilität bei Krypto.</div>
+</section>
 
 <script>
-function ampel(change){
-  if(change > 1) return '<span class="ampel green"></span>';
-  if(change < -1) return '<span class="ampel red"></span>';
+function ampel(change) {
+  if (change > 1) return '<span class="ampel green"></span>';
+  if (change < -1) return '<span class="ampel red"></span>';
   return '<span class="ampel yellow"></span>';
 }
 
@@ -185,7 +161,7 @@ fetch("/api/daily")
     now.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}) +
     " Uhr · v" + data.version;
 
-  document.getElementById("dax").innerText = data.markets.dax.value;
+  document.getElementById("dax").innerText = data.markets.dax;
   document.getElementById("eurusd").innerText = data.markets.eurusd.toFixed(2);
 
   document.getElementById("btc").innerText =
@@ -206,16 +182,14 @@ fetch("/api/daily")
     data.weather.temp + "°C";
 
   document.getElementById("morning").innerText =
-    "09:00 " + data.weather.trend.morning.temp + "°C";
+    data.weather.morning + "°C";
 
   document.getElementById("afternoon").innerText =
-    "15:00 " + data.weather.trend.afternoon.temp + "°C";
+    data.weather.afternoon + "°C";
 
   document.getElementById("evening").innerText =
-    "21:00 " + data.weather.trend.evening.temp + "°C";
+    data.weather.evening + "°C";
 
-  document.getElementById("report").innerText =
-    "Bitcoin bewegt sich aktuell mit moderater Volatilität. EUR/USD stabil. DAX seitwärts.";
 });
 </script>
 
