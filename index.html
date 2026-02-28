@@ -103,71 +103,122 @@ button {
 </div>
 
 <script>
-function changeClass(change){
-  const val=parseFloat(change);
-  if(val>0) return "change-positive";
-  if(val<0) return "change-negative";
-  return "change-neutral";
-}
 
-function trendArrow(change){
-  const val=parseFloat(change);
-  if(val>0) return "▲";
-  if(val<0) return "▼";
-  return "➝";
+function getWeatherIcon(code){
+  const map = {
+    0: "☀️",
+    1: "🌤️",
+    2: "⛅",
+    3: "☁️",
+    45: "🌫️",
+    48: "🌫️",
+    51: "🌦️",
+    61: "🌧️",
+    63: "🌧️",
+    71: "❄️",
+    73: "❄️",
+    95: "⛈️"
+  };
+  return map[code] || "☁️";
 }
 
 function cryptoAmpel(change){
-  const val=parseFloat(change);
-  if(val>1) return '<span class="ampel green"></span>';
-  if(val<-1) return '<span class="ampel red"></span>';
-  return '<span class="ampel yellow"></span>';
+  const val = parseFloat(change);
+  if (val > 1) return "🟢";
+  if (val < -1) return "🔴";
+  return "🟡";
 }
 
-async function loadData(){
-  const res=await fetch("/api/daily");
-  const data=await res.json();
+function renderWeather(weather){
+  if (!weather) return "";
 
-  const now=new Date();
-  const dateString=now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
+  const m = weather.trend.morning;
+  const a = weather.trend.afternoon;
+  const e = weather.trend.evening;
 
-  document.getElementById("metaInfo").innerHTML=
-    `${dateString} · ${data.marketTime} Uhr · v${data.version}`;
+  return `
+  <div class="section">
+    <h2>Wetter – ${weather.location}</h2>
 
-  document.getElementById("content").innerHTML=`
+    <div class="weather-main">
+      <div style="font-size:32px;">
+        ${getWeatherIcon(weather.code)}
+      </div>
+      <div style="font-size:22px;font-weight:600;">
+        ${weather.temp}°C
+      </div>
+    </div>
 
-  <h2>Märkte</h2>
-  <div class="markets-line">
-    DAX: ${data.markets.dax.value}
-    <span class="${changeClass(data.markets.dax.change)}">
-      (${data.markets.dax.change}% ${trendArrow(data.markets.dax.change)})
-    </span>
-    <a href="${data.markets.dax.link}" target="_blank">Mehr</a>
-  </div>
+    <div class="weather-trend">
+      <div class="weather-row">
+        <div class="weather-time">09:00</div>
+        <div>${getWeatherIcon(m.code)}</div>
+        <div>${Math.round(m.temp)}°C</div>
+      </div>
 
-  <h2>Krypto</h2>
+      <div class="weather-row">
+        <div class="weather-time">15:00</div>
+        <div>${getWeatherIcon(a.code)}</div>
+        <div>${Math.round(a.temp)}°C</div>
+      </div>
 
-  <div class="crypto-line">
-    ${cryptoAmpel(data.crypto.btc.change)}
-    Bitcoin: €${data.crypto.btc.price}
-    <span class="${changeClass(data.crypto.btc.change)}">
-      (${data.crypto.btc.change}%)
-    </span>
-    <a href="${data.crypto.btc.link}" target="_blank">Info</a>
-  </div>
-
-  <div class="crypto-line">
-    ${cryptoAmpel(data.crypto.nexo.change)}
-    Nexo: €${data.crypto.nexo.price}
-    <span class="${changeClass(data.crypto.nexo.change)}">
-      (${data.crypto.nexo.change}%)
-    </span>
-    <a href="${data.crypto.nexo.link}" target="_blank">Info</a>
+      <div class="weather-row">
+        <div class="weather-time">21:00</div>
+        <div>${getWeatherIcon(e.code)}</div>
+        <div>${Math.round(e.temp)}°C</div>
+      </div>
+    </div>
   </div>
   `;
 }
 
+function renderMarkets(markets){
+  return `
+  <div class="section">
+    <h2>Märkte</h2>
+
+    <div>
+      DAX: ${markets.dax.value} 
+      ${cryptoAmpel(markets.dax.change)}
+    </div>
+
+    <div>
+      EUR/USD: ${markets.eurusd.value}
+      ${cryptoAmpel(markets.eurusd.change)}
+    </div>
+
+    <br>
+
+    <div>
+      Bitcoin: €${Math.round(markets.bitcoin.price)}
+      ${cryptoAmpel(markets.bitcoin.change)}
+    </div>
+
+    <div>
+      Nexo: €${markets.nexo.price.toFixed(2)}
+      ${cryptoAmpel(markets.nexo.change)}
+    </div>
+  </div>
+  `;
+}
+
+async function loadData(){
+  try{
+    const res = await fetch("/api/daily");
+    const data = await res.json();
+
+    document.getElementById("content").innerHTML =
+      renderMarkets(data.markets) +
+      renderWeather(data.weather);
+
+  } catch(err){
+    document.getElementById("content").innerHTML =
+      "Fehler beim Laden";
+  }
+}
+
 loadData();
+
 </script>
 
 </body>
