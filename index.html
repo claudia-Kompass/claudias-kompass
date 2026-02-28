@@ -275,7 +275,9 @@ document.getElementById("metaInfo").innerHTML =
 
 <div class="crypto-line">
   ${cryptoAmpel(data.crypto.btc.change)}
-  Bitcoin: ${data.crypto.btc.price} € (${data.crypto.btc.change}%)
+  Bitcoin: ${data.crypto.btc.price} € 
+  (≈ ${(data.crypto.btc.price / data.markets.eurusd.level).toFixed(0)} $)
+  (${data.crypto.btc.change}%)
 </div>
 
 <div class="crypto-line">
