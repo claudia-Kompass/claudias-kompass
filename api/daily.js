@@ -1,4 +1,3 @@
-
 module.exports = async function handler(req, res) {
   try {
     const version = "12.3.0";
