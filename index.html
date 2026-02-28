@@ -3,113 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Soul</title>
+<title>GLOBAL SOUL – Claudia’s Daily Compass</title>
 
 <style>
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg,#0d2740,#1b3d5c);
-  color: #f4f4f4;
-  padding: 30px;
+  margin:0;
+  background:#0f1115;
+  color:#e6e6e6;
+  font-family:Arial, sans-serif;
+}
+
+.container {
+  max-width:760px;
+  margin:40px auto;
+  padding:40px;
+  background:#171a21;
+  border-radius:14px;
 }
 
 h1 {
-  font-size: 42px;
-  letter-spacing: 3px;
-  text-shadow: 0 0 12px rgba(255,255,200,0.5);
+  font-size:36px;
+  color:#e8dcc0;
+  margin-bottom:10px;
+}
+
+.meta {
+  font-size:14px;
+  opacity:0.8;
+  margin-bottom:30px;
 }
 
 .section {
-  margin-top: 40px;
+  margin-bottom:40px;
 }
 
-hr {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  margin: 10px 0 20px 0;
+h2 {
+  color:#f0d48a;
+  font-size:20px;
+  margin-bottom:15px;
+}
+
+.market-line {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
 }
 
 .ampel {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 10px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:6px;
 }
 
-.green { background: #00ff88; }
-.red { background: #ff4d4d; }
-.yellow { background: #ffd633; }
+.green { background:#4caf50; }
+.red { background:#e53935; }
+.yellow { background:#fbc02d; }
 
-.weather-grid {
-  display: flex;
-  gap: 40px;
-  margin-top: 20px;
+button {
+  background:#f0d48a;
+  border:none;
+  padding:10px 16px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-bottom:20px;
 }
-
-.weather-slot {
-  text-align: center;
-}
-
-.icon {
-  font-size: 28px;
-}
-
 </style>
 </head>
+
 <body>
 
+<div class="container">
+
 <h1>🌍 GLOBAL SOUL</h1>
-<div id="meta"></div>
+<div>Claudia’s Daily Compass</div>
+<div class="meta" id="metaInfo"></div>
 
-<div class="section">
-<h2>Märkte</h2>
-<hr>
-<div>DAX: <span id="dax"></span></div>
-<div>EUR/USD: <span id="eurusd"></span></div>
-</div>
+<button onclick="loadData()">Neue Ausgabe</button>
 
-<div class="section">
-<h2>Krypto</h2>
-<hr>
-<div>
-<span id="btcAmpel"></span>
-Bitcoin: <span id="btc"></span>
-</div>
-<div>
-<span id="nexoAmpel"></span>
-Nexo: <span id="nexo"></span>
-</div>
-</div>
+<div id="content"></div>
 
-<div class="section">
-<h2>Wetter – Ilshofen</h2>
-<hr>
-<div style="font-size:22px;">
-<span id="weatherIcon"></span>
-Jetzt: <span id="weatherNow"></span>
-</div>
-
-<div class="weather-grid">
-<div class="weather-slot">
-<div id="morningIcon" class="icon"></div>
-<div id="morning"></div>
-</div>
-<div class="weather-slot">
-<div id="afternoonIcon" class="icon"></div>
-<div id="afternoon"></div>
-</div>
-<div class="weather-slot">
-<div id="eveningIcon" class="icon"></div>
-<div id="evening"></div>
-</div>
-</div>
 </div>
 
 <script>
 
-function ampel(change) {
+function cryptoAmpel(change) {
   if (change > 1) return '<span class="ampel green"></span>';
   if (change < -1) return '<span class="ampel red"></span>';
   return '<span class="ampel yellow"></span>';
@@ -117,62 +96,71 @@ function ampel(change) {
 
 function weatherIcon(code) {
   if (code === 0) return "☀️";
-  if (code <= 3) return "⛅";
-  if (code <= 48) return "☁️";
-  if (code <= 67) return "🌧️";
-  if (code <= 77) return "❄️";
-  return "🌦️";
+  if (code < 3) return "🌤️";
+  if (code < 60) return "☁️";
+  return "🌧️";
 }
 
-fetch("/api/daily")
-.then(res => res.json())
-.then(data => {
+async function loadData() {
 
-  const now = new Date();
-  document.getElementById("meta").innerText =
-    now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"}) +
-    " · " +
-    now.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}) +
-    " Uhr · v" + data.version;
+  const res = await fetch('/api/daily');
+  const data = await res.json();
 
-  document.getElementById("dax").innerText = data.markets.dax;
-  document.getElementById("eurusd").innerText = data.markets.eurusd.toFixed(2);
+  document.getElementById("metaInfo").innerHTML =
+    `${data.timestamp} · v${data.version}`;
 
-  document.getElementById("btc").innerText =
-    "€ " + data.crypto.bitcoin.eur.toLocaleString() +
-    " (≈ $" + data.crypto.bitcoin.usd.toLocaleString() + ")";
+  document.getElementById("content").innerHTML = `
 
-  document.getElementById("nexo").innerText =
-    "€ " + data.crypto.nexo.eur.toFixed(3) +
-    " (≈ $" + data.crypto.nexo.usd.toFixed(2) + ")";
+  <div class="section">
+    <h2>Märkte</h2>
+    <div class="market-line">
+      <div>DAX</div>
+      <div>${data.markets.dax.value}</div>
+    </div>
+    <div style="font-size:12px;opacity:0.6;">
+      ${data.markets.dax.date}
+    </div>
 
-  document.getElementById("btcAmpel").innerHTML =
-    ampel(data.crypto.bitcoin.change);
+    <div class="market-line" style="margin-top:10px;">
+      <div>EUR/USD</div>
+      <div>${data.markets.eurusd.value}</div>
+    </div>
+    <div style="font-size:12px;opacity:0.6;">
+      ${data.markets.eurusd.date}
+    </div>
+  </div>
 
-  document.getElementById("nexoAmpel").innerHTML =
-    ampel(data.crypto.nexo.change);
+  <div class="section">
+    <h2>Krypto (USD)</h2>
 
-  document.getElementById("weatherNow").innerText =
-    data.weather.temp + "°C";
+    <div class="market-line">
+      <div>
+        ${cryptoAmpel(data.crypto.bitcoin.change)}
+        Bitcoin
+      </div>
+      <div>$${data.crypto.bitcoin.price.toFixed(0)}</div>
+    </div>
 
-  document.getElementById("weatherIcon").innerText =
-    weatherIcon(data.weather.code);
+    <div class="market-line">
+      <div>
+        ${cryptoAmpel(data.crypto.nexo.change)}
+        Nexo
+      </div>
+      <div>$${data.crypto.nexo.price.toFixed(2)}</div>
+    </div>
+  </div>
 
-  document.getElementById("morning").innerText =
-    "09:00 " + data.weather.trend.morning.temp + "°C";
-  document.getElementById("afternoon").innerText =
-    "15:00 " + data.weather.trend.afternoon.temp + "°C";
-  document.getElementById("evening").innerText =
-    "21:00 " + data.weather.trend.evening.temp + "°C";
+  <div class="section">
+    <h2>Wetter – ${data.weather.location}</h2>
+    <div style="font-size:18px;">
+      ${weatherIcon(data.weather.code)}
+      ${Math.round(data.weather.temp)}°C
+    </div>
+  </div>
+  `;
+}
 
-  document.getElementById("morningIcon").innerText =
-    weatherIcon(data.weather.trend.morning.code);
-  document.getElementById("afternoonIcon").innerText =
-    weatherIcon(data.weather.trend.afternoon.code);
-  document.getElementById("eveningIcon").innerText =
-    weatherIcon(data.weather.trend.evening.code);
-
-});
+loadData();
 </script>
 
 </body>
