@@ -1,87 +1,103 @@
-module.exports = async function handler(req, res) {
-  try {
-    const version = "12.3.0";
+// ==============================
+// GLOBAL SOUL API v12.3.0
+// ==============================
 
-    const now = new Date();
-    const marketTime = now.toLocaleTimeString("de-DE", {
-      timeZone: "Europe/Berlin",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+export default async function handler(req, res) {
 
-    // --------------------
-    // OPEN METEO
-    // --------------------
-    const weatherRes = await fetch(
-      "https://api.open-meteo.com/v1/forecast?latitude=49.178&longitude=9.928&current_weather=true"
-    );
-    const weatherData = await weatherRes.json();
+  // ====== WEATHER (Open-Meteo) ======
+  const weatherRes = await fetch(
+    "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode&timezone=Europe/Berlin"
+  );
+  const weatherData = await weatherRes.json();
 
-    const currentTemp = Math.round(
-      weatherData.current_weather?.temperature || 0
-    );
+  const weatherCode = weatherData.current_weather.weathercode;
+  const currentTemp = weatherData.current_weather.temperature;
 
-    const weather = {
-      location: "Ilshofen",
-      temp: currentTemp,
-      condition: "Überwiegend klar"
+  // Tagestrend (09 / 15 / 21 Uhr)
+  const hours = weatherData.hourly.time;
+  const temps = weatherData.hourly.temperature_2m;
+  const codes = weatherData.hourly.weathercode;
+
+  function findHour(target) {
+    const index = hours.findIndex(t => t.includes(target));
+    return {
+      temp: temps[index],
+      code: codes[index]
     };
-
-    const weatherTrend = {
-      morning: { time: "09:00", temp: 2, condition: "Klar" },
-      afternoon: { time: "15:00", temp: 9, condition: "Sonnig" },
-      evening: { time: "21:00", temp: 4, condition: "Klar" }
-    };
-
-    // --------------------
-    // COINGECKO
-    // --------------------
-    const cryptoRes = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
-    );
-    const cryptoData = await cryptoRes.json();
-
-    const crypto = {
-      btc: {
-        price: Math.round(cryptoData.bitcoin?.eur || 0),
-        change: (
-          cryptoData.bitcoin?.eur_24h_change || 0
-        ).toFixed(1)
-      },
-      nexo: {
-        price: (
-          cryptoData.nexo?.eur || 0
-        ).toFixed(2),
-        change: (
-          cryptoData.nexo?.eur_24h_change || 0
-        ).toFixed(1)
-      }
-    };
-
-    // --------------------
-    // STATIC MARKETS
-    // --------------------
-    const markets = {
-      dax: {
-        level: 18500,
-        change: "+0.3"
-      },
-      eurusd: {
-        level: 1.08,
-        change: "-0.2"
-      }
-    };
-
-    return res.status(200).json({
-      version,
-      marketTime,
-      weather,
-      weatherTrend,
-      crypto,
-      markets
-    });
-
-  } catch (err) {
-    return res.status(500).json({ error: "internal_error" });
   }
-};
+
+  const trend = {
+    morning: findHour("09:00"),
+    afternoon: findHour("15:00"),
+    evening: findHour("21:00")
+  };
+
+  const weather = {
+    location: "Ilshofen",
+    temp: Math.round(currentTemp),
+    code: weatherCode,
+    trend
+  };
+
+  // ====== CRYPTO (CoinGecko) ======
+  const cryptoRes = await fetch(
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
+  );
+  const cryptoData = await cryptoRes.json();
+
+  const btcPrice = cryptoData.bitcoin.eur;
+  const btcChange = cryptoData.bitcoin.eur_24h_change;
+
+  const nexoPrice = cryptoData.nexo.eur;
+  const nexoChange = cryptoData.nexo.eur_24h_change;
+
+  function cryptoAmpel(change) {
+    if (change > 1) return "green";
+    if (change < -1) return "red";
+    return "yellow";
+  }
+
+  const crypto = {
+    bitcoin: {
+      price: btcPrice,
+      change: btcChange,
+      ampel: cryptoAmpel(btcChange)
+    },
+    nexo: {
+      price: nexoPrice,
+      change: nexoChange,
+      ampel: cryptoAmpel(nexoChange)
+    }
+  };
+
+  // ====== DAX (fixer Referenzwert) ======
+  const dax = {
+    value: 18250,
+    change: 0.4
+  };
+
+  // ====== DYNAMISCHE TAGESSTIMMUNG ======
+  function buildMood(daxChange, btcChange, weatherCode) {
+    const marketsPositive = (daxChange > 0 || btcChange > 0);
+
+    if (marketsPositive && weatherCode === 0) {
+      return "Momentum nutzen. Klar entscheiden.";
+    }
+
+    if (!marketsPositive) {
+      return "Ruhig bleiben. Strategie schlägt Emotion.";
+    }
+
+    return "Konzentriert bleiben. Der Tag gehört dir.";
+  }
+
+  const mood = buildMood(dax.change, btcChange, weatherCode);
+
+  res.status(200).json({
+    weather,
+    crypto,
+    dax,
+    mood,
+    version: "12.3.0"
+  });
+}
