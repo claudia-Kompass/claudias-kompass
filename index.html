@@ -190,83 +190,117 @@ button {
 
 <script>
 
-function weatherIcon(code, time = "") {
-  if (code === 0 && time === "21:00") return "🌙";
-  if (code === 0) return "☀️";
-  if (code === 1) return "🌤️";
-  if (code === 2) return "⛅";
-  if (code === 3) return "☁️";
-  if (code >= 51 && code <= 67) return "🌧️";
-  if (code >= 71 && code <= 77) return "❄️";
-  return "☁️";
+function getWeatherIcon(code){
+  const map = {
+    0: "☀️",
+    1: "🌤️",
+    2: "⛅",
+    3: "☁️",
+    45: "🌫️",
+    48: "🌫️",
+    51: "🌦️",
+    61: "🌧️",
+    63: "🌧️",
+    71: "❄️",
+    73: "❄️",
+    95: "⛈️"
+  };
+  return map[code] || "☁️";
 }
 
-function cryptoDot(color) {
-  return `<span class="dot ${color}"></span>`;
+function cryptoAmpel(change){
+  const val = parseFloat(change);
+  if (val > 1) return "🟢";
+  if (val < -1) return "🔴";
+  return "🟡";
 }
 
-async function loadData() {
-  const res = await fetch("/api/daily");
-  const data = await res.json();
+function renderWeather(weather){
+  if (!weather) return "";
 
-  const now = new Date();
-  const dateString = now.toLocaleDateString("de-DE", {
-    weekday: "long",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  });
+  const m = weather.trend.morning;
+  const a = weather.trend.afternoon;
+  const e = weather.trend.evening;
 
-  const timeString = now.toLocaleTimeString("de-DE", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+  return `
+  <div class="section">
+    <h2>Wetter – ${weather.location}</h2>
 
-  document.getElementById("metaInfo").innerHTML =
-    `${dateString} · ${timeString} Uhr · v${data.version}`;
+    <div class="weather-main">
+      <div style="font-size:32px;">
+        ${getWeatherIcon(weather.code)}
+      </div>
+      <div style="font-size:22px;font-weight:600;">
+        ${weather.temp}°C
+      </div>
+    </div>
 
-  const content = document.getElementById("content");
+    <div class="weather-trend">
+      <div class="weather-row">
+        <div class="weather-time">09:00</div>
+        <div>${getWeatherIcon(m.code)}</div>
+        <div>${Math.round(m.temp)}°C</div>
+      </div>
 
-  content.innerHTML = `
+      <div class="weather-row">
+        <div class="weather-time">15:00</div>
+        <div>${getWeatherIcon(a.code)}</div>
+        <div>${Math.round(a.temp)}°C</div>
+      </div>
 
+      <div class="weather-row">
+        <div class="weather-time">21:00</div>
+        <div>${getWeatherIcon(e.code)}</div>
+        <div>${Math.round(e.temp)}°C</div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function renderMarkets(markets){
+  return `
   <div class="section">
     <h2>Märkte</h2>
-    <div>DAX: ${data.dax.value} (${data.dax.change}%)</div>
-  </div>
 
-  <div class="section">
-    <h2>Krypto</h2>
     <div>
-      ${cryptoDot(data.crypto.bitcoin.ampel)}
-      Bitcoin: €${data.crypto.bitcoin.price.toFixed(0)}
-      (${data.crypto.bitcoin.change.toFixed(2)}%)
+      DAX: ${markets.dax.value} 
+      ${cryptoAmpel(markets.dax.change)}
     </div>
+
     <div>
-      ${cryptoDot(data.crypto.nexo.ampel)}
-      Nexo: €${data.crypto.nexo.price.toFixed(3)}
-      (${data.crypto.nexo.change.toFixed(2)}%)
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Wetter – ${data.weather.location}</h2>
-    <div class="weather-main">
-      ${weatherIcon(data.weather.code)}
-      ${data.weather.temp}°C
+      EUR/USD: ${markets.eurusd.value}
+      ${cryptoAmpel(markets.eurusd.change)}
     </div>
 
-    <div class="trend">
-      <div>09:00 ${weatherIcon(data.weather.trend.morning.code, "09:00")} ${Math.round(data.weather.trend.morning.temp)}°C</div>
-      <div>15:00 ${weatherIcon(data.weather.trend.afternoon.code, "15:00")} ${Math.round(data.weather.trend.afternoon.temp)}°C</div>
-      <div>21:00 ${weatherIcon(data.weather.trend.evening.code, "21:00")} ${Math.round(data.weather.trend.evening.temp)}°C</div>
+    <br>
+
+    <div>
+      Bitcoin: €${Math.round(markets.bitcoin.price)}
+      ${cryptoAmpel(markets.bitcoin.change)}
+    </div>
+
+    <div>
+      Nexo: €${markets.nexo.price.toFixed(2)}
+      ${cryptoAmpel(markets.nexo.change)}
     </div>
   </div>
-
-  <div class="section mood">
-    ${data.mood}
-  </div>
-
   `;
+}
+
+async function loadData(){
+  try{
+    const res = await fetch("/api/daily");
+    const data = await res.json();
+
+    document.getElementById("content").innerHTML =
+      renderMarkets(data.markets) +
+      renderWeather(data.weather);
+
+  } catch(err){
+    document.getElementById("content").innerHTML =
+      "Fehler beim Laden";
+  }
 }
 
 loadData();
