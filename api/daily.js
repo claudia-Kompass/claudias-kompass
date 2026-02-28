@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   try {
-    const version = "14.3.0";
+    const version = "14.3.1";
 
     // ========================
     // WETTER
@@ -11,13 +11,17 @@ export default async function handler(req, res) {
     const weatherRes = await fetch(weatherUrl);
     const weatherData = await weatherRes.json();
 
-    const currentTemp = Math.round(weatherData.current_weather.temperature);
+    const currentTemp = Math.round(
+      weatherData.current_weather.temperature
+    );
 
     function getHour(hour) {
       const index = weatherData.hourly.time.findIndex(t =>
         t.includes(hour)
       );
-      return Math.round(weatherData.hourly.temperature_2m[index]);
+      return Math.round(
+        weatherData.hourly.temperature_2m[index]
+      );
     }
 
     // ========================
@@ -55,6 +59,7 @@ export default async function handler(req, res) {
         nexo: cryptoData.nexo
       }
     });
+
   } catch (err) {
     res.status(500).json({ error: "API Fehler" });
   }
