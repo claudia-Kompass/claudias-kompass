@@ -1,197 +1,61 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Global Soul</title>
+export default async function handler(req, res) {
+  try {
+    const version = "14.3.0";
 
-<style>
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: linear-gradient(180deg, #0f2d4a 0%, #12395c 100%);
-  color: #f5f5f5;
-  padding: 40px;
+    // ========================
+    // WETTER
+    // ========================
+    const weatherUrl =
+      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m";
+
+    const weatherRes = await fetch(weatherUrl);
+    const weatherData = await weatherRes.json();
+
+    const currentTemp = Math.round(weatherData.current_weather.temperature);
+
+    function getHour(hour) {
+      const index = weatherData.hourly.time.findIndex(t =>
+        t.includes(hour)
+      );
+      return Math.round(weatherData.hourly.temperature_2m[index]);
+    }
+
+    // ========================
+    // KRYPTO
+    // ========================
+    const cryptoUrl =
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur,usd&include_24hr_change=true";
+
+    const cryptoRes = await fetch(cryptoUrl);
+    const cryptoData = await cryptoRes.json();
+
+    // ========================
+    // EUR/USD
+    // ========================
+    const fxRes = await fetch(
+      "https://api.exchangerate.host/latest?base=EUR&symbols=USD"
+    );
+    const fxData = await fxRes.json();
+
+    res.status(200).json({
+      version,
+      weather: {
+        location: "Ilshofen",
+        temp: currentTemp,
+        morning: getHour("09:00"),
+        afternoon: getHour("15:00"),
+        evening: getHour("21:00")
+      },
+      markets: {
+        dax: 18500,
+        eurusd: fxData.rates.USD
+      },
+      crypto: {
+        bitcoin: cryptoData.bitcoin,
+        nexo: cryptoData.nexo
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: "API Fehler" });
+  }
 }
-
-h1 {
-  font-size: 52px;
-  margin: 0;
-  letter-spacing: 2px;
-  text-shadow: 0 0 20px rgba(255,255,200,0.4);
-}
-
-.subtitle { margin-top: 8px; font-size: 18px; opacity: 0.9; }
-.tagline { margin-top: 6px; font-size: 20px; }
-.meta { margin-top: 8px; opacity: 0.8; }
-
-button {
-  margin-top: 20px;
-  padding: 10px 18px;
-  border-radius: 6px;
-  border: none;
-  background: #e3c67a;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-section {
-  margin-top: 60px;
-}
-
-h2 {
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  padding-bottom: 6px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  font-size: 18px;
-}
-
-.label {
-  opacity: 0.9;
-}
-
-.value {
-  font-weight: 500;
-}
-
-.ampel {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-left: 10px;
-}
-
-.green { background: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
-.red { background: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
-.yellow { background: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
-
-.info {
-  margin-left: 10px;
-  color: #e3c67a;
-  text-decoration: none;
-  font-weight: normal;
-}
-</style>
-</head>
-
-<body>
-
-<h1>🌍 GLOBAL SOUL</h1>
-<div class="subtitle">Claudia’s Daily Compass</div>
-<div class="tagline"><em>Zwischen Heimat und Horizont.</em></div>
-<div class="meta" id="meta"></div>
-<button onclick="location.reload()">Neue Ausgabe</button>
-
-<section>
-<h2>Märkte</h2>
-<div class="row">
-  <div class="label">DAX</div>
-  <div class="value">
-    <span id="dax"></span>
-    <span class="ampel yellow"></span>
-  </div>
-</div>
-
-<div class="row">
-  <div class="label">EUR/USD</div>
-  <div class="value">
-    <span id="eurusd"></span>
-    <span class="ampel yellow"></span>
-  </div>
-</div>
-</section>
-
-<section>
-<h2>Krypto</h2>
-
-<div class="row">
-  <div class="label">Bitcoin</div>
-  <div class="value">
-    <span id="btc"></span>
-    <span id="btcAmpel"></span>
-    <a class="info" href="https://www.coingecko.com/de/coins/bitcoin" target="_blank">Info</a>
-  </div>
-</div>
-
-<div class="row">
-  <div class="label">Nexo</div>
-  <div class="value">
-    <span id="nexo"></span>
-    <span id="nexoAmpel"></span>
-    <a class="info" href="https://www.coingecko.com/de/coins/nexo" target="_blank">Info</a>
-  </div>
-</div>
-
-</section>
-
-<section>
-<h2>Wetter – Ilshofen</h2>
-<div class="row"><div>Jetzt</div><div id="weatherNow"></div></div>
-<div class="row"><div>09:00</div><div id="morning"></div></div>
-<div class="row"><div>15:00</div><div id="afternoon"></div></div>
-<div class="row"><div>21:00</div><div id="evening"></div></div>
-</section>
-
-<section>
-<h2>Finanzbericht</h2>
-<div id="report">Marktlage stabil. Fokus auf Volatilität bei Krypto.</div>
-</section>
-
-<script>
-function ampel(change) {
-  if (change > 1) return '<span class="ampel green"></span>';
-  if (change < -1) return '<span class="ampel red"></span>';
-  return '<span class="ampel yellow"></span>';
-}
-
-fetch("/api/daily")
-.then(res => res.json())
-.then(data => {
-
-  const now = new Date();
-  document.getElementById("meta").innerText =
-    now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"}) +
-    " · " +
-    now.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}) +
-    " Uhr · v" + data.version;
-
-  document.getElementById("dax").innerText = data.markets.dax;
-  document.getElementById("eurusd").innerText = data.markets.eurusd.toFixed(2);
-
-  document.getElementById("btc").innerText =
-    "€" + data.crypto.bitcoin.eur.toLocaleString() +
-    " (≈ $" + data.crypto.bitcoin.usd.toLocaleString() + ")";
-
-  document.getElementById("nexo").innerText =
-    "€" + data.crypto.nexo.eur.toFixed(3) +
-    " (≈ $" + data.crypto.nexo.usd.toFixed(2) + ")";
-
-  document.getElementById("btcAmpel").innerHTML =
-    ampel(data.crypto.bitcoin.eur_24h_change);
-
-  document.getElementById("nexoAmpel").innerHTML =
-    ampel(data.crypto.nexo.eur_24h_change);
-
-  document.getElementById("weatherNow").innerText =
-    data.weather.temp + "°C";
-
-  document.getElementById("morning").innerText =
-    data.weather.morning + "°C";
-
-  document.getElementById("afternoon").innerText =
-    data.weather.afternoon + "°C";
-
-  document.getElementById("evening").innerText =
-    data.weather.evening + "°C";
-
-});
-</script>
-
-</body>
-</html>
