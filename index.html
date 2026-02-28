@@ -190,13 +190,19 @@ async function loadData(){
     ${ampel(data.markets.eurusd.change)}
   </div>
 
-  <div class="section">
-    <h2>Krypto</h2>
-    <hr>
+<div class="section">
+  <h2>Krypto</h2>
+  <hr>
 
-    <div class="crypto-row">
-      Bitcoin: €${data.crypto.bitcoin.eur.toFixed(0)}
+  <div class="crypto-row">
+    <div class="crypto-name">Bitcoin</div>
+
+    <div class="crypto-price">
+      €${data.crypto.bitcoin.eur.toFixed(0)}
       (≈ $${data.crypto.bitcoin.usd.toFixed(0)})
+    </div>
+
+    <div class="crypto-actions">
       ${ampel(data.crypto.bitcoin.change)}
       <a class="info-link"
          target="_blank"
@@ -204,10 +210,17 @@ async function loadData(){
          Info
       </a>
     </div>
+  </div>
 
-    <div class="crypto-row">
-      Nexo: €${data.crypto.nexo.eur.toFixed(3)}
+  <div class="crypto-row">
+    <div class="crypto-name">Nexo</div>
+
+    <div class="crypto-price">
+      €${data.crypto.nexo.eur.toFixed(3)}
       (≈ $${data.crypto.nexo.usd.toFixed(2)})
+    </div>
+
+    <div class="crypto-actions">
       ${ampel(data.crypto.nexo.change)}
       <a class="info-link"
          target="_blank"
@@ -215,7 +228,8 @@ async function loadData(){
          Info
       </a>
     </div>
-
+  </div>
+</div>
   </div>
 
   <div class="section">
