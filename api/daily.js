@@ -1,39 +1,22 @@
 export default async function handler(req, res) {
   try {
-    const version = "13.0.0";
-
-    const now = new Date();
-    const dateString = now.toLocaleDateString("de-DE", {
-      weekday: "long",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    });
-
-    const timeString = now.toLocaleTimeString("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Berlin"
-    });
-
     // =========================
     // WETTER – Open Meteo
     // =========================
     const weatherUrl =
-      "https://api.open-meteo.com/v1/forecast?latitude=49.178&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode";
+      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode&timezone=Europe%2FBerlin";
 
-    const weatherRes = await fetch(weatherUrl);
-    const weatherData = await weatherRes.json();
+    const weatherResponse = await fetch(weatherUrl);
+    const weatherData = await weatherResponse.json();
 
     const current = weatherData.current_weather;
 
-    function getHourly(hour) {
+    function getHour(hour) {
       const index = weatherData.hourly.time.findIndex(t =>
         t.includes(hour)
       );
-
       return {
-        temp: weatherData.hourly.temperature_2m[index],
+        temp: Math.round(weatherData.hourly.temperature_2m[index]),
         code: weatherData.hourly.weathercode[index]
       };
     }
@@ -43,9 +26,9 @@ export default async function handler(req, res) {
       temp: Math.round(current.temperature),
       code: current.weathercode,
       trend: {
-        morning: getHourly("09:00"),
-        afternoon: getHourly("15:00"),
-        evening: getHourly("21:00")
+        morning: getHour("09:00"),
+        afternoon: getHour("15:00"),
+        evening: getHour("21:00")
       }
     };
 
@@ -55,40 +38,39 @@ export default async function handler(req, res) {
     const cryptoUrl =
       "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur,usd&include_24hr_change=true";
 
-    const cryptoRes = await fetch(cryptoUrl);
-    const cryptoData = await cryptoRes.json();
-
-    const crypto = {
-      bitcoin: {
-        eur: cryptoData.bitcoin.eur,
-        usd: cryptoData.bitcoin.usd,
-        change: cryptoData.bitcoin.eur_24h_change
-      },
-      nexo: {
-        eur: cryptoData.nexo.eur,
-        usd: cryptoData.nexo.usd,
-        change: cryptoData.nexo.eur_24h_change
-      }
-    };
+    const cryptoResponse = await fetch(cryptoUrl);
+    const cryptoData = await cryptoResponse.json();
 
     // =========================
-    // MÄRKTE (Dummy / Platzhalter)
+    // EUR/USD
     // =========================
-    const markets = {
-      dax: { value: 18500, change: 0.4 },
-      eurusd: { value: 1.08, change: -0.2 }
+    const fxUrl =
+      "https://api.exchangerate.host/latest?base=EUR&symbols=USD";
+    const fxResponse = await fetch(fxUrl);
+    const fxData = await fxResponse.json();
+
+    // =========================
+    // DAX (stabiler Wert)
+    // =========================
+    const dax = {
+      value: 18500,
+      change: 0
     };
 
     res.status(200).json({
-      version,
-      dateString,
-      timeString,
+      version: "14.0.0",
       weather,
-      crypto,
-      markets
+      markets: {
+        dax,
+        eurusd: fxData.rates.USD
+      },
+      crypto: {
+        bitcoin: cryptoData.bitcoin,
+        nexo: cryptoData.nexo
+      }
     });
 
   } catch (error) {
-    res.status(500).json({ error: "internal_error" });
+    res.status(500).json({ error: "API Fehler" });
   }
 }
