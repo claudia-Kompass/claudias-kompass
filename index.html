@@ -27,23 +27,9 @@ h1{
   margin:0 0 10px 0;
 }
 
-.subtitle{
-  font-size:18px;
-  opacity:0.9;
-  margin-bottom:6px;
-}
-
-.tagline{
-  font-style:italic;
-  opacity:0.7;
-  margin-bottom:10px;
-}
-
-.meta{
-  font-size:14px;
-  opacity:0.6;
-  margin-bottom:30px;
-}
+.subtitle{font-size:18px;opacity:0.9;}
+.tagline{font-style:italic;opacity:0.7;margin-top:4px;}
+.meta{font-size:14px;opacity:0.6;margin-top:8px;margin-bottom:30px;}
 
 button{
   background:#f0d48a;
@@ -54,44 +40,32 @@ button{
   margin-bottom:40px;
 }
 
-.section{
-  margin-bottom:50px;
-}
-
-h2{
-  color:#f0d48a;
-  font-size:22px;
-  margin-bottom:20px;
-}
+.section{margin-bottom:50px;}
+h2{color:#f0d48a;font-size:22px;margin-bottom:20px;}
 
 .line{
   display:flex;
-  justify-content:flex-start;
-  gap:40px;
+  align-items:center;
+  gap:14px;
   margin-bottom:8px;
   font-size:18px;
 }
 
-.value{
-  font-weight:600;
-  min-width:120px;
-}
+.value{font-weight:600;}
 
-.small{
-  font-size:13px;
-  opacity:0.5;
-  margin-left:0;
-  margin-bottom:12px;
+.small{font-size:13px;opacity:0.5;margin-bottom:12px;}
+
+.info{
+  color:#fbc02d;
+  font-size:14px;
+  margin-left:10px;
+  text-decoration:none;
 }
 
 .ampel{
-  width:12px;
-  height:12px;
-  border-radius:50%;
+  width:12px;height:12px;border-radius:50%;
   display:inline-block;
-  margin-right:8px;
 }
-
 .green{background:#4caf50;}
 .red{background:#e53935;}
 .yellow{background:#fbc02d;}
@@ -101,18 +75,24 @@ h2{
   display:flex;
   align-items:center;
   gap:14px;
+  margin-bottom:14px;
+}
+
+.weatherTrend{
+  display:flex;
+  gap:40px;
+  font-size:16px;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
 <h1>🌍 GLOBAL SOUL</h1>
 <div class="subtitle">Claudia’s Daily Compass</div>
 <div class="tagline">Zwischen Heimat und Horizont.</div>
-<div class="meta" id="metaInfo"></div>
+<div class="meta" id="meta"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
@@ -122,7 +102,7 @@ h2{
 
 <script>
 
-function cryptoAmpel(change){
+function ampel(change){
   if(change>1) return '<span class="ampel green"></span>';
   if(change<-1) return '<span class="ampel red"></span>';
   return '<span class="ampel yellow"></span>';
@@ -140,8 +120,11 @@ async function loadData(){
   const res = await fetch('/api/daily');
   const data = await res.json();
 
-  document.getElementById("metaInfo").innerHTML =
+  document.getElementById("meta").innerHTML =
     `${data.timestamp} · v${data.version}`;
+
+  const btcEur = (data.crypto.bitcoin.price / data.markets.eurusd.value).toFixed(0);
+  const nexoEur = (data.crypto.nexo.price / data.markets.eurusd.value).toFixed(3);
 
   document.getElementById("content").innerHTML = `
 
@@ -149,39 +132,33 @@ async function loadData(){
     <h2>Märkte</h2>
 
     <div class="line">
-      <div>DAX</div>
-      <div class="value">${data.markets.dax.value}</div>
+      DAX ${data.markets.dax.value}
+      <a class="info" href="https://www.boerse.de" target="_blank">Info</a>
     </div>
     <div class="small">${data.markets.dax.date}</div>
 
     <div class="line">
-      <div>EUR/USD</div>
-      <div class="value">${data.markets.eurusd.value}</div>
+      EUR/USD ${data.markets.eurusd.value}
+      <a class="info" href="https://www.finanzen.net/devisen/euro-us-dollar-kurs" target="_blank">Info</a>
     </div>
     <div class="small">${data.markets.eurusd.date}</div>
   </div>
 
   <div class="section">
-    <h2>Krypto (USD)</h2>
+    <h2>Krypto</h2>
 
     <div class="line">
-      <div>
-        ${cryptoAmpel(data.crypto.bitcoin.change)}
-        Bitcoin
-      </div>
-      <div class="value">
-        $${data.crypto.bitcoin.price.toLocaleString()}
-      </div>
+      ${ampel(data.crypto.bitcoin.change)}
+      Bitcoin: $${data.crypto.bitcoin.price.toLocaleString()}
+      (€${btcEur})
+      <a class="info" href="https://www.coingecko.com/de/munze/bitcoin" target="_blank">Info</a>
     </div>
 
     <div class="line">
-      <div>
-        ${cryptoAmpel(data.crypto.nexo.change)}
-        Nexo
-      </div>
-      <div class="value">
-        $${data.crypto.nexo.price.toFixed(2)}
-      </div>
+      ${ampel(data.crypto.nexo.change)}
+      Nexo: $${data.crypto.nexo.price.toFixed(2)}
+      (€${nexoEur})
+      <a class="info" href="https://www.coingecko.com/de/munze/nexo" target="_blank">Info</a>
     </div>
   </div>
 
@@ -191,6 +168,12 @@ async function loadData(){
     <div class="weatherNow">
       ${weatherIcon(data.weather.code)}
       ${Math.round(data.weather.temp)}°C
+    </div>
+
+    <div class="weatherTrend">
+      <div>09:00 ${data.weather.trend.morning.temp}°C</div>
+      <div>15:00 ${data.weather.trend.afternoon.temp}°C</div>
+      <div>21:00 ${data.weather.trend.evening.temp}°C</div>
     </div>
   </div>
 
