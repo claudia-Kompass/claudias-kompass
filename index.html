@@ -247,6 +247,13 @@ function getIcon(condition, time) {
   return "☀️";
 }
 
+function changeClass(change) {
+  const val = parseFloat(change);
+  if (val > 0) return "change-positive";
+  if (val < 0) return "change-negative";
+  return "change-neutral";
+}
+  
 function cryptoAmpel(change) {
   const val = parseFloat(change.toString().trim());
 
