@@ -1,25 +1,37 @@
 export default async function handler(req, res) {
-
   try {
+    const version = "13.0.0";
+    const now = new Date();
 
-    // =========================
-    // WETTER – Open Meteo
-    // =========================
+    const formattedDate = now.toLocaleDateString("de-DE", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      timeZone: "Europe/Berlin"
+    });
+
+    const formattedTime = now.toLocaleTimeString("de-DE", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Berlin"
+    });
+
+    // ---------------- WEATHER (LIVE)
     const weatherUrl =
-      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode&timezone=Europe%2FBerlin";
+      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode";
 
     const weatherResponse = await fetch(weatherUrl);
     const weatherData = await weatherResponse.json();
 
     const current = weatherData.current_weather;
 
-    function getHourly(hour) {
+    function getHour(hour) {
       const index = weatherData.hourly.time.findIndex(t =>
         t.includes(hour)
       );
-
       return {
-        temp: weatherData.hourly.temperature_2m[index],
+        temp: Math.round(weatherData.hourly.temperature_2m[index]),
         code: weatherData.hourly.weathercode[index]
       };
     }
@@ -29,48 +41,44 @@ export default async function handler(req, res) {
       temp: Math.round(current.temperature),
       code: current.weathercode,
       trend: {
-        morning: getHourly("09:00"),
-        afternoon: getHourly("15:00"),
-        evening: getHourly("21:00")
+        morning: getHour("09:00"),
+        afternoon: getHour("15:00"),
+        evening: getHour("21:00")
       }
     };
 
-    // =========================
-    // KRYPTO – CoinGecko
-    // =========================
-    const cryptoUrl =
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true";
+    // ---------------- CRYPTO (LIVE)
+    const cryptoRes = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true"
+    );
+    const cryptoData = await cryptoRes.json();
 
-    const cryptoResponse = await fetch(cryptoUrl);
-    const cryptoData = await cryptoResponse.json();
-
-    const markets = {
+    const crypto = {
       bitcoin: {
-        price: cryptoData.bitcoin.eur,
+        price: Math.round(cryptoData.bitcoin.eur),
         change: cryptoData.bitcoin.eur_24h_change
       },
       nexo: {
-        price: cryptoData.nexo.eur,
+        price: cryptoData.nexo.eur.toFixed(3),
         change: cryptoData.nexo.eur_24h_change
-      },
-      dax: {
-        value: 18500,
-        change: 0.5
-      },
-      eurusd: {
-        value: 1.08,
-        change: -0.2
       }
     };
 
-    res.status(200).json({
-      version: "12.3.0",
+    // ---------------- MARKETS (statisch Demo – später API möglich)
+    const markets = {
+      dax: { value: 18500, change: 0.4 },
+      eurusd: { value: 1.08, change: -0.2 }
+    };
+
+    return res.status(200).json({
+      version,
+      date: formattedDate,
+      time: formattedTime,
       weather,
+      crypto,
       markets
     });
-
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "API Error" });
+    return res.status(500).json({ error: "internal_error" });
   }
 }
