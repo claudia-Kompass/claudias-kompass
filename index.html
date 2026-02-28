@@ -84,100 +84,76 @@ button{
 </div>
 
 <script>
-
-function weatherIcon(code){
-  if(code===0) return "☀️";
-  if(code===1 || code===2) return "🌤️";
-  if(code===3) return "☁️";
-  if(code>=45 && code<=48) return "🌫️";
-  if(code>=51 && code<=67) return "🌧️";
-  if(code>=71 && code<=77) return "❄️";
-  if(code>=80 && code<=82) return "🌦️";
-  if(code>=95) return "⛈️";
-  return "☁️";
+function ampel(change) {
+  if (change > 1) return '<span class="ampel green"></span>';
+  if (change < -1) return '<span class="ampel red"></span>';
+  return '<span class="ampel yellow"></span>';
 }
 
-function ampColor(change){
-  if(change > 1) return "green";
-  if(change < -1) return "red";
-  return "yellow";
+function weatherIcon(code) {
+  if ([0].includes(code)) return "☀️";
+  if ([1,2].includes(code)) return "🌤️";
+  if ([3].includes(code)) return "☁️";
+  if ([45,48].includes(code)) return "🌫️";
+  if ([51,53,55,61,63,65].includes(code)) return "🌧️";
+  if ([71,73,75].includes(code)) return "❄️";
+  if ([95,96,99].includes(code)) return "⛈️";
+  return "🌡️";
 }
 
-async function loadData(){
+fetch("/api/daily")
+  .then(res => res.json())
+  .then(data => {
 
-  const res = await fetch('/api/daily');
-  const data = await res.json();
+    // Header
+    document.getElementById("meta").innerText =
+      data.timestamp + " · v" + data.version;
 
-  document.getElementById("meta").innerHTML =
-    data.timestamp + " · v" + data.version;
+    // Märkte
+    document.getElementById("daxValue").innerText =
+      data.markets.dax.value;
+    document.getElementById("daxDate").innerText =
+      data.markets.dax.date;
 
-  const eurusd = parseFloat(data.markets.eurusd.value);
-  const btcUsd = data.crypto.bitcoin.price;
-  const nexoUsd = data.crypto.nexo.price;
+    document.getElementById("eurusdValue").innerText =
+      data.markets.eurusd.value;
+    document.getElementById("eurusdDate").innerText =
+      data.markets.eurusd.date;
 
-  const btcEur = (btcUsd / eurusd).toFixed(0);
-  const nexoEur = (nexoUsd / eurusd).toFixed(3);
+    // Krypto
+    const btcUSD = data.crypto.bitcoin.price;
+    const btcEUR = (btcUSD / parseFloat(data.markets.eurusd.value)).toFixed(0);
 
-  const btcColor = ampColor(data.crypto.bitcoin.change);
-  const nexoColor = ampColor(data.crypto.nexo.change);
+    const nexoUSD = data.crypto.nexo.price;
+    const nexoEUR = (nexoUSD / parseFloat(data.markets.eurusd.value)).toFixed(3);
 
-  document.getElementById("content").innerHTML = `
+    document.getElementById("btcValue").innerHTML =
+      "$" + btcUSD.toLocaleString() +
+      " (€" + btcEUR + ") " +
+      ampel(data.crypto.bitcoin.change) +
+      ' <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="info">Info</a>';
 
-    <div class="section">
-      <h2>Märkte</h2>
+    document.getElementById("nexoValue").innerHTML =
+      "$" + nexoUSD.toFixed(2) +
+      " (€" + nexoEUR + ") " +
+      ampel(data.crypto.nexo.change) +
+      ' <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="info">Info</a>';
 
-      <div class="line">
-        <div>DAX<br><small>${data.markets.dax.date}</small></div>
-        <div class="right">
-          ${data.markets.dax.value}
-          <span class="yellow">●</span>
-        </div>
-      </div>
+    // Wetter
+    const icon = weatherIcon(data.weather.code);
 
-      <div class="line">
-        <div>EUR/USD<br><small>${data.markets.eurusd.date}</small></div>
-        <div class="right">
-          ${data.markets.eurusd.value}
-          <span class="yellow">●</span>
-        </div>
-      </div>
-    </div>
+    document.getElementById("weatherNow").innerHTML =
+      icon + " " + data.weather.temp.toFixed(1) + "°C";
 
-    <div class="section">
-      <h2>Krypto</h2>
+    document.getElementById("morning").innerText =
+      "09:00  " + data.weather.trend.morning + "°C";
 
-      <div class="line">
-        <div>Bitcoin</div>
-        <div class="right">
-          $${btcUsd.toLocaleString()} 
-          (€${btcEur})
-          <span class="${btcColor}">●</span>
-        </div>
-      </div>
+    document.getElementById("afternoon").innerText =
+      "15:00  " + data.weather.trend.afternoon + "°C";
 
-      <div class="line">
-        <div>Nexo</div>
-        <div class="right">
-          $${nexoUsd.toFixed(2)} 
-          (€${nexoEur})
-          <span class="${nexoColor}">●</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Wetter – ${data.weather.location}</h2>
-      <div class="weatherNow">
-        ${weatherIcon(data.weather.code)} 
-        ${data.weather.temp.toFixed(1)}°C
-      </div>
-    </div>
-
-  `;
-}
-
-loadData();
-
+    document.getElementById("evening").innerText =
+      "21:00  " + data.weather.trend.evening + "°C";
+});
 </script>
 
 </body>
