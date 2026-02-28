@@ -13,11 +13,41 @@ body {
   padding: 40px;
 }
 
-h1 {
+/* ================= HEADER ================= */
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
   font-size: 48px;
   letter-spacing: 3px;
-  text-shadow: 0 0 20px rgba(255,215,150,0.6);
+  margin: 0;
+  text-shadow: 0 0 18px rgba(255,215,150,0.6);
 }
+
+.subtitle {
+  margin-top: 8px;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ================= BUTTON ================= */
+
+button {
+  background: #f4d27a;
+  border: none;
+  padding: 10px 18px;
+  margin-top: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================= SECTION ================= */
 
 .section {
   margin-top: 50px;
@@ -29,12 +59,14 @@ hr {
   margin: 10px 0 20px 0;
 }
 
+/* ================= AMPEL ================= */
+
 .ampel {
   display: inline-block;
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  margin-left: 10px;
+  margin-left: 8px;
   box-shadow: 0 0 10px currentColor;
 }
 
@@ -42,44 +74,41 @@ hr {
 .yellow { background: #ffd000; color: #ffd000; }
 .red { background: #ff3b3b; color: #ff3b3b; }
 
+/* ================= LINKS ================= */
+
 .info-link {
   color: #f4d27a;
-  font-weight: 600;
-  margin-left: 10px;
   text-decoration: none;
+  margin-left: 8px;
 }
 
 .info-link:hover {
-  color: #ffffff;
-  text-shadow: 0 0 8px #f4d27a;
+  text-decoration: underline;
 }
 
-button {
-  background: #f4d27a;
-  border: none;
-  padding: 10px 18px;
-  margin-top: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
+/* ================= WEATHER ================= */
 
 .weather-trend {
   display: flex;
   gap: 40px;
   margin-top: 15px;
 }
+
+.crypto-row {
+  margin-bottom: 8px;   /* reduziert Abstand */
+}
 </style>
 </head>
 
 <body>
 
-<h1>🌍 GLOBAL SOUL</h1>
-<div>Claudia’s Daily Compass</div>
-<div><i>Zwischen Heimat und Horizont.</i></div>
-<div id="meta"></div>
-
-<button onclick="loadData()">Neue Ausgabe</button>
+<div class="header">
+  <h1>🌍 GLOBAL SOUL</h1>
+  <div>Claudia’s Daily Compass</div>
+  <div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
+  <div id="meta" class="meta"></div>
+  <button onclick="loadData()">Neue Ausgabe</button>
+</div>
 
 <div id="content"></div>
 
@@ -121,23 +150,29 @@ async function loadData(){
   <div class="section">
     <h2>Krypto</h2>
     <hr>
-    Bitcoin: €${data.crypto.bitcoin.eur.toFixed(0)}
-    (≈ $${data.crypto.bitcoin.usd.toFixed(0)})
-    ${ampel(data.crypto.bitcoin.change)}
-    <a class="info-link"
-       target="_blank"
-       href="https://www.coingecko.com/de/coins/bitcoin">
-       Info
-    </a>
-    <br><br>
-    Nexo: €${data.crypto.nexo.eur.toFixed(3)}
-    (≈ $${data.crypto.nexo.usd.toFixed(2)})
-    ${ampel(data.crypto.nexo.change)}
-    <a class="info-link"
-       target="_blank"
-       href="https://www.coingecko.com/de/coins/nexo">
-       Info
-    </a>
+
+    <div class="crypto-row">
+      Bitcoin: €${data.crypto.bitcoin.eur.toFixed(0)}
+      (≈ $${data.crypto.bitcoin.usd.toFixed(0)})
+      ${ampel(data.crypto.bitcoin.change)}
+      <a class="info-link"
+         target="_blank"
+         href="https://www.coingecko.com/de/coins/bitcoin">
+         Info
+      </a>
+    </div>
+
+    <div class="crypto-row">
+      Nexo: €${data.crypto.nexo.eur.toFixed(3)}
+      (≈ $${data.crypto.nexo.usd.toFixed(2)})
+      ${ampel(data.crypto.nexo.change)}
+      <a class="info-link"
+         target="_blank"
+         href="https://www.coingecko.com/de/coins/nexo">
+         Info
+      </a>
+    </div>
+
   </div>
 
   <div class="section">
