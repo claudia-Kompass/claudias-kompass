@@ -282,7 +282,9 @@ document.getElementById("metaInfo").innerHTML =
 
 <div class="crypto-line">
   ${cryptoAmpel(data.crypto.nexo.change)}
-  NEXO: ${data.crypto.nexo.price} € (${data.crypto.nexo.change}%)
+  NEXO: ${data.crypto.nexo.price} € 
+  (≈ ${(data.crypto.nexo.price / data.markets.eurusd.level).toFixed(2)} $)
+  (${data.crypto.nexo.change}%)
 </div>
 
 <h2>Wetter</h2>
