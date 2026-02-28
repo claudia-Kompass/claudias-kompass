@@ -327,6 +327,12 @@ document.getElementById("metaInfo").innerHTML =
 <div class="weather-condition">
   ${data.weather.condition}
 </div>
+
+<div class="trend-grid">
+  ${renderTrend(data.weatherTrend.morning)}
+  ${renderTrend(data.weatherTrend.afternoon)}
+  ${renderTrend(data.weatherTrend.evening)}
+</div>
 `;
 }
 
