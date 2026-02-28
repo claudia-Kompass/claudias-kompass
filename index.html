@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -94,8 +94,51 @@ hr {
   margin-top: 15px;
 }
 
+/* ===== Header kompakter ===== */
+
+.header h1 {
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  margin-top: 4px;
+}
+
+.meta {
+  margin-top: 4px;
+}
+
+/* ===== Krypto Layout sauber ===== */
+
 .crypto-row {
-  margin-bottom: 8px;   /* reduziert Abstand */
+  display: grid;
+  grid-template-columns: 120px 1fr 90px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.crypto-name {
+  font-weight: 500;
+}
+
+.crypto-price {
+  opacity: 0.95;
+}
+
+.crypto-actions {
+  text-align: right;
+}
+
+.info-link {
+  color: #f4d27a;
+  text-decoration: none;
+  font-weight: normal;
+  margin-left: 6px;
+}
+
+.info-link:hover {
+  text-decoration: underline;
+}
 }
 </style>
 </head>
