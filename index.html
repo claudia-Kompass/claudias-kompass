@@ -132,55 +132,37 @@ async function loadData(){
   const dateString=now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
 
   document.getElementById("metaInfo").innerHTML=
-    `${dateString} · ${data.marketTime} Uhr <span class="meta-version">v${data.version}</span>`;
+    `${dateString} · ${data.marketTime} Uhr · v${data.version}`;
 
   document.getElementById("content").innerHTML=`
-  
+
   <h2>Märkte</h2>
   <div class="markets-line">
     DAX: ${data.markets.dax.value}
     <span class="${changeClass(data.markets.dax.change)}">
       (${data.markets.dax.change}% ${trendArrow(data.markets.dax.change)})
     </span>
-  </div>
-  <div class="markets-line">
-    EUR/USD: ${data.markets.eurusd.value}
-    <span class="${changeClass(data.markets.eurusd.change)}">
-      (${data.markets.eurusd.change}% ${trendArrow(data.markets.eurusd.change)})
-    </span>
+    <a href="${data.markets.dax.link}" target="_blank">Mehr</a>
   </div>
 
   <h2>Krypto</h2>
+
   <div class="crypto-line">
     ${cryptoAmpel(data.crypto.btc.change)}
     Bitcoin: €${data.crypto.btc.price}
     <span class="${changeClass(data.crypto.btc.change)}">
       (${data.crypto.btc.change}%)
     </span>
+    <a href="${data.crypto.btc.link}" target="_blank">Info</a>
   </div>
+
   <div class="crypto-line">
     ${cryptoAmpel(data.crypto.nexo.change)}
     Nexo: €${data.crypto.nexo.price}
     <span class="${changeClass(data.crypto.nexo.change)}">
       (${data.crypto.nexo.change}%)
     </span>
-  </div>
-
-  <h2>Wetter – ${data.weather.location}</h2>
-  <div class="weather-main">🌤 ${data.weather.temp}°C</div>
-
-  <div class="trend-line">
-    ${data.weatherTrend.morning.time} → ${data.weatherTrend.morning.temp}°C
-  </div>
-  <div class="trend-line">
-    ${data.weatherTrend.afternoon.time} → ${data.weatherTrend.afternoon.temp}°C
-  </div>
-  <div class="trend-line">
-    ${data.weatherTrend.evening.time} → ${data.weatherTrend.evening.temp}°C
-  </div>
-
-  <div class="motivation">
-    Konzentriert bleiben. Der Tag gehört dir.
+    <a href="${data.crypto.nexo.link}" target="_blank">Info</a>
   </div>
   `;
 }
