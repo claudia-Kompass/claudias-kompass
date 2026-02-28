@@ -1,76 +1,192 @@
-export default async function handler(req, res) {
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>GLOBAL SOUL</title>
 
-  try {
-
-    // =========================
-    // WETTER – Open Meteo
-    // =========================
-    const weatherUrl =
-      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode&timezone=Europe%2FBerlin";
-
-    const weatherResponse = await fetch(weatherUrl);
-    const weatherData = await weatherResponse.json();
-
-    const current = weatherData.current_weather;
-
-    function getHourly(hour) {
-      const index = weatherData.hourly.time.findIndex(t =>
-        t.includes(hour)
-      );
-
-      return {
-        temp: weatherData.hourly.temperature_2m[index],
-        code: weatherData.hourly.weathercode[index]
-      };
-    }
-
-    const weather = {
-      location: "Ilshofen",
-      temp: Math.round(current.temperature),
-      code: current.weathercode,
-      trend: {
-        morning: getHourly("09:00"),
-        afternoon: getHourly("15:00"),
-        evening: getHourly("21:00")
-      }
-    };
-
-    // =========================
-    // KRYPTO – CoinGecko
-    // =========================
-    const cryptoUrl =
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true";
-
-    const cryptoResponse = await fetch(cryptoUrl);
-    const cryptoData = await cryptoResponse.json();
-
-    const markets = {
-      bitcoin: {
-        price: cryptoData.bitcoin.eur,
-        change: cryptoData.bitcoin.eur_24h_change
-      },
-      nexo: {
-        price: cryptoData.nexo.eur,
-        change: cryptoData.nexo.eur_24h_change
-      },
-      dax: {
-        value: 18500,
-        change: 0.5
-      },
-      eurusd: {
-        value: 1.08,
-        change: -0.2
-      }
-    };
-
-    res.status(200).json({
-      version: "12.3.0",
-      weather,
-      markets
-    });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "API Error" });
-  }
+<style>
+body {
+  margin: 0;
+  font-family: system-ui;
+  background: linear-gradient(135deg,#0f1a2b,#16263f);
+  color: #e8dcc0;
 }
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+h1 {
+  font-size: 40px;
+  margin-bottom: 6px;
+  font-family: "Playfair Display", serif;
+}
+
+.subtitle { font-size:16px; opacity:.85; margin-bottom:18px; }
+.claim-de { font-size:17px; font-weight:500; margin-bottom:4px; }
+.claim-en { font-size:13px; font-style:italic; opacity:.6; margin-bottom:20px; }
+
+.meta-info { font-size:14px; opacity:.65; margin-bottom:40px; }
+.meta-version { font-style:italic; margin-left:6px; }
+
+h2 {
+  margin-top:50px;
+  margin-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,0.15);
+  padding-bottom:8px;
+}
+
+.markets-line, .crypto-line {
+  font-size:18px;
+  margin:8px 0;
+}
+
+.change-positive { color:#2ecc71; }
+.change-negative { color:#e74c3c; }
+.change-neutral { color:#f1c40f; }
+
+.ampel {
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+.ampel.green { background:#2ecc71; }
+.ampel.red { background:#e74c3c; }
+.ampel.yellow { background:#f1c40f; }
+
+.weather-main {
+  font-size:22px;
+  margin-bottom:12px;
+}
+
+.trend-line {
+  margin:4px 0;
+  opacity:.85;
+}
+
+.motivation {
+  margin-top:20px;
+  font-style:italic;
+  opacity:.7;
+}
+
+button {
+  margin-top:25px;
+  padding:12px 20px;
+  background:#e8dcc0;
+  border:none;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🌍 GLOBAL SOUL</h1>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="claim-de">Zwischen Heimat und Horizont.</div>
+<div class="claim-en">between home and horizon</div>
+
+<div id="metaInfo" class="meta-info"></div>
+<div id="content"></div>
+
+<button onclick="loadData()">Neue Ausgabe</button>
+
+</div>
+
+<script>
+function changeClass(change){
+  const val=parseFloat(change);
+  if(val>0) return "change-positive";
+  if(val<0) return "change-negative";
+  return "change-neutral";
+}
+
+function trendArrow(change){
+  const val=parseFloat(change);
+  if(val>0) return "▲";
+  if(val<0) return "▼";
+  return "➝";
+}
+
+function cryptoAmpel(change){
+  const val=parseFloat(change);
+  if(val>1) return '<span class="ampel green"></span>';
+  if(val<-1) return '<span class="ampel red"></span>';
+  return '<span class="ampel yellow"></span>';
+}
+
+async function loadData(){
+  const res=await fetch("/api/daily");
+  const data=await res.json();
+
+  const now=new Date();
+  const dateString=now.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
+
+  document.getElementById("metaInfo").innerHTML=
+    `${dateString} · ${data.marketTime} Uhr <span class="meta-version">v${data.version}</span>`;
+
+  document.getElementById("content").innerHTML=`
+  
+  <h2>Märkte</h2>
+  <div class="markets-line">
+    DAX: ${data.markets.dax.value}
+    <span class="${changeClass(data.markets.dax.change)}">
+      (${data.markets.dax.change}% ${trendArrow(data.markets.dax.change)})
+    </span>
+  </div>
+  <div class="markets-line">
+    EUR/USD: ${data.markets.eurusd.value}
+    <span class="${changeClass(data.markets.eurusd.change)}">
+      (${data.markets.eurusd.change}% ${trendArrow(data.markets.eurusd.change)})
+    </span>
+  </div>
+
+  <h2>Krypto</h2>
+  <div class="crypto-line">
+    ${cryptoAmpel(data.crypto.btc.change)}
+    Bitcoin: €${data.crypto.btc.price}
+    <span class="${changeClass(data.crypto.btc.change)}">
+      (${data.crypto.btc.change}%)
+    </span>
+  </div>
+  <div class="crypto-line">
+    ${cryptoAmpel(data.crypto.nexo.change)}
+    Nexo: €${data.crypto.nexo.price}
+    <span class="${changeClass(data.crypto.nexo.change)}">
+      (${data.crypto.nexo.change}%)
+    </span>
+  </div>
+
+  <h2>Wetter – ${data.weather.location}</h2>
+  <div class="weather-main">🌤 ${data.weather.temp}°C</div>
+
+  <div class="trend-line">
+    ${data.weatherTrend.morning.time} → ${data.weatherTrend.morning.temp}°C
+  </div>
+  <div class="trend-line">
+    ${data.weatherTrend.afternoon.time} → ${data.weatherTrend.afternoon.temp}°C
+  </div>
+  <div class="trend-line">
+    ${data.weatherTrend.evening.time} → ${data.weatherTrend.evening.temp}°C
+  </div>
+
+  <div class="motivation">
+    Konzentriert bleiben. Der Tag gehört dir.
+  </div>
+  `;
+}
+
+loadData();
+</script>
+
+</body>
+</html>
