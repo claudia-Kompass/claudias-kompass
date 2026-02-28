@@ -164,4 +164,41 @@ async function loadData(){
   <div class="section">
     <h2>Krypto (USD)</h2>
 
-    <div
+    <div class="line">
+      <div>
+        ${cryptoAmpel(data.crypto.bitcoin.change)}
+        Bitcoin
+      </div>
+      <div class="value">
+        $${data.crypto.bitcoin.price.toLocaleString()}
+      </div>
+    </div>
+
+    <div class="line">
+      <div>
+        ${cryptoAmpel(data.crypto.nexo.change)}
+        Nexo
+      </div>
+      <div class="value">
+        $${data.crypto.nexo.price.toFixed(2)}
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Wetter – ${data.weather.location}</h2>
+
+    <div class="weatherNow">
+      ${weatherIcon(data.weather.code)}
+      ${Math.round(data.weather.temp)}°C
+    </div>
+  </div>
+
+  `;
+}
+
+loadData();
+</script>
+
+</body>
+</html>
