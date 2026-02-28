@@ -20,82 +20,41 @@ body {
 
 h1 {
   font-size: 40px;
-  font-weight: 600;
   margin-bottom: 6px;
   letter-spacing: 2px;
 }
 
-.subtitle {
-  font-size: 16px;
-  opacity: 0.85;
-  margin-bottom: 18px;
-}
-
-.claim-de {
-  font-size: 17px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.claim-en {
-  font-size: 13px;
-  font-style: italic;
-  opacity: 0.6;
-  margin-bottom: 18px;
-}
-
-.meta-info {
-  font-size: 14px;
+.meta {
   opacity: 0.7;
   margin-bottom: 40px;
 }
 
 h2 {
-  font-size: 22px;
-  margin-top: 40px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-  padding-bottom: 6px;
+  margin-top: 50px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
 }
 
-.markets-line,
-.crypto-line {
+.row {
+  margin: 8px 0;
   font-size: 18px;
-  margin: 6px 0;
 }
 
-.ampel {
-  display:inline-block;
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  margin-right:10px;
-}
-
-.green { background:#2ecc71; }
-.red { background:#e74c3c; }
-.yellow { background:#f1c40f; }
-
-.weather-main {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-
-.trend-grid {
-  display:flex;
-  gap:40px;
-  margin-top: 12px;
+.trend {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
 }
 
 button {
   margin-top: 30px;
   padding: 12px 20px;
-  background:#e8dcc0;
-  border:none;
-  border-radius:6px;
-  font-weight:600;
-  cursor:pointer;
-  color:#0f1a2b;
+  border: none;
+  background: #e8dcc0;
+  color: #0f1a2b;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -104,12 +63,12 @@ button {
 <div class="container">
 
 <h1>🌍 GLOBAL SOUL</h1>
-<div class="subtitle">Claudia’s Daily Compass</div>
+<div>Claudia’s Daily Compass</div>
+<div>Zwischen Heimat und Horizont.</div>
+<div style="font-style:italic; opacity:0.6;">between home and horizon</div>
 
-<div class="claim-de">Zwischen Heimat und Horizont.</div>
-<div class="claim-en">between home and horizon</div>
+<div class="meta" id="meta"></div>
 
-<div id="metaInfo" class="meta-info"></div>
 <div id="content"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
@@ -117,108 +76,44 @@ button {
 </div>
 
 <script>
-
-function cryptoAmpel(change) {
-  const val = parseFloat(change);
-  if (val > 1) return '<span class="ampel green"></span>';
-  if (val < -1) return '<span class="ampel red"></span>';
-  return '<span class="ampel yellow"></span>';
+function changeColor(value){
+  if(value > 0) return "🟢";
+  if(value < 0) return "🔴";
+  return "🟡";
 }
 
-function marketAmpel(change) {
-  const val = parseFloat(change);
-  if (val > 0) return '<span class="ampel green"></span>';
-  if (val < 0) return '<span class="ampel red"></span>';
-  return '<span class="ampel yellow"></span>';
+function weatherIcon(code){
+  if(code >= 61 && code <= 67) return "🌧️";
+  if(code >= 1 && code <= 3) return "🌤️";
+  if(code === 0) return "☀️";
+  return "☁️";
 }
 
-function mapWeatherIcon(code) {
-  if (code === 0) return "☀️";
-  if ([1,2].includes(code)) return "🌤️";
-  if ([3].includes(code)) return "☁️";
-  if ([45,48].includes(code)) return "🌫️";
-  if ([51,53,55,61,63,65].includes(code)) return "🌧️";
-  if ([71,73,75].includes(code)) return "❄️";
-  if ([95,96,99].includes(code)) return "⛈️";
-  return "🌤️";
-}
-
-function renderTrend(t, time) {
-  return `
-    <div>
-      <div style="opacity:0.8">${time}</div>
-      <div style="font-size:22px">${mapWeatherIcon(t.code)}</div>
-      <div style="font-weight:600">${Math.round(t.temp)}°</div>
-    </div>
-  `;
-}
-
-async function loadData() {
+async function loadData(){
 
   const res = await fetch("/api/daily");
   const data = await res.json();
 
   const now = new Date();
-  const dateString = now.toLocaleDateString("de-DE", {
-    weekday: "long",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
+  const dateStr = now.toLocaleDateString("de-DE", {weekday:"long", day:"2-digit", month:"2-digit", year:"numeric"});
+  const timeStr = now.toLocaleTimeString("de-DE",{hour:"2-digit", minute:"2-digit"});
 
-  const timeString = now.toLocaleTimeString("de-DE", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  document.getElementById("metaInfo").innerHTML =
-    `${dateString} · ${timeString} Uhr · v${data.version}`;
+  document.getElementById("meta").innerHTML =
+    `${dateStr} · ${timeStr} Uhr · v${data.version}`;
 
   document.getElementById("content").innerHTML = `
 
-  <h2>Märkte</h2>
+    <h2>Märkte</h2>
+    <div class="row">
+      DAX: ${data.markets.dax.value} ${changeColor(data.markets.dax.change)}
+      (${(data.markets.dax.change*100).toFixed(1)}%)
+    </div>
+    <div class="row">
+      EUR/USD: ${data.markets.eurusd.value} ${changeColor(data.markets.eurusd.change)}
+      (${(data.markets.eurusd.change*100).toFixed(1)}%)
+    </div>
 
-  <div class="markets-line">
-    ${marketAmpel(data.markets.dax.change)}
-    DAX: ${data.markets.dax.level} (${data.markets.dax.change}%)
-  </div>
-
-  <div class="markets-line">
-    ${marketAmpel(data.markets.eurusd.change)}
-    EUR/USD: ${data.markets.eurusd.level} (${data.markets.eurusd.change}%)
-  </div>
-
-  <h2>Krypto</h2>
-
-  <div class="crypto-line">
-    ${cryptoAmpel(data.crypto.btc.change)}
-    Bitcoin: €${data.crypto.btc.price} (${data.crypto.btc.change}%)
-  </div>
-
-  <div class="crypto-line">
-    ${cryptoAmpel(data.crypto.nexo.change)}
-    Nexo: €${data.crypto.nexo.price} (${data.crypto.nexo.change}%)
-  </div>
-
-  <h2>Wetter – ${data.weather.location}</h2>
-
-  <div class="weather-main">
-    ${mapWeatherIcon(data.weather.code)} ${data.weather.temp}°C
-  </div>
-
-  <div class="trend-grid">
-    ${renderTrend(data.weather.trend.morning,"09:00")}
-    ${renderTrend(data.weather.trend.afternoon,"15:00")}
-    ${renderTrend(data.weather.trend.evening,"21:00")}
-  </div>
-
-  `;
-
-}
-
-loadData();
-
-</script>
-
-</body>
-</html>
+    <h2>Krypto</h2>
+    <div class="row">
+      Bitcoin: €${Math.round(data.markets.bitcoin.price)}
+      ${
