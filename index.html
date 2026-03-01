@@ -261,6 +261,20 @@ weatherIcon(data.weather.trend.evening.code);
 document.getElementById("evening").innerText =
 data.weather.trend.evening.temp.toFixed(1) + "°C";
 
+// NEWS RENDER
+const newsBlock = document.getElementById("newsBlock");
+
+if(data.news && data.news.length){
+  newsBlock.innerHTML = data.news.map(n => `
+    <div class="newsItem">
+      <a href="${n.url}" target="_blank">${n.title}</a>
+      <div class="newsSource">${n.source}</div>
+    </div>
+  `).join("");
+} else {
+  newsBlock.innerHTML = "Keine aktuellen Meldungen verfügbar.";
+}
+  
 });
 }
 
