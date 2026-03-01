@@ -91,10 +91,11 @@
     ========================== */
 
     const response = {
-      version,
-      timestamp,
+  version,
+  timestamp,
+  news: news,
 
-      markets: {
+  markets: {
         dax: {
           value: "18.742",
           date: "Stand aktuell"
