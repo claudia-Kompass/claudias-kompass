@@ -131,5 +131,17 @@
             code: hourly.weathercode[aI] ?? 0
           },
           evening: {
-            temp: hourly.temperature_2m[eI] ?? 0,
-            code: hourly.weathercode[eI] ?? 0
+        temp: hourly.temperature_2m[eI] ?? 0,
+        code: hourly.weathercode[eI] ?? 0
+      }
+    }
+  }
+};
+
+res.status(200).json(response);
+
+} catch (error) {
+  console.error("API ERROR:", error);
+  res.status(500).json({ error: "API Fehler" });
+}
+};
