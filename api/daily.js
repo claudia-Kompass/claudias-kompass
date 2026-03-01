@@ -62,11 +62,22 @@
 
         const newsJson = await newsRes.json();
 
-        news = (newsJson.articles || []).map(a => ({
-          title: a.title,
-          source: a.source?.name || "",
-          url: a.url
-        }));
+        news = (newsJson.articles || [])
+  .map(a => {
+    const article = {
+      title: a.title,
+      source: a.source?.name || "",
+      url: a.url
+    };
+
+    return {
+      ...article,
+      score: scoreArticle(article)
+    };
+  })
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 4)
+  .map(({ score, ...rest }) => rest); // score wieder entfernen
       } else {
         // Fallback Demo-News (läuft immer)
         news = [
