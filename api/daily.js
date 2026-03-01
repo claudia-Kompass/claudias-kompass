@@ -57,54 +57,54 @@ try {
 }
 
     const response = {
-      version,
-      timestamp,
+  version,
+  timestamp,
 
-      markets: {
-        dax: {
-          value: "18.742",
-          date: "Stand vom 27.02.2026"
-        },
-        eurusd: {
-          value: "1.08",
-          date: "Stand vom 27.02.2026"
-        }
+  markets: {
+    dax: {
+      value: "18.742",
+      date: "Stand vom 27.02.2026"
+    },
+    eurusd: {
+      value: "1.08",
+      date: "Stand vom 27.02.2026"
+    }
+  },
+
+  crypto: {
+    bitcoin: {
+      usd: cryptoData.bitcoin.usd,
+      eur: cryptoData.bitcoin.eur,
+      change: cryptoData.bitcoin.usd_24h_change
+    },
+    nexo: {
+      usd: cryptoData.nexo.usd,
+      eur: cryptoData.nexo.eur,
+      change: cryptoData.nexo.usd_24h_change
+    }
+  },
+
+  weather: {
+    temp: currentTemp,
+    code: currentCode,
+    trend: {
+      morning: {
+        temp: hourly.temperature_2m[mI],
+        code: hourly.weathercode[mI]
       },
-
-      crypto: {
-        bitcoin: {
-          usd: cryptoData.bitcoin.usd,
-          eur: cryptoData.bitcoin.eur,
-          change: cryptoData.bitcoin.usd_24h_change
-        },
-        nexo: {
-          usd: cryptoData.nexo.usd,
-          eur: cryptoData.nexo.eur,
-          change: cryptoData.nexo.usd_24h_change
-        }
+      afternoon: {
+        temp: hourly.temperature_2m[aI],
+        code: hourly.weathercode[aI]
       },
-
-      weather: {
-        temp: currentTemp,
-        code: currentCode,
-        trend: {
-          morning: {
-            temp: hourly.temperature_2m[mI],
-            code: hourly.weathercode[mI]
-          },
-          afternoon: {
-            temp: hourly.temperature_2m[aI],
-            code: hourly.weathercode[aI]
-          },
-          evening: {
-            temp: hourly.temperature_2m[eI],
-            code: hourly.weathercode[eI]
-          }
-        }
+      evening: {
+        temp: hourly.temperature_2m[eI],
+        code: hourly.weathercode[eI]
       }
-    };
+    }
+  },
 
-news: news
+  news: news
+};
     
     res.status(200).json(response);
 
