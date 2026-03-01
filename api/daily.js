@@ -139,13 +139,35 @@ function scoreArticle(article) {
   else if (text.includes("eu") || text.includes("europa")) score += 2;
   else score += 1;
 
-  // 4️⃣ Quellengewichtung
-  if (source.includes("bbc") || source.includes("tagesschau") || source.includes("zdf") || source.includes("reuters"))
-    score += 3;
-  else if (source.includes("n-tv") || source.includes("rtl"))
-    score += 2;
-  else
-    score += 1;
+  // 4 Quellengewichtung (optimiert)
+if (
+  source.includes("bbc") ||
+  source.includes("tagesschau") ||
+  source.includes("zdf") ||
+  source.includes("zeit") ||
+  source.includes("faz")
+) {
+  score += 4;
+}
+else if (
+  source.includes("spiegel") ||
+  source.includes("stern") ||
+  source.includes("focus")
+) {
+  score += 3;
+}
+else if (
+  source.includes("n-tv") ||
+  source.includes("rtl")
+) {
+  score += 2;
+}
+else if (source.includes("20 minuten")) {
+  score -= 2;   // aktiv abwerten
+}
+else {
+  score += 0;
+}
 
   return score;
 }
