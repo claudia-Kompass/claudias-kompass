@@ -86,6 +86,51 @@
       news = [];
     }
 
+/* ===============================
+   NEWS SCORING (Professionelle Gewichtung)
+================================= */
+
+function scoreArticle(article) {
+  let score = 0;
+  const text = (article.title || "").toLowerCase();
+  const source = (article.source || "").toLowerCase();
+
+  // 1️⃣ Krisen / harte Nachrichten
+  const crisisKeywords = [
+    "krieg", "angriff", "explosion", "sanktion",
+    "wahl", "erdbeben", "unwetter", "inflation",
+    "zins", "ezb", "fed", "öl", "gas", "rezession"
+  ];
+  crisisKeywords.forEach(k => {
+    if (text.includes(k)) score += 5;
+  });
+
+  // 2️⃣ Marktbezug
+  const marketKeywords = [
+    "dax", "dow", "wall street", "börse",
+    "rendite", "wirtschaft", "china",
+    "usd", "dollar", "euro"
+  ];
+  marketKeywords.forEach(k => {
+    if (text.includes(k)) score += 4;
+  });
+
+  // 3️⃣ Regionale Einordnung
+  if (text.includes("deutschland") || text.includes("bundestag")) score += 3;
+  else if (text.includes("eu") || text.includes("europa")) score += 2;
+  else score += 1;
+
+  // 4️⃣ Quellengewichtung
+  if (source.includes("bbc") || source.includes("tagesschau") || source.includes("zdf") || source.includes("reuters"))
+    score += 3;
+  else if (source.includes("n-tv") || source.includes("rtl"))
+    score += 2;
+  else
+    score += 1;
+
+  return score;
+}
+
     /* =========================
        RESPONSE
     ========================== */
