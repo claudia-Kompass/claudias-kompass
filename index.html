@@ -21,17 +21,21 @@ body{
 h1{
   font-size:48px;
   letter-spacing:3px;
-  text-shadow:0 0 25px rgba(255,215,120,0.5);
-  margin-bottom:10px;
+  text-shadow:0 0 25px rgba(255,215,120,0.6);
 }
 
 .subtitle{
-  opacity:0.85;
-  margin-bottom:20px;
+  opacity:0.8;
+  margin-bottom:5px;
+}
+
+.meta{
+  margin-top:10px;
+  opacity:0.8;
 }
 
 button{
-  margin-top:20px;
+  margin-top:25px;
   padding:10px 18px;
   border:none;
   background:#e6c27a;
@@ -57,68 +61,117 @@ button{
   margin:10px 0;
 }
 
-.right{
-  text-align:right;
-}
-
 .ampel{
-  display:inline-block;
   width:10px;
   height:10px;
   border-radius:50%;
+  display:inline-block;
   margin-left:8px;
 }
 
-.green{background:#2ecc71;}
-.red{background:#e74c3c;}
-.yellow{background:#f1c40f;}
+.green{ background:#2ecc71; }
+.red{ background:#e74c3c; }
+.yellow{ background:#f1c40f; }
 
 .info{
-  margin-left:10px;
   color:#f1c40f;
+  margin-left:10px;
   text-decoration:none;
-  font-size:14px;
+  font-weight:bold;
 }
 
 .weatherNow{
-  font-size:22px;
+  font-size:24px;
   margin-top:10px;
 }
 
-.weatherGrid{
+.trendBlock{
   display:flex;
-  justify-content:space-between;
-  margin-top:15px;
+  justify-content:center;
+  gap:60px;
+  margin-top:25px;
   text-align:center;
-}
-
-.weatherGrid div{
-  flex:1;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
 <h1>🌍 GLOBAL SOUL</h1>
-
-<div class="subtitle">
-Claudia’s Daily Compass<br>
-<em>Zwischen Heimat und Horizont.</em>
-</div>
-
-<div id="meta" class="subtitle"></div>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
+<div id="meta" class="meta"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
-<div id="content"></div>
+<div id="content">
 
+<div class="section">
+<h2>Märkte</h2>
+
+<div class="line">
+<div>
+DAX<br><small id="daxDate"></small>
+</div>
+<div>
+<span id="daxValue"></span>
+<span class="ampel yellow"></span>
+</div>
+</div>
+
+<div class="line">
+<div>
+EUR/USD<br><small id="eurusdDate"></small>
+</div>
+<div>
+<span id="eurusdValue"></span>
+<span class="ampel yellow"></span>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Krypto</h2>
+
+<div class="line">
+<div>Bitcoin</div>
+<div id="btcValue"></div>
+</div>
+
+<div class="line">
+<div>Nexo</div>
+<div id="nexoValue"></div>
+</div>
+</div>
+
+<div class="section">
+<h2>Wetter – Ilshofen</h2>
+
+<div id="weatherNow" class="weatherNow"></div>
+
+<div class="trendBlock">
+<div>
+<div id="morningIcon"></div>
+<div id="morning"></div>
+</div>
+
+<div>
+<div id="afternoonIcon"></div>
+<div id="afternoon"></div>
+</div>
+
+<div>
+<div id="eveningIcon"></div>
+<div id="evening"></div>
+</div>
+</div>
+
+</div>
+</div>
 </div>
 
 <script>
-
 function ampel(change){
   if(change > 1) return '<span class="ampel green"></span>';
   if(change < -1) return '<span class="ampel red"></span>';
@@ -136,111 +189,64 @@ function weatherIcon(code){
   return "🌡️";
 }
 
-async function loadData(){
-  const res = await fetch("/api/daily");
-  const data = await res.json();
+function loadData(){
+fetch("/api/daily")
+.then(res=>res.json())
+.then(data=>{
 
-  window.currentVersion = data.version;
+document.getElementById("meta").innerText =
+data.timestamp + " · v" + data.version;
 
-  document.getElementById("meta").innerText =
-    data.timestamp + " · v" + data.version;
+document.getElementById("daxValue").innerText =
+data.markets.dax.value;
+document.getElementById("daxDate").innerText =
+data.markets.dax.date;
 
-  const eurusd = parseFloat(data.markets.eurusd.value);
+document.getElementById("eurusdValue").innerText =
+data.markets.eurusd.value;
+document.getElementById("eurusdDate").innerText =
+data.markets.eurusd.date;
 
-  const btcUSD = data.crypto.bitcoin.price;
-  const btcEUR = (btcUSD / eurusd).toFixed(0);
+const btcUSD = data.crypto.bitcoin.price;
+const btcEUR = (btcUSD / parseFloat(data.markets.eurusd.value)).toFixed(0);
 
-  const nexoUSD = data.crypto.nexo.price;
-  const nexoEUR = (nexoUSD / eurusd).toFixed(3);
+const nexoUSD = data.crypto.nexo.price;
+const nexoEUR = (nexoUSD / parseFloat(data.markets.eurusd.value)).toFixed(3);
 
-  const icon = weatherIcon(data.weather.code);
+document.getElementById("btcValue").innerHTML =
+"$" + btcUSD.toLocaleString() +
+" (€" + btcEUR + ")" +
+ampel(data.crypto.bitcoin.change) +
+' <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
 
-  document.getElementById("content").innerHTML = `
+document.getElementById("nexoValue").innerHTML =
+"$" + nexoUSD.toFixed(2) +
+" (€" + nexoEUR + ")" +
+ampel(data.crypto.nexo.change) +
+' <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
 
-  <div class="section">
-    <h2>Märkte</h2>
+const icon = weatherIcon(data.weather.code);
 
-    <div class="line">
-      <div>DAX<br><small>${data.markets.dax.date}</small></div>
-      <div class="right">
-        ${data.markets.dax.value}
-        <span class="ampel yellow"></span>
-      </div>
-    </div>
+document.getElementById("weatherNow").innerHTML =
+icon + " " + data.weather.temp.toFixed(1) + "°C";
 
-    <div class="line">
-      <div>EUR/USD<br><small>${data.markets.eurusd.date}</small></div>
-      <div class="right">
-        ${data.markets.eurusd.value}
-        <span class="ampel yellow"></span>
-      </div>
-    </div>
-  </div>
+document.getElementById("morningIcon").innerHTML = icon;
+document.getElementById("afternoonIcon").innerHTML = icon;
+document.getElementById("eveningIcon").innerHTML = icon;
 
-  <div class="section">
-    <h2>Krypto</h2>
+document.getElementById("morning").innerText =
+"09:00 " + data.weather.trend.morning + "°C";
 
-    <div class="line">
-      <div>Bitcoin</div>
-      <div class="right">
-        $${btcUSD.toLocaleString()} (€${btcEUR})
-        ${ampel(data.crypto.bitcoin.change)}
-        <a href="https://www.coingecko.com/de/coins/bitcoin"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="info">Info</a>
-      </div>
-    </div>
+document.getElementById("afternoon").innerText =
+"15:00 " + data.weather.trend.afternoon + "°C";
 
-    <div class="line">
-      <div>Nexo</div>
-      <div class="right">
-        $${nexoUSD.toFixed(2)} (€${nexoEUR})
-        ${ampel(data.crypto.nexo.change)}
-        <a href="https://www.coingecko.com/de/coins/nexo"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="info">Info</a>
-      </div>
-    </div>
-  </div>
+document.getElementById("evening").innerText =
+"21:00 " + data.weather.trend.evening + "°C";
 
-  <div class="section">
-    <h2>Wetter – ${data.weather.location}</h2>
-
-    <div class="weatherNow">
-      ${icon} ${data.weather.temp.toFixed(1)}°C
-    </div>
-
-    <div class="weatherGrid">
-      <div>
-        <div>09:00</div>
-        <div>${weatherIcon(data.weather.code)}</div>
-        <div>${data.weather.trend.morning}°C</div>
-      </div>
-
-      <div>
-        <div>15:00</div>
-        <div>${weatherIcon(data.weather.code)}</div>
-        <div>${data.weather.trend.afternoon}°C</div>
-      </div>
-
-      <div>
-        <div>21:00</div>
-        <div>${weatherIcon(data.weather.code)}</div>
-        <div>${data.weather.trend.evening}°C</div>
-      </div>
-    </div>
-  </div>
-
-  `;
+});
 }
 
 loadData();
-
-/* Auto Update alle 5 Minuten */
-setInterval(loadData, 300000);
-
 </script>
 
 </body>
