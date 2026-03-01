@@ -132,4 +132,4 @@
           },
           evening: {
             temp: hourly.temperature_2m[eI] ?? 0,
-            code: hourly.weathercode[eI] ??
+            code: hourly.weathercode[eI] ?? 0
