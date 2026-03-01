@@ -42,7 +42,7 @@ let news = [];
 
 try {
   const newsRes = await fetch(
-    `https://gnews.io/api/v4/top-headlines?lang=de&max=4&token=${process.env.GNEWS_KEY}`
+    https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=5&token=${process.env.GNEWS_KEY}
   );
 
   const newsJson = await newsRes.json();
