@@ -3,7 +3,8 @@
     const version = "19.2.0";
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
-
+const marketDate = now.toLocaleDateString("de-DE");
+   
     /* =========================
        KRYPTO (stabil + fallback)
     ========================== */
