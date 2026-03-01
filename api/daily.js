@@ -104,6 +104,8 @@ try {
       }
     };
 
+news: news
+    
     res.status(200).json(response);
 
   } catch (error) {
