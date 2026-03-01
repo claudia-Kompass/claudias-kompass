@@ -25,12 +25,11 @@ h1{
 }
 
 .subtitle{
-  opacity:0.8;
-  margin-bottom:5px;
+  opacity:0.85;
 }
 
 .meta{
-  margin-top:10px;
+  margin-top:8px;
   opacity:0.8;
 }
 
@@ -75,7 +74,7 @@ button{
 
 .info{
   color:#f1c40f;
-  margin-left:10px;
+  margin-left:12px;
   text-decoration:none;
   font-weight:bold;
 }
@@ -88,8 +87,8 @@ button{
 .trendBlock{
   display:flex;
   justify-content:center;
-  gap:60px;
-  margin-top:25px;
+  gap:80px;
+  margin-top:20px;
   text-align:center;
 }
 </style>
@@ -105,29 +104,17 @@ button{
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
-<div id="content">
-
 <div class="section">
 <h2>Märkte</h2>
 
 <div class="line">
-<div>
-DAX<br><small id="daxDate"></small>
-</div>
-<div>
-<span id="daxValue"></span>
-<span class="ampel yellow"></span>
-</div>
+<div>DAX<br><small id="daxDate"></small></div>
+<div><span id="daxValue"></span><span class="ampel yellow"></span></div>
 </div>
 
 <div class="line">
-<div>
-EUR/USD<br><small id="eurusdDate"></small>
-</div>
-<div>
-<span id="eurusdValue"></span>
-<span class="ampel yellow"></span>
-</div>
+<div>EUR/USD<br><small id="eurusdDate"></small></div>
+<div><span id="eurusdValue"></span><span class="ampel yellow"></span></div>
 </div>
 </div>
 
@@ -152,23 +139,22 @@ EUR/USD<br><small id="eurusdDate"></small>
 
 <div class="trendBlock">
 <div>
-<div id="morningIcon"></div>
+<div id="mIcon"></div>
 <div id="morning"></div>
 </div>
 
 <div>
-<div id="afternoonIcon"></div>
+<div id="aIcon"></div>
 <div id="afternoon"></div>
 </div>
 
 <div>
-<div id="eveningIcon"></div>
+<div id="eIcon"></div>
 <div id="evening"></div>
 </div>
 </div>
+</div>
 
-</div>
-</div>
 </div>
 
 <script>
@@ -217,22 +203,22 @@ document.getElementById("btcValue").innerHTML =
 "$" + btcUSD.toLocaleString() +
 " (€" + btcEUR + ")" +
 ampel(data.crypto.bitcoin.change) +
-' <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
+' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
 
 document.getElementById("nexoValue").innerHTML =
 "$" + nexoUSD.toFixed(2) +
 " (€" + nexoEUR + ")" +
 ampel(data.crypto.nexo.change) +
-' <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
+' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>';
 
-const icon = weatherIcon(data.weather.code);
+const mainIcon = weatherIcon(data.weather.code);
 
 document.getElementById("weatherNow").innerHTML =
-icon + " " + data.weather.temp.toFixed(1) + "°C";
+mainIcon + " " + data.weather.temp.toFixed(1) + "°C";
 
-document.getElementById("morningIcon").innerHTML = icon;
-document.getElementById("afternoonIcon").innerHTML = icon;
-document.getElementById("eveningIcon").innerHTML = icon;
+document.getElementById("mIcon").innerHTML = mainIcon;
+document.getElementById("aIcon").innerHTML = mainIcon;
+document.getElementById("eIcon").innerHTML = mainIcon;
 
 document.getElementById("morning").innerText =
 "09:00 " + data.weather.trend.morning + "°C";
