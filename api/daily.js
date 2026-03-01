@@ -105,6 +105,8 @@ try {
 
   news: news
 };
+  news: news
+};
     
     res.status(200).json(response);
 
