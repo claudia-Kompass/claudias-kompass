@@ -1,54 +1,89 @@
 export default async function handler(req, res) {
-
-  const version = "17.2.0";
-  const timestamp = new Date().toLocaleString("de-DE");
-
   try {
+    const now = new Date();
 
-    // Wetter statisch als Test
-    const weather = {
-      location: "Ilshofen",
-      temp: 6.4,
-      code: 3,
-      trend: {
-        morning: 11,
-        afternoon: 13,
-        evening: 6
-      }
-    };
+    // ---------- LIVE DATEN ----------
+    // Bitcoin + Nexo (USD)
+    const cryptoRes = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd&include_24hr_change=true"
+    );
+    const cryptoData = await cryptoRes.json();
 
-    // Krypto statisch als Test
-    const crypto = {
-      bitcoin: { price: 66948, change: 2.1 },
-      nexo: { price: 0.85, change: -0.5 }
-    };
+    // EUR/USD
+    const fxRes = await fetch(
+      "https://api.exchangerate.host/latest?base=USD&symbols=EUR"
+    );
+    const fxData = await fxRes.json();
+    const eurUsd = (1 / fxData.rates.EUR).toFixed(2);
 
-    const markets = {
-      dax: {
-        value: "18.742",
-        date: "Stand vom 27.02.2026"
+    // Wetter Ilshofen (Open-Meteo)
+    const weatherRes = await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode&timezone=Europe%2FBerlin"
+    );
+    const weatherData = await weatherRes.json();
+
+    const current = weatherData.current_weather;
+
+    // Trendzeiten 09 / 15 / 21 Uhr finden
+    const hourlyTimes = weatherData.hourly.time;
+    const temps = weatherData.hourly.temperature_2m;
+    const codes = weatherData.hourly.weathercode;
+
+    function findHour(targetHour) {
+      const index = hourlyTimes.findIndex(t =>
+        t.includes(`T${targetHour.toString().padStart(2, "0")}:00`)
+      );
+      return {
+        temp: temps[index],
+        code: codes[index]
+      };
+    }
+
+    const morning = findHour(9);
+    const afternoon = findHour(15);
+    const evening = findHour(21);
+
+    // ---------- RESPONSE ----------
+    res.status(200).json({
+      version: "18.0.0",
+      timestamp: now.toLocaleString("de-DE"),
+
+      weather: {
+        location: "Ilshofen",
+        temp: current.temperature,
+        code: current.weathercode,
+        trend: {
+          morning,
+          afternoon,
+          evening
+        }
       },
-      eurusd: {
-        value: "1.08",
-        date: "Stand vom 27.02.2026"
-      }
-    };
 
-    return res.status(200).json({
-      version,
-      timestamp,
-      weather,
-      crypto,
-      markets
+      crypto: {
+        bitcoin: {
+          price: cryptoData.bitcoin.usd,
+          change: cryptoData.bitcoin.usd_24h_change
+        },
+        nexo: {
+          price: cryptoData.nexo.usd,
+          change: cryptoData.nexo.usd_24h_change
+        }
+      },
+
+      markets: {
+        dax: {
+          value: "18.742",
+          date: "Stand vom 27.02.2026"
+        },
+        eurusd: {
+          value: eurUsd,
+          date: "Live"
+        }
+      }
     });
 
   } catch (error) {
-
-    return res.status(200).json({
-      version,
-      timestamp,
-      error: "Hard fallback aktiv"
-    });
-
+    console.error(error);
+    res.status(500).json({ error: "API Fehler" });
   }
 }
