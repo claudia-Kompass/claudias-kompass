@@ -1,111 +1,135 @@
 export default async function handler(req, res) {
   try {
-    const version = "19.1.0";
-    const timestamp = new Date().toLocaleString("de-DE");
+    const version = "19.2.0";
+    const now = new Date();
+    const timestamp = now.toLocaleString("de-DE");
 
-    // ---------- KRYPTO ----------
-    let crypto = {
-      bitcoin: { usd: 0, eur: 0, change: 0 },
-      nexo: { usd: 0, eur: 0, change: 0 }
-    };
+    /* =========================
+       KRYPTO (stabil + fallback)
+    ========================== */
+
+    let bitcoin = { usd: 0, eur: 0, usd_24h_change: 0 };
+    let nexo = { usd: 0, eur: 0, usd_24h_change: 0 };
 
     try {
       const cryptoRes = await fetch(
         "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"
       );
-      const data = await cryptoRes.json();
+      const cryptoData = await cryptoRes.json();
 
-      crypto = {
-        bitcoin: {
-          usd: data.bitcoin?.usd || 0,
-          eur: data.bitcoin?.eur || 0,
-          change: data.bitcoin?.usd_24h_change || 0
-        },
-        nexo: {
-          usd: data.nexo?.usd || 0,
-          eur: data.nexo?.eur || 0,
-          change: data.nexo?.usd_24h_change || 0
-        }
-      };
-    } catch (e) {}
+      if (cryptoData.bitcoin) bitcoin = cryptoData.bitcoin;
+      if (cryptoData.nexo) nexo = cryptoData.nexo;
+    } catch (e) {
+      // fallback bleibt 0
+    }
 
-    // ---------- WETTER ----------
-    let weather = {
-      temp: 0,
-      code: 0,
-      trend: {
-        morning: { temp: 0, code: 0 },
-        afternoon: { temp: 0, code: 0 },
-        evening: { temp: 0, code: 0 }
-      }
-    };
+    /* =========================
+       WETTER (stabil)
+    ========================== */
+
+    const weatherRes = await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode"
+    );
+
+    const weatherData = await weatherRes.json();
+
+    const currentTemp = weatherData.current_weather?.temperature ?? 0;
+    const currentCode = weatherData.current_weather?.weathercode ?? 0;
+
+    const hourly = weatherData.hourly;
+
+    function getIndex(hour) {
+      return hourly.time.findIndex(t =>
+        t.includes(`T${hour.toString().padStart(2, "0")}:00`)
+      );
+    }
+
+    const mI = getIndex(9);
+    const aI = getIndex(15);
+    const eI = getIndex(21);
+
+    /* =========================
+       NEWS (absolut crash-sicher)
+    ========================== */
+
+    let news = [];
 
     try {
-      const weatherRes = await fetch(
-        "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode"
-      );
-      const weatherData = await weatherRes.json();
-
-      const hourly = weatherData.hourly;
-
-      function getIndex(hour) {
-        return hourly.time.findIndex(t =>
-          t.includes(`T${hour.toString().padStart(2, "0")}:00`)
+      if (process.env.GNEWS_KEY) {
+        const newsRes = await fetch(
+          `https://gnews.io/api/v4/top-headlines?lang=de&max=4&token=${process.env.GNEWS_KEY}`
         );
-      }
 
-      const mI = getIndex(9);
-      const aI = getIndex(15);
-      const eI = getIndex(21);
+        const newsJson = await newsRes.json();
 
-      weather = {
-        temp: weatherData.current_weather.temperature,
-        code: weatherData.current_weather.weathercode,
-        trend: {
-          morning: {
-            temp: hourly.temperature_2m[mI],
-            code: hourly.weathercode[mI]
+        news = (newsJson.articles || []).map(a => ({
+          title: a.title,
+          source: a.source?.name || "",
+          url: a.url
+        }));
+      } else {
+        // Fallback Demo-News (läuft immer)
+        news = [
+          {
+            title: "Bundestag diskutiert Haushaltsreform",
+            source: "Tagesschau",
+            url: "https://www.tagesschau.de"
           },
-          afternoon: {
-            temp: hourly.temperature_2m[aI],
-            code: hourly.weathercode[aI]
-          },
-          evening: {
-            temp: hourly.temperature_2m[eI],
-            code: hourly.weathercode[eI]
+          {
+            title: "EU berät über neue Sicherheitsstrategie",
+            source: "n-tv",
+            url: "https://www.n-tv.de"
           }
-        }
-      };
-    } catch (e) {}
-
-    // ---------- NEWS (erstmal ohne API) ----------
-    const news = [
-      {
-        title: "Bundestag diskutiert Haushaltsreform",
-        source: "Tagesschau",
-        url: "https://www.tagesschau.de"
-      },
-      {
-        title: "EU berät über neue Sicherheitsstrategie",
-        source: "n-tv",
-        url: "https://www.n-tv.de"
+        ];
       }
-    ];
+    } catch (e) {
+      news = [];
+    }
+
+    /* =========================
+       RESPONSE
+    ========================== */
 
     const response = {
       version,
       timestamp,
-      markets: {
-        dax: { value: "18.742", date: "Stand aktuell" },
-        eurusd: { value: "1.08", date: "Stand aktuell" }
-      },
-      crypto,
-      weather,
-      news
-    };
 
-    res.status(200).json(response);
-  } catch (error) {
-    res.status(500).json({ error: "API Fehler" });
-  }
-}
+      markets: {
+        dax: {
+          value: "18.742",
+          date: "Stand aktuell"
+        },
+        eurusd: {
+          value: "1.08",
+          date: "Stand aktuell"
+        }
+      },
+
+      crypto: {
+        bitcoin: {
+          usd: bitcoin.usd,
+          eur: bitcoin.eur,
+          change: bitcoin.usd_24h_change
+        },
+        nexo: {
+          usd: nexo.usd,
+          eur: nexo.eur,
+          change: nexo.usd_24h_change
+        }
+      },
+
+      weather: {
+        temp: currentTemp,
+        code: currentCode,
+        trend: {
+          morning: {
+            temp: hourly.temperature_2m[mI] ?? 0,
+            code: hourly.weathercode[mI] ?? 0
+          },
+          afternoon: {
+            temp: hourly.temperature_2m[aI] ?? 0,
+            code: hourly.weathercode[aI] ?? 0
+          },
+          evening: {
+            temp: hourly.temperature_2m[eI] ?? 0,
+            code: hourly.weathercode[eI] ??
