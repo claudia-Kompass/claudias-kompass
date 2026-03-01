@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+ module.exports = async function handler(req, res) {
   try {
     const version = "19.2.0";
     const now = new Date();
