@@ -1,6 +1,4 @@
 
-
-
 export default async function handler(req, res) {
   try {
     const version = "19.0.0";
@@ -37,6 +35,26 @@ export default async function handler(req, res) {
     const mI = getIndex(9);
     const aI = getIndex(15);
     const eI = getIndex(21);
+
+// ---------- NEWS / POLITIK ----------
+
+let news = [];
+
+try {
+  const newsRes = await fetch(
+    `https://gnews.io/api/v4/top-headlines?lang=de&max=4&token=${process.env.GNEWS_KEY}`
+  );
+
+  const newsJson = await newsRes.json();
+
+  news = (newsJson.articles || []).map(a => ({
+    title: a.title,
+    source: a.source?.name || "",
+    url: a.url
+  }));
+} catch (e) {
+  news = [];
+}
 
     const response = {
       version,
