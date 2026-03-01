@@ -169,10 +169,24 @@ button{
 </div>
 </div>
 
-<div class="section">
-  <h2>Politik & Weltgeschehen</h2>
-  <div id="newsBlock"></div>
-</div>
+${data.news?.length ? `
+  <div class="section">
+    <h2>Politik & Weltgeschehen</h2>
+    ${data.news.slice(0,3).map(article => `
+      <div style="margin-bottom:14px;">
+        <div style="font-weight:600;">
+          ${article.title}
+        </div>
+        <div style="font-size:14px; opacity:0.7;">
+          ${article.description || ""}
+        </div>
+        <a href="${article.url}" target="_blank" class="news-link">
+          weiterlesen →
+        </a>
+      </div>
+    `).join("")}
+  </div>
+` : ""}
   
 <div class="section">
 <h2>Wetter – Ilshofen</h2>
