@@ -72,42 +72,49 @@ button{
 }
 
 .weatherNow{
+.weatherNow{
   display:flex;
   align-items:center;
   gap:14px;
-  font-size:42px;
-  font-weight:600;
-  margin-bottom:16px;
+  font-size:46px;
+  font-weight:500;
+  margin-bottom:18px;   /* mehr Luft wie v13 */
+}
+
+.weatherNow span{
+  font-size:46px;
 }
 
 .trendBlock{
   display:flex;
-  justify-content:space-between;
-  gap:8px;
-  margin-top:0;
+  justify-content:space-around;  /* NICHT space-between */
+  align-items:center;
+  margin-top:6px;
+  padding:0 10px;   /* optische Zentrierung */
 }
 
 .trendItem{
-  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   text-align:center;
-  padding:4px 0;
 }
 
 .trendIcon{
-  font-size:30px;
-  height:40px;
-  line-height:40px;
+  font-size:26px;   /* etwas leichter als jetzt */
+  height:32px;
+  line-height:32px;
 }
 
 .trendTime{
-  margin-top:14px;
-  font-size:17px;
-  opacity:0.85;
+  margin-top:8px;
+  font-size:15px;
+  opacity:0.75;
 }
 
 .trendTemp{
-  margin-top:6px;
-  font-size:20px;
+  margin-top:4px;
+  font-size:18px;
 }
 </style>
 </head>
