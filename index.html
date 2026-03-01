@@ -255,8 +255,7 @@ fetch("/api/daily")
 .then(res=>res.json())
 .then(data=>{
 
-document.getElementById("meta").innerText =
-  data.timestamp + " • v" + data.version;
+document.getElementById("meta").innerText = formatMeta(data);
 
 document.getElementById("daxValue").innerText =
   data.markets.dax.value;
