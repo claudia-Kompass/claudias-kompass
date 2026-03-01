@@ -59,7 +59,6 @@
         const newsRes = await fetch(
   `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR russland OR wahl OR bundestag OR inflation OR zins OR dax OR öl OR gas&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
 );
-
         const newsJson = await newsRes.json();
 
         news = (newsJson.articles || [])
