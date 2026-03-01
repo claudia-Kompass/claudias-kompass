@@ -74,9 +74,17 @@
       score: scoreArticle(article)
     };
   })
-  .sort((a, b) => b.score - a.score)
-  .slice(0, 4)
-  .map(({ score, ...rest }) => rest); // score wieder entfernen
+.sort((a, b) => b.score - a.score)
+
+// DOPPELTE TITEL ENTFERNEN
+.filter((article, index, self) =>
+  index === self.findIndex(a =>
+    a.title.trim().toLowerCase() === article.title.trim().toLowerCase()
+  )
+)
+
+.slice(0, 3) // max 3 Top-Themen
+.map(({ score, ...rest }) => rest);
       } else {
         // Fallback Demo-News (läuft immer)
         news = [
