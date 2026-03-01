@@ -9,7 +9,8 @@ body{
   margin:0;
   font-family:Arial, Helvetica, sans-serif;
   background:linear-gradient(180deg,#081626,#163a57);
-  color:#f5f1e
+  color:#f5f1e6;
+}
 
 .container{
   padding:40px;
@@ -23,8 +24,8 @@ h1{
   text-shadow:0 0 25px rgba(255,215,120,0.6);
 }
 
-.subtitle{opacity:0.85;}
-.meta{margin-top:8px;opacity:0.8;}
+.subtitle{ opacity:0.85; }
+.meta{ margin-top:8px; opacity:0.8; }
 
 button{
   margin-top:25px;
@@ -37,7 +38,7 @@ button{
   font-weight:bold;
 }
 
-.section{margin-top:40px;}
+.section{ margin-top:40px; }
 
 .section h2{
   color:#e6c27a;
@@ -48,7 +49,7 @@ button{
 .line{
   display:flex;
   justify-content:space-between;
-  margin:10px 0;
+  margin:12px 0;
 }
 
 .ampel{
@@ -59,9 +60,9 @@ button{
   margin-left:8px;
 }
 
-.green{background:#2ecc71;}
-.red{background:#e74c3c;}
-.yellow{background:#f1c40f;}
+.green{ background:#2ecc71; }
+.red{ background:#e74c3c; }
+.yellow{ background:#f1c40f; }
 
 .info{
   color:#f1c40f;
@@ -72,20 +73,19 @@ button{
 
 .weatherNow{
   font-size:26px;
-  margin-top:10px;
+  margin-top:12px;
 }
 
 .trendBlock{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  text-align:center;
-  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:120px;
+  margin-top:30px;
 }
 
 .trendItem{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  text-align:center;
+  font-size:18px;
 }
 </style>
 </head>
@@ -104,13 +104,13 @@ button{
 <h2>Märkte</h2>
 
 <div class="line">
-<div>DAX<br><small id="daxDate"></small></div>
-<div><span id="daxValue"></span></div>
+  <div>DAX<br><small id="daxDate"></small></div>
+  <div><span id="daxValue"></span></div>
 </div>
 
 <div class="line">
-<div>EUR/USD<br><small id="eurusdDate"></small></div>
-<div><span id="eurusdValue"></span></div>
+  <div>EUR/USD<br><small id="eurusdDate"></small></div>
+  <div><span id="eurusdValue"></span></div>
 </div>
 </div>
 
@@ -118,13 +118,13 @@ button{
 <h2>Krypto</h2>
 
 <div class="line">
-<div>Bitcoin</div>
-<div id="btcValue"></div>
+  <div>Bitcoin</div>
+  <div id="btcValue"></div>
 </div>
 
 <div class="line">
-<div>Nexo</div>
-<div id="nexoValue"></div>
+  <div>Nexo</div>
+  <div id="nexoValue"></div>
 </div>
 </div>
 
@@ -134,25 +134,22 @@ button{
 <div id="weatherNow" class="weatherNow"></div>
 
 <div class="trendBlock">
-
-  <div>
+  <div class="trendItem">
     <div id="mIcon"></div>
     <div>09:00</div>
     <div id="morning"></div>
   </div>
-
-  <div>
+  <div class="trendItem">
     <div id="aIcon"></div>
     <div>15:00</div>
     <div id="afternoon"></div>
   </div>
-
-  <div>
+  <div class="trendItem">
     <div id="eIcon"></div>
     <div>21:00</div>
     <div id="evening"></div>
   </div>
-
+</div>
 </div>
 
 </div>
@@ -166,79 +163,66 @@ function ampel(change){
 }
 
 function weatherIcon(code){
-  if([0].includes(code)) return "☀️";
-  if([1,2].includes(code)) return "🌤️";
-  if([3].includes(code)) return "☁️";
-  if([45,48].includes(code)) return "🌫️";
-  if([51,53,55,61,63,65].includes(code)) return "🌧️";
-  if([71,73,75].includes(code)) return "❄️";
-  if([95,96,99].includes(code)) return "⛈️";
-  return "🌡️";
+  if(code===0) return "☀";
+  if(code===1 || code===2) return "🌤";
+  if(code===3) return "☁";
+  if(code>=45 && code<=48) return "🌫";
+  if(code>=51 && code<=65) return "🌧";
+  if(code>=71 && code<=75) return "❄";
+  if(code>=95) return "⛈";
+  return "🌡";
 }
 
-function loadData() {
-  fetch("/api/daily")
-    .then(res => {
-      if (!res.ok) {
-        throw new Error("API Fehler");
-      }
-      return res.json();
-    })
-    .then(data => {
+function loadData(){
+fetch("/api/daily")
+.then(res=>res.json())
+.then(data=>{
 
-      document.getElementById("meta").innerText =
-        data.timestamp + " • v" + data.version;
+document.getElementById("meta").innerText =
+  data.timestamp + " • v" + data.version;
 
-      // Märkte
-      document.getElementById("daxValue").innerText =
-        data.markets.dax.value;
-      document.getElementById("daxDate").innerText =
-        data.markets.dax.date;
+document.getElementById("daxValue").innerText =
+  data.markets.dax.value;
+document.getElementById("daxDate").innerText =
+  data.markets.dax.date;
 
-      document.getElementById("eurusdValue").innerText =
-        data.markets.eurusd.value;
-      document.getElementById("eurusdDate").innerText =
-        data.markets.eurusd.date;
+document.getElementById("eurusdValue").innerText =
+  data.markets.eurusd.value;
+document.getElementById("eurusdDate").innerText =
+  data.markets.eurusd.date;
 
-      // Krypto
-      document.getElementById("btcValue").innerHTML =
-        "$" + data.crypto.bitcoin.usd.toLocaleString() +
-        " (€" + data.crypto.bitcoin.eur.toLocaleString() + ") " +
-        ampel(data.crypto.bitcoin.change) +
-        ' <a class="info" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank">Info</a>';
+document.getElementById("btcValue").innerHTML =
+  "$" + data.crypto.bitcoin.usd.toLocaleString() +
+  " (€" + data.crypto.bitcoin.eur.toLocaleString() + ")" +
+  ampel(data.crypto.bitcoin.change) +
+  ' <a class="info" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank">Info</a>';
 
-      document.getElementById("nexoValue").innerHTML =
-        "$" + data.crypto.nexo.usd.toFixed(2) +
-        " (€" + data.crypto.nexo.eur.toFixed(3) + ") " +
-        ampel(data.crypto.nexo.change) +
-        ' <a class="info" href="https://www.coingecko.com/en/coins/nexo" target="_blank">Info</a>';
+document.getElementById("nexoValue").innerHTML =
+  "$" + data.crypto.nexo.usd.toFixed(2) +
+  " (€" + data.crypto.nexo.eur.toFixed(3) + ")" +
+  ampel(data.crypto.nexo.change) +
+  ' <a class="info" href="https://www.coingecko.com/en/coins/nexo" target="_blank">Info</a>';
 
-      // Wetter aktuell
-      const mainIcon = weatherIcon(data.weather.code);
-      document.getElementById("weatherNow").innerHTML =
-        mainIcon + " " + data.weather.temp.toFixed(1) + "°C";
+document.getElementById("weatherNow").innerHTML =
+  weatherIcon(data.weather.code) +
+  " " + data.weather.temp.toFixed(1) + "°C";
 
-      // Trend wie 13.0
-      document.getElementById("mIcon").innerHTML =
-        weatherIcon(data.weather.trend.morning.code);
-      document.getElementById("morning").innerText =
-        data.weather.trend.morning.temp + "°C";
+document.getElementById("mIcon").innerHTML =
+  weatherIcon(data.weather.trend.morning.code);
+document.getElementById("morning").innerText =
+  data.weather.trend.morning.temp.toFixed(1) + "°C";
 
-      document.getElementById("aIcon").innerHTML =
-        weatherIcon(data.weather.trend.afternoon.code);
-      document.getElementById("afternoon").innerText =
-        data.weather.trend.afternoon.temp + "°C";
+document.getElementById("aIcon").innerHTML =
+  weatherIcon(data.weather.trend.afternoon.code);
+document.getElementById("afternoon").innerText =
+  data.weather.trend.afternoon.temp.toFixed(1) + "°C";
 
-      document.getElementById("eIcon").innerHTML =
-        weatherIcon(data.weather.trend.evening.code);
-      document.getElementById("evening").innerText =
-        data.weather.trend.evening.temp + "°C";
-    })
-    .catch(error => {
-      document.getElementById("meta").innerText = "API Fehler";
-      console.error(error);
-    });
-}
+document.getElementById("eIcon").innerHTML =
+  weatherIcon(data.weather.trend.evening.code);
+document.getElementById("evening").innerText =
+  data.weather.trend.evening.temp.toFixed(1) + "°C";
+
+});
 }
 
 loadData();
