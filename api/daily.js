@@ -160,15 +160,15 @@ function scoreArticle(article) {
   news: news,
 
   markets: {
-        dax: {
-          value: "18.742",
-          date: "Stand aktuell"
-        },
-        eurusd: {
-          value: "1.08",
-          date: "Stand aktuell"
-        }
-      },
+  dax: {
+    value: "18.742",
+    date: "Stand: " + marketDate
+  },
+  eurusd: {
+    value: "1.08",
+    date: "Stand: " + marketDate
+  }
+},
 
       crypto: {
         bitcoin: {
