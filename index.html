@@ -176,67 +176,69 @@ function weatherIcon(code){
   return "🌡️";
 }
 
-function loadData(){
+function loadData() {
+  fetch("/api/daily")
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("API Fehler");
+      }
+      return res.json();
+    })
+    .then(data => {
 
-fetch("/api/daily")
-.then(res => res.json())
-.then(data => {
+      document.getElementById("meta").innerText =
+        data.timestamp + " • v" + data.version;
 
-document.getElementById("meta").innerText =
-data.timestamp + " • v" + data.version;
+      // Märkte
+      document.getElementById("daxValue").innerText =
+        data.markets.dax.value;
+      document.getElementById("daxDate").innerText =
+        data.markets.dax.date;
 
-document.getElementById("daxValue").innerText =
-data.markets.dax.value;
-document.getElementById("daxDate").innerText =
-data.markets.dax.date;
+      document.getElementById("eurusdValue").innerText =
+        data.markets.eurusd.value;
+      document.getElementById("eurusdDate").innerText =
+        data.markets.eurusd.date;
 
-document.getElementById("eurusdValue").innerText =
-data.markets.eurusd.value;
-document.getElementById("eurusdDate").innerText =
-data.markets.eurusd.date;
+      // Krypto
+      document.getElementById("btcValue").innerHTML =
+        "$" + data.crypto.bitcoin.usd.toLocaleString() +
+        " (€" + data.crypto.bitcoin.eur.toLocaleString() + ") " +
+        ampel(data.crypto.bitcoin.change) +
+        ' <a class="info" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank">Info</a>';
 
-/* KRYPTO */
+      document.getElementById("nexoValue").innerHTML =
+        "$" + data.crypto.nexo.usd.toFixed(2) +
+        " (€" + data.crypto.nexo.eur.toFixed(3) + ") " +
+        ampel(data.crypto.nexo.change) +
+        ' <a class="info" href="https://www.coingecko.com/en/coins/nexo" target="_blank">Info</a>';
 
-const btcUSD = data.crypto.bitcoin.price;
-const nexoUSD = data.crypto.nexo.price;
+      // Wetter aktuell
+      const mainIcon = weatherIcon(data.weather.code);
+      document.getElementById("weatherNow").innerHTML =
+        mainIcon + " " + data.weather.temp.toFixed(1) + "°C";
 
-document.getElementById("btcValue").innerHTML =
-"$" + btcUSD.toLocaleString() +
-" " + ampel(data.crypto.bitcoin.change) +
-' <a class="info" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank">Info</a>';
+      // Trend wie 13.0
+      document.getElementById("mIcon").innerHTML =
+        weatherIcon(data.weather.trend.morning.code);
+      document.getElementById("morning").innerText =
+        data.weather.trend.morning.temp + "°C";
 
-document.getElementById("nexoValue").innerHTML =
-"$" + nexoUSD.toFixed(2) +
-" " + ampel(data.crypto.nexo.change) +
-' <a class="info" href="https://www.coingecko.com/en/coins/nexo" target="_blank">Info</a>';
+      document.getElementById("aIcon").innerHTML =
+        weatherIcon(data.weather.trend.afternoon.code);
+      document.getElementById("afternoon").innerText =
+        data.weather.trend.afternoon.temp + "°C";
 
-/* WETTER */
-
-const mainIcon = weatherIcon(data.weather.code);
-
-document.getElementById("weatherNow").innerHTML =
-mainIcon + " " + data.weather.temp + "°C";
-
-document.getElementById("mIcon").innerHTML =
-weatherIcon(data.weather.trend.morning.code);
-document.getElementById("aIcon").innerHTML =
-weatherIcon(data.weather.trend.afternoon.code);
-document.getElementById("eIcon").innerHTML =
-weatherIcon(data.weather.trend.evening.code);
-
-document.getElementById("morning").innerText =
-"09:00 " + data.weather.trend.morning.temp + "°C";
-document.getElementById("afternoon").innerText =
-"15:00 " + data.weather.trend.afternoon.temp + "°C";
-document.getElementById("evening").innerText =
-"21:00 " + data.weather.trend.evening.temp + "°C";
-
-})
-.catch(() => {
-document.getElementById("meta").innerText =
-"API Fehler";
-});
-
+      document.getElementById("eIcon").innerHTML =
+        weatherIcon(data.weather.trend.evening.code);
+      document.getElementById("evening").innerText =
+        data.weather.trend.evening.temp + "°C";
+    })
+    .catch(error => {
+      document.getElementById("meta").innerText = "API Fehler";
+      console.error(error);
+    });
+}
 }
 
 loadData();
