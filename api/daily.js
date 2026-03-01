@@ -108,66 +108,69 @@ const marketDate = now.toLocaleDateString("de-DE");
 /* ===============================
    NEWS SCORING (Professionelle Gewichtung)
 ================================= */
-
 function scoreArticle(article) {
   let score = 0;
+
   const text = (article.title || "").toLowerCase();
   const source = (article.source || "").toLowerCase();
+  const now = Date.now();
 
-  // 1️⃣ Krisen / harte Nachrichten
+  // 1️⃣ HARTE EREIGNISSE (Top-Priorität)
   const crisisKeywords = [
-    "krieg", "angriff", "explosion", "sanktion",
-    "wahl", "erdbeben", "unwetter", "inflation",
-    "zins", "ezb", "fed", "öl", "gas", "rezession"
+    "krieg", "angriff", "iran", "israel", "ukraine",
+    "wahl", "regierung", "sanktion", "explosion",
+    "erdbeben", "unwetter"
   ];
   crisisKeywords.forEach(k => {
-    if (text.includes(k)) score += 5;
+    if (text.includes(k)) score += 8;
   });
 
-  // 2️⃣ Marktbezug
+  // 2️⃣ MARKTBEZUG
   const marketKeywords = [
     "dax", "dow", "wall street", "börse",
-    "rendite", "wirtschaft", "china",
-    "usd", "dollar", "euro"
+    "zins", "ezb", "fed", "öl", "gas",
+    "inflation", "rezession", "usd", "dollar"
   ];
   marketKeywords.forEach(k => {
-    if (text.includes(k)) score += 4;
+    if (text.includes(k)) score += 6;
   });
 
-  // 3️⃣ Regionale Einordnung
-  if (text.includes("deutschland") || text.includes("bundestag")) score += 3;
-  else if (text.includes("eu") || text.includes("europa")) score += 2;
-  else score += 1;
+  // 3️⃣ REGIONALE RELEVANZ
+  if (text.includes("deutschland") || text.includes("bundestag"))
+    score += 4;
+  else if (text.includes("eu") || text.includes("europa"))
+    score += 3;
+  else
+    score += 1;
 
-  // 4 Quellengewichtung (optimiert)
-if (
-  source.includes("bbc") ||
-  source.includes("tagesschau") ||
-  source.includes("zdf") ||
-  source.includes("zeit") ||
-  source.includes("faz")
-) {
-  score += 4;
-}
-else if (
-  source.includes("spiegel") ||
-  source.includes("stern") ||
-  source.includes("focus")
-) {
-  score += 3;
-}
-else if (
-  source.includes("n-tv") ||
-  source.includes("rtl")
-) {
-  score += 2;
-}
-else if (source.includes("20 minuten")) {
-  score -= 2;   // aktiv abwerten
-}
-else {
-  score += 0;
-}
+  // 4️⃣ QUELLENQUALITÄT
+  if (
+    source.includes("bbc") ||
+    source.includes("tagesschau") ||
+    source.includes("zdf") ||
+    source.includes("zeit") ||
+    source.includes("faz")
+  ) {
+    score += 5;
+  }
+  else if (
+    source.includes("spiegel") ||
+    source.includes("stern") ||
+    source.includes("focus")
+  ) {
+    score += 3;
+  }
+  else if (source.includes("20 minuten")) {
+    score -= 3;
+  }
+
+  // 5️⃣ AKTUALITÄT (wenn publish-Date vorhanden)
+  if (article.publishedAt) {
+    const ageHours = (now - new Date(article.publishedAt)) / (1000 * 60 * 60);
+    if (ageHours < 3) score += 5;
+    else if (ageHours < 12) score += 3;
+    else if (ageHours < 24) score += 1;
+  }
 
   return score;
 }
