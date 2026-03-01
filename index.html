@@ -278,14 +278,21 @@ data.weather.trend.evening.temp.toFixed(1) + "°C";
 const newsBlock = document.getElementById("newsBlock");
 
 if(data.news && data.news.length){
-  newsBlock.innerHTML = data.news.map(n => `
-    <div class="newsItem">
-      <a href="${n.url}" target="_blank">${n.title}</a>
-      <div class="newsSource">${n.source}</div>
+  newsBlock.innerHTML = data.news.slice(0,3).map(n => `
+  <div class="newsItem" style="margin-bottom:18px;">
+    <div style="font-weight:600; margin-bottom:6px;">
+      ${n.title}
     </div>
-  `).join("");
-} else {
-  newsBlock.innerHTML = "Keine aktuellen Meldungen verfügbar.";
+
+    <a href="${n.url}" target="_blank" class="news-link">
+      weiterlesen →
+    </a>
+
+    <div class="newsSource" style="margin-top:4px; opacity:0.6;">
+      ${n.source}
+    </div>
+  </div>
+`).join("");
 }
   
 });
