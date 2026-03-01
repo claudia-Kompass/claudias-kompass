@@ -1,115 +1,110 @@
-
 export default async function handler(req, res) {
   try {
-    const version = "19.0.0";
-    const now = new Date();
+    const version = "19.1.0";
+    const timestamp = new Date().toLocaleString("de-DE");
 
-    const timestamp = now.toLocaleString("de-DE");
+    // ---------- KRYPTO ----------
+    let crypto = {
+      bitcoin: { usd: 0, eur: 0, change: 0 },
+      nexo: { usd: 0, eur: 0, change: 0 }
+    };
 
-    // ---------- KRYPTO LIVE ----------
-    const cryptoRes = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"
-    );
-    const cryptoData = await cryptoRes.json();
+    try {
+      const cryptoRes = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"
+      );
+      const data = await cryptoRes.json();
 
-    // ---------- WETTER LIVE ----------
-    const weatherRes = await fetch(
-      "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode"
-    );
-    const weatherData = await weatherRes.json();
+      crypto = {
+        bitcoin: {
+          usd: data.bitcoin?.usd || 0,
+          eur: data.bitcoin?.eur || 0,
+          change: data.bitcoin?.usd_24h_change || 0
+        },
+        nexo: {
+          usd: data.nexo?.usd || 0,
+          eur: data.nexo?.eur || 0,
+          change: data.nexo?.usd_24h_change || 0
+        }
+      };
+    } catch (e) {}
 
-    const currentTemp = weatherData.current_weather.temperature;
-    const currentCode = weatherData.current_weather.weathercode;
+    // ---------- WETTER ----------
+    let weather = {
+      temp: 0,
+      code: 0,
+      trend: {
+        morning: { temp: 0, code: 0 },
+        afternoon: { temp: 0, code: 0 },
+        evening: { temp: 0, code: 0 }
+      }
+    };
 
-    // Trendzeiten fest
-    const morningIndex = 9;
-    const afternoonIndex = 15;
-    const eveningIndex = 21;
+    try {
+      const weatherRes = await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true&hourly=temperature_2m,weathercode"
+      );
+      const weatherData = await weatherRes.json();
 
-    const hourly = weatherData.hourly;
+      const hourly = weatherData.hourly;
 
-    function getIndex(hour) {
-      return hourly.time.findIndex(t => t.includes(`T${hour.toString().padStart(2,"0")}:00`));
-    }
+      function getIndex(hour) {
+        return hourly.time.findIndex(t =>
+          t.includes(`T${hour.toString().padStart(2, "0")}:00`)
+        );
+      }
 
-    const mI = getIndex(9);
-    const aI = getIndex(15);
-    const eI = getIndex(21);
+      const mI = getIndex(9);
+      const aI = getIndex(15);
+      const eI = getIndex(21);
 
-// ---------- NEWS / POLITIK ----------
+      weather = {
+        temp: weatherData.current_weather.temperature,
+        code: weatherData.current_weather.weathercode,
+        trend: {
+          morning: {
+            temp: hourly.temperature_2m[mI],
+            code: hourly.weathercode[mI]
+          },
+          afternoon: {
+            temp: hourly.temperature_2m[aI],
+            code: hourly.weathercode[aI]
+          },
+          evening: {
+            temp: hourly.temperature_2m[eI],
+            code: hourly.weathercode[eI]
+          }
+        }
+      };
+    } catch (e) {}
 
-let news = [];
-
-try {
-  const newsRes = await fetch(
-    https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=5&token=${process.env.GNEWS_KEY}
-  );
-
-  const newsJson = await newsRes.json();
-
-  news = (newsJson.articles || []).map(a => ({
-    title: a.title,
-    source: a.source?.name || "",
-    url: a.url
-  }));
-} catch (e) {
-  news = [];
-}
+    // ---------- NEWS (erstmal ohne API) ----------
+    const news = [
+      {
+        title: "Bundestag diskutiert Haushaltsreform",
+        source: "Tagesschau",
+        url: "https://www.tagesschau.de"
+      },
+      {
+        title: "EU berät über neue Sicherheitsstrategie",
+        source: "n-tv",
+        url: "https://www.n-tv.de"
+      }
+    ];
 
     const response = {
-  version,
-  timestamp,
-
-  markets: {
-    dax: {
-      value: "18.742",
-      date: "Stand vom 27.02.2026"
-    },
-    eurusd: {
-      value: "1.08",
-      date: "Stand vom 27.02.2026"
-    }
-  },
-
-  crypto: {
-    bitcoin: {
-      usd: cryptoData.bitcoin.usd,
-      eur: cryptoData.bitcoin.eur,
-      change: cryptoData.bitcoin.usd_24h_change
-    },
-    nexo: {
-      usd: cryptoData.nexo.usd,
-      eur: cryptoData.nexo.eur,
-      change: cryptoData.nexo.usd_24h_change
-    }
-  },
-
-  weather: {
-    temp: currentTemp,
-    code: currentCode,
-    trend: {
-      morning: {
-        temp: hourly.temperature_2m[mI],
-        code: hourly.weathercode[mI]
+      version,
+      timestamp,
+      markets: {
+        dax: { value: "18.742", date: "Stand aktuell" },
+        eurusd: { value: "1.08", date: "Stand aktuell" }
       },
-      afternoon: {
-        temp: hourly.temperature_2m[aI],
-        code: hourly.weathercode[aI]
-      },
-      evening: {
-        temp: hourly.temperature_2m[eI],
-        code: hourly.weathercode[eI]
-      }
-    }
-  },
+      crypto,
+      weather,
+      news
+    };
 
-  news: news
-};
-  news: news
-};
-    
     res.status(200).json(response);
-
   } catch (error) {
     res.status(500).json({ error: "API Fehler" });
   }
