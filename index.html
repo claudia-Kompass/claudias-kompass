@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>GLOBAL SOUL</title>
-<style>
 
+<style>
 body{
   margin:0;
   font-family:Arial, Helvetica, sans-serif;
@@ -22,11 +22,23 @@ h1{
   font-size:48px;
   letter-spacing:3px;
   text-shadow:0 0 25px rgba(255,215,120,0.5);
+  margin-bottom:10px;
 }
 
 .subtitle{
-  opacity:0.7;
-  margin-bottom:30px;
+  opacity:0.85;
+  margin-bottom:20px;
+}
+
+button{
+  margin-top:20px;
+  padding:10px 18px;
+  border:none;
+  background:#e6c27a;
+  color:#081626;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
 .section{
@@ -49,26 +61,7 @@ h1{
   text-align:right;
 }
 
-.green{color:#46d17c;}
-.red{color:#ff5e5e;}
-.yellow{color:#ffd84a;}
-
-.weatherNow{
-  font-size:22px;
-  margin-top:10px;
-}
-
-button{
-  margin-top:20px;
-  padding:10px 18px;
-  border:none;
-  background:#e6c27a;
-  color:#081626;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.ampel {
+.ampel{
   display:inline-block;
   width:10px;
   height:10px;
@@ -76,131 +69,177 @@ button{
   margin-left:8px;
 }
 
-.green { background:#2ecc71; }
-.red { background:#e74c3c; }
-.yellow { background:#f1c40f; }
+.green{background:#2ecc71;}
+.red{background:#e74c3c;}
+.yellow{background:#f1c40f;}
 
-.info {
+.info{
+  margin-left:10px;
   color:#f1c40f;
   text-decoration:none;
-  margin-left:8px;
+  font-size:14px;
 }
-  
+
+.weatherNow{
+  font-size:22px;
+  margin-top:10px;
+}
+
+.weatherGrid{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+  text-align:center;
+}
+
+.weatherGrid div{
+  flex:1;
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <h1>🌍 GLOBAL SOUL</h1>
-  <div id="meta" class="subtitle"></div>
+<h1>🌍 GLOBAL SOUL</h1>
 
-  <button onclick="loadData()">Neue Ausgabe</button>
+<div class="subtitle">
+Claudia’s Daily Compass<br>
+<em>Zwischen Heimat und Horizont.</em>
+</div>
 
-  <div id="content"></div>
+<div id="meta" class="subtitle"></div>
+
+<button onclick="loadData()">Neue Ausgabe</button>
+
+<div id="content"></div>
 
 </div>
 
 <script>
 
-function ampel(change) {
-  if (change > 1) return '<span class="ampel green"></span>';
-  if (change < -1) return '<span class="ampel red"></span>';
+function ampel(change){
+  if(change > 1) return '<span class="ampel green"></span>';
+  if(change < -1) return '<span class="ampel red"></span>';
   return '<span class="ampel yellow"></span>';
 }
 
-function weatherIcon(code) {
-  if ([0].includes(code)) return "☀️";
-  if ([1,2].includes(code)) return "🌤️";
-  if ([3].includes(code)) return "☁️";
-  if ([45,48].includes(code)) return "🌫️";
-  if ([51,53,55,61,63,65].includes(code)) return "🌧️";
-  if ([71,73,75].includes(code)) return "❄️";
-  if ([95,96,99].includes(code)) return "⛈️";
+function weatherIcon(code){
+  if([0].includes(code)) return "☀️";
+  if([1,2].includes(code)) return "🌤️";
+  if([3].includes(code)) return "☁️";
+  if([45,48].includes(code)) return "🌫️";
+  if([51,53,55,61,63,65].includes(code)) return "🌧️";
+  if([71,73,75].includes(code)) return "❄️";
+  if([95,96,99].includes(code)) return "⛈️";
   return "🌡️";
 }
 
-function loadData() {
-  fetch("/api/daily")
-    .then(res => res.json())
-    .then(data => {
+async function loadData(){
+  const res = await fetch("/api/daily");
+  const data = await res.json();
 
-      document.getElementById("meta").innerText =
-        data.timestamp + " · v" + data.version;
+  window.currentVersion = data.version;
 
-      const eurusd = parseFloat(data.markets.eurusd.value);
+  document.getElementById("meta").innerText =
+    data.timestamp + " · v" + data.version;
 
-      const btcUSD = data.crypto.bitcoin.price;
-      const btcEUR = (btcUSD / eurusd).toFixed(0);
+  const eurusd = parseFloat(data.markets.eurusd.value);
 
-      const nexoUSD = data.crypto.nexo.price;
-      const nexoEUR = (nexoUSD / eurusd).toFixed(3);
+  const btcUSD = data.crypto.bitcoin.price;
+  const btcEUR = (btcUSD / eurusd).toFixed(0);
 
-      const icon = weatherIcon(data.weather.code);
+  const nexoUSD = data.crypto.nexo.price;
+  const nexoEUR = (nexoUSD / eurusd).toFixed(3);
 
-      document.getElementById("content").innerHTML = `
+  const icon = weatherIcon(data.weather.code);
 
-        <div class="section">
-          <h2>Märkte</h2>
+  document.getElementById("content").innerHTML = `
 
-          <div class="line">
-            <div>DAX<br><small>${data.markets.dax.date}</small></div>
-            <div class="right">
-              ${data.markets.dax.value}
-              <span class="ampel yellow"></span>
-            </div>
-          </div>
+  <div class="section">
+    <h2>Märkte</h2>
 
-          <div class="line">
-            <div>EUR/USD<br><small>${data.markets.eurusd.date}</small></div>
-            <div class="right">
-              ${data.markets.eurusd.value}
-              <span class="ampel yellow"></span>
-            </div>
-          </div>
-        </div>
+    <div class="line">
+      <div>DAX<br><small>${data.markets.dax.date}</small></div>
+      <div class="right">
+        ${data.markets.dax.value}
+        <span class="ampel yellow"></span>
+      </div>
+    </div>
 
-        <div class="section">
-          <h2>Krypto</h2>
+    <div class="line">
+      <div>EUR/USD<br><small>${data.markets.eurusd.date}</small></div>
+      <div class="right">
+        ${data.markets.eurusd.value}
+        <span class="ampel yellow"></span>
+      </div>
+    </div>
+  </div>
 
-          <div class="line">
-            <div>Bitcoin</div>
-            <div class="right">
-              $${btcUSD.toLocaleString()} (€${btcEUR})
-              ${ampel(data.crypto.bitcoin.change)}
-              <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="info">Info</a>
-            </div>
-          </div>
+  <div class="section">
+    <h2>Krypto</h2>
 
-          <div class="line">
-            <div>Nexo</div>
-            <div class="right">
-              $${nexoUSD.toFixed(2)} (€${nexoEUR})
-              ${ampel(data.crypto.nexo.change)}
-              <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="info">Info</a>
-            </div>
-          </div>
-        </div>
+    <div class="line">
+      <div>Bitcoin</div>
+      <div class="right">
+        $${btcUSD.toLocaleString()} (€${btcEUR})
+        ${ampel(data.crypto.bitcoin.change)}
+        <a href="https://www.coingecko.com/de/coins/bitcoin"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="info">Info</a>
+      </div>
+    </div>
 
-        <div class="section">
-          <h2>Wetter – ${data.weather.location}</h2>
-          <div class="weatherNow">
-            ${icon} ${data.weather.temp.toFixed(1)}°C
-          </div>
-          <div>09:00 ${data.weather.trend.morning}°C</div>
-          <div>15:00 ${data.weather.trend.afternoon}°C</div>
-          <div>21:00 ${data.weather.trend.evening}°C</div>
-        </div>
+    <div class="line">
+      <div>Nexo</div>
+      <div class="right">
+        $${nexoUSD.toFixed(2)} (€${nexoEUR})
+        ${ampel(data.crypto.nexo.change)}
+        <a href="https://www.coingecko.com/de/coins/nexo"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="info">Info</a>
+      </div>
+    </div>
+  </div>
 
-      `;
-    })
-    .catch(err => {
-      document.getElementById("content").innerHTML =
-        "<p>Fehler beim Laden der Daten.</p>";
-    });
+  <div class="section">
+    <h2>Wetter – ${data.weather.location}</h2>
+
+    <div class="weatherNow">
+      ${icon} ${data.weather.temp.toFixed(1)}°C
+    </div>
+
+    <div class="weatherGrid">
+      <div>
+        <div>09:00</div>
+        <div>${weatherIcon(data.weather.code)}</div>
+        <div>${data.weather.trend.morning}°C</div>
+      </div>
+
+      <div>
+        <div>15:00</div>
+        <div>${weatherIcon(data.weather.code)}</div>
+        <div>${data.weather.trend.afternoon}°C</div>
+      </div>
+
+      <div>
+        <div>21:00</div>
+        <div>${weatherIcon(data.weather.code)}</div>
+        <div>${data.weather.trend.evening}°C</div>
+      </div>
+    </div>
+  </div>
+
+  `;
 }
 
 loadData();
+
+/* Auto Update alle 5 Minuten */
+setInterval(loadData, 300000);
 
 </script>
 
