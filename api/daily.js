@@ -201,43 +201,117 @@ function scoreArticle(article) {
   return score;
 }
 
-// ==========================
-// EVENTS (kuratiert regional)
-// ==========================
+// ============================
+// EVENTS (echtes Datumsmodell)
+// ============================
 
 let events = [
+
+  // EINMALIGE EVENTS
   {
     title: "Haller Frühling",
     city: "Schwäbisch Hall",
-    date: "April 2026",
+    start: "2026-04-10",
+    end: "2026-04-12",
     location: "Altstadt Schwäbisch Hall"
   },
   {
     title: "Jakobimarkt",
     city: "Schwäbisch Hall",
-    date: "Juli 2026",
+    start: "2026-07-18",
+    end: "2026-07-18",
     location: "Innenstadt SHA"
   },
   {
     title: "Sommernachtsfest",
     city: "Schwäbisch Hall",
-    date: "August 2026",
+    start: "2026-08-15",
+    end: "2026-08-16",
     location: "Altstadt SHA"
   },
   {
     title: "Haller Herbst",
     city: "Schwäbisch Hall",
-    date: "Oktober 2026",
+    start: "2026-10-03",
+    end: "2026-10-04",
     location: "Altstadt SHA"
   },
   {
-    title: "Gartentage Langenberg",
-    city: "Crailsheim",
-    date: "Mai 2026",
+    title: "Gartentage Langenburg",
+    city: "Langenburg",
+    start: "2026-05-01",
+    end: "2026-05-03",
     location: "Schloss Langenburg"
+  },
+
+  // WOCHENMARKT (automatisch)
+  {
+    title: "Wochenmarkt Schwäbisch Hall",
+    city: "Schwäbisch Hall",
+    recurring: true,
+    weekday: 6, // Samstag
+    location: "Marktplatz Schwäbisch Hall"
   }
+
 ];
 
+// ============================
+// EVENT FILTER LOGIK
+// ============================
+
+function getWeekRange() {
+  const now = new Date();
+  const first = new Date(now);
+  first.setDate(now.getDate() - now.getDay() + 1); // Montag
+  first.setHours(0,0,0,0);
+
+  const last = new Date(first);
+  last.setDate(first.getDate() + 6); // Sonntag
+  last.setHours(23,59,59,999);
+
+  return { first, last };
+}
+
+function isInThisWeek(start, end) {
+  const { first, last } = getWeekRange();
+  const s = new Date(start);
+  const e = new Date(end);
+  return s <= last && e >= first;
+}
+
+function getRecurringDate(weekday) {
+  const now = new Date();
+  const { first, last } = getWeekRange();
+
+  for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) {
+    if (d.getDay() === weekday) {
+      return new Date(d);
+    }
+  }
+  return null;
+}
+
+// FILTER ANWENDEN
+
+events = events
+  .map(event => {
+    if (event.recurring) {
+      const date = getRecurringDate(event.weekday);
+      if (!date) return null;
+
+      return {
+        ...event,
+        start: date.toISOString().split("T")[0],
+        end: date.toISOString().split("T")[0]
+      };
+    }
+    return event;
+  })
+  .filter(event => {
+    if (!event) return false;
+    return isInThisWeek(event.start, event.end);
+  });
+   
 // ============================
 // EVENTS (echtes Datumsmodell)
 // ============================
