@@ -255,6 +255,25 @@ let events = [
 
 ];
 
+   events = events
+  .map(event => {
+    if (event.recurring) {
+      const date = getRecurringDate(event.weekday);
+      if (!date) return null;
+
+      return {
+        ...event,
+        start: date.toISOString().split("T")[0],
+        end: date.toISOString().split("T")[0]
+      };
+    }
+    return event;
+  })
+  .filter(event => {
+    if (!event) return false;
+    return isInThisWeek(event.start, event.end);
+  });
+
 // ============================
 // EVENT FILTER LOGIK
 // ============================
@@ -291,26 +310,8 @@ function getRecurringDate(weekday) {
   return null;
 }
 
-// FILTER ANWENDEN
+/
 
-events = events
-  .map(event => {
-    if (event.recurring) {
-      const date = getRecurringDate(event.weekday);
-      if (!date) return null;
-
-      return {
-        ...event,
-        start: date.toISOString().split("T")[0],
-        end: date.toISOString().split("T")[0]
-      };
-    }
-    return event;
-  })
-  .filter(event => {
-    if (!event) return false;
-    return isInThisWeek(event.start, event.end);
-  });
    
 // ============================
 // EVENTS (echtes Datumsmodell)
