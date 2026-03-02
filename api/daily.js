@@ -216,6 +216,43 @@ function scoreArticle(article) {
   return score;
 }
 
+// ==========================
+// EVENTS (kuratiert regional)
+// ==========================
+
+let events = [
+  {
+    title: "Haller Frühling",
+    city: "Schwäbisch Hall",
+    date: "April 2026",
+    location: "Altstadt Schwäbisch Hall"
+  },
+  {
+    title: "Jakobimarkt",
+    city: "Schwäbisch Hall",
+    date: "Juli 2026",
+    location: "Innenstadt SHA"
+  },
+  {
+    title: "Sommernachtsfest",
+    city: "Schwäbisch Hall",
+    date: "August 2026",
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Haller Herbst",
+    city: "Schwäbisch Hall",
+    date: "Oktober 2026",
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Gartentage Langenberg",
+    city: "Crailsheim",
+    date: "Mai 2026",
+    location: "Schloss Langenburg"
+  }
+];
+   
     /* =========================
        RESPONSE
     ========================== */
