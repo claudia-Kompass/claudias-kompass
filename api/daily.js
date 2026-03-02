@@ -3,7 +3,7 @@
     const version = "19.2.0";
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
-const marketDate = now.toLocaleDateString("de-DE");
+const mrketDate = now.toLocaleDateString("de-DE");
 
    
     /* =========================
@@ -202,99 +202,104 @@ function scoreArticle(article) {
   return score;
 }
 
-// ============================
-// EVENTS (echtes Datumsmodell)
-// ============================
 
-let baseEvents = [
+const today = new Date();
+const currentYear = today.getFullYear();
 
-  // EINMALIGE EVENTS
+// ==========================
+// EVENTS – SAUBERES MODELL
+// ==========================
+
+// Wochenstart (Montag)
+const day = today.getDay();
+const diffToMonday = (day === 0 ? -6 : 1) - day;
+
+const monday = new Date(today);
+monday.setDate(today.getDate() + diffToMonday);
+monday.setHours(0, 0, 0, 0);
+
+// Wochenende (Sonntag)
+const sunday = new Date(monday);
+sunday.setDate(monday.getDate() + 6);
+sunday.setHours(23, 59, 59, 999);
+
+// ===== JÄHRLICHE EVENTS =====
+const yearlyEvents = [
   {
     title: "Haller Frühling",
     city: "Schwäbisch Hall",
-    start: "2026-04-10",
-    end: "2026-04-12",
+    start: new Date(currentYear, 3, 10),
+    end: new Date(currentYear, 3, 12),
     location: "Altstadt Schwäbisch Hall"
   },
   {
     title: "Jakobimarkt",
     city: "Schwäbisch Hall",
-    start: "2026-07-18",
-    end: "2026-07-18",
+    start: new Date(currentYear, 6, 18),
+    end: new Date(currentYear, 6, 18),
     location: "Innenstadt SHA"
   },
   {
     title: "Sommernachtsfest",
     city: "Schwäbisch Hall",
-    start: "2026-08-15",
-    end: "2026-08-16",
+    start: new Date(currentYear, 7, 15),
+    end: new Date(currentYear, 7, 16),
     location: "Altstadt SHA"
   },
   {
     title: "Haller Herbst",
     city: "Schwäbisch Hall",
-    start: "2026-10-03",
-    end: "2026-10-04",
+    start: new Date(currentYear, 9, 3),
+    end: new Date(currentYear, 9, 4),
     location: "Altstadt SHA"
   },
   {
     title: "Gartentage Langenburg",
     city: "Langenburg",
-    start: "2026-05-01",
-    end: "2026-05-03",
+    start: new Date(currentYear, 4, 1),
+    end: new Date(currentYear, 4, 3),
     location: "Schloss Langenburg"
-  },
-
-  // WOCHENMARKT (automatisch)
-  {
-    title: "Wochenmarkt Schwäbisch Hall",
-    city: "Schwäbisch Hall",
-    recurring: true,
-    weekday: 6, // Samstag
-    location: "Marktplatz Schwäbisch Hall"
   }
-
 ];
 
-   events = events
-  .map(event => {
-    if (event.recurring) {
-      const date = getRecurringDate(event.weekday);
-      if (!date) return null;
+// ===== WOCHENMÄRKTE (dynamisch) =====
+const weeklyEvents = [];
 
-      return {
-        ...event,
-        start: date.toISOString().split("T")[0],
-        end: date.toISOString().split("T")[0]
-      };
-    }
-    return event;
-  })
-  .filter(event => {
-    if (!event) return false;
-    return isInThisWeek(event.start, event.end);
+// Mittwoch SHA
+if (day <= 3) {
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, today.getMonth(), today.getDate()),
+    end: new Date(currentYear, today.getMonth(), today.getDate()),
+    location: "Marktplatz Schwäbisch Hall"
   });
+}
 
-// ============================
-// EVENT FILTER LOGIK
-// ============================
+// Samstag Crailsheim
+if (day <= 6) {
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Crailsheim",
+    start: new Date(currentYear, today.getMonth(), today.getDate()),
+    end: new Date(currentYear, today.getMonth(), today.getDate()),
+    location: "Innenstadt Crailsheim"
+  });
+}
 
-function getWeekRange() {
-  const now = new Date();
-  const first = new Date(now);
-  first.setDate(now.getDate() - now.getDay() + 1); // Montag
-  first.setHours(0,0,0,0);
+// ===== FILTER NUR AKTUELLE WOCHE =====
+let events = [...yearlyEvents, ...weeklyEvents].filter(e =>
+  e.start <= sunday && e.end >= monday
+);
 
-  const last = new Date(first);
-  last.setDate(first.getDate() + 6); // Sonntag
-  last.setHours(23,59,59,999);
-// ===============================
-// REGIONAL EVENTS (dynamisch Woche Mo–So)
-// ===============================
-
-const today = new Date();
-const currentYear = today.getFullYear();
-
+// ===== FORMATIEREN FÜR API =====
+events = events.map(e => ({
+  title: e.title,
+  city: e.city,
+  date: e.start.toLocaleDateString("de-DE"),
+  location: e.location
+}));
+   
 // Wochenstart (Montag)
 const day = today.getDay();
 const diffToMonday = (day === 0 ? -6 : 1) - day;
@@ -396,7 +401,6 @@ events = events.map(e => ({
   news: news,
   regional: regional,
   events: events,
-
   markets: {
   dax: {
     value: "18.742",
