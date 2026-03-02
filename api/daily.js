@@ -206,7 +206,7 @@ function scoreArticle(article) {
 // EVENTS (echtes Datumsmodell)
 // ============================
 
-let events = [
+let baseEvents = [
 
   // EINMALIGE EVENTS
   {
@@ -374,7 +374,7 @@ if (weekday <= 6) {
 }
 
 // ===== FILTER NUR AKTUELLE WOCHE =====
-let events = [...yearlyEvents, ...weeklyEvents].filter(e =>
+let events = [...baseEvents, ...weeklyEvents].filter(e =>
   e.start <= sunday && e.end >= monday
 );
 
