@@ -269,8 +269,7 @@ button{
 
 </div>
 
-<script>
-
+ <script>
 function ampel(change){
   if(change > 1) return '<span class="ampel green"></span>';
   if(change < -1) return '<span class="ampel red"></span>';
@@ -280,16 +279,16 @@ function ampel(change){
 function weatherIcon(code){
   const hour = new Date().getHours();
 
-if(code===0){
-  if(hour >= 20 || hour < 6) return "🌙";
-  return "☀️";
-}
-  if(code===1 || code===2) return "🌤️";
-  if(code===3) return "☁️";
-  if(code>=45 && code<=48) return "🌫️";
-  if(code>=51 && code<=65) return "🌧️";
-  if(code>=71 && code<=75) return "❄️";
-  if(code>=95) return "⛈️";
+  if(code === 0){
+    if(hour >= 20 || hour < 6) return "🌙";
+    return "☀️";
+  }
+  if(code === 1 || code === 2) return "🌤️";
+  if(code === 3) return "☁️";
+  if(code >= 45 && code <= 48) return "🌫️";
+  if(code >= 51 && code <= 65) return "🌧️";
+  if(code >= 71 && code <= 75) return "❄️";
+  if(code >= 95) return "⛈️";
   return "🌡️";
 }
 
@@ -300,184 +299,119 @@ function formatMeta(data){
          " • v" + data.version;
 }
 
-function loadData(){
-  fetch("/api/daily")
-    .then(res => {
-      if(!res.ok){
-        throw new Error("API Antwort nicht ok");
-      }
-      return res.json();
-    })
-    .then(data => {
-
-      console.log("API DATA:", data); // Debug
-
-      // META
-      document.getElementById("meta").innerText = formatMeta(data);
-
-      // MÄRKTE
-      document.getElementById("daxValue").innerText = data.markets?.dax?.value ?? "-";
-      document.getElementById("daxDate").innerText  = data.markets?.dax?.date ?? "-";
-
-      document.getElementById("eurusdValue").innerText = data.markets?.eurusd?.value ?? "-";
-      document.getElementById("eurusdDate").innerText  = data.markets?.eurusd?.date ?? "-";
-
-      // KRYPTO
-      document.getElementById("btcValue").innerHTML =
-        "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
-        " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
-        ampel(data.crypto?.bitcoin?.change ?? 0);
-
-      document.getElementById("nexoValue").innerHTML =
-        "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
-        " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
-        ampel(data.crypto?.nexo?.change ?? 0);
-
-      // WETTER
-      document.getElementById("weatherNow").innerHTML =
-        weatherIcon(data.weather?.code ?? 0) +
-        " <span>" + (data.weather?.temp ?? 0).toFixed(1) + "°C</span>";
-
-      document.getElementById("mIcon").innerHTML =
-        weatherIcon(data.weather?.trend?.morning?.code ?? 0);
-      document.getElementById("morning").innerText =
-        (data.weather?.trend?.morning?.temp ?? 0).toFixed(1) + "°C";
-
-      document.getElementById("aIcon").innerHTML =
-        weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
-      document.getElementById("afternoon").innerText =
-        (data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1) + "°C";
-
-      document.getElementById("eIcon").innerHTML =
-        weatherIcon(data.weather?.trend?.evening?.code ?? 0);
-      document.getElementById("evening").innerText =
-        (data.weather?.trend?.evening?.temp ?? 0).toFixed(1) + "°C";
-
-      // NEWS
-      const newsBlock = document.getElementById("newsBlock");
-      if(data.news?.length){
-        newsBlock.innerHTML = data.news.slice(0,3).map(n => `
-          <div class="newsItem">
-            <div style="font-weight:600; margin-bottom:6px;">
-              ${n.title}
-            </div>
-            <a href="${n.url}" target="_blank" class="news-link">
-              weiterlesen →
-            </a>
-            <div class="newsSource">
-              ${n.source}
-            </div>
-          </div>
-        `).join("");
-      }
-
-      // REGIONAL
-      const regionalBlock = document.getElementById("regional-news");
-      if(data.regional?.length){
-        regionalBlock.innerHTML = data.regional.slice(0,3).map(r => `
-          <div class="newsItem">
-            <div style="font-weight:600; margin-bottom:6px;">
-<script>
-async function loadData() {
-  try {
+async function loadData(){
+  try{
     const res = await fetch("/api/daily");
+    if(!res.ok) throw new Error("API Fehler");
     const data = await res.json();
 
-    // =========================
+    // META
+    document.getElementById("meta").innerText = formatMeta(data);
+
     // MÄRKTE
-    // =========================
-    document.querySelector("#dax").innerHTML =
-      data.markets.dax.value + "<br><small>" + data.markets.dax.date + "</small>";
+    document.getElementById("daxValue").innerText =
+      data.markets?.dax?.value ?? "-";
+    document.getElementById("daxDate").innerText =
+      data.markets?.dax?.date ?? "-";
 
-    document.querySelector("#eurusd").innerHTML =
-      data.markets.eurusd.value + "<br><small>" + data.markets.eurusd.date + "</small>";
+    document.getElementById("eurusdValue").innerText =
+      data.markets?.eurusd?.value ?? "-";
+    document.getElementById("eurusdDate").innerText =
+      data.markets?.eurusd?.date ?? "-";
 
-    // =========================
     // KRYPTO
-    // =========================
-    document.querySelector("#bitcoin").innerHTML =
-      data.crypto.bitcoin.eur.toFixed(2) + " € (" +
-      data.crypto.bitcoin.change.toFixed(2) + "%)";
+    document.getElementById("btcValue").innerHTML =
+      "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
+      " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
+      ampel(data.crypto?.bitcoin?.change ?? 0);
 
-    document.querySelector("#nexo").innerHTML =
-      data.crypto.nexo.eur.toFixed(4) + " € (" +
-      data.crypto.nexo.change.toFixed(2) + "%)";
+    document.getElementById("nexoValue").innerHTML =
+      "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
+      " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
+      ampel(data.crypto?.nexo?.change ?? 0);
 
-    // =========================
-    // NEWS GLOBAL
-    // =========================
-    const newsBlock = document.querySelector("#news");
-    newsBlock.innerHTML = "";
+    // WETTER
+    document.getElementById("weatherNow").innerHTML =
+      weatherIcon(data.weather?.code ?? 0) +
+      " <span>" + (data.weather?.temp ?? 0).toFixed(1) + "°C</span>";
 
-    data.news.forEach(article => {
-      newsBlock.innerHTML += `
-        <div style="margin-bottom:12px">
-          <a href="${article.url}" target="_blank" style="color:#fff;text-decoration:none">
-            <strong>${article.title}</strong>
-          </a><br>
-          <small>${article.source}</small>
-        </div>
-      `;
-    });
+    document.getElementById("mIcon").innerHTML =
+      weatherIcon(data.weather?.trend?.morning?.code ?? 0);
+    document.getElementById("morning").innerText =
+      (data.weather?.trend?.morning?.temp ?? 0).toFixed(1) + "°C";
 
-    // =========================
-    // REGIONAL
-    // =========================
-    const regionalBlock = document.querySelector("#regional");
-    regionalBlock.innerHTML = "";
+    document.getElementById("aIcon").innerHTML =
+      weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
+    document.getElementById("afternoon").innerText =
+      (data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1) + "°C";
 
-    data.regional.forEach(article => {
-      regionalBlock.innerHTML += `
-        <div style="margin-bottom:12px">
-          <a href="${article.url}" target="_blank" style="color:#fff;text-decoration:none">
-            <strong>${article.title}</strong>
-          </a>
-        </div>
-      `;
-    });
+    document.getElementById("eIcon").innerHTML =
+      weatherIcon(data.weather?.trend?.evening?.code ?? 0);
+    document.getElementById("evening").innerText =
+      (data.weather?.trend?.evening?.temp ?? 0).toFixed(1) + "°C";
 
-    // =========================
-    // EVENTS
-    // =========================
-    const eventsBlock = document.querySelector("#events");
-    eventsBlock.innerHTML = "";
-
-    if (data.events.length === 0) {
-      eventsBlock.innerHTML = "<em>Keine Veranstaltungen diese Woche</em>";
-    } else {
-      data.events.forEach(event => {
-        eventsBlock.innerHTML += `
-          <div style="margin-bottom:10px">
-            <strong>${event.title}</strong><br>
-            ${event.city}<br>
-            <small>${event.date} – ${event.location}</small>
+    // NEWS
+    const newsBlock = document.getElementById("newsBlock");
+    if(data.news?.length){
+      newsBlock.innerHTML = data.news.map(n => `
+        <div class="newsItem">
+          <div style="font-weight:600;margin-bottom:6px;">
+            ${n.title}
           </div>
-        `;
-      });
+          <a href="${n.url}" target="_blank" class="news-link">
+            weiterlesen →
+          </a>
+          <div class="newsSource">${n.source}</div>
+        </div>
+      `).join("");
     }
 
-    // =========================
-    // WETTER
-    // =========================
-    document.querySelector("#weatherNow").innerHTML =
-      data.weather.temp + "°C";
+    // REGIONAL
+    const regionalBlock = document.getElementById("regional-news");
+    if(data.regional?.length){
+      regionalBlock.innerHTML = data.regional.map(r => `
+        <div class="newsItem">
+          <div style="font-weight:600;margin-bottom:6px;">
+            ${r.title}
+          </div>
+          <a href="${r.url}" target="_blank" class="news-link">
+            weiterlesen →
+          </a>
+          <div class="newsSource">${r.source?.name ?? ""}</div>
+        </div>
+      `).join("");
+    }
 
-    document.querySelector("#w9").innerHTML =
-      data.weather.trend.morning.temp + "°";
+    // EVENTS
+    const eventsBlock = document.getElementById("events-list");
+    if(data.events?.length){
+      eventsBlock.innerHTML = data.events.map(e => `
+        <div class="newsItem">
+          <div style="font-weight:600;">
+            ${e.title}
+          </div>
+          <div class="newsSource">
+            ${e.city} • ${e.date}
+          </div>
+          <div class="newsSource">
+            ${e.location}
+          </div>
+        </div>
+      `).join("");
+    }
 
-    document.querySelector("#w15").innerHTML =
-      data.weather.trend.afternoon.temp + "°";
-
-    document.querySelector("#w21").innerHTML =
-      data.weather.trend.evening.temp + "°";
-
-  } catch (error) {
-    console.error("Fehler beim Laden:", error);
+  } catch(err){
+    console.error("Frontend Fehler:", err);
   }
 }
 
 loadData();
-</script>
+    </script>   
+    
 
+</div>
+</div>
 </body>
 </html>
+
+
