@@ -188,34 +188,32 @@ const yearlyEvents = [
   }
 ];
 
-// ===== WOCHENMÄRKTE (dynamisch, korrekt berechnet) =====
-const weeklyEvents = [];
+// ===== WOCHENMÄRKTE (korrekt berechnet) =====
 
-// Mittwoch SHA (3)
-if (day <= 3) {
-  const marketDate = new Date(today);
-  marketDate.setDate(today.getDate() + (3 - day));
-  weeklyEvents.push({
+// Mittwoch dieser Woche
+const wednesday = new Date(monday);
+wednesday.setDate(monday.getDate() + 2); // Montag + 2
+
+// Samstag dieser Woche
+const saturday = new Date(monday);
+saturday.setDate(monday.getDate() + 5); // Montag + 5
+
+const weeklyEvents = [
+  {
     title: "Wochenmarkt",
     city: "Schwäbisch Hall",
-    start: marketDate,
-    end: marketDate,
+    start: wednesday,
+    end: wednesday,
     location: "Marktplatz Schwäbisch Hall"
-  });
-}
-
-// Samstag Crailsheim (6)
-if (day <= 6) {
-  const marketDate = new Date(today);
-  marketDate.setDate(today.getDate() + (6 - day));
-  weeklyEvents.push({
+  },
+  {
     title: "Wochenmarkt",
     city: "Crailsheim",
-    start: marketDate,
-    end: marketDate,
+    start: saturday,
+    end: saturday,
     location: "Innenstadt Crailsheim"
-  });
-}
+  }
+];
 
 // ===== ALLE EVENTS ZUSAMMEN =====
 const allEvents = [...yearlyEvents, ...weeklyEvents];
