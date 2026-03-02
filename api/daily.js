@@ -105,7 +105,18 @@ function categorize(title) {
 
   return "gesellschaft";
 }
+function topicKey(title){
+  const t = (title || "").toLowerCase();
 
+  if(t.includes("iran")) return "iran";
+  if(t.includes("israel")) return "israel";
+  if(t.includes("ukraine")) return "ukraine";
+  if(t.includes("öl")) return "oil";
+  if(t.includes("dax")) return "dax";
+  if(t.includes("inflation")) return "inflation";
+
+  return "other";
+}
 try {
   if (process.env.GNEWS_KEY) {
     const newsRes = await fetch(
