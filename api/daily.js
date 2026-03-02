@@ -1,12 +1,12 @@
 module.exports = async function handler(req, res) {
   try {
-    const version = "19.2.0";
+    const version = "19.3.0";
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
     const marketDate = now.toLocaleDateString("de-DE");
 
     /* =========================
-       KRYPTO (Live via CoinGecko)
+       KRYPTO
     ========================== */
 
     let bitcoin = { usd: 0, eur: 0, usd_24h_change: 0 };
@@ -17,13 +17,12 @@ module.exports = async function handler(req, res) {
         "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"
       );
       const cryptoData = await cryptoRes.json();
-
       if (cryptoData.bitcoin) bitcoin = cryptoData.bitcoin;
       if (cryptoData.nexo) nexo = cryptoData.nexo;
     } catch (e) {}
 
     /* =========================
-       WETTER (Open Meteo)
+       WETTER
     ========================== */
 
     const weatherRes = await fetch(
@@ -33,7 +32,6 @@ module.exports = async function handler(req, res) {
 
     const currentTemp = weatherData.current_weather?.temperature ?? 0;
     const currentCode = weatherData.current_weather?.weathercode ?? 0;
-
     const hourly = weatherData.hourly;
 
     function getIndex(hour) {
@@ -47,68 +45,32 @@ module.exports = async function handler(req, res) {
     const eI = getIndex(21);
 
     /* =========================
-       NEWS (Top 3 + Gewichtung)
+       NEWS
     ========================== */
 
     let news = [];
 
-    function scoreArticle(article) {
-      let score = 0;
-      const text = (article.title || "").toLowerCase();
-      const source = (article.source || "").toLowerCase();
-
-      const crisis = [
-        "krieg","iran","israel","ukraine","wahl",
-        "angriff","explosion","unwetter"
-      ];
-      crisis.forEach(k => {
-        if (text.includes(k)) score += 8;
-      });
-
-      const market = [
-        "dax","börse","zins","ezb","fed",
-        "inflation","öl","gas","usd","dollar"
-      ];
-      market.forEach(k => {
-        if (text.includes(k)) score += 6;
-      });
-
-      if (source.includes("tagesschau") ||
-          source.includes("zdf") ||
-          source.includes("bbc") ||
-          source.includes("faz")) score += 5;
-
-      return score;
-    }
-
     try {
       if (process.env.GNEWS_KEY) {
         const newsRes = await fetch(
-          `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR wahl OR bundestag OR dax OR inflation&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+          `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR wahl OR dax OR inflation&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
         );
-
         const newsJson = await newsRes.json();
 
         news = (newsJson.articles || [])
           .map(a => ({
             title: a.title,
             source: a.source?.name || "",
-            url: a.url,
-            score: scoreArticle({
-              title: a.title,
-              source: a.source?.name
-            })
+            url: a.url
           }))
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 3)
-          .map(({ score, ...rest }) => rest);
+          .slice(0, 3);
       }
     } catch (e) {
       news = [];
     }
 
     /* =========================
-       REGIONAL NEWS
+       REGIONAL
     ========================== */
 
     let regional = [];
@@ -119,124 +81,119 @@ module.exports = async function handler(req, res) {
           `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=5&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
         );
         const regionalData = await regionalRes.json();
-        regional = (regionalData.articles || []).slice(0, 3);
+
+        regional = (regionalData.articles || [])
+          .slice(0, 5)
+          .filter((article, index, self) =>
+            index === self.findIndex(a => a.title === article.title)
+          )
+          .slice(0, 3);
       }
     } catch (e) {
       regional = [];
     }
 
     /* =========================
-       EVENTS – Sauber & Stabil
+       EVENTS – SMART
     ========================== */
 
-    // ==========================
-// EVENTS – SMART MODELL
-// ==========================
+    const today = new Date();
+    const currentYear = today.getFullYear();
 
-const today = new Date();
-const currentYear = today.getFullYear();
+    const day = today.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1) - day;
 
-// Wochenstart (Montag)
-const day = today.getDay();
-const diffToMonday = (day === 0 ? -6 : 1) - day;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + diffToMonday);
+    monday.setHours(0, 0, 0, 0);
 
-const monday = new Date(today);
-monday.setDate(today.getDate() + diffToMonday);
-monday.setHours(0,0,0,0);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
 
-// Wochenende (Sonntag)
-const sunday = new Date(monday);
-sunday.setDate(monday.getDate() + 6);
-sunday.setHours(23,59,59,999);
+    const yearlyEvents = [
+      {
+        title: "Haller Frühling",
+        city: "Schwäbisch Hall",
+        start: new Date(currentYear, 3, 10),
+        end: new Date(currentYear, 3, 12),
+        location: "Altstadt Schwäbisch Hall"
+      },
+      {
+        title: "Jakobimarkt",
+        city: "Schwäbisch Hall",
+        start: new Date(currentYear, 6, 18),
+        end: new Date(currentYear, 6, 18),
+        location: "Innenstadt SHA"
+      },
+      {
+        title: "Sommernachtsfest",
+        city: "Schwäbisch Hall",
+        start: new Date(currentYear, 7, 15),
+        end: new Date(currentYear, 7, 16),
+        location: "Altstadt SHA"
+      },
+      {
+        title: "Haller Herbst",
+        city: "Schwäbisch Hall",
+        start: new Date(currentYear, 9, 3),
+        end: new Date(currentYear, 9, 4),
+        location: "Altstadt SHA"
+      },
+      {
+        title: "Gartentage Langenburg",
+        city: "Langenburg",
+        start: new Date(currentYear, 4, 1),
+        end: new Date(currentYear, 4, 3),
+        location: "Schloss Langenburg"
+      }
+    ];
 
-// ===== JÄHRLICHE EVENTS =====
-const yearlyEvents = [
-  {
-    title: "Haller Frühling",
-    city: "Schwäbisch Hall",
-    start: new Date(currentYear, 3, 10),
-    end: new Date(currentYear, 3, 12),
-    location: "Altstadt Schwäbisch Hall"
-  },
-  {
-    title: "Jakobimarkt",
-    city: "Schwäbisch Hall",
-    start: new Date(currentYear, 6, 18),
-    end: new Date(currentYear, 6, 18),
-    location: "Innenstadt SHA"
-  },
-  {
-    title: "Sommernachtsfest",
-    city: "Schwäbisch Hall",
-    start: new Date(currentYear, 7, 15),
-    end: new Date(currentYear, 7, 16),
-    location: "Altstadt SHA"
-  },
-  {
-    title: "Haller Herbst",
-    city: "Schwäbisch Hall",
-    start: new Date(currentYear, 9, 3),
-    end: new Date(currentYear, 9, 4),
-    location: "Altstadt SHA"
-  },
-  {
-    title: "Gartentage Langenburg",
-    city: "Langenburg",
-    start: new Date(currentYear, 4, 1),
-    end: new Date(currentYear, 4, 3),
-    location: "Schloss Langenburg"
-  }
-];
+    const wednesday = new Date(monday);
+    wednesday.setDate(monday.getDate() + 2);
 
-// ===== WOCHENMÄRKTE (korrekt berechnet) =====
+    const saturday = new Date(monday);
+    saturday.setDate(monday.getDate() + 5);
 
-// Mittwoch dieser Woche
-const wednesday = new Date(monday);
-wednesday.setDate(monday.getDate() + 2); // Montag + 2
+    const weeklyEvents = [
+      {
+        title: "Wochenmarkt",
+        city: "Schwäbisch Hall",
+        start: wednesday,
+        end: wednesday,
+        location: "Marktplatz Schwäbisch Hall"
+      },
+      {
+        title: "Wochenmarkt",
+        city: "Crailsheim",
+        start: saturday,
+        end: saturday,
+        location: "Innenstadt Crailsheim"
+      }
+    ];
 
-// Samstag dieser Woche
-const saturday = new Date(monday);
-saturday.setDate(monday.getDate() + 5); // Montag + 5
+    const allEvents = [...yearlyEvents, ...weeklyEvents];
 
-const weeklyEvents = [
-  {
-    title: "Wochenmarkt",
-    city: "Schwäbisch Hall",
-    start: wednesday,
-    end: wednesday,
-    location: "Marktplatz Schwäbisch Hall"
-  },
-  {
-    title: "Wochenmarkt",
-    city: "Crailsheim",
-    start: saturday,
-    end: saturday,
-    location: "Innenstadt Crailsheim"
-  }
-];
+    let events = allEvents.filter(e =>
+      e.start <= sunday && e.end >= monday
+    );
 
-// ===== ALLE EVENTS ZUSAMMEN =====
-const allEvents = [...yearlyEvents, ...weeklyEvents];
+    if (events.length === 0) {
+      const upcoming = allEvents
+        .filter(e => e.start > today)
+        .sort((a, b) => a.start - b.start);
 
-// ===== 1️⃣ EVENTS DIESE WOCHE =====
-let events = allEvents.filter(e =>
-  e.start <= sunday && e.end >= monday
-);
+      if (upcoming.length > 0) {
+        events = [upcoming[0]];
+      }
+    }
 
-// ===== 2️⃣ FALLBACK: NÄCHSTES UPCOMING =====
-if (events.length === 0) {
-  const upcoming = allEvents
-    .filter(e => e.start > today)
-    .sort((a, b) => a.start - b.start);
-}
-
-// ===== FORMATIEREN FÜR API =====
-events = events.map(e => ({
-  title: e.title,
-  city: e.city,
-  date: e.start.toLocaleDateString("de-DE"),
-  location: e.location
-}));
+    events = events.map(e => ({
+      title: e.title,
+      city: e.city,
+      date: e.start.toLocaleDateString("de-DE"),
+      location: e.location
+    }));
 
     /* =========================
        RESPONSE
@@ -245,9 +202,16 @@ events = events.map(e => ({
     res.status(200).json({
       version,
       timestamp,
+
+      focus: {
+        title: "Heute im Fokus",
+        text: "Geopolitik und Energiepreise bleiben diese Woche entscheidend. Märkte reagieren sensibel auf politische Signale."
+      },
+
       news,
       regional,
       events,
+
       markets: {
         dax: {
           value: "18.742",
@@ -258,6 +222,7 @@ events = events.map(e => ({
           date: "Stand: " + marketDate
         }
       },
+
       crypto: {
         bitcoin: {
           usd: bitcoin.usd,
@@ -270,6 +235,7 @@ events = events.map(e => ({
           change: nexo.usd_24h_change
         }
       },
+
       weather: {
         temp: currentTemp,
         code: currentCode,
