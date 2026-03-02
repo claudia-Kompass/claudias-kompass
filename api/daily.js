@@ -129,49 +129,120 @@ module.exports = async function handler(req, res) {
        EVENTS – Sauber & Stabil
     ========================== */
 
-    const today = new Date();
-    const currentYear = today.getFullYear();
+    // ==========================
+// EVENTS – SMART MODELL
+// ==========================
 
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
-    monday.setHours(0,0,0,0);
+const today = new Date();
+const currentYear = today.getFullYear();
 
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    sunday.setHours(23,59,59,999);
+// Wochenstart (Montag)
+const day = today.getDay();
+const diffToMonday = (day === 0 ? -6 : 1) - day;
 
-    const yearlyEvents = [
-      {
-        title: "Haller Frühling",
-        city: "Schwäbisch Hall",
-        start: new Date(currentYear, 3, 10),
-        end: new Date(currentYear, 3, 12),
-        location: "Altstadt Schwäbisch Hall"
-      },
-      {
-        title: "Jakobimarkt",
-        city: "Schwäbisch Hall",
-        start: new Date(currentYear, 6, 18),
-        end: new Date(currentYear, 6, 18),
-        location: "Innenstadt SHA"
-      },
-      {
-        title: "Sommernachtsfest",
-        city: "Schwäbisch Hall",
-        start: new Date(currentYear, 7, 15),
-        end: new Date(currentYear, 7, 16),
-        location: "Altstadt SHA"
-      }
-    ];
+const monday = new Date(today);
+monday.setDate(today.getDate() + diffToMonday);
+monday.setHours(0,0,0,0);
 
-    const events = yearlyEvents
-      .filter(e => e.start <= sunday && e.end >= monday)
-      .map(e => ({
-        title: e.title,
-        city: e.city,
-        date: e.start.toLocaleDateString("de-DE"),
-        location: e.location
-      }));
+// Wochenende (Sonntag)
+const sunday = new Date(monday);
+sunday.setDate(monday.getDate() + 6);
+sunday.setHours(23,59,59,999);
+
+// ===== JÄHRLICHE EVENTS =====
+const yearlyEvents = [
+  {
+    title: "Haller Frühling",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 3, 10),
+    end: new Date(currentYear, 3, 12),
+    location: "Altstadt Schwäbisch Hall"
+  },
+  {
+    title: "Jakobimarkt",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 6, 18),
+    end: new Date(currentYear, 6, 18),
+    location: "Innenstadt SHA"
+  },
+  {
+    title: "Sommernachtsfest",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 7, 15),
+    end: new Date(currentYear, 7, 16),
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Haller Herbst",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 9, 3),
+    end: new Date(currentYear, 9, 4),
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Gartentage Langenburg",
+    city: "Langenburg",
+    start: new Date(currentYear, 4, 1),
+    end: new Date(currentYear, 4, 3),
+    location: "Schloss Langenburg"
+  }
+];
+
+// ===== WOCHENMÄRKTE (dynamisch, korrekt berechnet) =====
+const weeklyEvents = [];
+
+// Mittwoch SHA (3)
+if (day <= 3) {
+  const marketDate = new Date(today);
+  marketDate.setDate(today.getDate() + (3 - day));
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Schwäbisch Hall",
+    start: marketDate,
+    end: marketDate,
+    location: "Marktplatz Schwäbisch Hall"
+  });
+}
+
+// Samstag Crailsheim (6)
+if (day <= 6) {
+  const marketDate = new Date(today);
+  marketDate.setDate(today.getDate() + (6 - day));
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Crailsheim",
+    start: marketDate,
+    end: marketDate,
+    location: "Innenstadt Crailsheim"
+  });
+}
+
+// ===== ALLE EVENTS ZUSAMMEN =====
+const allEvents = [...yearlyEvents, ...weeklyEvents];
+
+// ===== 1️⃣ EVENTS DIESE WOCHE =====
+let events = allEvents.filter(e =>
+  e.start <= sunday && e.end >= monday
+);
+
+// ===== 2️⃣ FALLBACK: NÄCHSTES UPCOMING =====
+if (events.length === 0) {
+  const upcoming = allEvents
+    .filter(e => e.start > today)
+    .sort((a, b) => a.start - b.start);
+
+  if (upcoming.length > 0) {
+    events = [upcoming[0]];
+  }
+}
+
+// ===== FORMATIEREN FÜR API =====
+events = events.map(e => ({
+  title: e.title,
+  city: e.city,
+  date: e.start.toLocaleDateString("de-DE"),
+  location: e.location
+}));
 
     /* =========================
        RESPONSE
