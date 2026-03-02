@@ -138,6 +138,22 @@ module.exports = async function handler(req, res) {
 
     let regional = [];
 
+function categorize(title) {
+  const t = title.toLowerCase();
+
+  if (t.includes("krieg") || t.includes("iran") || t.includes("israel") || t.includes("ukraine"))
+    return "geopolitik";
+
+  if (t.includes("dax") || t.includes("börse") || t.includes("inflation") || t.includes("zins"))
+    return "wirtschaft";
+
+  if (t.includes("bundestag") || t.includes("deutschland") || t.includes("regierung"))
+    return "deutschland";
+
+  return "gesellschaft";
+}
+
+
     try {
       if (process.env.GNEWS_KEY) {
         const regionalRes = await fetch(
