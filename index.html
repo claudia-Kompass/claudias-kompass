@@ -417,11 +417,24 @@ if (data.focus) {
       `).join("");
     }
 
-<!-- TANZ & RHYTHMUS -->
-<section class="module">
-  <h2>💃 Tanz & Rhythmus</h2>
-  <div id="dance-list"></div>
-</section>
+// DANCE RENDER
+const danceBlock = document.getElementById("dance-list");
+
+if(data.dance && data.dance.length){
+  danceBlock.innerHTML = data.dance.map(d => `
+    <div class="newsItem">
+      <div style="font-weight:600; margin-bottom:6px;">
+        ${d.title}
+      </div>
+      <div class="newsSource">
+        ${d.city} • ${d.date}
+      </div>
+      <div class="newsSource">
+        ${d.location} • ${d.style}
+      </div>
+    </div>
+  `).join("");
+}
       
   } catch(err){
     console.error("Frontend Fehler:", err);
