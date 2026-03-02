@@ -338,7 +338,7 @@ async function loadData(){
   "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
   " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
   ampel(data.crypto?.nexo?.change ?? 0) +
-  '<a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="info">Info</a>';
+  '<a href="https://www.coingecko.com/en/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
 
     // WETTER
     document.getElementById("weatherNow").innerHTML =
