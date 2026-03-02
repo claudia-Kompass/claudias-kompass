@@ -377,87 +377,106 @@ function loadData(){
         regionalBlock.innerHTML = data.regional.slice(0,3).map(r => `
           <div class="newsItem">
             <div style="font-weight:600; margin-bottom:6px;">
-              ${r.title}
-            </div>
-            <a href="${r.url}" target="_blank" class="news-link">
-              weiterlesen →
-            </a>
-            <div class="newsSource">
-              ${r.source?.name ?? ""}
-            </div>
-          </div>
-        `).join("");
-      }
+<script>
+async function loadData() {
+  try {
+    const res = await fetch("/api/daily");
+    const data = await res.json();
 
-      // EVENTS
-      const eventsBlock = document.getElementById("events-list");
-      if(data.events?.length){
-        eventsBlock.innerHTML = data.events.map(e => `
-          <div class="newsItem">
-            <div style="font-weight:600; margin-bottom:6px;">
-              ${e.title}
-            </div>
-            <div class="newsSource">
-              ${e.city} • ${e.date}
-            </div>
-            <div class="newsSource">
-              ${e.location}
-            </div>
-          </div>
-        `).join("");
-      }
+    // =========================
+    // MÄRKTE
+    // =========================
+    document.querySelector("#dax").innerHTML =
+      data.markets.dax.value + "<br><small>" + data.markets.dax.date + "</small>";
 
-    })
-    .catch(error => {
-      console.error("Fehler beim Laden:", error);
+    document.querySelector("#eurusd").innerHTML =
+      data.markets.eurusd.value + "<br><small>" + data.markets.eurusd.date + "</small>";
+
+    // =========================
+    // KRYPTO
+    // =========================
+    document.querySelector("#bitcoin").innerHTML =
+      data.crypto.bitcoin.eur.toFixed(2) + " € (" +
+      data.crypto.bitcoin.change.toFixed(2) + "%)";
+
+    document.querySelector("#nexo").innerHTML =
+      data.crypto.nexo.eur.toFixed(4) + " € (" +
+      data.crypto.nexo.change.toFixed(2) + "%)";
+
+    // =========================
+    // NEWS GLOBAL
+    // =========================
+    const newsBlock = document.querySelector("#news");
+    newsBlock.innerHTML = "";
+
+    data.news.forEach(article => {
+      newsBlock.innerHTML += `
+        <div style="margin-bottom:12px">
+          <a href="${article.url}" target="_blank" style="color:#fff;text-decoration:none">
+            <strong>${article.title}</strong>
+          </a><br>
+          <small>${article.source}</small>
+        </div>
+      `;
     });
+
+    // =========================
+    // REGIONAL
+    // =========================
+    const regionalBlock = document.querySelector("#regional");
+    regionalBlock.innerHTML = "";
+
+    data.regional.forEach(article => {
+      regionalBlock.innerHTML += `
+        <div style="margin-bottom:12px">
+          <a href="${article.url}" target="_blank" style="color:#fff;text-decoration:none">
+            <strong>${article.title}</strong>
+          </a>
+        </div>
+      `;
+    });
+
+    // =========================
+    // EVENTS
+    // =========================
+    const eventsBlock = document.querySelector("#events");
+    eventsBlock.innerHTML = "";
+
+    if (data.events.length === 0) {
+      eventsBlock.innerHTML = "<em>Keine Veranstaltungen diese Woche</em>";
+    } else {
+      data.events.forEach(event => {
+        eventsBlock.innerHTML += `
+          <div style="margin-bottom:10px">
+            <strong>${event.title}</strong><br>
+            ${event.city}<br>
+            <small>${event.date} – ${event.location}</small>
+          </div>
+        `;
+      });
+    }
+
+    // =========================
+    // WETTER
+    // =========================
+    document.querySelector("#weatherNow").innerHTML =
+      data.weather.temp + "°C";
+
+    document.querySelector("#w9").innerHTML =
+      data.weather.trend.morning.temp + "°";
+
+    document.querySelector("#w15").innerHTML =
+      data.weather.trend.afternoon.temp + "°";
+
+    document.querySelector("#w21").innerHTML =
+      data.weather.trend.evening.temp + "°";
+
+  } catch (error) {
+    console.error("Fehler beim Laden:", error);
+  }
 }
 
-// REGIONAL RENDER
-const regionalBlock = document.getElementById("regional-news");
-
-if(data.regional && data.regional.length){
-  regionalBlock.innerHTML = data.regional.slice(0,3).map(r => `
-    <div class="newsItem">
-      <div style="font-weight:600; margin-bottom:6px;">
-        ${r.title}
-      </div>
-      <a href="${r.url}" target="_blank" class="news-link">
-        weiterlesen →
-      </a>
-      <div class="newsSource">
-        ${r.source || ""}
-      </div>
-    </div>
-  `).join("");
-}
-
-// EVENTS RENDER
-const eventsBlock = document.getElementById("events-list");
-
-if(data.events && data.events.length){
-  eventsBlock.innerHTML = data.events.map(e => `
-    <div class="newsItem">
-      <div style="font-weight:600; margin-bottom:6px;">
-        ${e.title}
-      </div>
-      <div class="newsSource">
-        ${e.city} • ${e.start === e.end 
-  ? new Date(e.start).toLocaleDateString("de-DE")
-  : new Date(e.start).toLocaleDateString("de-DE") + 
-    " - " + 
-    new Date(e.end).toLocaleDateString("de-DE")}
-      </div>
-      <div class="newsSource">
-        ${e.location}
-      </div>
-    </div>
-  `).join("");
-}
-
-    
 loadData();
-
 </script>
 
 </body>
