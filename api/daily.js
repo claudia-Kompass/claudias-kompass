@@ -151,18 +151,41 @@ try {
       .sort((a, b) => b.score - a.score)
 
       // Pro Kategorie nur 1
-      .reduce((acc, curr) => {
-  if (!acc.find(a => a.topic === curr.topic)) {
-    acc.push(curr);
-  }
-  return acc;
-}, [])
+const deduped = (newsJson.articles || [])
 
-      // Max 5
-      .slice(0, 5)
+  .map(a => ({
+    title: a.title,
+    source: a.source?.name || "",
+    url: a.url,
+    category: categorize(a.title),
+    topic: topicKey(a.title),
+    score: scoreArticle({
+      title: a.title,
+      source: a.source?.name
+    })
+  }))
 
-      // Score entfernen
-      .map(({ score, ...rest }) => rest);
+  .filter((article, index, self) =>
+    index === self.findIndex(a =>
+      normalizeTitle(a.title) === normalizeTitle(article.title)
+    )
+  )
+
+  .sort((a, b) => b.score - a.score)
+
+  .reduce((acc, curr) => {
+    if (!acc.find(a => a.topic === curr.topic)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
+
+// FALLBACK falls alles weggefiltert wurde
+news = (deduped.length > 0
+  ? deduped
+  : (newsJson.articles || []).slice(0, 3)
+).slice(0,5)
+ .map(({ score, topic, category, ...rest }) => rest);
   }
 } catch (e) {
   news = [];
