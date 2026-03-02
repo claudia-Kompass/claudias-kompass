@@ -89,41 +89,47 @@ module.exports = async function handler(req, res) {
        NEWS (Global)
     ========================== */
 
-    let news = [];
+    news = (newsJson.articles || [])
+  // 1. Titel normalisieren
+  .map(a => ({
+    title: a.title,
+    source: a.source?.name || "",
+    url: a.url,
+    category: categorize(a.title),
+    score: scoreArticle({
+      title: a.title,
+      source: a.source?.name
+    })
+  }))
 
-    try {
-      if (process.env.GNEWS_KEY) {
-        const newsRes = await fetch(
-          `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR wahl OR dax OR inflation&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
-        );
-        const newsJson = await newsRes.json();
+  // 2. Doppelte Titel entfernen
+  .filter((article, index, self) =>
+    index === self.findIndex(a =>
+      a.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/gi, "") ===
+      article.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/gi, "")
+    )
+  )
 
-        news = (newsJson.articles || [])
+  // 3. Nach Score sortieren
+  .sort((a, b) => b.score - a.score)
 
-          // Deduplizieren
-          .filter((article, index, self) =>
-            index === self.findIndex(a =>
-              normalizeTitle(a.title) === normalizeTitle(article.title)
-            )
-          )
+  // 4. Pro Kategorie nur 1 behalten
+  .reduce((acc, curr) => {
+    if (!acc.find(a => a.category === curr.category)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, [])
 
-          // Scoring
-          .map(a => ({
-            title: a.title,
-            source: a.source?.name || "",
-            url: a.url,
-            score: scoreArticle({
-              title: a.title,
-              source: a.source?.name
-            })
-          }))
+  // 5. Max 5
+  .slice(0, 5)
 
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 3)
-          .map(({ score, ...rest }) => rest);
-      }
-    } catch (e) {
-      news = [];
+  // 6. Score entfernen
+  .map(({ score, ...rest }) => rest);
     }
 
     /* =========================
