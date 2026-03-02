@@ -268,6 +268,30 @@ module.exports = async function handler(req, res) {
         text: "Geopolitik und Energiepreise bleiben diese Woche entscheidend. Märkte reagieren sensibel auf politische Signale."
       },
 
+dance: [
+  {
+    title: "Semba Night Stuttgart",
+    city: "Stuttgart",
+    date: "22.03.2026",
+    location: "Tanzstudio La Clave",
+    style: "Semba"
+  },
+  {
+    title: "Kizomba Social Heilbronn",
+    city: "Heilbronn",
+    date: "05.04.2026",
+    location: "Dance & Flow Studio",
+    style: "Kizomba"
+  },
+  {
+    title: "Salsa Weekend Festival",
+    city: "Barcelona",
+    date: "18.04.2026",
+    location: "Hotel Arts Barcelona",
+    style: "Salsa"
+  }
+],
+      
       news,
       regional,
       events,
