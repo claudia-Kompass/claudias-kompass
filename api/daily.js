@@ -299,7 +299,6 @@ function isInThisWeek(start, end) {
 }
 
 function getRecurringDate(weekday) {
-  const now = new Date();
   const { first, last } = getWeekRange();
 
   for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) {
