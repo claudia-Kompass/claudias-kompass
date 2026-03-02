@@ -130,21 +130,6 @@ try {
 // EVENTS (kuratiert)
 // =======================
 
-let events = [];
-
-try {
-  const eventsRes = await fetch(
-    `https://gnews.io/api/v4/search?q="Haller Frühling" OR "Jakobimarkt Schwäbisch Hall" OR "Crailsheimer Volksfest" OR "HEV Messe Ilshofen" OR "CMT Stuttgart" OR "Consumenta Nürnberg"&lang=de&max=5&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
-  );
-
-  const eventsData = await eventsRes.json();
-
-  if (eventsData.articles) {
-    events = eventsData.articles.slice(0, 3);
-  }
-} catch (e) {
-  events = [];
-}
    
 /* ===============================
    NEWS SCORING (Professionelle Gewichtung)
