@@ -1,9 +1,50 @@
 module.exports = async function handler(req, res) {
   try {
-    const version = "19.3.0";
+    const version = "19.4.0";
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
     const marketDate = now.toLocaleDateString("de-DE");
+
+    /* =========================
+       HELPER
+    ========================== */
+
+    function normalizeTitle(title) {
+      return (title || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/gi, "");
+    }
+
+    function scoreArticle(article) {
+      let score = 0;
+      const text = (article.title || "").toLowerCase();
+      const source = (article.source || "").toLowerCase();
+
+      const crisis = [
+        "krieg","iran","israel","ukraine","wahl",
+        "angriff","explosion","unwetter"
+      ];
+      crisis.forEach(k => {
+        if (text.includes(k)) score += 8;
+      });
+
+      const market = [
+        "dax","börse","zins","ezb","fed",
+        "inflation","öl","gas","usd","dollar"
+      ];
+      market.forEach(k => {
+        if (text.includes(k)) score += 6;
+      });
+
+      if (
+        source.includes("tagesschau") ||
+        source.includes("zdf") ||
+        source.includes("bbc") ||
+        source.includes("faz")
+      ) score += 5;
+
+      return score;
+    }
 
     /* =========================
        KRYPTO
@@ -45,7 +86,7 @@ module.exports = async function handler(req, res) {
     const eI = getIndex(21);
 
     /* =========================
-       NEWS
+       NEWS (Global)
     ========================== */
 
     let news = [];
@@ -58,38 +99,28 @@ module.exports = async function handler(req, res) {
         const newsJson = await newsRes.json();
 
         news = (newsJson.articles || [])
-  // 1. Doppelte Titel technisch bereinigen
-  .filter((article, index, self) =>
-    index === self.findIndex(a =>
-      a.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/gi, "")
-        ===
-      article.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/gi, "")
-    )
-  )
 
-  // 2. Score berechnen
-  .map(a => ({
-    title: a.title,
-    source: a.source?.name || "",
-    url: a.url,
-    score: scoreArticle({
-      title: a.title,
-      source: a.source?.name
-    })
-  }))
+          // Deduplizieren
+          .filter((article, index, self) =>
+            index === self.findIndex(a =>
+              normalizeTitle(a.title) === normalizeTitle(article.title)
+            )
+          )
 
-  // 3. Nach Relevanz sortieren
-  .sort((a, b) => b.score - a.score)
+          // Scoring
+          .map(a => ({
+            title: a.title,
+            source: a.source?.name || "",
+            url: a.url,
+            score: scoreArticle({
+              title: a.title,
+              source: a.source?.name
+            })
+          }))
 
-  // 4. Nur Top 3
-  .slice(0, 3)
-
-  // 5. Score wieder entfernen
-  .map(({ score, ...rest }) => rest);
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
+          .map(({ score, ...rest }) => rest);
       }
     } catch (e) {
       news = [];
@@ -104,15 +135,18 @@ module.exports = async function handler(req, res) {
     try {
       if (process.env.GNEWS_KEY) {
         const regionalRes = await fetch(
-          `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=5&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+          `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=6&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
         );
         const regionalData = await regionalRes.json();
 
         regional = (regionalData.articles || [])
-          .slice(0, 5)
+
           .filter((article, index, self) =>
-            index === self.findIndex(a => a.title === article.title)
+            index === self.findIndex(a =>
+              normalizeTitle(a.title) === normalizeTitle(article.title)
+            )
           )
+
           .slice(0, 3);
       }
     } catch (e) {
@@ -120,7 +154,7 @@ module.exports = async function handler(req, res) {
     }
 
     /* =========================
-       EVENTS – SMART
+       EVENTS – Smart Week Logic
     ========================== */
 
     const today = new Date();
