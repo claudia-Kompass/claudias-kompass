@@ -224,6 +224,8 @@ function scoreArticle(article) {
   version,
   timestamp,
   news: news,
+  regional: regional,
+  events: events,
 
   markets: {
   dax: {
