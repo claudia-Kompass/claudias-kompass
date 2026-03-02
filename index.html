@@ -329,14 +329,16 @@ async function loadData(){
 
     // KRYPTO
     document.getElementById("btcValue").innerHTML =
-      "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
-      " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
-      ampel(data.crypto?.bitcoin?.change ?? 0);
+  "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
+  " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
+  ampel(data.crypto?.bitcoin?.change ?? 0) +
+  '<a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="info">Info</a>';
 
     document.getElementById("nexoValue").innerHTML =
-      "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
-      " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
-      ampel(data.crypto?.nexo?.change ?? 0);
+  "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
+  " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
+  ampel(data.crypto?.nexo?.change ?? 0) +
+  '<a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="info">Info</a>';
 
     // WETTER
     document.getElementById("weatherNow").innerHTML =
