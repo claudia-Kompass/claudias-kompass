@@ -287,60 +287,103 @@ function getWeekRange() {
   const last = new Date(first);
   last.setDate(first.getDate() + 6); // Sonntag
   last.setHours(23,59,59,999);
+// ===============================
+// REGIONAL EVENTS (dynamisch Woche Mo–So)
+// ===============================
 
-  return { first, last };
-}
+const today = new Date();
+const currentYear = today.getFullYear();
 
-function isInThisWeek(start, end) {
-  const { first, last } = getWeekRange();
-  const s = new Date(start);
-  const e = new Date(end);
-  return s <= last && e >= first;
-}
+// Wochenstart (Montag)
+const day = today.getDay();
+const diffToMonday = (day === 0 ? -6 : 1) - day;
+const monday = new Date(today);
+monday.setDate(today.getDate() + diffToMonday);
+monday.setHours(0,0,0,0);
 
-function getRecurringDate(weekday) {
-  const { first, last } = getWeekRange();
+// Wochenende (Sonntag)
+const sunday = new Date(monday);
+sunday.setDate(monday.getDate() + 6);
+sunday.setHours(23,59,59,999);
 
-  for (let d = new Date(first); d <= last; d.setDate(d.getDate() + 1)) {
-    if (d.getDay() === weekday) {
-      return new Date(d);
-    }
+// ===== JÄHRLICHE HIGHLIGHTS =====
+let yearlyEvents = [
+  {
+    title: "Haller Frühling",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 3, 10),
+    end: new Date(currentYear, 3, 12),
+    location: "Altstadt Schwäbisch Hall"
+  },
+  {
+    title: "Jakobimarkt",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 6, 18),
+    end: new Date(currentYear, 6, 18),
+    location: "Innenstadt SHA"
+  },
+  {
+    title: "Sommernachtsfest",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 7, 15),
+    end: new Date(currentYear, 7, 16),
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Haller Herbst",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, 9, 3),
+    end: new Date(currentYear, 9, 4),
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Gartentage Langenburg",
+    city: "Langenburg",
+    start: new Date(currentYear, 4, 1),
+    end: new Date(currentYear, 4, 3),
+    location: "Schloss Langenburg"
   }
-  return null;
+];
+
+// ===== WOCHENMARKT REGEL =====
+let weeklyEvents = [];
+
+const weekday = today.getDay();
+
+// Mittwoch Markt SHA
+if (weekday <= 3) {
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Schwäbisch Hall",
+    start: new Date(currentYear, today.getMonth(), today.getDate()),
+    end: new Date(currentYear, today.getMonth(), today.getDate()),
+    location: "Marktplatz SHA"
+  });
 }
 
-/
- 
-   
-// ---------- EVENT FILTER LOGIK ----------
-
-function getWeekRange() {
-  const now = new Date();
-  const first = new Date(now);
-  first.setDate(now.getDate() - now.getDay() + 1); // Montag
-
-  const last = new Date(first);
-  last.setDate(first.getDate() + 6); // Sonntag
-
-  return { first, last };
+// Samstag Markt Crailsheim
+if (weekday <= 6) {
+  weeklyEvents.push({
+    title: "Wochenmarkt",
+    city: "Crailsheim",
+    start: new Date(currentYear, today.getMonth(), today.getDate()),
+    end: new Date(currentYear, today.getMonth(), today.getDate()),
+    location: "Innenstadt Crailsheim"
+  });
 }
 
-function isThisWeek(dateStr) {
-  if (!dateStr) return false;
-  const { first, last } = getWeekRange();
-  const d = new Date(dateStr);
-  return d >= first && d <= last;
-}
+// ===== FILTER NUR AKTUELLE WOCHE =====
+let events = [...yearlyEvents, ...weeklyEvents].filter(e =>
+  e.start <= sunday && e.end >= monday
+);
 
-function isFuture(dateStr) {
-  if (!dateStr) return false;
-  const d = new Date(dateStr);
-  return d > new Date();
-}
-
-// Beispiel: später echte Datumswerte nutzen
-// aktuell nur vorbereitet – deine Events haben noch kein start/end
-
+// Formatieren
+events = events.map(e => ({
+  title: e.title,
+  city: e.city,
+  date: e.start.toLocaleDateString("de-DE"),
+  location: e.location
+}));
    
     /* =========================
        RESPONSE
