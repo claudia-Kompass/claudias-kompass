@@ -129,15 +129,16 @@ try {
 
       // Kategorie + Score
       .map(a => ({
-        title: a.title,
-        source: a.source?.name || "",
-        url: a.url,
-        category: categorize(a.title),
-        score: scoreArticle({
-          title: a.title,
-          source: a.source?.name
-        })
-      }))
+  title: a.title,
+  source: a.source?.name || "",
+  url: a.url,
+  category: categorize(a.title),
+  topic: topicKey(a.title),
+  score: scoreArticle({
+    title: a.title,
+    source: a.source?.name
+  })
+}))
 
       // Doppelte entfernen
       .filter((article, index, self) =>
