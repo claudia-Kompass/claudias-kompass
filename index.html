@@ -371,6 +371,18 @@ async function loadData(){
       `).join("");
     }
 
+// FOCUS
+if (data.focus) {
+  document.getElementById("focusBlock").innerHTML = `
+    <div style="font-weight:600; margin-bottom:6px;">
+      ${data.focus.title}
+    </div>
+    <div style="opacity:0.8;">
+      ${data.focus.text}
+    </div>
+  `;
+}
+      
     // REGIONAL
     const regionalBlock = document.getElementById("regional-news");
     if(data.regional?.length){
