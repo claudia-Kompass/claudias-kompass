@@ -237,6 +237,36 @@ let events = [
     location: "Schloss Langenburg"
   }
 ];
+
+// ---------- EVENT FILTER LOGIK ----------
+
+function getWeekRange() {
+  const now = new Date();
+  const first = new Date(now);
+  first.setDate(now.getDate() - now.getDay() + 1); // Montag
+
+  const last = new Date(first);
+  last.setDate(first.getDate() + 6); // Sonntag
+
+  return { first, last };
+}
+
+function isThisWeek(dateStr) {
+  if (!dateStr) return false;
+  const { first, last } = getWeekRange();
+  const d = new Date(dateStr);
+  return d >= first && d <= last;
+}
+
+function isFuture(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  return d > new Date();
+}
+
+// Beispiel: später echte Datumswerte nutzen
+// aktuell nur vorbereitet – deine Events haben noch kein start/end
+
    
     /* =========================
        RESPONSE
