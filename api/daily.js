@@ -440,7 +440,14 @@ events = events.map(e => ({
   }
 };
 
-res.status(200).json(response);
+return res.status(200).json({
+  version: "19.3.0",
+  weather,
+  markets,
+  crypto,
+  politics,
+  events
+});
 
 } catch (error) {
   console.error("API ERROR:", error);
