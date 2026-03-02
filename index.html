@@ -332,8 +332,7 @@ async function loadData(){
   "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
   " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
   ampel(data.crypto?.bitcoin?.change ?? 0) +
-  '<a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="info">Info</a>';
-
+  '<a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
     document.getElementById("nexoValue").innerHTML =
   "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
   " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
