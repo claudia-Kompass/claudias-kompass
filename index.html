@@ -442,7 +442,11 @@ if(data.events && data.events.length){
         ${e.title}
       </div>
       <div class="newsSource">
-        ${e.city} • ${e.date}
+        ${e.city} • ${e.start === e.end 
+  ? new Date(e.start).toLocaleDateString("de-DE")
+  : new Date(e.start).toLocaleDateString("de-DE") + 
+    " - " + 
+    new Date(e.end).toLocaleDateString("de-DE")}
       </div>
       <div class="newsSource">
         ${e.location}
