@@ -85,61 +85,14 @@ module.exports = async function handler(req, res) {
     const aI = getIndex(15);
     const eI = getIndex(21);
 
-    /* =========================
-       NEWS (Global)
-    ========================== */
+ /* =========================
+   NEWS (Global)
+========================== */
 
-    news = (newsJson.articles || [])
-  // 1. Titel normalisieren
-  .map(a => ({
-    title: a.title,
-    source: a.source?.name || "",
-    url: a.url,
-    category: categorize(a.title),
-    score: scoreArticle({
-      title: a.title,
-      source: a.source?.name
-    })
-  }))
-
-  // 2. Doppelte Titel entfernen
-  .filter((article, index, self) =>
-    index === self.findIndex(a =>
-      a.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/gi, "") ===
-      article.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/gi, "")
-    )
-  )
-
-  // 3. Nach Score sortieren
-  .sort((a, b) => b.score - a.score)
-
-  // 4. Pro Kategorie nur 1 behalten
-  .reduce((acc, curr) => {
-    if (!acc.find(a => a.category === curr.category)) {
-      acc.push(curr);
-    }
-    return acc;
-  }, [])
-
-  // 5. Max 5
-  .slice(0, 5)
-
-  // 6. Score entfernen
-  .map(({ score, ...rest }) => rest);
-    }
-
-    /* =========================
-       REGIONAL
-    ========================== */
-
-    let regional = [];
+let news = [];
 
 function categorize(title) {
-  const t = title.toLowerCase();
+  const t = (title || "").toLowerCase();
 
   if (t.includes("krieg") || t.includes("iran") || t.includes("israel") || t.includes("ukraine"))
     return "geopolitik";
@@ -153,27 +106,84 @@ function categorize(title) {
   return "gesellschaft";
 }
 
+try {
+  if (process.env.GNEWS_KEY) {
+    const newsRes = await fetch(
+      `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR dax OR inflation OR bundestag&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+    );
 
-    try {
-      if (process.env.GNEWS_KEY) {
-        const regionalRes = await fetch(
-          `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=6&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
-        );
-        const regionalData = await regionalRes.json();
+    const newsJson = await newsRes.json();
 
-        regional = (regionalData.articles || [])
+    news = (newsJson.articles || [])
 
-          .filter((article, index, self) =>
-            index === self.findIndex(a =>
-              normalizeTitle(a.title) === normalizeTitle(article.title)
-            )
-          )
+      // Kategorie + Score
+      .map(a => ({
+        title: a.title,
+        source: a.source?.name || "",
+        url: a.url,
+        category: categorize(a.title),
+        score: scoreArticle({
+          title: a.title,
+          source: a.source?.name
+        })
+      }))
 
-          .slice(0, 3);
-      }
-    } catch (e) {
-      regional = [];
-    }
+      // Doppelte entfernen
+      .filter((article, index, self) =>
+        index === self.findIndex(a =>
+          normalizeTitle(a.title) === normalizeTitle(article.title)
+        )
+      )
+
+      // Nach Relevanz sortieren
+      .sort((a, b) => b.score - a.score)
+
+      // Pro Kategorie nur 1
+      .reduce((acc, curr) => {
+        if (!acc.find(a => a.category === curr.category)) {
+          acc.push(curr);
+        }
+        return acc;
+      }, [])
+
+      // Max 5
+      .slice(0, 5)
+
+      // Score entfernen
+      .map(({ score, ...rest }) => rest);
+  }
+} catch (e) {
+  news = [];
+}
+
+/* =========================
+   REGIONAL
+========================== */
+
+let regional = [];
+
+try {
+  if (process.env.GNEWS_KEY) {
+    const regionalRes = await fetch(
+      `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=6&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+    );
+
+    const regionalData = await regionalRes.json();
+
+    regional = (regionalData.articles || [])
+
+      // Doppelte entfernen
+      .filter((article, index, self) =>
+        index === self.findIndex(a =>
+          normalizeTitle(a.title) === normalizeTitle(article.title)
+        )
+      )
+
+      .slice(0, 3);
+  }
+} catch (e) {
+  regional = [];
+}
 
     /* =========================
        EVENTS – Smart Week Logic
