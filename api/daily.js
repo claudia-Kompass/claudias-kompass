@@ -58,12 +58,38 @@ module.exports = async function handler(req, res) {
         const newsJson = await newsRes.json();
 
         news = (newsJson.articles || [])
-          .map(a => ({
-            title: a.title,
-            source: a.source?.name || "",
-            url: a.url
-          }))
-          .slice(0, 3);
+  // 1. Doppelte Titel technisch bereinigen
+  .filter((article, index, self) =>
+    index === self.findIndex(a =>
+      a.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/gi, "")
+        ===
+      article.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/gi, "")
+    )
+  )
+
+  // 2. Score berechnen
+  .map(a => ({
+    title: a.title,
+    source: a.source?.name || "",
+    url: a.url,
+    score: scoreArticle({
+      title: a.title,
+      source: a.source?.name
+    })
+  }))
+
+  // 3. Nach Relevanz sortieren
+  .sort((a, b) => b.score - a.score)
+
+  // 4. Nur Top 3
+  .slice(0, 3)
+
+  // 5. Score wieder entfernen
+  .map(({ score, ...rest }) => rest);
       }
     } catch (e) {
       news = [];
