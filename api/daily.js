@@ -238,6 +238,61 @@ let events = [
   }
 ];
 
+// ============================
+// EVENTS (echtes Datumsmodell)
+// ============================
+
+let events = [
+
+  // EINMALIGE EVENTS
+  {
+    title: "Haller Frühling",
+    city: "Schwäbisch Hall",
+    start: "2026-04-10",
+    end: "2026-04-12",
+    location: "Altstadt Schwäbisch Hall"
+  },
+  {
+    title: "Jakobimarkt",
+    city: "Schwäbisch Hall",
+    start: "2026-07-18",
+    end: "2026-07-18",
+    location: "Innenstadt SHA"
+  },
+  {
+    title: "Sommernachtsfest",
+    city: "Schwäbisch Hall",
+    start: "2026-08-15",
+    end: "2026-08-16",
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Haller Herbst",
+    city: "Schwäbisch Hall",
+    start: "2026-10-03",
+    end: "2026-10-04",
+    location: "Altstadt SHA"
+  },
+  {
+    title: "Gartentage Langenburg",
+    city: "Langenburg",
+    start: "2026-05-01",
+    end: "2026-05-03",
+    location: "Schloss Langenburg"
+  },
+
+  // WOCHENMARKT (automatisch)
+  {
+    title: "Wochenmarkt Schwäbisch Hall",
+    city: "Schwäbisch Hall",
+    recurring: true,
+    weekday: 6, // Samstag
+    location: "Marktplatz Schwäbisch Hall"
+  }
+
+];
+
+   
 // ---------- EVENT FILTER LOGIK ----------
 
 function getWeekRange() {
