@@ -228,10 +228,6 @@ if (events.length === 0) {
   const upcoming = allEvents
     .filter(e => e.start > today)
     .sort((a, b) => a.start - b.start);
-
-  if (upcoming.length > 0) {
-    events = [upcoming[0]];
-  }
 }
 
 // ===== FORMATIEREN FÜR API =====
