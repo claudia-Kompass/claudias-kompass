@@ -152,11 +152,11 @@ try {
 
       // Pro Kategorie nur 1
       .reduce((acc, curr) => {
-        if (!acc.find(a => a.category === curr.category)) {
-          acc.push(curr);
-        }
-        return acc;
-      }, [])
+  if (!acc.find(a => a.topic === curr.topic)) {
+    acc.push(curr);
+  }
+  return acc;
+}, [])
 
       // Max 5
       .slice(0, 5)
