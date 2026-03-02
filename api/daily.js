@@ -4,6 +4,7 @@
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
 const marketDate = now.toLocaleDateString("de-DE");
+
    
     /* =========================
        KRYPTO (stabil + fallback)
