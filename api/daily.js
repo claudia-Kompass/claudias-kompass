@@ -299,7 +299,30 @@ regional = regional.filter(a => {
   return geoMatch || companyMatch;
 });
 
-  regional = regional.slice(0, 4);
+  function regionalScore(title){
+  const t = (title || "").toLowerCase();
+  let score = 0;
+
+  // Wirtschaft / Unternehmen
+  if (t.includes("stadtwerke")) score += 8;
+  if (t.includes("bausparkasse")) score += 7;
+  if (t.includes("würth")) score += 6;
+  if (t.includes("optima")) score += 6;
+  if (t.includes("wirtschaft")) score += 5;
+  if (t.includes("investition")) score += 5;
+
+  // Politik
+  if (t.includes("wahl")) score += 6;
+  if (t.includes("landtag")) score += 6;
+  if (t.includes("gemeinderat")) score += 5;
+
+  // Negative Gewichtung Blaulicht
+  if (t.includes("unfall")) score -= 3;
+  if (t.includes("tödlich")) score -= 3;
+  if (t.includes("polizei")) score -= 2;
+
+  return score;
+}
 } catch(e) {
   regional = [];
 }
