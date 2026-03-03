@@ -199,8 +199,8 @@ let regional = [];
 try {
 
   const sources = [
-    { url: "https://www.swp.de/rss.xml", name: "SWP" }
-  ];
+  { url: "https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml", name: "Tagesschau BW" }
+];
 
   let collected = [];
 
