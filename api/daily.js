@@ -76,7 +76,89 @@ module.exports = async function handler(req, res) {
     const aI = getIndex(15);
     const eI = getIndex(21);
 
-    
+    /* =========================
+   GLOBAL NEWS (RSS First)
+========================== */
+
+let news = [];
+
+try {
+
+  /* 1️⃣ RSS Quellen (stabil) */
+
+  const globalRssSources = [
+    { url: "https://www.tagesschau.de/xml/rss2", name: "Tagesschau" },
+    { url: "https://www.spiegel.de/schlagzeilen/index.rss", name: "Spiegel" },
+    { url: "https://rss.dw.com/rdf/rss-de-all", name: "DW" }
+  ];
+
+  let rssNews = [];
+
+  for (const src of globalRssSources) {
+    try {
+      const r = await fetch(src.url);
+      const text = await r.text();
+      rssNews = rssNews.concat(parseRSS(text, src.name));
+    } catch {}
+  }
+
+  /* 2️⃣ Optional GNews Ergänzung */
+
+  let gnewsArticles = [];
+
+  if (process.env.GNEWS_KEY) {
+    try {
+      const gRes = await fetch(
+        `https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=10&token=${process.env.GNEWS_KEY}`
+      );
+      const gJson = await gRes.json();
+
+      gnewsArticles = (gJson.articles || []).map(a => ({
+        title: a.title,
+        url: a.url,
+        source: a.source?.name || ""
+      }));
+    } catch {}
+  }
+
+  /* 3️⃣ Kombinieren + Deduplizieren */
+
+  news = [...rssNews, ...gnewsArticles]
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    );
+
+  /* 4️⃣ Relevanz-Scoring */
+
+  function scoreGlobal(title, source){
+    const t = (title || "").toLowerCase();
+    let score = 0;
+
+    ["krieg","iran","israel","ukraine","china","wahl","bundestag"]
+      .forEach(k => { if (t.includes(k)) score += 8; });
+
+    ["dax","inflation","ezb","zins","wirtschaft"]
+      .forEach(k => { if (t.includes(k)) score += 6; });
+
+    if ((source || "").toLowerCase().includes("tagesschau")) score += 5;
+
+    return score;
+  }
+
+  news = news
+    .map(a => ({
+      ...a,
+      score: scoreGlobal(a.title, a.source)
+    }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0,5)
+    .map(({ score, ...rest }) => rest);
+
+} catch {
+  news = [];
+}
    
 
 
