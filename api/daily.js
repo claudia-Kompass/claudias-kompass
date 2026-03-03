@@ -164,6 +164,88 @@ try {
   news = [];
 }
 
+/* =========================
+   REGIONAL – Strict Geo+
+========================== */
+
+let regional = [];
+
+function isLocalGeo(title){
+  const t = (title || "").toLowerCase();
+
+  return t.includes("schwäbisch hall") ||
+         t.includes("landkreis schwäbisch hall") ||
+         t.includes("crailsheim") ||
+         t.includes("ilshofen") ||
+         t.includes("gaildorf") ||
+         t.includes("gerabronn") ||
+         t.includes("langenburg") ||
+         t.includes("obersontheim") ||
+         t.includes("michelfeld") ||
+         t.includes("rot am see") ||
+         t.includes("frankenhardt") ||
+         t.includes("mainhardt") ||
+
+         // Unternehmen
+         t.includes("bausparkasse schwäbisch hall") ||
+         t.includes("stadtwerke schwäbisch hall") ||
+         t.includes("stadtwerke sha") ||
+         t.includes("energie schwäbisch hall") ||
+         t.includes("würth") ||
+         t.includes("optima") ||
+         t.includes("bausch+ströbel") ||
+         t.includes("schubert") ||
+         t.includes("bürger") ||
+         t.includes("recaro") ||
+         t.includes("ziehl-abegg");
+}
+
+try {
+  if (process.env.GNEWS_KEY) {
+
+    const regionalKeywords = [
+      "Schwäbisch Hall",
+      "Crailsheim",
+      "Ilshofen",
+      "Gaildorf",
+      "Gerabronn",
+      "Langenburg",
+      "Bausparkasse Schwäbisch Hall",
+      "Stadtwerke Schwäbisch Hall",
+      "Würth",
+      "Optima",
+      "Bausch+Ströbel",
+      "Schubert",
+      "Bürger",
+      "RECARO",
+      "ZIEHL-ABEGG"
+    ];
+
+    const regionalQuery = regionalKeywords
+      .map(k => `"${k}"`)
+      .join(" OR ");
+
+    const regionalRes = await fetch(
+      `https://gnews.io/api/v4/search?q=${regionalQuery}&lang=de&max=15&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+    );
+
+    const regionalData = await regionalRes.json();
+
+    regional = (regionalData.articles || [])
+      .filter((article, index, self) =>
+        index === self.findIndex(a =>
+          normalizeTitle(a.title) === normalizeTitle(article.title)
+        )
+      )
+      .filter(a => isLocalGeo(a.title))
+      .slice(0, 3);
+  }
+} catch (e) {
+  regional = [];
+}
+
+
+    
     /* =========================
        EVENTS – Smart Week Logic
     ========================== */
