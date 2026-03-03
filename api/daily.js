@@ -192,9 +192,9 @@ try {
 
   if (process.env.GNEWS_KEY) {
 
-    const localQuery = encodeURIComponent(
-      '"Schwäbisch Hall" OR "Landkreis Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen'
-    );
+    const fallbackQuery = encodeURIComponent(
+  '"Baden-Württemberg" Wirtschaft Energie Mittelstand'
+);
 
     const gRes = await fetch(
       `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
