@@ -348,6 +348,49 @@ try {
   events = [];
 }
 
+// =========================
+// DANCE EVENTS FETCH
+// =========================
+
+let events = [];
+
+try {
+  const danceSources = [
+    "https://www.salsa-heilbronn.de/events",
+    "https://www.salsa-nuernberg.de/events",
+    "https://www.salsa-wuerzburg.de/events"
+  ];
+
+  const keywords = ["kizomba", "semba", "salsa", "bachata"];
+
+  for (const source of danceSources) {
+    try {
+      const r = await fetch(source);
+      if (!r.ok) continue;
+
+      const html = await r.text();
+      const lower = html.toLowerCase();
+
+      keywords.forEach(k => {
+        if (lower.includes(k)) {
+          events.push({
+            title: `Tanz Event (${k})`,
+            url: source,
+            date: "siehe Website"
+          });
+        }
+      });
+
+    } catch {}
+  }
+
+  // Duplikate entfernen
+  events = [...new Map(events.map(e => [e.title, e])).values()].slice(0, 8);
+
+} catch {
+  events = [];
+}
+    
     
     /* =========================
        RESPONSE
