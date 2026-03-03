@@ -76,87 +76,13 @@ module.exports = async function handler(req, res) {
     const aI = getIndex(15);
     const eI = getIndex(21);
 
-    /* =========================
-       GLOBAL NEWS
-    ========================== */
+    
+   
 
-    let news = [];
 
-    function topicKey(title){
-      const t = (title || "").toLowerCase();
-      if(t.includes("iran")) return "iran";
-      if(t.includes("israel")) return "israel";
-      if(t.includes("ukraine")) return "ukraine";
-      if(t.includes("china")) return "china";
-      if(t.includes("dax")) return "dax";
-      if(t.includes("inflation")) return "inflation";
-      if(t.includes("bundestag")) return "deutschland";
-      return "other";
-    }
+    
 
-    function scoreArticle(article) {
-      let score = 0;
-      const text = (article.title || "").toLowerCase();
-      const source = (article.source || "").toLowerCase();
 
-      ["krieg","iran","israel","ukraine","wahl","angriff","explosion","unwetter"]
-        .forEach(k => { if (text.includes(k)) score += 8; });
-
-      ["dax","börse","zins","ezb","fed","inflation","öl","gas","usd","dollar"]
-        .forEach(k => { if (text.includes(k)) score += 6; });
-
-      if (
-        source.includes("tagesschau") ||
-        source.includes("zdf") ||
-        source.includes("bbc") ||
-        source.includes("faz")
-      ) score += 5;
-
-      return score;
-    }
-
-    try {
-      if (process.env.GNEWS_KEY) {
-        let newsRes = await fetch(
-          `https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-        );
-
-        let newsJson = await newsRes.json();
-
-        if (!newsJson.articles || newsJson.articles.length === 0) {
-          newsRes = await fetch(
-            `https://gnews.io/api/v4/top-headlines?category=world&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-          );
-          newsJson = await newsRes.json();
-        }
-
-        const prepared = (newsJson.articles || [])
-          .map(a => ({
-            title: a.title,
-            source: a.source?.name || "",
-            url: a.url,
-            topic: topicKey(a.title),
-            score: scoreArticle(a)
-          }))
-          .filter((article, index, self) =>
-            index === self.findIndex(a =>
-              normalizeTitle(a.title) === normalizeTitle(article.title)
-            )
-          )
-          .sort((a, b) => b.score - a.score);
-
-        const clustered = prepared.reduce((acc, curr) => {
-          if (!acc.find(a => a.topic === curr.topic)) acc.push(curr);
-          return acc;
-        }, []);
-
-        news = (clustered.length > 0 ? clustered : prepared)
-          .slice(0, 5)
-          .map(({ score, topic, ...rest }) => rest);
-      }
-    } catch {
-      news = [];
-    }
 
     /* =========================
        REGIONAL
