@@ -352,7 +352,7 @@ try {
 // DANCE EVENTS FETCH
 // =========================
 
-let events = [];
+let danceEvents = [];
 
 try {
   const danceSources = [
@@ -373,7 +373,7 @@ try {
 
       keywords.forEach(k => {
         if (lower.includes(k)) {
-          events.push({
+          danceEvents.push({
             title: `Tanz Event (${k})`,
             url: source,
             date: "siehe Website"
@@ -384,13 +384,11 @@ try {
     } catch {}
   }
 
-  // Duplikate entfernen
-  events = [...new Map(events.map(e => [e.title, e])).values()].slice(0, 8);
+  danceEvents = [...new Map(danceEvents.map(e => [e.title, e])).values()].slice(0, 8);
 
 } catch {
-  events = [];
+  danceEvents = [];
 }
-    
     
     /* =========================
        RESPONSE
@@ -401,7 +399,7 @@ try {
       timestamp,
       news,
       regional,
-      events,
+      dance: danceEvents,
       markets: {
         dax: { value: "18.742", date: "Stand: " + marketDate },
         eurusd: { value: "1.08", date: "Stand: " + marketDate }
