@@ -389,6 +389,60 @@ try {
 } catch {
   danceEvents = [];
 }
+
+
+// =========================
+// REGIONAL RSS EVENTS
+// =========================
+
+let regionalEvents = [];
+
+try {
+
+  const rssSources = [
+    "https://www.heilbronn.de/rss/veranstaltungen.xml",
+    "https://www.schwaebischhall.de/rss.xml"
+  ];
+
+  const keywords = ["kizomba", "semba", "salsa", "bachata", "latin"];
+
+  for (const source of rssSources) {
+    try {
+      const r = await fetch(source);
+      if (!r.ok) continue;
+
+      const xml = await r.text();
+
+      const items = xml.match(/<item>(.*?)<\/item>/gs) || [];
+
+      for (const item of items) {
+        const titleMatch = item.match(/<title>(.*?)<\/title>/);
+        const linkMatch = item.match(/<link>(.*?)<\/link>/);
+        const dateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
+
+        const title = titleMatch ? titleMatch[1] : "";
+        const link = linkMatch ? linkMatch[1] : "";
+        const date = dateMatch ? new Date(dateMatch[1]).toLocaleDateString("de-DE") : "";
+
+        const lower = title.toLowerCase();
+
+        if (keywords.some(k => lower.includes(k))) {
+          regionalEvents.push({
+            title,
+            url: link,
+            date
+          });
+        }
+      }
+
+    } catch {}
+  }
+
+  regionalEvents = regionalEvents.slice(0, 8);
+
+} catch {
+  regionalEvents = [];
+}
     
     /* =========================
        RESPONSE
