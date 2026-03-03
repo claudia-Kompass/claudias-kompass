@@ -165,81 +165,89 @@ try {
 }
 
 /* =========================
-   REGIONAL – Strict Geo+
+   REGIONAL – Balanced C
 ========================== */
 
 let regional = [];
 
-function isLocalGeo(title){
-  const t = (title || "").toLowerCase();
-
-  return t.includes("schwäbisch hall") ||
-         t.includes("landkreis schwäbisch hall") ||
-         t.includes("crailsheim") ||
-         t.includes("ilshofen") ||
-         t.includes("gaildorf") ||
-         t.includes("gerabronn") ||
-         t.includes("langenburg") ||
-         t.includes("obersontheim") ||
-         t.includes("michelfeld") ||
-         t.includes("rot am see") ||
-         t.includes("frankenhardt") ||
-         t.includes("mainhardt") ||
-
-         // Unternehmen
-         t.includes("bausparkasse schwäbisch hall") ||
-         t.includes("stadtwerke schwäbisch hall") ||
-         t.includes("stadtwerke sha") ||
-         t.includes("energie schwäbisch hall") ||
-         t.includes("würth") ||
-         t.includes("optima") ||
-         t.includes("bausch+ströbel") ||
-         t.includes("schubert") ||
-         t.includes("bürger") ||
-         t.includes("recaro") ||
-         t.includes("ziehl-abegg");
-}
-
 try {
   if (process.env.GNEWS_KEY) {
 
-    const regionalKeywords = [
-      "Schwäbisch Hall",
-      "Crailsheim",
-      "Ilshofen",
-      "Gaildorf",
-      "Gerabronn",
-      "Langenburg",
-      "Bausparkasse Schwäbisch Hall",
-      "Stadtwerke Schwäbisch Hall",
-      "Würth",
-      "Optima",
-      "Bausch+Ströbel",
-      "Schubert",
-      "Bürger",
-      "RECARO",
+    const regionalQuery = `
+      "Schwäbisch Hall" OR
+      "Landkreis Schwäbisch Hall" OR
+      "Crailsheim" OR
+      "Ilshofen" OR
+      "Gaildorf" OR
+      "Bausparkasse Schwäbisch Hall" OR
+      "Stadtwerke Schwäbisch Hall" OR
+      "Würth" OR
+      "Optima" OR
+      "Bausch+Ströbel" OR
+      "Schubert" OR
+      "Bürger" OR
+      "RECARO" OR
       "ZIEHL-ABEGG"
-    ];
-
-    const regionalQuery = regionalKeywords
-      .map(k => `"${k}"`)
-      .join(" OR ");
+    `;
 
     const regionalRes = await fetch(
-      `https://gnews.io/api/v4/search?q=${regionalQuery}&lang=de&max=15&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+      `https://gnews.io/api/v4/search?q=${encodeURIComponent(regionalQuery)}&lang=de&max=15&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
     );
 
     const regionalData = await regionalRes.json();
 
-    regional = (regionalData.articles || [])
+    const prepared = (regionalData.articles || [])
+      .map(a => ({
+        title: a.title,
+        source: a.source?.name || "",
+        url: a.url
+      }))
       .filter((article, index, self) =>
         index === self.findIndex(a =>
           normalizeTitle(a.title) === normalizeTitle(article.title)
         )
-      )
-      .filter(a => isLocalGeo(a.title))
+      );
+
+    function regionalScore(title){
+      const t = title.toLowerCase();
+      let score = 0;
+
+      // Wirtschaft priorisieren
+      const business = [
+        "würth","optima","bausparkasse",
+        "stadtwerke","bausch","schubert",
+        "bürger","recaro","ziehl"
+      ];
+      business.forEach(k => {
+        if (t.includes(k)) score += 10;
+      });
+
+      // Infrastruktur / Politik
+      const infra = [
+        "gemeinderat","stadtrat","verkehr",
+        "bau","energie","schule"
+      ];
+      infra.forEach(k => {
+        if (t.includes(k)) score += 5;
+      });
+
+      // Blaulicht leicht abwerten
+      const blue = [
+        "unfall","polizei","tödlich",
+        "feuerwehr"
+      ];
+      blue.forEach(k => {
+        if (t.includes(k)) score -= 3;
+      });
+
+      return score;
+    }
+
+    regional = prepared
+      .sort((a, b) => regionalScore(b.title) - regionalScore(a.title))
       .slice(0, 3);
   }
+
 } catch (e) {
   regional = [];
 }
