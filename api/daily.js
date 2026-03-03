@@ -266,8 +266,40 @@ try {
       )
     )
 
-    .slice(0, 4);
+const allowedGeo = [
+  "schwäbisch hall",
+  "landkreis schwäbisch hall",
+  "crailsheim",
+  "gaildorf",
+  "ilshofen",
+  "gerabronn",
+  "langenbur",
+  "rot am see"
+];
 
+const regionalCompanies = [
+  "stadtwerke schwäbisch hall",
+  "stadtwerke sha",
+  "bausparkasse schwäbisch hall",
+  "würth",
+  "optima",
+  "bausch",
+  "schubert",
+  "bürger",
+  "ziehl-abegg",
+  "recaro"
+];
+
+regional = regional.filter(a => {
+  const t = (a.title || "").toLowerCase();
+
+  const geoMatch = allowedGeo.some(g => t.includes(g));
+  const companyMatch = regionalCompanies.some(c => t.includes(c));
+
+  return geoMatch || companyMatch;
+});
+
+  regional = regional.slice(0, 4);
 } catch(e) {
   regional = [];
 }
