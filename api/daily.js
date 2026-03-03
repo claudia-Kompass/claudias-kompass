@@ -245,13 +245,20 @@ try {
         "schubert","bürger","ziehl-abegg","recaro"
       ];
 
-      regional = regional.filter(a => {
-        const t = (a.title || "").toLowerCase();
-        return (
-          allowedGeo.some(g => t.includes(g)) ||
-          regionalCompanies.some(c => t.includes(c))
-        );
-      });
+      let filteredRegional = regional.filter(a => {
+  const t = (a.title || "").toLowerCase();
+  return (
+    allowedGeo.some(g => t.includes(g)) ||
+    regionalCompanies.some(c => t.includes(c))
+  );
+});
+
+// Fallback: wenn nichts übrig bleibt → ungefilterte RSS nehmen
+if (filteredRegional.length === 0) {
+  filteredRegional = regional.slice(0, 4);
+}
+
+regional = filteredRegional;
 
       function regionalScore(title){
         const t = (title || "").toLowerCase();
