@@ -16,26 +16,33 @@ module.exports = async function handler(req, res) {
     }
 
     function parseRSS(xml, sourceName = "RSS") {
-      const items = [];
-      const matches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
+  const items = [];
+  const matches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
 
-      matches.forEach(item => {
-        const titleMatch = item.match(/<title>(.*?)<\/title>/);
-        const linkMatch = item.match(/<link>(.*?)<\/link>/);
+  matches.forEach(item => {
+    const titleMatch = item.match(/<title>(.*?)<\/title>/);
+    const linkMatch = item.match(/<link>(.*?)<\/link>/);
+    const descMatch = item.match(/<description>([\s\S]*?)<\/description>/);
 
-        if (titleMatch && linkMatch) {
-          items.push({
-            title: titleMatch[1]
+    if (titleMatch && linkMatch) {
+      items.push({
+        title: titleMatch[1]
+          .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
+          .trim(),
+        description: descMatch
+          ? descMatch[1]
               .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
-              .trim(),
-            url: linkMatch[1].trim(),
-            source: sourceName
-          });
-        }
+              .replace(/<[^>]+>/g, "")
+              .trim()
+          : "",
+        url: linkMatch[1].trim(),
+        source: sourceName
       });
-
-      return items;
     }
+  });
+
+  return items;
+}
 
     function topicKey(title){
       const t = (title || "").toLowerCase();
