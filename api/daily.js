@@ -298,7 +298,36 @@ regional = regional.filter(a => {
 
   return geoMatch || companyMatch;
 });
+// Score anwenden und sortieren
+regional = regional
+  .map(a => ({
+    ...a,
+    score: regionalScore(a.title)
+  }))
+  .sort((a, b) => b.score - a.score);
 
+// Maximal 1 Blaulicht-Meldung
+let blaulichtCount = 0;
+
+regional = regional.filter(a => {
+  const t = (a.title || "").toLowerCase();
+  const isBlaulicht =
+    t.includes("unfall") ||
+    t.includes("tödlich") ||
+    t.includes("polizei");
+
+  if (isBlaulicht) {
+    blaulichtCount++;
+    return blaulichtCount <= 1;
+  }
+
+  return true;
+});
+
+// Begrenzen und Score wieder entfernen
+regional = regional
+  .slice(0, 4)
+  .map(({ score, ...rest }) => rest);
   function regionalScore(title){
   const t = (title || "").toLowerCase();
   let score = 0;
