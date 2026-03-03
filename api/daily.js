@@ -341,8 +341,8 @@ regional = regional
   if (t.includes("investition")) score += 5;
 
   // Politik
-  if (t.includes("wahl")) score += 6;
-  if (t.includes("landtag")) score += 6;
+  if (t.includes("wahl")) score += 7;
+  if (t.includes("landtag")) score += 7;
   if (t.includes("gemeinderat")) score += 5;
 
   // Negative Gewichtung Blaulicht
