@@ -341,33 +341,4 @@ weeklyMarkets = [
   }
 ];
     
-    
-    /* =========================
-       RESPONSE
-    ========================== */
 
-    res.status(200).json({
-  version,
-  timestamp,
-  news,
-  regional,
-  regionalEvents,
-      markets: {
-        dax: { value: "18.742", date: "Stand: " + marketDate },
-        eurusd: { value: "1.08", date: "Stand: " + marketDate }
-      },
-      crypto: {
-        bitcoin,
-        nexo
-      },
-      weather: {
-        temp: currentTemp,
-        code: currentCode
-      }
-    });
-
-  } catch (error) {
-    console.error("API ERROR:", error);
-    res.status(500).json({ error: "API Fehler" });
-  }
-};
