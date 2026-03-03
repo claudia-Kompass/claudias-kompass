@@ -85,111 +85,87 @@ module.exports = async function handler(req, res) {
     const aI = getIndex(15);
     const eI = getIndex(21);
 
- /* =========================
+/* =========================
    NEWS (Global)
 ========================== */
 
 let news = [];
 
-function categorize(title) {
-  const t = (title || "").toLowerCase();
-
-  if (t.includes("krieg") || t.includes("iran") || t.includes("israel") || t.includes("ukraine"))
-    return "geopolitik";
-
-  if (t.includes("dax") || t.includes("börse") || t.includes("inflation") || t.includes("zins"))
-    return "wirtschaft";
-
-  if (t.includes("bundestag") || t.includes("deutschland") || t.includes("regierung"))
-    return "deutschland";
-
-  return "gesellschaft";
-}
 function topicKey(title){
   const t = (title || "").toLowerCase();
 
   if(t.includes("iran")) return "iran";
   if(t.includes("israel")) return "israel";
   if(t.includes("ukraine")) return "ukraine";
-  if(t.includes("öl")) return "oil";
+  if(t.includes("china")) return "china";
   if(t.includes("dax")) return "dax";
   if(t.includes("inflation")) return "inflation";
+  if(t.includes("bundestag")) return "deutschland";
 
   return "other";
 }
+
 try {
   if (process.env.GNEWS_KEY) {
-    const newsRes = await fetch(
-      `https://gnews.io/api/v4/search?q=krieg OR iran OR israel OR ukraine OR dax OR inflation OR bundestag&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+
+    // 1️⃣ Deutsche Top Headlines
+    let newsRes = await fetch(
+      `https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=10&token=${process.env.GNEWS_KEY}`
     );
 
-    const newsJson = await newsRes.json();
+    let newsJson = await newsRes.json();
 
-    news = (newsJson.articles || [])
+    // 2️⃣ Falls leer → Fallback Welt
+    if (!newsJson.articles || newsJson.articles.length === 0) {
+      newsRes = await fetch(
+        `https://gnews.io/api/v4/top-headlines?category=world&lang=de&max=10&token=${process.env.GNEWS_KEY}`
+      );
+      newsJson = await newsRes.json();
+    }
 
-      // Kategorie + Score
+    const prepared = (newsJson.articles || [])
+
+      // Basisdaten
       .map(a => ({
-  title: a.title,
-  source: a.source?.name || "",
-  url: a.url,
-  category: categorize(a.title),
-  topic: topicKey(a.title),
-  score: scoreArticle({
-    title: a.title,
-    source: a.source?.name
-  })
-}))
+        title: a.title,
+        source: a.source?.name || "",
+        url: a.url,
+        topic: topicKey(a.title),
+        score: scoreArticle({
+          title: a.title,
+          source: a.source?.name
+        })
+      }))
 
-      // Doppelte entfernen
+      // Titel-Deduplizierung
       .filter((article, index, self) =>
         index === self.findIndex(a =>
           normalizeTitle(a.title) === normalizeTitle(article.title)
         )
       )
 
-      // Nach Relevanz sortieren
-      .sort((a, b) => b.score - a.score)
+      // Nach Relevanz
+      .sort((a, b) => b.score - a.score);
 
-      // Pro Kategorie nur 1
-const deduped = (newsJson.articles || [])
+    // 3️⃣ Pro Topic nur 1
+    const clustered = prepared.reduce((acc, curr) => {
+      if (!acc.find(a => a.topic === curr.topic)) {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
 
-  .map(a => ({
-    title: a.title,
-    source: a.source?.name || "",
-    url: a.url,
-    category: categorize(a.title),
-    topic: topicKey(a.title),
-    score: scoreArticle({
-      title: a.title,
-      source: a.source?.name
-    })
-  }))
-
-  .filter((article, index, self) =>
-    index === self.findIndex(a =>
-      normalizeTitle(a.title) === normalizeTitle(article.title)
-    )
-  )
-
-  .sort((a, b) => b.score - a.score)
-
-  .reduce((acc, curr) => {
-    if (!acc.find(a => a.topic === curr.topic)) {
-      acc.push(curr);
-    }
-    return acc;
-  }, []);
-
-// FALLBACK falls alles weggefiltert wurde
-news = (deduped.length > 0
-  ? deduped
-  : (newsJson.articles || []).slice(0, 3)
-).slice(0,5)
- .map(({ score, topic, category, ...rest }) => rest);
+    // 4️⃣ Fallback falls zu stark gefiltert
+    news = (clustered.length > 0 ? clustered : prepared)
+      .slice(0, 5)
+      .map(({ score, topic, ...rest }) => rest);
   }
 } catch (e) {
   news = [];
 }
+
+
+
 
 /* =========================
    REGIONAL
