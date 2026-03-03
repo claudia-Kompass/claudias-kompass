@@ -390,59 +390,59 @@ try {
   danceEvents = [];
 }
 
-
 // =========================
 // REGIONAL RSS EVENTS
 // =========================
 
 let regionalEvents = [];
 
-try {
+const rssSources = [
+  "https://www.heilbronn.de/rss/veranstaltungen.xml"
+];
 
-  const rssSources = [
-    "https://www.heilbronn.de/rss/veranstaltungen.xml",
-    "https://www.schwaebischhall.de/rss.xml"
-  ];
+const keywords = ["kizomba", "semba", "salsa", "bachata", "latin"];
 
-  const keywords = ["kizomba", "semba", "salsa", "bachata", "latin"];
+for (const source of rssSources) {
+  try {
 
-  for (const source of rssSources) {
-    try {
-      const r = await fetch(source);
-      if (!r.ok) continue;
+    const r = await fetch(source, { method: "GET" });
+    if (!r || !r.ok) continue;
 
-      const xml = await r.text();
+    const xml = await r.text();
+    if (!xml || !xml.includes("<item>")) continue;
 
-      const items = xml.match(/<item>(.*?)<\/item>/gs) || [];
+    const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
 
-      for (const item of items) {
-        const titleMatch = item.match(/<title>(.*?)<\/title>/);
-        const linkMatch = item.match(/<link>(.*?)<\/link>/);
-        const dateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
+    for (const item of items) {
 
-        const title = titleMatch ? titleMatch[1] : "";
-        const link = linkMatch ? linkMatch[1] : "";
-        const date = dateMatch ? new Date(dateMatch[1]).toLocaleDateString("de-DE") : "";
+      const title = (item.match(/<title>(.*?)<\/title>/) || [])[1] || "";
+      const link = (item.match(/<link>(.*?)<\/link>/) || [])[1] || "";
+      const dateRaw = (item.match(/<pubDate>(.*?)<\/pubDate>/) || [])[1];
 
-        const lower = title.toLowerCase();
+      const date = dateRaw
+        ? new Date(dateRaw).toLocaleDateString("de-DE")
+        : "";
 
-        if (keywords.some(k => lower.includes(k))) {
-          regionalEvents.push({
-            title,
-            url: link,
-            date
-          });
-        }
+      const lower = title.toLowerCase();
+
+      if (keywords.some(k => lower.includes(k))) {
+        regionalEvents.push({
+          title,
+          url: link,
+          date
+        });
       }
+    }
 
-    } catch {}
+  } catch (err) {
+    console.log("RSS ERROR:", err.message);
+    continue;
   }
-
-  regionalEvents = regionalEvents.slice(0, 8);
-
-} catch {
-  regionalEvents = [];
 }
+
+regionalEvents = regionalEvents.slice(0, 8);
+
+
     
     /* =========================
        RESPONSE
