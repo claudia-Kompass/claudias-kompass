@@ -165,7 +165,55 @@ try {
 }
 
 
+/* =========================
+   REGIONAL
+========================== */
 
+let regional = [];
+
+function isBlaulicht(title){
+  const t = (title || "").toLowerCase();
+  return t.includes("unfall") ||
+         t.includes("tödlich") ||
+         t.includes("polizei") ||
+         t.includes("autofahrer") ||
+         t.includes("feuerwehr");
+}
+
+try {
+  if (process.env.GNEWS_KEY) {
+
+    const regionalRes = await fetch(
+      `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=8&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+    );
+
+    const regionalData = await regionalRes.json();
+
+    regional = (regionalData.articles || [])
+
+      .filter((article, index, self) =>
+        index === self.findIndex(a =>
+          normalizeTitle(a.title) === normalizeTitle(article.title)
+        )
+      )
+
+      .reduce((acc, curr) => {
+
+        const alreadyBlaulicht = acc.some(a => isBlaulicht(a.title));
+        const currentIsBlaulicht = isBlaulicht(curr.title);
+
+        if (currentIsBlaulicht && alreadyBlaulicht) return acc;
+
+        acc.push(curr);
+        return acc;
+
+      }, [])
+
+      .slice(0,3);
+  }
+} catch (e) {
+  regional = [];
+}
 
     /* =========================
        EVENTS – Smart Week Logic
