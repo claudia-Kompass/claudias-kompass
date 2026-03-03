@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+7module.exports = async function handler(req, res) {
   try {
     const version = "19.4.2";
     const now = new Date();
@@ -103,53 +103,85 @@ module.exports = async function handler(req, res) {
     } catch {}
 
     /* =========================
-       GLOBAL NEWS (GNews)
-    ========================== */
+   GLOBAL NEWS (GNews + RSS Fallback)
+========================= */
 
-    let news = [];
+let news = [];
 
+try {
+
+  let prepared = [];
+
+  // --- 1️⃣ GNEWS ---
+  if (process.env.GNEWS_KEY) {
     try {
-      if (process.env.GNEWS_KEY) {
-        let newsRes = await fetch(
-          `https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-        );
+      const newsRes = await fetch(
+        `https://gnews.io/api/v4/top-headlines?country=de&lang=de&max=10&token=${process.env.GNEWS_KEY}`
+      );
 
-        let newsJson = await newsRes.json();
+      if (newsRes.ok) {
+        const newsJson = await newsRes.json();
 
-        if (!newsJson.articles || newsJson.articles.length === 0) {
-          newsRes = await fetch(
-            `https://gnews.io/api/v4/top-headlines?category=world&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-          );
-          newsJson = await newsRes.json();
-        }
-
-        const prepared = (newsJson.articles || [])
-          .map(a => ({
+        if (newsJson.articles && newsJson.articles.length > 0) {
+          prepared = newsJson.articles.map(a => ({
             title: a.title,
             source: a.source?.name || "",
             url: a.url,
             topic: topicKey(a.title),
             score: scoreArticle(a)
-          }))
-          .filter((article, index, self) =>
-            index === self.findIndex(a =>
-              normalizeTitle(a.title) === normalizeTitle(article.title)
-            )
-          )
-          .sort((a, b) => b.score - a.score);
-
-        const clustered = prepared.reduce((acc, curr) => {
-          if (!acc.find(a => a.topic === curr.topic)) acc.push(curr);
-          return acc;
-        }, []);
-
-        news = (clustered.length > 0 ? clustered : prepared)
-          .slice(0, 5)
-          .map(({ score, topic, ...rest }) => rest);
+          }));
+        }
       }
-    } catch {
-      news = [];
+    } catch {}
+  }
+
+  // --- 2️⃣ RSS FALLBACK ---
+  if (prepared.length === 0) {
+
+    const rssSources = [
+      { url: "https://www.tagesschau.de/xml/rss2/", name: "Tagesschau" },
+      { url: "https://www.spiegel.de/schlagzeilen/tops/index.rss", name: "Spiegel" }
+    ];
+
+    let rssArticles = [];
+
+    for (const src of rssSources) {
+      try {
+        const r = await fetch(src.url);
+        const text = await r.text();
+        rssArticles = rssArticles.concat(parseRSS(text, src.name));
+      } catch {}
     }
+
+    prepared = rssArticles.map(a => ({
+      ...a,
+      topic: topicKey(a.title),
+      score: scoreArticle(a)
+    }));
+  }
+
+  // --- 3️⃣ Dedupe + Sort ---
+  prepared = prepared
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    )
+    .sort((a, b) => b.score - a.score);
+
+  const clustered = prepared.reduce((acc, curr) => {
+    if (!acc.find(a => a.topic === curr.topic)) acc.push(curr);
+    return acc;
+  }, []);
+
+  news = (clustered.length > 0 ? clustered : prepared)
+    .slice(0, 5)
+    .map(({ score, topic, ...rest }) => rest);
+
+} catch {
+  news = [];
+}
+  
 
     /* =========================
        REGIONAL (ABGESTIMMT)
