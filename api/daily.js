@@ -187,93 +187,58 @@ try {
 }
 
 /* =========================
-   REGIONAL – Balanced C
+   REGIONAL – RSS + GNews
 ========================== */
 
 let regional = [];
 
 try {
+
+  // 1️⃣ RSS Quellen
+  const rssSources = [
+    "https://www.swp.de/rss/swp-lokales_schwaebischhall.xml",
+    "https://www.stimme.de/rss/schwaebisch-hall.xml"
+  ];
+
+  for (const url of rssSources) {
+    try {
+      const rssRes = await fetch(url);
+      const xml = await rssRes.text();
+      regional.push(...parseRSS(xml));
+    } catch (e) {}
+  }
+
+  // 2️⃣ GNews ergänzend
   if (process.env.GNEWS_KEY) {
+    const regionalQuery = `"Schwäbisch Hall" OR "Crailsheim"`;
 
-    const regionalQuery = `
-      "Schwäbisch Hall" OR
-      "Landkreis Schwäbisch Hall" OR
-      "Crailsheim" OR
-      "Ilshofen" OR
-      "Gaildorf" OR
-      "Bausparkasse Schwäbisch Hall" OR
-      "Stadtwerke Schwäbisch Hall" OR
-      "Würth" OR
-      "Optima" OR
-      "Bausch+Ströbel" OR
-      "Schubert" OR
-      "Bürger" OR
-      "RECARO" OR
-      "ZIEHL-ABEGG"
-    `;
-
-    const regionalRes = await fetch(
-      `https://gnews.io/api/v4/search?q=${encodeURIComponent(regionalQuery)}&lang=de&max=15&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+    const gRes = await fetch(
+      `https://gnews.io/api/v4/search?q=${encodeURIComponent(regionalQuery)}&lang=de&max=5&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
     );
 
-    const regionalData = await regionalRes.json();
+    const gData = await gRes.json();
 
-    const prepared = (regionalData.articles || [])
-      .map(a => ({
+    regional.push(
+      ...(gData.articles || []).map(a => ({
         title: a.title,
-        source: a.source?.name || "",
-        url: a.url
+        url: a.url,
+        source: a.source?.name || "GNews"
       }))
-      .filter((article, index, self) =>
-        index === self.findIndex(a =>
-          normalizeTitle(a.title) === normalizeTitle(article.title)
-        )
-      );
-
-    function regionalScore(title){
-      const t = title.toLowerCase();
-      let score = 0;
-
-      // Wirtschaft priorisieren
-      const business = [
-        "würth","optima","bausparkasse",
-        "stadtwerke","bausch","schubert",
-        "bürger","recaro","ziehl"
-      ];
-      business.forEach(k => {
-        if (t.includes(k)) score += 10;
-      });
-
-      // Infrastruktur / Politik
-      const infra = [
-        "gemeinderat","stadtrat","verkehr",
-        "bau","energie","schule"
-      ];
-      infra.forEach(k => {
-        if (t.includes(k)) score += 5;
-      });
-
-      // Blaulicht leicht abwerten
-      const blue = [
-        "unfall","polizei","tödlich",
-        "feuerwehr"
-      ];
-      blue.forEach(k => {
-        if (t.includes(k)) score -= 3;
-      });
-
-      return score;
-    }
-
-    regional = prepared
-      .sort((a, b) => regionalScore(b.title) - regionalScore(a.title))
-      .slice(0, 3);
+    );
   }
+
+  // 3️⃣ Dedup
+  regional = regional
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    )
+    .slice(0, 5);
 
 } catch (e) {
   regional = [];
 }
-
 
     
     /* =========================
