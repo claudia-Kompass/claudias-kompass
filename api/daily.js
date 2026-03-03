@@ -243,7 +243,31 @@ try {
   ];
 
   regional = collected.filter(a => {
-    const t = (a.title || "").toLowerCase();
+    function parseRSS(xml, sourceName = "RSS") {
+  const items = [];
+  const matches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
+
+  matches.forEach(item => {
+    const titleMatch = item.match(/<title>(.*?)<\/title>/);
+    const linkMatch = item.match(/<link>(.*?)<\/link>/);
+    const descMatch = item.match(/<description>([\s\S]*?)<\/description>/);
+
+    if (titleMatch && linkMatch) {
+      items.push({
+        title: titleMatch[1]
+          .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
+          .trim(),
+        description: descMatch
+          ? descMatch[1].replace(/<!\[CDATA\[(.*?)\]\]>/, "$1").trim()
+          : "",
+        url: linkMatch[1].trim(),
+        source: sourceName
+      });
+    }
+  });
+
+  return items;
+}
 
     const geoMatch = allowedGeo.some(g => t.includes(g));
     const politicsMatch = politicalKeywords.some(p => t.includes(p));
