@@ -267,7 +267,86 @@ try {
   regional = [];
       }
 
-   
+/* =========================
+   EVENTS – DANCE REGIONAL (Eventbrite)
+========================= */
+
+let events = [];
+
+try {
+
+  const keywords = [
+    "kizomba",
+    "semba",
+    "salsa",
+    "salsa cubana",
+    "bachata"
+  ];
+
+  const cities = [
+    "Heilbronn",
+    "Öhringen",
+    "Schwäbisch Hall",
+    "Ludwigsburg",
+    "Würzburg",
+    "Ulm",
+    "Ansbach",
+    "Nürnberg"
+  ];
+
+  const nowISO = new Date().toISOString();
+  let collected = [];
+
+  for (const city of cities) {
+
+    const url =
+      `https://www.eventbriteapi.com/v3/events/search/?` +
+      `q=latin&` +
+      `location.address=${encodeURIComponent(city)}&` +
+      `start_date.range_start=${nowISO}&` +
+      `sort_by=date`;
+
+    const r = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`
+      }
+    });
+
+    if (!r.ok) continue;
+
+    const data = await r.json();
+    if (!data.events) continue;
+
+    collected = collected.concat(
+      data.events.map(e => ({
+        title: e.name?.text || "",
+        description: e.description?.text || "",
+        url: e.url,
+        start: e.start?.local,
+        city
+      }))
+    );
+  }
+
+  events = collected
+    .filter(e => {
+      const text = (e.title + " " + e.description).toLowerCase();
+      return keywords.some(k => text.includes(k));
+    })
+    .sort((a, b) => new Date(a.start) - new Date(b.start))
+    .slice(0, 8)
+    .map(e => ({
+      title: e.title,
+      date: new Date(e.start).toLocaleDateString("de-DE"),
+      city: e.city,
+      url: e.url
+    }));
+
+} catch {
+  events = [];
+}
+
+    
     /* =========================
        RESPONSE
     ========================== */
