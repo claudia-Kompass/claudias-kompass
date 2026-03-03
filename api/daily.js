@@ -191,17 +191,44 @@ try {
 
 
 /* =========================
-   REGIONAL – STABIL
+   REGIONAL – FINAL (GNEWS)
 ========================= */
 
 let regional = [];
 
 try {
-  const r = await fetch("https://www.tagesschau.de/xml/rss2/");
-  const text = await r.text();
-  const items = parseRSS(text, "Tagesschau");
 
-  regional = items.slice(0, 4);
+  if (process.env.GNEWS_KEY) {
+
+    const query = encodeURIComponent(
+      '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen OR ' +
+      'Würth OR Optima OR Recaro OR Klafs OR ' +
+      '"Stadtwerke Schwäbisch Hall" OR "Bausparkasse Schwäbisch Hall"'
+    );
+
+    const gRes = await fetch(
+      `https://gnews.io/api/v4/search?q=${query}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
+    );
+
+    if (gRes.ok) {
+      const gJson = await gRes.json();
+
+      regional = (gJson.articles || []).map(a => ({
+        title: a.title,
+        url: a.url,
+        source: a.source?.name || ""
+      }));
+    }
+  }
+
+  // Dedupe + Limit
+  regional = regional
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    )
+    .slice(0, 4);
 
 } catch {
   regional = [];
