@@ -341,4 +341,30 @@ weeklyMarkets = [
   }
 ];
     
+res.status(200).json({
+  version,
+  timestamp,
+  news,
+  regional,
 
+  events: {
+    dance: danceEvents,
+    fairs: tradeFairs,
+    weeklyMarkets: weeklyMarkets
+  },
+
+  markets: {
+    dax: { value: "18.742", date: "Stand: " + marketDate },
+    eurusd: { value: "1.08", date: "Stand: " + marketDate }
+  },
+
+  crypto: {
+    bitcoin,
+    nexo
+  },
+
+  weather: {
+    temp: currentTemp,
+    code: currentCode
+  }
+});
