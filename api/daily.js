@@ -171,6 +171,15 @@ try {
    REGIONAL
 ========================== */
 
+function isBlaulicht(title){
+  const t = (title || "").toLowerCase();
+  return t.includes("unfall") ||
+         t.includes("tödlich") ||
+         t.includes("polizei") ||
+         t.includes("autofahrer") ||
+         t.includes("feuerwehr");
+}
+ 
 let regional = [];
 
 try {
