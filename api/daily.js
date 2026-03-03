@@ -165,41 +165,7 @@ try {
 }
 
 
-/* =========================
-   REGIONAL
-========================== */
 
-function isBlaulicht(title){
-  const t = (title || "").toLowerCase();
-  return t.includes("unfall") ||
-         t.includes("tödlich") ||
-         t.includes("polizei") ||
-         t.includes("autofahrer") ||
-         t.includes("feuerwehr");
-}
- 
-regional = (regionalData.articles || [])
-
-  .filter((article, index, self) =>
-    index === self.findIndex(a =>
-      normalizeTitle(a.title) === normalizeTitle(article.title)
-    )
-  )
-
-  .reduce((acc, curr) => {
-
-    const alreadyBlaulicht = acc.some(a => isBlaulicht(a.title));
-    const currentIsBlaulicht = isBlaulicht(curr.title);
-
-    // Nur 1 Blaulicht zulassen
-    if (currentIsBlaulicht && alreadyBlaulicht) return acc;
-
-    acc.push(curr);
-    return acc;
-
-  }, [])
-
-  .slice(0,3);
 
     /* =========================
        EVENTS – Smart Week Logic
