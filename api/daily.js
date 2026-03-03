@@ -201,9 +201,25 @@ function isLocalGeo(title){
 try {
   if (process.env.GNEWS_KEY) {
 
-    const regionalRes = await fetch(
-      `https://gnews.io/api/v4/search?q="Schwäbisch Hall" OR Crailsheim OR Ilshofen OR Gaildorf OR Gerabronn OR "Bausparkasse Schwäbisch Hall" OR RECARO OR "ZIEHL-ABEGG"&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
-    );
+    const regionalKeywords = [
+  "Schwäbisch Hall",
+  "Crailsheim",
+  "Ilshofen",
+  "Gaildorf",
+  "Bausparkasse Schwäbisch Hall",
+  "Stadtwerke Schwäbisch Hall",
+  "Würth",
+  "Optima",
+  "Bausch+Ströbel",
+  "Schubert",
+  "Bürger",
+  "RECARO",
+  "ZIEHL-ABEGG"
+];
+
+const regionalQuery = regionalKeywords
+  .map(k => `"${k}"`)
+  .join(" OR ");
 
     const regionalData = await regionalRes.json();
 
