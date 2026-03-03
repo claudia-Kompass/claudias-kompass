@@ -390,59 +390,83 @@ try {
   danceEvents = [];
 }
 
-// =========================
-// REGIONAL RSS EVENTS
-// =========================
+// =/* =========================
+   TANZ EVENTS (RSS ROBUST)
+========================= */
 
 let regionalEvents = [];
 
-const rssSources = [
-  "https://www.heilbronn.de/rss/veranstaltungen.xml"
-];
+try {
+  const rssUrl = "https://www.eventbrite.de/d/germany--heilbronn/salsa/rss/";
+  const r = await fetch(rssUrl);
 
-const keywords = ["kizomba", "semba", "salsa", "bachata", "latin"];
-
-for (const source of rssSources) {
-  try {
-
-    const r = await fetch(source, { method: "GET" });
-    if (!r || !r.ok) continue;
-
+  if (r.ok) {
     const xml = await r.text();
-    if (!xml || !xml.includes("<item>")) continue;
 
-    const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
+    const items = xml.split("<item>").slice(1);
 
-    for (const item of items) {
+    const keywords = [
+      "kizomba",
+      "semba",
+      "salsa",
+      "bachata",
+      "latin",
+      "latino",
+      "tanz",
+      "dance"
+    ];
 
-      const title = (item.match(/<title>(.*?)<\/title>/) || [])[1] || "";
-      const link = (item.match(/<link>(.*?)<\/link>/) || [])[1] || "";
-      const dateRaw = (item.match(/<pubDate>(.*?)<\/pubDate>/) || [])[1];
+    const now = new Date();
 
-      const date = dateRaw
-        ? new Date(dateRaw).toLocaleDateString("de-DE")
-        : "";
+    regionalEvents = items
+      .map(item => {
+        const title = item.match(/<title>(.*?)<\/title>/)?.[1] || "";
+        const link = item.match(/<link>(.*?)<\/link>/)?.[1] || "";
+        const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1];
 
-      const lower = title.toLowerCase();
+        const eventDate = pubDate ? new Date(pubDate) : null;
 
-      if (keywords.some(k => lower.includes(k))) {
-        regionalEvents.push({
+        return {
           title,
           url: link,
-          date
-        });
-      }
-    }
+          date: eventDate
+        };
+      })
+      .filter(e => {
+        if (!e.title || !e.date) return false;
 
-  } catch (err) {
-    console.log("RSS ERROR:", err.message);
-    continue;
+        const text = e.title.toLowerCase();
+
+        const keywordMatch = keywords.some(k =>
+          text.includes(k)
+        );
+
+        const isFuture = e.date > now;
+
+        return keywordMatch && isFuture;
+      })
+      .sort((a, b) => a.date - b.date)
+      .slice(0, 8)
+      .map(e => ({
+        title: e.title,
+        url: e.url,
+        date: e.date.toLocaleDateString("de-DE")
+      }));
   }
+} catch (err) {
+  console.error("Event RSS Error:", err);
 }
 
-regionalEvents = regionalEvents.slice(0, 8);
-
-
+/* Fallback wenn leer */
+if (!regionalEvents.length) {
+  regionalEvents = [
+    {
+      title: "Derzeit keine passenden Tanz-Events gefunden",
+      url: "",
+      date: ""
+    }
+  ];
+}
     
     /* =========================
        RESPONSE
