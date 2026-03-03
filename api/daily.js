@@ -181,41 +181,47 @@ try {
 } catch {
   news = [];
 }
-  
 
-    /* =========================
-       REGIONAL (ABGESTIMMT)
-    ========================== */
+/* =========================
+   REGIONAL (STABIL v2)
+========================= */
 
-    let regional = [];
+let regional = [];
 
+try {
+
+  /* --- 1️⃣ STABILE RSS QUELLEN --- */
+
+  const rssSources = [
+    { url: "https://www.tagesschau.de/inland/badenwuerttemberg/rss2.xml", name: "Tagesschau BW" },
+    { url: "https://www.swp.de/rss/swp-lokales.xml", name: "SWP Lokal" }
+  ];
+
+  let rssArticles = [];
+
+  for (const src of rssSources) {
     try {
-      const rssSources = [
-        "https://www.swp.de/rss/suedwesten.xml",
-        "https://www.haller-stimme.de/feed/"
-      ];
+      const r = await fetch(src.url);
+      const text = await r.text();
+      rssArticles = rssArticles.concat(parseRSS(text, src.name));
+    } catch {}
+  }
 
-      let rssArticles = [];
+  /* --- 2️⃣ GNEWS LOKAL --- */
 
-      for (const url of rssSources) {
-        try {
-          const r = await fetch(url);
-          const text = await r.text();
-          rssArticles = rssArticles.concat(parseRSS(text, "Regional"));
-        } catch {}
-      }
+  let gnewsArticles = [];
 
-      let gnewsArticles = [];
+  if (process.env.GNEWS_KEY) {
+    try {
+      const localQuery = encodeURIComponent(
+        '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen'
+      );
 
-      if (process.env.GNEWS_KEY) {
-        const localQuery = encodeURIComponent(
-          '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen'
-        );
+      const gRes = await fetch(
+        `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
+      );
 
-        const gRes = await fetch(
-          `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-        );
-
+      if (gRes.ok) {
         const gJson = await gRes.json();
 
         gnewsArticles = (gJson.articles || []).map(a => ({
@@ -224,86 +230,99 @@ try {
           source: a.source?.name || ""
         }));
       }
+    } catch {}
+  }
 
-      regional = [...rssArticles, ...gnewsArticles]
-        .filter((article, index, self) =>
-          index === self.findIndex(a =>
-            normalizeTitle(a.title) === normalizeTitle(article.title)
-          )
-        );
+  regional = [...rssArticles, ...gnewsArticles];
 
-      const allowedGeo = [
-        "schwäbisch hall","landkreis schwäbisch hall",
-        "crailsheim","gaildorf","ilshofen",
-        "gerabronn","langenbur","rot am see"
-      ];
+  /* --- 3️⃣ DEDUPE --- */
 
-      const regionalCompanies = [
-        "stadtwerke schwäbisch hall","stadtwerke sha",
-        "bausparkasse schwäbisch hall",
-        "würth","optima","bausch",
-        "schubert","bürger","ziehl-abegg","recaro"
-      ];
-
-      let filteredRegional = regional.filter(a => {
-  const t = (a.title || "").toLowerCase();
-  return (
-    allowedGeo.some(g => t.includes(g)) ||
-    regionalCompanies.some(c => t.includes(c))
+  regional = regional.filter((article, index, self) =>
+    index === self.findIndex(a =>
+      normalizeTitle(a.title) === normalizeTitle(article.title)
+    )
   );
-});
 
-// Fallback: wenn nichts übrig bleibt → ungefilterte RSS nehmen
-if (filteredRegional.length === 0) {
-  filteredRegional = regional.slice(0, 4);
-}
+  /* --- 4️⃣ GEO + FIRMEN FILTER --- */
 
-regional = filteredRegional;
+  const allowedGeo = [
+    "schwäbisch hall","landkreis schwäbisch hall",
+    "crailsheim","gaildorf","ilshofen",
+    "gerabronn","langenbur","rot am see"
+  ];
 
-      function regionalScore(title){
-        const t = (title || "").toLowerCase();
-        let score = 0;
+  const regionalCompanies = [
+    "stadtwerke schwäbisch hall","stadtwerke sha",
+    "bausparkasse schwäbisch hall",
+    "würth","optima","bausch",
+    "schubert","bürger","ziehl-abegg","recaro"
+  ];
 
-        if (t.includes("stadtwerke")) score += 8;
-        if (t.includes("bausparkasse")) score += 7;
-        if (t.includes("würth")) score += 6;
-        if (t.includes("optima")) score += 6;
-        if (t.includes("wahl")) score += 7;
-        if (t.includes("landtag")) score += 7;
+  let filteredRegional = regional.filter(a => {
+    const t = (a.title || "").toLowerCase();
+    return (
+      allowedGeo.some(g => t.includes(g)) ||
+      regionalCompanies.some(c => t.includes(c))
+    );
+  });
 
-        if (t.includes("unfall")) score -= 3;
-        if (t.includes("tödlich")) score -= 3;
-        if (t.includes("polizei")) score -= 2;
+  /* --- 5️⃣ FALLBACK WENN FILTER ZU HART --- */
 
-        return score;
-      }
+  if (filteredRegional.length === 0) {
+    filteredRegional = regional.slice(0, 6);
+  }
 
-      regional = regional
-        .map(a => ({ ...a, score: regionalScore(a.title) }))
-        .sort((a,b) => b.score - a.score);
+  regional = filteredRegional;
 
-      let blaulichtCount = 0;
+  /* --- 6️⃣ SCORING --- */
 
-      regional = regional.filter(a => {
-        const t = (a.title || "").toLowerCase();
-        const isBlaulicht =
-          t.includes("unfall") ||
-          t.includes("tödlich") ||
-          t.includes("polizei");
+  function regionalScore(title){
+    const t = (title || "").toLowerCase();
+    let score = 0;
 
-        if (isBlaulicht) {
-          blaulichtCount++;
-          return blaulichtCount <= 1;
-        }
-        return true;
-      });
+    if (t.includes("stadtwerke")) score += 8;
+    if (t.includes("bausparkasse")) score += 7;
+    if (t.includes("würth")) score += 6;
+    if (t.includes("optima")) score += 6;
+    if (t.includes("wahl")) score += 7;
+    if (t.includes("landtag")) score += 7;
 
-      regional = regional.slice(0,4);
-      regional = regional.map(({ score, ...rest }) => rest);
+    if (t.includes("unfall")) score -= 3;
+    if (t.includes("tödlich")) score -= 3;
+    if (t.includes("polizei")) score -= 2;
 
-    } catch {
-      regional = [];
+    return score;
+  }
+
+  regional = regional
+    .map(a => ({ ...a, score: regionalScore(a.title) }))
+    .sort((a,b) => b.score - a.score);
+
+  /* --- 7️⃣ BLAULICHT LIMIT --- */
+
+  let blaulichtCount = 0;
+
+  regional = regional.filter(a => {
+    const t = (a.title || "").toLowerCase();
+    const isBlaulicht =
+      t.includes("unfall") ||
+      t.includes("tödlich") ||
+      t.includes("polizei");
+
+    if (isBlaulicht) {
+      blaulichtCount++;
+      return blaulichtCount <= 1;
     }
+    return true;
+  });
+
+  regional = regional.slice(0,4);
+  regional = regional.map(({ score, ...rest }) => rest);
+
+} catch {
+  regional = [];
+}
+    
 
     /* =========================
        RESPONSE
