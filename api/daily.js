@@ -169,78 +169,8 @@ try {
    REGIONAL – Strict Geo+
 ========================== */
 
-let regional = [];
-t.includes("stadtwerke schwäbisch hall") ||
-t.includes("stadtwerke sha") ||
-t.includes("energie schwäbisch hall") ||
 
-    
-function isLocalGeo(title){
-  const t = (title || "").toLowerCase();
 
-  return t.includes("schwäbisch hall") ||
-         t.includes("landkreis schwäbisch hall") ||
-         t.includes("crailsheim") ||
-         t.includes("ilshofen") ||
-         t.includes("gaildorf") ||
-         t.includes("gerabronn") ||
-         t.includes("langenburg") ||
-         t.includes("obersontheim") ||
-         t.includes("michelfeld") ||
-         t.includes("rot am see") ||
-         t.includes("frankenhardt") ||
-         t.includes("mainhardt") ||
-
-         // Regionale Unternehmen
-         t.includes("bausparkasse schwäbisch hall") ||
-         t.includes("bsh schwäbisch hall") ||
-         t.includes("recaro") ||
-         t.includes("ziehl-abegg");
-}
-
-try {
-  if (process.env.GNEWS_KEY) {
-
-    const regionalKeywords = [
-  "Schwäbisch Hall",
-  "Crailsheim",
-  "Ilshofen",
-  "Gaildorf",
-  "Bausparkasse Schwäbisch Hall",
-  "Stadtwerke Schwäbisch Hall",
-  "Würth",
-  "Optima",
-  "Bausch+Ströbel",
-  "Schubert",
-  "Bürger",
-  "RECARO",
-  "ZIEHL-ABEGG"
-];
-
-const regionalQuery = regionalKeywords
-  .map(k => `"${k}"`)
-  .join(" OR ");
-
-    const regionalData = await regionalRes.json();
-
-    regional = (regionalData.articles || [])
-
-      // Doppelte entfernen
-      .filter((article, index, self) =>
-        index === self.findIndex(a =>
-          normalizeTitle(a.title) === normalizeTitle(article.title)
-        )
-      )
-
-      // Strikte Geo+Filterung
-      .filter(a => isLocalGeo(a.title))
-
-      .slice(0,3);
-  }
-
-} catch (e) {
-  regional = [];
-}
 
     /* =========================
        EVENTS – Smart Week Logic
