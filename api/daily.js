@@ -183,77 +183,72 @@ try {
 }
 
 /* =========================
-   REGIONAL – GARANTIERT INHALT
+   REGIONAL – RSS DIREKT
 ========================= */
 
 let regional = [];
 
 try {
 
-  if (process.env.GNEWS_KEY) {
+  const rssSources = [
+    { url: "https://www.swp.de/rss/suedwesten.xml", name: "SWP" },
+    { url: "https://www.haller-stimme.de/feed/", name: "Haller Stimme" }
+  ];
 
-    // 1️⃣ Lokale Suche
-    const localQuery = encodeURIComponent(
-      '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen OR Würth OR Optima'
-    );
+  let rssArticles = [];
 
-    let gRes = await fetch(
-      `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
-    );
+  for (const src of rssSources) {
+    try {
+      const r = await fetch(src.url, {
+        headers: { "User-Agent": "Mozilla/5.0" }
+      });
 
-    if (gRes.ok) {
-      const gJson = await gRes.json();
-      regional = gJson.articles || [];
-    }
-
-    // 2️⃣ Wenn leer → Baden-Württemberg
-    if (regional.length === 0) {
-
-      const bwQuery = encodeURIComponent('"Baden-Württemberg"');
-
-      gRes = await fetch(
-        `https://gnews.io/api/v4/search?q=${bwQuery}&lang=de&max=6&token=${process.env.GNEWS_KEY}`
-      );
-
-      if (gRes.ok) {
-        const gJson = await gRes.json();
-        regional = gJson.articles || [];
+      if (r.ok) {
+        const text = await r.text();
+        rssArticles = rssArticles.concat(parseRSS(text, src.name));
       }
+
+    } catch (err) {
+      console.error("RSS Fehler:", err);
     }
-
-    // 3️⃣ Wenn immer noch leer → deutsche Top Headlines
-    if (regional.length === 0) {
-
-      gRes = await fetch(
-        `https://gnews.io/api/v4/top-headlines?country=de&max=6&token=${process.env.GNEWS_KEY}`
-      );
-
-      if (gRes.ok) {
-        const gJson = await gRes.json();
-        regional = gJson.articles || [];
-      }
-    }
-
-    // Mapping
-    regional = regional.map(a => ({
-      title: a.title,
-      url: a.url,
-      source: a.source?.name || ""
-    }));
-
-    // Dedupe
-    regional = regional.filter((article, index, self) =>
-      index === self.findIndex(a =>
-        normalizeTitle(a.title) === normalizeTitle(article.title)
-      )
-    );
-
-    regional = regional.slice(0, 4);
   }
 
-} catch {
+  // Geo-Filter
+  const allowedGeo = [
+    "schwäbisch hall",
+    "landkreis schwäbisch hall",
+    "crailsheim",
+    "gaildorf",
+    "ilshofen",
+    "gerabronn",
+    "rot am see",
+    "langenburger"
+  ];
+
+  regional = rssArticles.filter(a => {
+    const t = (a.title || "").toLowerCase();
+    return allowedGeo.some(g => t.includes(g));
+  });
+
+  // Fallback: wenn Filter zu streng → zeige einfach Top 4 RSS
+  if (regional.length === 0) {
+    regional = rssArticles.slice(0, 4);
+  }
+
+  // Dedupe
+  regional = regional.filter((article, index, self) =>
+    index === self.findIndex(a =>
+      normalizeTitle(a.title) === normalizeTitle(article.title)
+    )
+  );
+
+  regional = regional.slice(0, 4);
+
+} catch (error) {
+  console.error("Regional Fehler:", error);
   regional = [];
 }
+   
     
 
     /* =========================
