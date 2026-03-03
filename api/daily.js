@@ -452,7 +452,8 @@ try {
       version,
       timestamp,
       news,
-      regional,
+      regionalNews: regional,
+regionalEvents,,
       dance: danceEvents,
       markets: {
         dax: { value: "18.742", date: "Stand: " + marketDate },
