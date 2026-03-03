@@ -15,6 +15,28 @@ module.exports = async function handler(req, res) {
         .replace(/[^a-z0-9]/gi, "");
     }
 
+function parseRSS(xml) {
+  const items = [];
+  const matches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
+
+  matches.forEach(item => {
+    const titleMatch = item.match(/<title>(.*?)<\/title>/);
+    const linkMatch = item.match(/<link>(.*?)<\/link>/);
+
+    if (titleMatch && linkMatch) {
+      items.push({
+        title: titleMatch[1]
+          .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
+          .trim(),
+        url: linkMatch[1].trim(),
+        source: "RSS"
+      });
+    }
+  });
+
+  return items;
+}
+    
     function scoreArticle(article) {
       let score = 0;
       const text = (article.title || "").toLowerCase();
