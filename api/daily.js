@@ -249,7 +249,7 @@ try {
     const politicsMatch = politicalKeywords.some(p => t.includes(p));
     const entityMatch = regionalEntities.some(e => t.includes(e));
 
-    return (geoMatch && politicsMatch) || entityMatch;
+    return geoMatch || entityMatch;
   });
 
   // Dedupe + Limit
