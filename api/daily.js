@@ -268,205 +268,79 @@ try {
       }
 
 /* =========================
-   EVENTS – DANCE REGIONAL (Eventbrite)
+   EVENTS – STRUKTURIERT
 ========================= */
-
-let events = [];
-
-try {
-
-  const keywords = [
-    "kizomba",
-    "semba",
-    "salsa",
-    "salsa cubana",
-    "bachata"
-  ];
-
-  const cities = [
-    "Heilbronn",
-    "Öhringen",
-    "Schwäbisch Hall",
-    "Ludwigsburg",
-    "Würzburg",
-    "Ulm",
-    "Ansbach",
-    "Nürnberg"
-  ];
-
-  const nowISO = new Date().toISOString();
-  let collected = [];
-
-  for (const city of cities) {
-
-    const url =
-  `https://www.eventbriteapi.com/v3/events/search/?` +
-  `q=${encodeURIComponent("salsa OR bachata OR kizomba OR semba")}&`
-  `location.latitude=49.1399&` +
-  `location.longitude=9.2200&` +
-  `location.within=150km&` +
-  `start_date.range_start=${nowISO}&` +
-  `sort_by=date`;
-
-    const r = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`
-      }
-    });
-
-    if (!r.ok) continue;
-
-    const data = await r.json();
-    if (!data.events) continue;
-
-    collected = collected.concat(
-      data.events.map(e => ({
-        title: e.name?.text || "",
-        description: e.description?.text || "",
-        url: e.url,
-        start: e.start?.local,
-        city
-      }))
-    );
-  }
-
-  events = collected
-    .filter(e => {
-      const text = (e.title + " " + e.description).toLowerCase();
-      return keywords.some(k => text.includes(k));
-    })
-    .sort((a, b) => new Date(a.start) - new Date(b.start))
-    .slice(0, 8)
-    .map(e => ({
-      title: e.title,
-      date: new Date(e.start).toLocaleDateString("de-DE"),
-      city: e.city,
-      url: e.url
-    }));
-
-} catch {
-  events = [];
-}
-
-// =========================
-// DANCE EVENTS FETCH
-// =========================
 
 let danceEvents = [];
+let tradeFairs = [];
+let weeklyMarkets = [];
+
+/* ---------- TANZ (Eventbrite) ---------- */
 
 try {
-  const danceSources = [
-    "https://www.salsa-heilbronn.de/events",
-    "https://www.salsa-nuernberg.de/events",
-    "https://www.salsa-wuerzburg.de/events"
-  ];
+  const nowISO = new Date().toISOString();
 
-  const keywords = ["kizomba", "semba", "salsa", "bachata"];
+  const url =
+    `https://www.eventbriteapi.com/v3/events/search/?` +
+    `q=${encodeURIComponent("salsa OR bachata OR kizomba OR semba")}&` +
+    `location.latitude=49.1399&` +
+    `location.longitude=9.2200&` +
+    `location.within=180km&` +
+    `start_date.range_start=${nowISO}&` +
+    `sort_by=date`;
 
-  for (const source of danceSources) {
-    try {
-      const r = await fetch(source);
-      if (!r.ok) continue;
-
-      const html = await r.text();
-      const lower = html.toLowerCase();
-
-      keywords.forEach(k => {
-        if (lower.includes(k)) {
-          danceEvents.push({
-            title: `Tanz Event (${k})`,
-            url: source,
-            date: "siehe Website"
-          });
-        }
-      });
-
-    } catch {}
-  }
-
-  danceEvents = [...new Map(danceEvents.map(e => [e.title, e])).values()].slice(0, 8);
-
-} catch {
-  danceEvents = [];
-}
-
-// =/* =========================
-   TANZ EVENTS (RSS ROBUST)
-========================= */
-
-let regionalEvents = [];
-
-try {
-  const rssUrl = "https://www.eventbrite.de/d/germany--heilbronn/salsa/rss/";
-  const r = await fetch(rssUrl);
+  const r = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.EVENTBRITE_TOKEN}`
+    }
+  });
 
   if (r.ok) {
-    const xml = await r.text();
+    const data = await r.json();
 
-    const items = xml.split("<item>").slice(1);
-
-    const keywords = [
-      "kizomba",
-      "semba",
-      "salsa",
-      "bachata",
-      "latin",
-      "latino",
-      "tanz",
-      "dance"
-    ];
-
-    const now = new Date();
-
-    regionalEvents = items
-      .map(item => {
-        const title = item.match(/<title>(.*?)<\/title>/)?.[1] || "";
-        const link = item.match(/<link>(.*?)<\/link>/)?.[1] || "";
-        const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1];
-
-        const eventDate = pubDate ? new Date(pubDate) : null;
-
-        return {
-          title,
-          url: link,
-          date: eventDate
-        };
-      })
-      .filter(e => {
-        if (!e.title || !e.date) return false;
-
-        const text = e.title.toLowerCase();
-
-        const keywordMatch = keywords.some(k =>
-          text.includes(k)
-        );
-
-        const isFuture = e.date > now;
-
-        return keywordMatch && isFuture;
-      })
-      .sort((a, b) => a.date - b.date)
+    danceEvents = (data.events || [])
       .slice(0, 8)
       .map(e => ({
-        title: e.title,
-        url: e.url,
-        date: e.date.toLocaleDateString("de-DE")
+        title: e.name?.text || "",
+        date: new Date(e.start?.local).toLocaleDateString("de-DE"),
+        city: e.venue?.address?.city || "",
+        url: e.url
       }));
   }
-} catch (err) {
-  console.error("Event RSS Error:", err);
-}
 
-/* Fallback wenn leer */
-if (!regionalEvents.length) {
-  regionalEvents = [
-    {
-      title: "Derzeit keine passenden Tanz-Events gefunden",
-      url: "",
-      date: ""
-    }
-  ];
-}
+} catch {}
+
+/* ---------- MESSEN (statisch jährlich) ---------- */
+
+tradeFairs = [
+  { name: "CMT", city: "Stuttgart", period: "Januar" },
+  { name: "Consumenta", city: "Nürnberg", period: "Oktober/November" },
+  { name: "Kreativ Messe", city: "Stuttgart", period: "Herbst" }
+];
+
+/* ---------- WOCHENMÄRKTE ---------- */
+
+weeklyMarkets = [
+  {
+    city: "Schwäbisch Hall",
+    location: "Marktplatz",
+    day: "Mittwoch & Samstag",
+    time: "07:00 – 13:00"
+  },
+  {
+    city: "Öhringen",
+    location: "Marktplatz",
+    day: "Freitag",
+    time: "07:00 – 13:00"
+  },
+  {
+    city: "Heilbronn",
+    location: "Kiliansplatz",
+    day: "Dienstag, Donnerstag, Samstag",
+    time: "07:00 – 13:00"
+  }
+];
+    
     
     /* =========================
        RESPONSE
