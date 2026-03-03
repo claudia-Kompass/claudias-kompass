@@ -300,11 +300,11 @@ try {
   for (const city of cities) {
 
     const url =
-      `https://www.eventbriteapi.com/v3/events/search/?` +
-      q=salsa%20OR%20bachata%20OR%20kizomba%20OR%20semba&
-      `location.address=${encodeURIComponent(city)}&` +
-      `start_date.range_start=${nowISO}&` +
-      `sort_by=date`;
+  `https://www.eventbriteapi.com/v3/events/search/?` +
+  `q=salsa OR bachata OR kizomba OR semba&` +
+  `location.address=${encodeURIComponent(city)}&` +
+  `start_date.range_start=${nowISO}&` +
+  `sort_by=date`;
 
     const r = await fetch(url, {
       headers: {
