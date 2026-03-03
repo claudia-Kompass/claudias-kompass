@@ -186,60 +186,91 @@ try {
   news = [];
 }
 
+
 /* =========================
-   REGIONAL – RSS + GNews
+   REGIONAL – RSS + GNews Hybrid
 ========================== */
 
 let regional = [];
 
+function parseRSS(xml) {
+  const items = [];
+  const matches = xml.match(/<item>([\s\S]*?)<\/item>/g) || [];
+
+  matches.forEach(item => {
+    const titleMatch = item.match(/<title>(.*?)<\/title>/);
+    const linkMatch = item.match(/<link>(.*?)<\/link>/);
+
+    if (titleMatch && linkMatch) {
+      items.push({
+        title: titleMatch[1]
+          .replace(/<!\[CDATA\[(.*?)\]\]>/, "$1")
+          .trim(),
+        url: linkMatch[1].trim(),
+        source: "Regional"
+      });
+    }
+  });
+
+  return items;
+}
+
 try {
 
-  // 1️⃣ RSS Quellen
+  /* --- 1️⃣ RSS Quellen --- */
+
   const rssSources = [
-    "https://www.swp.de/rss/swp-lokales_schwaebischhall.xml",
-    "https://www.stimme.de/rss/schwaebisch-hall.xml"
+    "https://www.swp.de/rss/suedwesten.xml",
+    "https://www.haller-stimme.de/feed/"
   ];
+
+  let rssArticles = [];
 
   for (const url of rssSources) {
     try {
-      const rssRes = await fetch(url);
-      const xml = await rssRes.text();
-      regional.push(...parseRSS(xml));
-    } catch (e) {}
+      const r = await fetch(url);
+      const text = await r.text();
+      rssArticles = rssArticles.concat(parseRSS(text));
+    } catch(e){}
   }
 
-  // 2️⃣ GNews ergänzend
+  /* --- 2️⃣ GNews Fallback --- */
+
+  let gnewsArticles = [];
+
   if (process.env.GNEWS_KEY) {
-    const regionalQuery = `"Schwäbisch Hall" OR "Crailsheim"`;
+    const localQuery = encodeURIComponent(
+      '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen'
+    );
 
     const gRes = await fetch(
-      `https://gnews.io/api/v4/search?q=${encodeURIComponent(regionalQuery)}&lang=de&max=5&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+      `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
     );
 
-    const gData = await gRes.json();
+    const gJson = await gRes.json();
 
-    regional.push(
-      ...(gData.articles || []).map(a => ({
-        title: a.title,
-        url: a.url,
-        source: a.source?.name || "GNews"
-      }))
-    );
+    gnewsArticles = (gJson.articles || []).map(a => ({
+      title: a.title,
+      url: a.url,
+      source: a.source?.name || ""
+    }));
   }
 
-  // 3️⃣ Dedup
-  regional = regional
+  /* --- 3️⃣ Kombinieren + Deduplizieren --- */
+
+  regional = [...rssArticles, ...gnewsArticles]
+
     .filter((article, index, self) =>
       index === self.findIndex(a =>
         normalizeTitle(a.title) === normalizeTitle(article.title)
       )
     )
-    .slice(0, 5);
 
-} catch (e) {
+    .slice(0, 4);
+
+} catch(e) {
   regional = [];
 }
-
     
     /* =========================
        EVENTS – Smart Week Logic
