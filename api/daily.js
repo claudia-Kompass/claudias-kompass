@@ -102,7 +102,7 @@ module.exports = async function handler(req, res) {
       currentCode = weatherData.current_weather?.weathercode ?? 0;
     } catch {}
 
-    /* =========================
+/* =========================
    GLOBAL NEWS (GNews + RSS Fallback)
 ========================= */
 
@@ -183,7 +183,7 @@ try {
 }
 
 /* =========================
-   REGIONAL (GNEWS ONLY – STABIL)
+   REGIONAL – GARANTIERT INHALT
 ========================= */
 
 let regional = [];
@@ -192,55 +192,64 @@ try {
 
   if (process.env.GNEWS_KEY) {
 
-    const fallbackQuery = encodeURIComponent(
-  '"Baden-Württemberg" Wirtschaft Energie Mittelstand'
-);
+    // 1️⃣ Lokale Suche
+    const localQuery = encodeURIComponent(
+      '"Schwäbisch Hall" OR Crailsheim OR Gaildorf OR Ilshofen OR Würth OR Optima'
+    );
 
-    const gRes = await fetch(
+    let gRes = await fetch(
       `https://gnews.io/api/v4/search?q=${localQuery}&lang=de&max=10&token=${process.env.GNEWS_KEY}`
     );
 
     if (gRes.ok) {
-
       const gJson = await gRes.json();
-
-      regional = (gJson.articles || []).map(a => ({
-        title: a.title,
-        url: a.url,
-        source: a.source?.name || ""
-      }));
-
+      regional = gJson.articles || [];
     }
-  }
 
-  // Fallback: Wenn wirklich nichts kommt → breite BW Query
-  if (regional.length === 0 && process.env.GNEWS_KEY) {
+    // 2️⃣ Wenn leer → Baden-Württemberg
+    if (regional.length === 0) {
 
-    const fallbackQuery = encodeURIComponent("Baden-Württemberg Politik Wirtschaft");
+      const bwQuery = encodeURIComponent('"Baden-Württemberg"');
 
-    const gRes = await fetch(
-      `https://gnews.io/api/v4/search?q=${fallbackQuery}&lang=de&max=6&token=${process.env.GNEWS_KEY}`
+      gRes = await fetch(
+        `https://gnews.io/api/v4/search?q=${bwQuery}&lang=de&max=6&token=${process.env.GNEWS_KEY}`
+      );
+
+      if (gRes.ok) {
+        const gJson = await gRes.json();
+        regional = gJson.articles || [];
+      }
+    }
+
+    // 3️⃣ Wenn immer noch leer → deutsche Top Headlines
+    if (regional.length === 0) {
+
+      gRes = await fetch(
+        `https://gnews.io/api/v4/top-headlines?country=de&max=6&token=${process.env.GNEWS_KEY}`
+      );
+
+      if (gRes.ok) {
+        const gJson = await gRes.json();
+        regional = gJson.articles || [];
+      }
+    }
+
+    // Mapping
+    regional = regional.map(a => ({
+      title: a.title,
+      url: a.url,
+      source: a.source?.name || ""
+    }));
+
+    // Dedupe
+    regional = regional.filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
     );
 
-    if (gRes.ok) {
-      const gJson = await gRes.json();
-
-      regional = (gJson.articles || []).map(a => ({
-        title: a.title,
-        url: a.url,
-        source: a.source?.name || ""
-      }));
-    }
+    regional = regional.slice(0, 4);
   }
-
-  // Dedupe
-  regional = regional.filter((article, index, self) =>
-    index === self.findIndex(a =>
-      normalizeTitle(a.title) === normalizeTitle(article.title)
-    )
-  );
-
-  regional = regional.slice(0,4);
 
 } catch {
   regional = [];
