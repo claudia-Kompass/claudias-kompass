@@ -190,7 +190,82 @@ try {
 }
 
 
+/* =========================
+   REGIONAL – ROBUST
+========================= */
 
+let regional = [];
+
+try {
+
+  const sources = [
+    { url: "https://www.swp.de/rss.xml", name: "SWP" }
+  ];
+
+  let collected = [];
+
+  for (const src of sources) {
+    try {
+      const r = await fetch(src.url, {
+        headers: { "User-Agent": "Mozilla/5.0" }
+      });
+
+      if (r.ok) {
+        const text = await r.text();
+        collected = collected.concat(parseRSS(text, src.name));
+      }
+
+    } catch {}
+  }
+
+  const allowedGeo = [
+    "schwäbisch hall",
+    "landkreis schwäbisch hall",
+    "crailsheim",
+    "gaildorf",
+    "ilshofen"
+  ];
+
+  const regionalEntities = [
+    "stadtwerke schwäbisch hall",
+    "stadtwerke sha",
+    "bausparkasse schwäbisch hall",
+    "würth",
+    "optima",
+    "schubert",
+    "recaro",
+    "klafs",
+    "bürger",
+    "mittelstand"
+  ];
+
+  regional = collected.filter(a => {
+    const t = (a.title || "").toLowerCase();
+    const d = (a.description || "").toLowerCase();
+    const text = t + " " + d;
+
+    const geoMatch = allowedGeo.some(g => text.includes(g));
+    const entityMatch = regionalEntities.some(e => text.includes(e));
+
+    return geoMatch || entityMatch;
+  });
+
+  // 🔁 Fallback – wenn nichts passt, nimm erste 3 Artikel
+  if (regional.length === 0) {
+    regional = collected.slice(0, 3);
+  }
+
+  regional = regional
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    )
+    .slice(0, 4);
+
+} catch {
+  regional = [];
+      }
 
    
     /* =========================
