@@ -281,13 +281,13 @@ try {
   const nowISO = new Date().toISOString();
 
   const url =
-    `https://www.eventbriteapi.com/v3/events/search/?` +
-    `q=${encodeURIComponent("salsa OR bachata OR kizomba OR semba")}&` +
-    `location.latitude=49.1399&` +
-    `location.longitude=9.2200&` +
-    `location.within=180km&` +
-    `start_date.range_start=${nowISO}&` +
-    `sort_by=date`;
+  `https://www.eventbriteapi.com/v3/events/search/?` +
+  `q=${encodeURIComponent("salsa OR bachata OR kizomba OR semba")}&` +
+  `location.latitude=49.1399&` +
+  `location.longitude=9.2200&` +
+  `location.within=180km&` +
+  `start_date.range_start=${nowISO}&` +
+  `sort_by=date`;
 
   const r = await fetch(url, {
     headers: {
