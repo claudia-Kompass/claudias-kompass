@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+&module.exports = async function handler(req, res) {
   try {
     const version = "19.4.2";
     const now = new Date();
@@ -368,3 +368,8 @@ res.status(200).json({
     code: currentCode
   }
 });
+} catch (error) {
+    console.error("API ERROR:", error);
+    res.status(500).json({ error: "API Fehler" });
+  }
+};
