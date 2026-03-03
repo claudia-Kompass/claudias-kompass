@@ -166,51 +166,58 @@ try {
 
 
 /* =========================
-   REGIONAL
+   REGIONAL – Strict Geo+
 ========================== */
 
 let regional = [];
 
-function isBlaulicht(title){
+function isLocalGeo(title){
   const t = (title || "").toLowerCase();
-  return t.includes("unfall") ||
-         t.includes("tödlich") ||
-         t.includes("polizei") ||
-         t.includes("autofahrer") ||
-         t.includes("feuerwehr");
+
+  return t.includes("schwäbisch hall") ||
+         t.includes("landkreis schwäbisch hall") ||
+         t.includes("crailsheim") ||
+         t.includes("ilshofen") ||
+         t.includes("gaildorf") ||
+         t.includes("gerabronn") ||
+         t.includes("langenburg") ||
+         t.includes("obersontheim") ||
+         t.includes("michelfeld") ||
+         t.includes("rot am see") ||
+         t.includes("frankenhardt") ||
+         t.includes("mainhardt") ||
+
+         // Regionale Unternehmen
+         t.includes("bausparkasse schwäbisch hall") ||
+         t.includes("bsh schwäbisch hall") ||
+         t.includes("recaro") ||
+         t.includes("ziehl-abegg");
 }
 
 try {
   if (process.env.GNEWS_KEY) {
 
     const regionalRes = await fetch(
-      `https://gnews.io/api/v4/search?q=Schwäbisch Hall OR Crailsheim OR Ilshofen OR Hohenlohe&lang=de&max=8&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
+      `https://gnews.io/api/v4/search?q="Schwäbisch Hall" OR Crailsheim OR Ilshofen OR Gaildorf OR Gerabronn OR "Bausparkasse Schwäbisch Hall" OR RECARO OR "ZIEHL-ABEGG"&lang=de&max=10&sortby=publishedAt&token=${process.env.GNEWS_KEY}`
     );
 
     const regionalData = await regionalRes.json();
 
     regional = (regionalData.articles || [])
 
+      // Doppelte entfernen
       .filter((article, index, self) =>
         index === self.findIndex(a =>
           normalizeTitle(a.title) === normalizeTitle(article.title)
         )
       )
 
-      .reduce((acc, curr) => {
-
-        const alreadyBlaulicht = acc.some(a => isBlaulicht(a.title));
-        const currentIsBlaulicht = isBlaulicht(curr.title);
-
-        if (currentIsBlaulicht && alreadyBlaulicht) return acc;
-
-        acc.push(curr);
-        return acc;
-
-      }, [])
+      // Strikte Geo+Filterung
+      .filter(a => isLocalGeo(a.title))
 
       .slice(0,3);
   }
+
 } catch (e) {
   regional = [];
 }
