@@ -170,7 +170,11 @@ try {
 ========================== */
 
 let regional = [];
+t.includes("stadtwerke schwäbisch hall") ||
+t.includes("stadtwerke sha") ||
+t.includes("energie schwäbisch hall") ||
 
+    
 function isLocalGeo(title){
   const t = (title || "").toLowerCase();
 
