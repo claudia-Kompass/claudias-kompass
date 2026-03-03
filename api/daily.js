@@ -301,7 +301,7 @@ try {
 
     const url =
       `https://www.eventbriteapi.com/v3/events/search/?` +
-      `q=latin&` +
+      q=salsa%20OR%20bachata%20OR%20kizomba%20OR%20semba&
       `location.address=${encodeURIComponent(city)}&` +
       `start_date.range_start=${nowISO}&` +
       `sort_by=date`;
