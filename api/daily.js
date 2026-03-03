@@ -183,21 +183,21 @@ try {
 }
 
 /* =========================
-   REGIONAL – RSS DIREKT
+   REGIONAL – KOMMUNAL + WIRTSCHAFT
 ========================= */
 
 let regional = [];
 
 try {
 
-  const rssSources = [
-    { url: "https://www.swp.de/rss/suedwesten.xml", name: "SWP" },
-    { url: "https://www.haller-stimme.de/feed/", name: "Haller Stimme" }
+  // 👉 RSS Quellen (anpassen falls nötig)
+  const sources = [
+    { url: "https://www.swp.de/rss.xml", name: "SWP" }
   ];
 
-  let rssArticles = [];
+  let collected = [];
 
-  for (const src of rssSources) {
+  for (const src of sources) {
     try {
       const r = await fetch(src.url, {
         headers: { "User-Agent": "Mozilla/5.0" }
@@ -205,50 +205,66 @@ try {
 
       if (r.ok) {
         const text = await r.text();
-        rssArticles = rssArticles.concat(parseRSS(text, src.name));
+        collected = collected.concat(parseRSS(text, src.name));
       }
 
-    } catch (err) {
-      console.error("RSS Fehler:", err);
-    }
+    } catch {}
   }
 
-  // Geo-Filter
   const allowedGeo = [
     "schwäbisch hall",
     "landkreis schwäbisch hall",
     "crailsheim",
     "gaildorf",
-    "ilshofen",
-    "gerabronn",
-    "rot am see",
-    "langenburger"
+    "ilshofen"
   ];
 
-  regional = rssArticles.filter(a => {
+  const politicalKeywords = [
+    "gemeinderat",
+    "landtag",
+    "wahl",
+    "haushalt",
+    "bürgermeister",
+    "ratssitzung",
+    "politik"
+  ];
+
+  const regionalEntities = [
+    "stadtwerke schwäbisch hall",
+    "stadtwerke sha",
+    "bausparkasse schwäbisch hall",
+    "würth",
+    "optima",
+    "schubert",
+    "recaro",
+    "klafs",
+    "bürger",
+    "mittelstand"
+  ];
+
+  regional = collected.filter(a => {
     const t = (a.title || "").toLowerCase();
-    return allowedGeo.some(g => t.includes(g));
+
+    const geoMatch = allowedGeo.some(g => t.includes(g));
+    const politicsMatch = politicalKeywords.some(p => t.includes(p));
+    const entityMatch = regionalEntities.some(e => t.includes(e));
+
+    return (geoMatch && politicsMatch) || entityMatch;
   });
 
-  // Fallback: wenn Filter zu streng → zeige einfach Top 4 RSS
-  if (regional.length === 0) {
-    regional = rssArticles.slice(0, 4);
-  }
-
-  // Dedupe
-  regional = regional.filter((article, index, self) =>
-    index === self.findIndex(a =>
-      normalizeTitle(a.title) === normalizeTitle(article.title)
+  // Dedupe + Limit
+  regional = regional
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
     )
-  );
+    .slice(0, 4);
 
-  regional = regional.slice(0, 4);
-
-} catch (error) {
-  console.error("Regional Fehler:", error);
+} catch {
   regional = [];
 }
-   
+      
     
 
     /* =========================
