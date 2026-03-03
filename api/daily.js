@@ -327,6 +327,31 @@ regional = regional.filter(a => {
 // Begrenzen und Score wieder entfernen
 regional = regional
   .slice(0, 4)
+  // Qualitäts-Fallback falls zu wenig Treffer
+if (regional.length < 3) {
+
+  // Top RSS ohne Geo-Filter als Reserve
+  const fallback = [...rssArticles]
+    .map(a => ({
+      ...a,
+      score: regionalScore(a.title)
+    }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 2);
+
+  // Nur ergänzen, nicht doppeln
+  fallback.forEach(f => {
+    if (!regional.find(r => normalizeTitle(r.title) === normalizeTitle(f.title))) {
+      regional.push({
+        title: f.title,
+        url: f.url,
+        source: f.source
+      });
+    }
+  });
+
+  regional = regional.slice(0,4);
+}
   .map(({ score, ...rest }) => rest);
   function regionalScore(title){
   const t = (title || "").toLowerCase();
