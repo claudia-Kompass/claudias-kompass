@@ -258,13 +258,16 @@ try {
 
   /* --- 3️⃣ Kombinieren + Deduplizieren --- */
 
-  regional = [...rssArticles, ...gnewsArticles]
+  /* --- 3 Kombinieren + Deduplicieren --- */
 
-    .filter((article, index, self) =>
-      index === self.findIndex(a =>
-        normalizeTitle(a.title) === normalizeTitle(article.title)
-      )
+regional = [...rssArticles, ...gnewsArticles]
+  .filter((article, index, self) =>
+    index === self.findIndex(a =>
+      normalizeTitle(a.title) === normalizeTitle(article.title)
     )
+  );
+
+/* --- Geo + Firmen Filter --- */
 
 const allowedGeo = [
   "schwäbisch hall",
@@ -292,68 +295,14 @@ const regionalCompanies = [
 
 regional = regional.filter(a => {
   const t = (a.title || "").toLowerCase();
-
   const geoMatch = allowedGeo.some(g => t.includes(g));
   const companyMatch = regionalCompanies.some(c => t.includes(c));
-
   return geoMatch || companyMatch;
 });
-// Score anwenden und sortieren
-regional = regional
-  .map(a => ({
-    ...a,
-    score: regionalScore(a.title)
-  }))
-  .sort((a, b) => b.score - a.score);
 
-// Maximal 1 Blaulicht-Meldung
-let blaulichtCount = 0;
+/* --- Scoring --- */
 
-regional = regional.filter(a => {
-  const t = (a.title || "").toLowerCase();
-  const isBlaulicht =
-    t.includes("unfall") ||
-    t.includes("tödlich") ||
-    t.includes("polizei");
-
-  if (isBlaulicht) {
-    blaulichtCount++;
-    return blaulichtCount <= 1;
-  }
-
-  return true;
-});
-
-// Begrenzen und Score wieder entfernen
-regional = regional
-  .slice(0, 4)
-  // Qualitäts-Fallback falls zu wenig Treffer
-if (regional.length < 3) {
-
-  // Top RSS ohne Geo-Filter als Reserve
-  const fallback = [...rssArticles]
-    .map(a => ({
-      ...a,
-      score: regionalScore(a.title)
-    }))
-    .sort((a,b) => b.score - a.score)
-    .slice(0, 2);
-
-  // Nur ergänzen, nicht doppeln
-  fallback.forEach(f => {
-    if (!regional.find(r => normalizeTitle(r.title) === normalizeTitle(f.title))) {
-      regional.push({
-        title: f.title,
-        url: f.url,
-        source: f.source
-      });
-    }
-  });
-
-  regional = regional.slice(0,4);
-}
-  .map(({ score, ...rest }) => rest);
-  function regionalScore(title){
+function regionalScore(title){
   const t = (title || "").toLowerCase();
   let score = 0;
 
@@ -377,10 +326,70 @@ if (regional.length < 3) {
 
   return score;
 }
-} catch(e) {
-  regional = [];
+
+/* --- Score anwenden + sortieren --- */
+
+regional = regional
+  .map(a => ({
+    ...a,
+    score: regionalScore(a.title)
+  }))
+  .sort((a, b) => b.score - a.score);
+
+/* --- Maximal 1 Blaulicht --- */
+
+let blaulichtCount = 0;
+
+regional = regional.filter(a => {
+  const t = (a.title || "").toLowerCase();
+  const isBlaulicht =
+    t.includes("unfall") ||
+    t.includes("tödlich") ||
+    t.includes("polizei");
+
+  if (isBlaulicht) {
+    blaulichtCount++;
+    return blaulichtCount <= 1;
+  }
+
+  return true;
+});
+
+/* --- Begrenzen --- */
+
+regional = regional.slice(0, 4);
+
+/* --- Qualitäts-Fallback --- */
+
+if (regional.length < 3) {
+
+  const fallback = [...rssArticles]
+    .map(a => ({
+      ...a,
+      score: regionalScore(a.title)
+    }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 2);
+
+  fallback.forEach(f => {
+    if (!regional.find(r =>
+      normalizeTitle(r.title) === normalizeTitle(f.title)
+    )) {
+      regional.push({
+        title: f.title,
+        url: f.url,
+        source: f.source
+      });
+    }
+  });
+
+  regional = regional.slice(0,4);
 }
-    
+
+/* --- Score wieder entfernen --- */
+
+regional = regional.map(({ score, ...rest }) => rest);
+
     /* =========================
        EVENTS – Smart Week Logic
     ========================== */
