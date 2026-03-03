@@ -301,7 +301,7 @@ try {
 
     const url =
   `https://www.eventbriteapi.com/v3/events/search/?` +
-  `q=salsa OR bachata OR kizomba OR semba&` +
+  `q=${encodeURIComponent("salsa OR bachata OR kizomba OR semba")}&`
   `location.latitude=49.1399&` +
   `location.longitude=9.2200&` +
   `location.within=150km&` +
