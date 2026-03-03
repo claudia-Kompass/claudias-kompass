@@ -106,7 +106,64 @@ try {
 
   let gnewsArticles = [];
 
+try {
 
+  const globalRssSources = [
+    { url: "https://www.tagesschau.de/xml/rss2", name: "Tagesschau" },
+    { url: "https://www.spiegel.de/schlagzeilen/index.rss", name: "Spiegel" },
+    { url: "https://rss.dw.com/rdf/rss-de-all", name: "DW" }
+  ];
+
+  let rssNews = [];
+
+  for (const src of globalRssSources) {
+    try {
+      const r = await fetch(src.url);
+      const text = await r.text();
+      rssNews = rssNews.concat(parseRSS(text, src.name));
+    } catch {}
+  }
+
+  news = rssNews
+    .filter((article, index, self) =>
+      index === self.findIndex(a =>
+        normalizeTitle(a.title) === normalizeTitle(article.title)
+      )
+    );
+
+  function globalTopic(title){
+    const t = (title || "").toLowerCase();
+    if (t.includes("iran")) return "iran";
+    if (t.includes("ukraine")) return "ukraine";
+    if (t.includes("china")) return "china";
+    if (t.includes("wahl")) return "politik";
+    if (t.includes("dax") || t.includes("inflation")) return "markt";
+    return "other";
+  }
+
+  news = news
+    .map(a => ({
+      ...a,
+      score: scoreArticle(a),
+      topic: globalTopic(a.title)
+    }))
+    .sort((a,b) => b.score - a.score);
+
+  const clustered = [];
+
+  for (const article of news) {
+    if (!clustered.find(a => a.topic === article.topic)) {
+      clustered.push(article);
+    }
+  }
+
+  news = clustered
+    .slice(0,5)
+    .map(({ score, topic, ...rest }) => rest);
+
+} catch {
+  news = [];
+}
 
 
     
