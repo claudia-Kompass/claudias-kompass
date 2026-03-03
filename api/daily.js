@@ -1,6 +1,6 @@
 module.exports = async function handler(req, res) {
   try {
-    const version = "19.4.2";
+    const version = "19.4.3";
     const now = new Date();
     const timestamp = now.toLocaleString("de-DE");
     const marketDate = now.toLocaleDateString("de-DE");
@@ -40,55 +40,33 @@ module.exports = async function handler(req, res) {
     function scoreArticle(article) {
       let score = 0;
       const text = (article.title || "").toLowerCase();
-      const source = (article.source || "").toLowerCase();
 
-      ["krieg","iran","israel","ukraine","wahl","angriff","explosion","unwetter"]
-        .forEach(k => { if (text.includes(k)) score += 8; });
-
-      ["dax","börse","zins","ezb","fed","inflation","öl","gas","usd","dollar"]
+      ["krieg","iran","ukraine","wahl","inflation"]
         .forEach(k => { if (text.includes(k)) score += 6; });
-
-      if (
-        source.includes("tagesschau") ||
-        source.includes("zdf") ||
-        source.includes("bbc") ||
-        source.includes("faz")
-      ) score += 5;
 
       return score;
     }
 
     /* =========================
-       GLOBAL NEWS (RSS First)
+       GLOBAL NEWS
     ========================== */
 
     let news = [];
 
     try {
-      const globalSources = [
+      const sources = [
         { url: "https://www.tagesschau.de/xml/rss2", name: "Tagesschau" },
-        { url: "https://www.spiegel.de/schlagzeilen/index.rss", name: "Spiegel" },
-        { url: "https://rss.dw.com/rdf/rss-de-all", name: "DW" }
+        { url: "https://www.spiegel.de/schlagzeilen/index.rss", name: "Spiegel" }
       ];
 
       let rssNews = [];
 
-      for (const src of globalSources) {
+      for (const src of sources) {
         try {
           const r = await fetch(src.url);
           const text = await r.text();
           rssNews = rssNews.concat(parseRSS(text, src.name));
         } catch {}
-      }
-
-      function globalTopic(title){
-        const t = (title || "").toLowerCase();
-        if (t.includes("iran")) return "iran";
-        if (t.includes("ukraine")) return "ukraine";
-        if (t.includes("china")) return "china";
-        if (t.includes("wahl")) return "politik";
-        if (t.includes("dax") || t.includes("inflation")) return "markt";
-        return "other";
       }
 
       news = rssNews
@@ -97,23 +75,10 @@ module.exports = async function handler(req, res) {
             normalizeTitle(a.title) === normalizeTitle(article.title)
           )
         )
-        .map(a => ({
-          ...a,
-          score: scoreArticle(a),
-          topic: globalTopic(a.title)
-        }))
-        .sort((a,b) => b.score - a.score);
-
-      const clustered = [];
-      for (const article of news) {
-        if (!clustered.find(a => a.topic === article.topic)) {
-          clustered.push(article);
-        }
-      }
-
-      news = clustered
+        .map(a => ({ ...a, score: scoreArticle(a) }))
+        .sort((a,b) => b.score - a.score)
         .slice(0,5)
-        .map(({ score, topic, ...rest }) => rest);
+        .map(({ score, ...rest }) => rest);
 
     } catch {
       news = [];
@@ -126,60 +91,38 @@ module.exports = async function handler(req, res) {
     let regional = [];
 
     try {
-      const rssSources = [
-        "https://www.swp.de/rss/suedwesten.xml",
-        "https://www.haller-stimme.de/feed/"
-      ];
+      const r = await fetch("https://www.haller-stimme.de/feed/");
+      const text = await r.text();
+      const items = parseRSS(text, "Haller Stimme");
 
-      let rssArticles = [];
-
-      for (const url of rssSources) {
-        try {
-          const r = await fetch(url);
-          const text = await r.text();
-          rssArticles = rssArticles.concat(parseRSS(text, "Regional"));
-        } catch {}
-      }
-
-      const allowedGeo = [
-        "schwäbisch hall",
-        "landkreis schwäbisch hall",
-        "crailsheim",
-        "gaildorf",
-        "ilshofen",
-        "gerabronn",
-        "langenbur",
-        "rot am see"
-      ];
-
-      const regionalCompanies = [
-        "stadtwerke schwäbisch hall",
-        "stadtwerke sha",
-        "bausparkasse schwäbisch hall",
-        "würth",
-        "optima",
-        "ziehl-abegg"
-      ];
-
-      regional = rssArticles
-        .filter(a => {
-          const t = (a.title || "").toLowerCase();
-          return (
-            allowedGeo.some(g => t.includes(g)) ||
-            regionalCompanies.some(c => t.includes(c))
-          );
-        })
-        .map(a => ({
-          ...a,
-          score: scoreArticle(a)
-        }))
-        .sort((a,b) => b.score - a.score)
-        .slice(0,4)
-        .map(({ score, ...rest }) => rest);
+      regional = items
+        .filter(a =>
+          a.title.toLowerCase().includes("schwäbisch") ||
+          a.title.toLowerCase().includes("crailsheim")
+        )
+        .slice(0,4);
 
     } catch {
       regional = [];
     }
+
+    /* =========================
+       CRYPTO (LIVE)
+    ========================== */
+
+    let bitcoin = { usd: 0, eur: 0 };
+    let nexo = { usd: 0, eur: 0 };
+
+    try {
+      const cryptoRes = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur"
+      );
+      const cryptoData = await cryptoRes.json();
+
+      if (cryptoData.bitcoin) bitcoin = cryptoData.bitcoin;
+      if (cryptoData.nexo) nexo = cryptoData.nexo;
+
+    } catch {}
 
     /* =========================
        RESPONSE
@@ -193,6 +136,10 @@ module.exports = async function handler(req, res) {
       markets: {
         dax: { value: "18.742", date: "Stand: " + marketDate },
         eurusd: { value: "1.08", date: "Stand: " + marketDate }
+      },
+      crypto: {
+        bitcoin,
+        nexo
       }
     });
 
