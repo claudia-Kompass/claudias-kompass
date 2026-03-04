@@ -2,7 +2,7 @@ module.exports = async function handler(req,res){
 
 try{
 
-const version="20.1.0";
+const version="20.3.0";
 const now=new Date();
 const timestamp=now.toLocaleString("de-DE");
 const marketDate=now.toLocaleDateString("de-DE");
@@ -36,8 +36,57 @@ source
 });
 
 return items;
+}
+
+/* ======================
+WETTER
+====================== */
+
+let weather={
+temp:0,
+code:0,
+trend:{
+morning:{temp:0,code:0},
+afternoon:{temp:0,code:0},
+evening:{temp:0,code:0}
+}
+};
+
+try{
+
+const r=await fetch(
+"https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&hourly=temperature_2m,weathercode&current_weather=true"
+);
+
+const d=await r.json();
+
+weather.temp=d.current_weather?.temperature??0;
+weather.code=d.current_weather?.weathercode??0;
+
+const hours=d.hourly.time;
+const temps=d.hourly.temperature_2m;
+const codes=d.hourly.weathercode;
+
+function findHour(target){
+
+const index=hours.findIndex(h=>h.includes(target));
+
+if(index>-1){
+return{
+temp:temps[index],
+code:codes[index]
+};
+}
+
+return{temp:0,code:0};
 
 }
+
+weather.trend.morning=findHour("09:00");
+weather.trend.afternoon=findHour("15:00");
+weather.trend.evening=findHour("21:00");
+
+}catch{}
 
 /* ======================
 CRYPTO
@@ -60,40 +109,12 @@ if(d.nexo)nexo=d.nexo;
 }catch{}
 
 /* ======================
-WETTER
-====================== */
-
-let weather={
-temp:0,
-code:0
-};
-
-try{
-
-const r=await fetch(
-"https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current_weather=true"
-);
-
-const d=await r.json();
-
-weather.temp=d.current_weather?.temperature??0;
-weather.code=d.current_weather?.weathercode??0;
-
-}catch{}
-
-/* ======================
 MARKETS
 ====================== */
 
 const markets={
-dax:{
-value:"18.742",
-date:"Stand: "+marketDate
-},
-eurusd:{
-value:"1.08",
-date:"Stand: "+marketDate
-}
+dax:{value:"18.742",date:"Stand: "+marketDate},
+eurusd:{value:"1.08",date:"Stand: "+marketDate}
 };
 
 /* ======================
@@ -114,11 +135,9 @@ let collected=[];
 for(const s of sources){
 
 try{
-
 const r=await fetch(s.url);
 const xml=await r.text();
 collected=collected.concat(parseRSS(xml,s.name));
-
 }catch{}
 
 }
@@ -149,7 +168,76 @@ regional=parseRSS(xml,"Tagesschau BW").slice(0,4);
 }catch{}
 
 /* ======================
-EVENT RADAR
+EVENT LOGIK
+====================== */
+
+function getWeekRange(){
+
+const start=new Date();
+start.setDate(start.getDate()-start.getDay()+1);
+
+const end=new Date(start);
+end.setDate(start.getDate()+13);
+
+return{start,end};
+
+}
+
+const {start,end}=getWeekRange();
+
+/* ======================
+MESSEN
+====================== */
+
+const fairs=[
+
+{
+title:"Freizeit Messe Nürnberg",
+location:"Messezentrum Nürnberg",
+from:"2026-02-25",
+to:"2026-03-01",
+time:"09:30–18:00",
+url:"https://www.freizeitmesse.de"
+},
+
+{
+title:"Genussmesse Heilbronn",
+location:"Redblue Messehalle Heilbronn",
+from:"2026-03-07",
+to:"2026-03-09",
+time:"10:00–18:00",
+url:"https://redblue.de"
+},
+
+{
+title:"CMT Stuttgart",
+location:"Messe Stuttgart",
+from:"2026-01-17",
+to:"2026-01-25",
+time:"10:00–18:00",
+url:"https://www.messe-stuttgart.de/cmt/"
+},
+
+{
+title:"Consumenta Nürnberg",
+location:"Messezentrum Nürnberg",
+from:"2026-10-24",
+to:"2026-11-01",
+time:"10:00–18:00",
+url:"https://www.consumenta.de"
+}
+
+];
+
+const upcomingFairs=fairs.filter(e=>{
+
+const d=new Date(e.from);
+return d>=start && d<=end;
+
+});
+
+/* ======================
+WOCHENMÄRKTE
 ====================== */
 
 const weeklyMarkets=[
@@ -170,61 +258,8 @@ time:"07:00–13:00"
 
 ];
 
-const fairs=[
-
-{
-title:"Genussmesse Heilbronn",
-location:"Redblue Messehalle Heilbronn",
-time:"10:00–18:00",
-url:"https://redblue.de"
-},
-
-{
-title:"Consumenta Nürnberg",
-location:"Messezentrum Nürnberg",
-time:"10:00–18:00",
-url:"https://www.consumenta.de"
-},
-
-{
-title:"CMT Stuttgart",
-location:"Messe Stuttgart",
-time:"10:00–18:00",
-url:"https://www.messe-stuttgart.de/cmt/"
-}
-
-];
-
-const regionalEvents=[
-
-{
-title:"Haller Frühling",
-city:"Schwäbisch Hall"
-},
-
-{
-title:"Fränkisches Volksfest",
-city:"Crailsheim"
-},
-
-{
-title:"Brombachsee Veranstaltungen",
-city:"Brombachsee",
-url:"https://www.zv-brombachsee.de/veranstaltungen/"
-},
-
-{
-title:"Altmühlsee Festival",
-city:"Altmühlsee",
-url:"https://www.altmuehlsee.de/veranstaltungen"
-}
-
-];
-
 const events={
-today:[],
-week:[],
-upcoming:[...regionalEvents,...fairs],
+upcoming:upcomingFairs,
 markets:weeklyMarkets
 };
 
@@ -244,10 +279,7 @@ events,
 
 markets,
 
-crypto:{
-bitcoin,
-nexo
-},
+crypto:{bitcoin,nexo},
 
 weather
 
@@ -257,9 +289,7 @@ weather
 
 console.error(e);
 
-res.status(500).json({
-error:"API Fehler"
-});
+res.status(500).json({error:"API Fehler"});
 
 }
 
