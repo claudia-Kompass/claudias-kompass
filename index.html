@@ -20,25 +20,17 @@ margin:auto;
 }
 
 h1{
-font-size:44px;
-letter-spacing:2px;
-margin-bottom:10px;
+font-size:42px;
+margin-bottom:8px;
 }
 
-.subtitle{opacity:.85}
-
-.meta{
-font-size:14px;
-opacity:.6;
-margin-top:4px;
-}
+.subtitle{opacity:.8}
 
 button{
-margin-top:20px;
+margin-top:18px;
 padding:10px 18px;
-border:none;
 background:#e6c27a;
-color:#081626;
+border:none;
 border-radius:6px;
 cursor:pointer;
 }
@@ -49,66 +41,42 @@ margin-top:40px;
 
 .section h2{
 color:#e6c27a;
-font-size:24px;
-border-bottom:1px solid rgba(255,255,255,.15);
+border-bottom:1px solid rgba(255,255,255,.2);
 padding-bottom:6px;
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .line{
 display:flex;
 justify-content:space-between;
-margin:12px 0;
+margin:10px 0;
 }
 
-.newsItem{margin-bottom:20px}
+.newsItem{margin-bottom:18px}
+
+.newsSource{
+font-size:13px;
+opacity:.6;
+}
 
 .news-link{
 color:#f1c40f;
 text-decoration:none;
 }
 
-.newsSource{
-font-size:13px;
-opacity:.6;
-margin-top:4px;
-}
-
 .weatherNow{
-display:flex;
-gap:10px;
-font-size:26px;
+font-size:24px;
+margin-bottom:10px;
 }
 
 .trendBlock{
 display:flex;
-gap:70px;
-margin-top:12px;
-margin-left:52px;
+gap:60px;
+margin-left:40px;
 }
 
 .trendItem{
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.ampel{
-width:10px;
-height:10px;
-border-radius:50%;
-display:inline-block;
-margin-left:8px;
-}
-
-.green{background:#2ecc71}
-.red{background:#e74c3c}
-.yellow{background:#f1c40f}
-
-.info{
-color:#f1c40f;
-margin-left:10px;
-text-decoration:none;
+text-align:center;
 }
 
 </style>
@@ -122,7 +90,8 @@ text-decoration:none;
 <h1>🌍 GLOBAL SOUL</h1>
 <div class="subtitle">Claudia’s Daily Compass</div>
 <div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
-<div id="meta" class="meta"></div>
+
+<div id="meta"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
@@ -137,12 +106,12 @@ text-decoration:none;
 <h2>📊 Märkte & Krypto</h2>
 
 <div class="line">
-<div>DAX<br><small id="daxDate"></small></div>
+<div>DAX</div>
 <div id="daxValue"></div>
 </div>
 
 <div class="line">
-<div>EUR/USD<br><small id="eurusdDate"></small></div>
+<div>EUR/USD</div>
 <div id="eurusdValue"></div>
 </div>
 
@@ -159,28 +128,16 @@ text-decoration:none;
 </div>
 
 
-<section class="section">
-<h2>Regional – Landkreis Schwäbisch Hall</h2>
-<div id="regional-news"></div>
-</section>
-
-
 <div class="section">
-<h2>Persönlicher Fokus</h2>
-<div id="focusBlock"></div>
+<h2>Regional – Landkreis Schwäbisch Hall</h2>
+<div id="regionalBlock"></div>
 </div>
 
 
-<section class="section">
+<div class="section">
 <h2>Veranstaltungen</h2>
-<div id="events-list"></div>
-</section>
-
-
-<section class="section">
-<h2>💃 Tanz & Rhythmus</h2>
-<div id="dance-list"></div>
-</section>
+<div id="eventsBlock"></div>
+</div>
 
 
 <div class="section">
@@ -191,24 +148,25 @@ text-decoration:none;
 <div class="trendBlock">
 
 <div class="trendItem">
-<div id="mIcon"></div>
+<div id="morningIcon"></div>
 <div>09:00</div>
-<div id="morning"></div>
+<div id="morningTemp"></div>
 </div>
 
 <div class="trendItem">
-<div id="aIcon"></div>
+<div id="afternoonIcon"></div>
 <div>15:00</div>
-<div id="afternoon"></div>
+<div id="afternoonTemp"></div>
 </div>
 
 <div class="trendItem">
-<div id="eIcon"></div>
+<div id="eveningIcon"></div>
 <div>21:00</div>
-<div id="evening"></div>
+<div id="eveningTemp"></div>
 </div>
 
 </div>
+
 </div>
 
 </div>
@@ -218,55 +176,33 @@ text-decoration:none;
 <script>
 
 
-function ampel(change){
-if(change>1)return'<span class="ampel green"></span>';
-if(change<-1)return'<span class="ampel red"></span>';
-return'<span class="ampel yellow"></span>';
-}
-
-
 function weatherIcon(code){
-if(code===0)return"☀️";
-if(code<=2)return"🌤️";
-if(code===3)return"☁️";
-if(code<=65)return"🌧️";
-if(code<=75)return"❄️";
-return"⛈️";
+
+if(code===0) return "☀️";
+if(code<=2) return "🌤️";
+if(code===3) return "☁️";
+if(code<=65) return "🌧️";
+if(code<=75) return "❄️";
+return "⛈️";
+
 }
 
-
-function formatMeta(data){
-const now=new Date();
-return now.toLocaleDateString("de-DE")+" "+
-now.toLocaleTimeString("de-DE")+" • v"+(data.version??"?");
-}
 
 
 async function loadData(){
 
 try{
 
-const res=await fetch("/api/daily");
+const res = await fetch("/api/daily");
 
-if(!res.ok)throw new Error("API Fehler");
+const data = await res.json();
 
-const data=await res.json();
-
-localStorage.setItem("dailyCache",JSON.stringify(data));
-
-renderAll(data);
+render(data);
 
 }
-
 catch(err){
 
-console.warn("API Fehler – Cache wird geladen");
-
-const cached=localStorage.getItem("dailyCache");
-
-if(cached){
-renderAll(JSON.parse(cached));
-}
+console.error("LOAD ERROR",err);
 
 }
 
@@ -274,121 +210,113 @@ renderAll(JSON.parse(cached));
 
 
 
-function renderAll(data){
+function render(data){
 
-document.getElementById("meta").innerText=formatMeta(data);
-
-
-/* MARKETS */
-
-daxValue.innerText=data.markets?.dax?.value??"-";
-daxDate.innerText=data.markets?.dax?.date??"-";
-
-eurusdValue.innerText=data.markets?.eurusd?.value??"-";
-eurusdDate.innerText=data.markets?.eurusd?.date??"-";
+document.getElementById("meta").innerText =
+data.timestamp + " • v" + data.version;
 
 
-/* CRYPTO */
+/* NEWS */
 
-btcValue.innerHTML=
-"$"+(data.crypto?.bitcoin?.usd??0).toLocaleString()+
-" "+ampel(data.crypto?.bitcoin?.usd_24h_change??0);
+if(data.news){
 
-nexoValue.innerHTML=
-"$"+(data.crypto?.nexo?.usd??0).toFixed(2)+
-" "+ampel(data.crypto?.nexo?.usd_24h_change??0);
+document.getElementById("newsBlock").innerHTML =
+data.news.map(n=>`
 
-
-/* WEATHER */
-
-weatherNow.innerHTML=
-weatherIcon(data.weather?.code??0)+" "+
-(data.weather?.temp??0)+"°C";
-
-mIcon.innerHTML=weatherIcon(data.weather?.trend?.morning?.code??0);
-morning.innerText=(data.weather?.trend?.morning?.temp??0)+"°C";
-
-aIcon.innerHTML=weatherIcon(data.weather?.trend?.afternoon?.code??0);
-afternoon.innerText=(data.weather?.trend?.afternoon?.temp??0)+"°C";
-
-eIcon.innerHTML=weatherIcon(data.weather?.trend?.evening?.code??0);
-evening.innerText=(data.weather?.trend?.evening?.temp??0)+"°C";
-
-
-/* GLOBAL NEWS */
-
-if(data.news?.length){
-
-newsBlock.innerHTML=data.news.map(n=>`
 <div class="newsItem">
 <div style="font-weight:600">${n.title}</div>
 <a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
 <div class="newsSource">${n.source}</div>
 </div>
+
 `).join("");
 
 }
+
+
+
+/* MARKETS */
+
+document.getElementById("daxValue").innerText =
+data.markets?.dax?.value ?? "-";
+
+document.getElementById("eurusdValue").innerText =
+data.markets?.eurusd?.value ?? "-";
+
+
+
+/* CRYPTO */
+
+document.getElementById("btcValue").innerText =
+"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString();
+
+document.getElementById("nexoValue").innerText =
+"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2);
+
 
 
 /* REGIONAL */
 
-if(data.regional?.length){
+if(data.regional){
 
-document.getElementById("regional-news").innerHTML=
+document.getElementById("regionalBlock").innerHTML =
 data.regional.map(r=>`
+
 <div class="newsItem">
 <div style="font-weight:600">${r.title}</div>
 <a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
-<div class="newsSource">${r.source?.name??""}</div>
+<div class="newsSource">${r.source}</div>
 </div>
+
 `).join("");
 
 }
 
-
-/* FOCUS */
-
-if(data.focus){
-
-focusBlock.innerHTML=
-"<div style='font-weight:600'>"+data.focus.title+"</div>"+
-"<div>"+data.focus.text+"</div>";
-
-}
 
 
 /* EVENTS */
 
 if(data.events?.week){
 
-events-list.innerHTML=
+document.getElementById("eventsBlock").innerHTML =
 data.events.week.map(e=>`
+
 <div class="newsItem">
 <div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city??""}</div>
-<div class="newsSource">${e.date??""}</div>
+<div class="newsSource">${e.city}</div>
+<div class="newsSource">${e.date} ${e.time}</div>
 </div>
+
 `).join("");
 
 }
 
 
-/* DANCE */
 
-if(data.dance?.length){
+/* WEATHER */
 
-dance-list.innerHTML=
-data.dance.map(d=>`
-<div class="newsItem">
-<div style="font-weight:600">${d.title}</div>
-<div class="newsSource">${d.city} • ${d.date}</div>
-</div>
-`).join("");
+document.getElementById("weatherNow").innerHTML =
+weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
+
+document.getElementById("morningIcon").innerText =
+weatherIcon(data.weather.trend.morning.code);
+
+document.getElementById("morningTemp").innerText =
+data.weather.trend.morning.temp+"°C";
+
+document.getElementById("afternoonIcon").innerText =
+weatherIcon(data.weather.trend.afternoon.code);
+
+document.getElementById("afternoonTemp").innerText =
+data.weather.trend.afternoon.temp+"°C";
+
+document.getElementById("eveningIcon").innerText =
+weatherIcon(data.weather.trend.evening.code);
+
+document.getElementById("eveningTemp").innerText =
+data.weather.trend.evening.temp+"°C";
 
 }
-
-}
-
 
 
 window.addEventListener("load",loadData);
