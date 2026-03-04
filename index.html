@@ -303,95 +303,272 @@ function weatherIcon(code){
 
 function formatMeta(data){
   const now = new Date();
-  return now.toLocaleDateString("de-DE") + ", " +
-         now.toLocaleTimeString("de-DE") +
-         " • v" + data.version;
+  return now.toLocaleDateString("de-DE")+" "+
+         now.toLocaleTimeString("de-DE")+
+         " • v"+(data.version ?? "?");
 }
 
 async function loadData(){
 
-  try{
+try{
 
-    const res = await fetch("/api/daily");
-    const data = await res.json();
+const res = await fetch("/api/daily");
 
-    document.getElementById("meta").innerText = formatMeta(data);
+if(!res.ok){
+console.error("API Fehler");
+return;
+}
 
-    /* MARKETS */
+const data = await res.json();
 
-    document.getElementById("daxValue").innerText =
-      data.markets?.dax?.value ?? "-";
-
-    document.getElementById("daxDate").innerText =
-      data.markets?.dax?.date ?? "-";
-
-    document.getElementById("eurusdValue").innerText =
-      data.markets?.eurusd?.value ?? "-";
-
-    document.getElementById("eurusdDate").innerText =
-      data.markets?.eurusd?.date ?? "-";
+document.getElementById("meta").innerText = formatMeta(data);
 
 
-    /* CRYPTO */
+/// MARKETS
 
-    document.getElementById("btcValue").innerHTML =
-      "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
-      " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
-      ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0) +
-      ' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info</a>';
+try{
 
-    document.getElementById("nexoValue").innerHTML =
-      "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
-      " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
-      ampel(data.crypto?.nexo?.usd_24h_change ?? 0) +
-      ' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info</a>';
+document.getElementById("daxValue").innerText =
+data.markets?.dax?.value ?? "-";
 
+document.getElementById("daxDate").innerText =
+data.markets?.dax?.date ?? "-";
 
-    /* WEATHER */
+document.getElementById("eurusdValue").innerText =
+data.markets?.eurusd?.value ?? "-";
 
-    document.getElementById("weatherNow").innerHTML =
-      weatherIcon(data.weather?.code ?? 0) +
-      " " + (data.weather?.temp ?? 0).toFixed(1) + "°C";
+document.getElementById("eurusdDate").innerText =
+data.markets?.eurusd?.date ?? "-";
 
-    document.getElementById("mIcon").innerHTML =
-      weatherIcon(data.weather?.trend?.morning?.code ?? 0);
-
-    document.getElementById("morning").innerText =
-      (data.weather?.trend?.morning?.temp ?? 0).toFixed(1) + "°C";
-
-    document.getElementById("aIcon").innerHTML =
-      weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
-
-    document.getElementById("afternoon").innerText =
-      (data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1) + "°C";
-
-    document.getElementById("eIcon").innerHTML =
-      weatherIcon(data.weather?.trend?.evening?.code ?? 0);
-
-    document.getElementById("evening").innerText =
-      (data.weather?.trend?.evening?.temp ?? 0).toFixed(1) + "°C";
+}catch(e){console.error("Markets error",e)}
 
 
-    /* GLOBAL NEWS */
 
-    const newsBlock = document.getElementById("newsBlock");
+/// CRYPTO
 
-    if(data.news?.length){
+try{
 
-      newsBlock.innerHTML = data.news.map(n=>`
+document.getElementById("btcValue").innerHTML =
+"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString()+
+" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString()+")"+
+ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info</a>';
 
-      <div class="newsItem">
-        <div style="font-weight:600;margin-bottom:6px;">
-          ${n.title}
-        </div>
+document.getElementById("nexoValue").innerHTML =
+"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
+" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+")"+
+ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info</a>';
 
-        <a href="${n.url}" target="_blank" class="news-link">
-          weiterlesen →
-        </a>
+}catch(e){console.error("Crypto error",e)}
 
-        <div class="newsSource">
-          ${n.source
-    </script>   
+
+
+/// WEATHER
+
+try{
+
+document.getElementById("weatherNow").innerHTML =
+weatherIcon(data.weather?.code ?? 0)+
+" "+(data.weather?.temp ?? 0).toFixed(1)+"°C";
+
+document.getElementById("mIcon").innerHTML =
+weatherIcon(data.weather?.trend?.morning?.code ?? 0);
+
+document.getElementById("morning").innerText =
+(data.weather?.trend?.morning?.temp ?? 0).toFixed(1)+"°C";
+
+document.getElementById("aIcon").innerHTML =
+weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
+
+document.getElementById("afternoon").innerText =
+(data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1)+"°C";
+
+document.getElementById("eIcon").innerHTML =
+weatherIcon(data.weather?.trend?.evening?.code ?? 0);
+
+document.getElementById("evening").innerText =
+(data.weather?.trend?.evening?.temp ?? 0).toFixed(1)+"°C";
+
+}catch(e){console.error("Weather error",e)}
+
+
+
+/// GLOBAL NEWS
+
+try{
+
+const newsBlock=document.getElementById("newsBlock");
+
+if(data.news?.length){
+
+newsBlock.innerHTML=data.news.map(n=>`
+<div class="newsItem">
+<div style="font-weight:600;margin-bottom:6px">
+${n.title}
+</div>
+<a href="${n.url}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+<div class="newsSource">
+${n.source}
+</div>
+</div>
+`).join("");
+
+}
+
+}catch(e){console.error("News error",e)}
+
+
+
+/// FOCUS
+
+try{
+
+if(data.focus){
+
+document.getElementById("focusBlock").innerHTML=`
+<div style="font-weight:600;margin-bottom:6px">
+${data.focus.title}
+</div>
+<div style="opacity:.8">
+${data.focus.text}
+</div>
+`;
+
+}
+
+}catch(e){console.error("Focus error",e)}
+
+
+
+/// REGIONAL
+
+try{
+
+const regionalBlock=document.getElementById("regional-news");
+
+if(data.regional?.length){
+
+regionalBlock.innerHTML=data.regional.map(r=>`
+<div class="newsItem">
+<div style="font-weight:600;margin-bottom:6px">
+${r.title}
+</div>
+<a href="${r.url}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+<div class="newsSource">
+${r.source?.name ?? ""}
+</div>
+</div>
+`).join("");
+
+}
+
+}catch(e){console.error("Regional error",e)}
+
+
+
+/// EVENTS
+
+try{
+
+const eventsBlock=document.getElementById("events-list");
+
+let html="";
+
+if(data.events?.week?.length){
+
+html+="<div style='font-weight:600;margin-bottom:10px'>Diese Woche</div>";
+
+html+=data.events.week.map(e=>`
+<div class="newsItem">
+<div style="font-weight:600">${e.title}</div>
+<div class="newsSource">${e.city ?? ""}</div>
+<div class="newsSource">${e.date ?? ""} ${e.time ?? ""}</div>
+</div>
+`).join("");
+
+}
+
+if(data.events?.upcoming?.length){
+
+html+="<div style='font-weight:600;margin-top:20px'>Demnächst</div>";
+
+html+=data.events.upcoming.map(e=>`
+<div class="newsItem">
+<div style="font-weight:600">${e.title}</div>
+<div class="newsSource">${e.location ?? e.city ?? ""}</div>
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+</div>
+`).join("");
+
+}
+
+if(data.events?.markets?.length){
+
+html+="<div style='font-weight:600;margin-top:20px'>Wochenmärkte</div>";
+
+html+=data.events.markets.map(m=>`
+<div class="newsItem">
+<div style="font-weight:600">${m.title}</div>
+<div class="newsSource">${m.location}</div>
+<div class="newsSource">${m.day} • ${m.time}</div>
+</div>
+`).join("");
+
+}
+
+eventsBlock.innerHTML=html;
+
+}catch(e){console.error("Events error",e)}
+
+
+
+/// DANCE
+
+try{
+
+const danceBlock=document.getElementById("dance-list");
+
+if(data.dance?.length){
+
+danceBlock.innerHTML=data.dance.map(d=>`
+<div class="newsItem">
+<div style="font-weight:600;margin-bottom:6px">
+${d.title}
+</div>
+<div class="newsSource">
+${d.city} • ${d.date}
+</div>
+<div class="newsSource">
+${d.location} • ${d.style}
+</div>
+</div>
+`).join("");
+
+}
+
+}catch(e){console.error("Dance error",e)}
+
+}
+catch(err){
+
+console.error("LOAD ERROR",err)
+
+}
+
+}
+
+loadData();
+
+</script>
+
+
+    
+
     
 
 </div>
