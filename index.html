@@ -377,7 +377,92 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 }
 
+/* TRAVEL */
 
+if(data.travel){
+
+document.getElementById("travelBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.travel.title}</div>
+<div class="newsSource">${data.travel.text}</div>
+<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
+</div>
+
+`;
+
+}
+
+
+/* RECIPE */
+
+if(data.recipe){
+
+document.getElementById("recipeBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.recipe.title}</div>
+<div class="newsSource">
+${data.recipe.ingredients.join(", ")}
+</div>
+<div class="newsSource">
+${data.recipe.temperature} • ${data.recipe.time}
+</div>
+</div>
+
+`;
+
+}
+
+
+/* LANGUAGE */
+
+if(data.language){
+
+document.getElementById("languageBlock").innerHTML=`
+
+<div class="newsItem">
+<div><b>Deutsch:</b> ${data.language.de}</div>
+<div><b>English:</b> ${data.language.en}</div>
+<div><b>Español:</b> ${data.language.es}</div>
+</div>
+
+`;
+
+}
+
+
+/* UKULELE */
+
+if(data.ukulele){
+
+document.getElementById("ukuleleBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.ukulele.chords}</div>
+<div class="newsSource">${data.ukulele.tip}</div>
+</div>
+
+`;
+
+}
+
+
+/* QUOTE */
+
+if(data.quote){
+
+document.getElementById("quoteBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-style:italic">"${data.quote.text}"</div>
+<div class="newsSource">${data.quote.author}</div>
+</div>
+
+`;
+
+}
+  
 /* WEATHER */
 
 document.getElementById("weatherNow").innerHTML =
