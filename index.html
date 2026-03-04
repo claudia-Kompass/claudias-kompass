@@ -403,7 +403,7 @@ if (data.focus) {
       `).join("");
     }
 
-const eventsBlock = document.getElementById("events-list");
+const eventsBlock=document.getElementById("events-list");
 
 if(data.events){
 
@@ -411,24 +411,23 @@ let html="";
 
 /* HEUTE */
 
-if(data.events.today?.length){
+if(data.events.today && data.events.today.length){
 
 html+="<div style='font-weight:600;margin-bottom:10px;'>Heute</div>";
 
 html+=data.events.today.map(e=>`
 <div class="newsItem">
 <div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city || e.location || ""}</div>
-<div class="newsSource">${e.date || ""} ${e.time ? "• "+e.time : ""}</div>
-<a href="${e.url || ('https://www.google.com/search?q='+encodeURIComponent(e.title))}" target="_blank" rel="noopener noreferrer" class="news-link">Infos →</a>
+<div class="newsSource">${e.city||""}</div>
+${e.time?`<div class="newsSource">${e.time}</div>`:""}
 </div>
 `).join("");
 
 }
 
-   /* WOCHENENDE */
+/* WOCHENENDE */
 
-if(data.events.weekend?.length){
+if(data.events.weekend && data.events.weekend.length){
 
 html+="<div style='font-weight:600;margin-top:20px;'>Wochenende</div>";
 
@@ -441,19 +440,19 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 </div>
 `).join("");
 
-} 
+}
+
 /* DIESE WOCHE */
 
-if(data.events.week?.length){
+if(data.events.week && data.events.week.length){
 
 html+="<div style='font-weight:600;margin-top:20px;'>Diese Woche</div>";
 
 html+=data.events.week.map(e=>`
 <div class="newsItem">
 <div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city || e.location || ""}</div>
-<div class="newsSource">${e.date || ""} ${e.time ? "• "+e.time : ""}</div>
-<a href="${e.url || ('https://www.google.com/search?q='+encodeURIComponent(e.title))}" target="_blank" rel="noopener noreferrer" class="news-link">Infos →</a>
+<div class="newsSource">${e.city||""}</div>
+${e.date?`<div class="newsSource">${e.date} ${e.time||""}</div>`:""}
 </div>
 `).join("");
 
@@ -461,16 +460,16 @@ html+=data.events.week.map(e=>`
 
 /* DEMNÄCHST */
 
-if(data.events.upcoming?.length){
+if(data.events.upcoming && data.events.upcoming.length){
 
 html+="<div style='font-weight:600;margin-top:20px;'>Demnächst</div>";
 
 html+=data.events.upcoming.map(e=>`
 <div class="newsItem">
 <div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.location || e.city || ""}</div>
-<div class="newsSource">${e.date || ""} ${e.time ? "• "+e.time : ""}</div>
-<a href="${e.url || ('https://www.google.com/search?q='+encodeURIComponent(e.title))}" target="_blank" rel="noopener noreferrer" class="news-link">Infos →</a>
+<div class="newsSource">${e.location||e.city||""}</div>
+${e.time?`<div class="newsSource">${e.time}</div>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 </div>
 `).join("");
 
@@ -478,7 +477,7 @@ html+=data.events.upcoming.map(e=>`
 
 /* WOCHENMÄRKTE */
 
-if(data.events.markets?.length){
+if(data.events.markets && data.events.markets.length){
 
 html+="<div style='font-weight:600;margin-top:20px;'>Wochenmärkte</div>";
 
