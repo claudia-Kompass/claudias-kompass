@@ -5,188 +5,118 @@
 <title>GLOBAL SOUL</title>
 
 <style>
+
 body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:linear-gradient(180deg,#081626,#163a57);
-    color:#f5f1e6;
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(180deg,#081626,#163a57);
+color:#f5f1e6;
 }
 
-/* Layout */
 .container{
-    padding:40px;
-    max-width:900px;
-    margin:auto;
+padding:40px;
+max-width:900px;
+margin:auto;
 }
 
-/* Titel */
 h1{
-    font-size:44px;
-    letter-spacing:2px;
-    font-weight:600;
-    margin-bottom:10px;
+font-size:44px;
+letter-spacing:2px;
+margin-bottom:10px;
 }
 
-.subtitle{
-    opacity:0.85;
-    font-weight:400;
-}
+.subtitle{opacity:.85}
 
 .meta{
-    margin-top:6px;
-    font-size:14px;
-    opacity:0.6;
+font-size:14px;
+opacity:.6;
+margin-top:4px;
 }
 
-/* Button */
 button{
-    margin-top:20px;
-    padding:10px 18px;
-    border:none;
-    background:#e6c27a;
-    color:#081626;
-    border-radius:6px;
-    cursor:pointer;
-    font-weight:500;
+margin-top:20px;
+padding:10px 18px;
+border:none;
+background:#e6c27a;
+color:#081626;
+border-radius:6px;
+cursor:pointer;
 }
 
-/* Sections */
 .section{
-    margin-top:40px;
+margin-top:40px;
 }
 
 .section h2{
-    color:#e6c27a;
-    font-size:24px;
-    font-weight:600;
-    border-bottom:1px solid rgba(255,255,255,0.15);
-    padding-bottom:6px;
-    margin-bottom:20px;
+color:#e6c27a;
+font-size:24px;
+border-bottom:1px solid rgba(255,255,255,.15);
+padding-bottom:6px;
+margin-bottom:20px;
 }
 
-/* Märkte / Krypto */
 .line{
-    display:flex;
-    justify-content:space-between;
-    margin:12px 0;
+display:flex;
+justify-content:space-between;
+margin:12px 0;
 }
 
-.line div:first-child{
-    font-weight:500;
-}
-
-.line small{
-    font-size:13px;
-    opacity:0.6;
-    font-weight:400;
-}
-
-/* Ampel */
-.ampel{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    display:inline-block;
-    margin-left:8px;
-}
-
-.green{ background:#2ecc71; }
-.red{ background:#e74c3c; }
-.yellow{ background:#f1c40f; }
-
-/* Info-Link (bleibt gold wie Märkte) */
-.info{
-    color:#f1c40f;
-    margin-left:12px;
-    text-decoration:none;
-    font-weight:500;
-}
-
-/* News */
-.newsItem{
-    margin-bottom:22px;
-}
-
-.newsItem a{
-    text-decoration:none;
-}
-
-.newsItem a:first-child{
-    color:#f5f1e6;
-    font-weight:600;
-    font-size:16px;
-}
+.newsItem{margin-bottom:20px}
 
 .news-link{
-    color:#f1c40f;
-    font-size:14px;
-    font-weight:500;
-}
-
-.news-link:hover{
-    text-decoration:underline;
+color:#f1c40f;
+text-decoration:none;
 }
 
 .newsSource{
-    font-size:13px;
-    opacity:0.6;
-    margin-top:4px;
+font-size:13px;
+opacity:.6;
+margin-top:4px;
 }
 
-.news-link{
-    color:#f1c40f;
-    font-size:14px;
-    text-decoration:none;
-    font-weight:500;
-}
-
-.news-link:hover{
-    text-decoration:underline;
-}
-
-/* Wetter */
 .weatherNow{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:26px;
-    font-weight:500;
+display:flex;
+gap:10px;
+font-size:26px;
 }
 
 .trendBlock{
-    display:flex;
-    gap:70px;
-    margin-top:12px;
-    margin-left:52px;
+display:flex;
+gap:70px;
+margin-top:12px;
+margin-left:52px;
 }
 
 .trendItem{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
-.trendIcon{
-    font-size:20px;
+.ampel{
+width:10px;
+height:10px;
+border-radius:50%;
+display:inline-block;
+margin-left:8px;
 }
 
-.trendTime{
-    font-size:12px;
-    opacity:0.6;
-    margin-top:6px;
-}
+.green{background:#2ecc71}
+.red{background:#e74c3c}
+.yellow{background:#f1c40f}
 
-.trendTemp{
-    font-size:16px;
-    font-weight:500;
-    margin-top:4px;
+.info{
+color:#f1c40f;
+margin-left:10px;
+text-decoration:none;
 }
 
 </style>
 </head>
 
+
 <body>
+
 <div class="container">
 
 <h1>🌍 GLOBAL SOUL</h1>
@@ -196,22 +126,24 @@ button{
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
+
 <div class="section">
-  <h2>Politik & Weltgeschehen</h2>
-  <div id="newsBlock"></div>
+<h2>Politik & Weltgeschehen</h2>
+<div id="newsBlock"></div>
 </div>
+
 
 <div class="section">
 <h2>📊 Märkte & Krypto</h2>
 
 <div class="line">
 <div>DAX<br><small id="daxDate"></small></div>
-<div><span id="daxValue"></span></div>
+<div id="daxValue"></div>
 </div>
 
 <div class="line">
 <div>EUR/USD<br><small id="eurusdDate"></small></div>
-<div><span id="eurusdValue"></span></div>
+<div id="eurusdValue"></div>
 </div>
 
 <div class="line">
@@ -225,28 +157,32 @@ button{
 </div>
 
 </div>
-    
-<section id="regional-section">
-  <h2>Regional – Landkreis Schwäbisch Hall</h2>
-  <div id="regional-news"></div>
+
+
+<section class="section">
+<h2>Regional – Landkreis Schwäbisch Hall</h2>
+<div id="regional-news"></div>
 </section>
+
 
 <div class="section">
-  <h2>Persönlicher Fokus</h2>
-  <div id="focusBlock"></div>
+<h2>Persönlicher Fokus</h2>
+<div id="focusBlock"></div>
 </div>
-    
-<section id="events-section">
-  <h2>Veranstaltungen</h2>
-  <div id="events-list"></div>
+
+
+<section class="section">
+<h2>Veranstaltungen</h2>
+<div id="events-list"></div>
 </section>
 
-<!-- TANZ & RHYTHMUS -->
-<section class="module">
-  <h2>💃 Tanz & Rhythmus</h2>
-  <div id="dance-list"></div>
+
+<section class="section">
+<h2>💃 Tanz & Rhythmus</h2>
+<div id="dance-list"></div>
 </section>
-    
+
+
 <div class="section">
 <h2>Wetter – Ilshofen</h2>
 
@@ -255,361 +191,209 @@ button{
 <div class="trendBlock">
 
 <div class="trendItem">
-<div id="mIcon" class="trendIcon"></div>
-<div class="trendTime">09:00</div>
-<div id="morning" class="trendTemp"></div>
+<div id="mIcon"></div>
+<div>09:00</div>
+<div id="morning"></div>
 </div>
 
 <div class="trendItem">
-<div id="aIcon" class="trendIcon"></div>
-<div class="trendTime">15:00</div>
-<div id="afternoon" class="trendTemp"></div>
+<div id="aIcon"></div>
+<div>15:00</div>
+<div id="afternoon"></div>
 </div>
 
 <div class="trendItem">
-<div id="eIcon" class="trendIcon"></div>
-<div class="trendTime">21:00</div>
-<div id="evening" class="trendTemp"></div>
+<div id="eIcon"></div>
+<div>21:00</div>
+<div id="evening"></div>
 </div>
 
 </div>
 </div>
 
 </div>
+
+
 
 <script>
 
+
 function ampel(change){
-  if(change > 1) return '<span class="ampel green"></span>';
-  if(change < -1) return '<span class="ampel red"></span>';
-  return '<span class="ampel yellow"></span>';
+if(change>1)return'<span class="ampel green"></span>';
+if(change<-1)return'<span class="ampel red"></span>';
+return'<span class="ampel yellow"></span>';
 }
+
 
 function weatherIcon(code){
-  const hour = new Date().getHours();
-
-  if(code === 0){
-    if(hour >= 20 || hour < 6) return "🌙";
-    return "☀️";
-  }
-  if(code === 1 || code === 2) return "🌤️";
-  if(code === 3) return "☁️";
-  if(code >= 45 && code <= 48) return "☁️";
-  if(code >= 51 && code <= 65) return "🌧️";
-  if(code >= 71 && code <= 75) return "❄️";
-  if(code >= 95) return "⛈️";
-  return "🌡️";
+if(code===0)return"☀️";
+if(code<=2)return"🌤️";
+if(code===3)return"☁️";
+if(code<=65)return"🌧️";
+if(code<=75)return"❄️";
+return"⛈️";
 }
+
 
 function formatMeta(data){
-  const now = new Date();
-  return now.toLocaleDateString("de-DE")+" "+
-         now.toLocaleTimeString("de-DE")+
-         " • v"+(data.version ?? "?");
+const now=new Date();
+return now.toLocaleDateString("de-DE")+" "+
+now.toLocaleTimeString("de-DE")+" • v"+(data.version??"?");
 }
+
 
 async function loadData(){
 
 try{
 
-const res = await fetchWithTimeout("/api/daily",5000);
+const res=await fetch("/api/daily");
 
-if(!res.ok){
-console.error("API Fehler");
-return;
+if(!res.ok)throw new Error("API Fehler");
+
+const data=await res.json();
+
+localStorage.setItem("dailyCache",JSON.stringify(data));
+
+renderAll(data);
+
 }
 
-const data = await res.json();
-localStorage.setItem("dailyCache", JSON.stringify(data));
-document.getElementById("meta").innerText = formatMeta(data);
+catch(err){
 
+console.warn("API Fehler – Cache wird geladen");
 
-/// MARKETS
+const cached=localStorage.getItem("dailyCache");
 
-try{
+if(cached){
+renderAll(JSON.parse(cached));
+}
 
-document.getElementById("daxValue").innerText =
-data.markets?.dax?.value ?? "-";
+}
 
-document.getElementById("daxDate").innerText =
-data.markets?.dax?.date ?? "-";
-
-document.getElementById("eurusdValue").innerText =
-data.markets?.eurusd?.value ?? "-";
-
-document.getElementById("eurusdDate").innerText =
-data.markets?.eurusd?.date ?? "-";
-
-}catch(e){console.error("Markets error",e)}
+}
 
 
 
-/// CRYPTO
+function renderAll(data){
 
-try{
-
-document.getElementById("btcValue").innerHTML =
-"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString()+" "+
-"(€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString()+") "+
-ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+" "+
-'<a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info →</a>';
-
-document.getElementById("nexoValue").innerHTML =
-"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+" "+
-"(€"+(data.crypto?.nexo?.eur ?? 0).toFixed(2)+") "+
-ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+" "+
-'<a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info →</a>';
-
-}catch(e){console.error("Crypto error",e)}
+document.getElementById("meta").innerText=formatMeta(data);
 
 
-/// WEATHER
+/* MARKETS */
 
-try{
+daxValue.innerText=data.markets?.dax?.value??"-";
+daxDate.innerText=data.markets?.dax?.date??"-";
 
-document.getElementById("weatherNow").innerHTML =
-weatherIcon(data.weather?.code ?? 0)+
-" "+(data.weather?.temp ?? 0).toFixed(1)+"°C";
-
-document.getElementById("mIcon").innerHTML =
-weatherIcon(data.weather?.trend?.morning?.code ?? 0);
-
-document.getElementById("morning").innerText =
-(data.weather?.trend?.morning?.temp ?? 0).toFixed(1)+"°C";
-
-document.getElementById("aIcon").innerHTML =
-weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
-
-document.getElementById("afternoon").innerText =
-(data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1)+"°C";
-
-document.getElementById("eIcon").innerHTML =
-weatherIcon(data.weather?.trend?.evening?.code ?? 0);
-
-document.getElementById("evening").innerText =
-(data.weather?.trend?.evening?.temp ?? 0).toFixed(1)+"°C";
-
-}catch(e){console.error("Weather error",e)}
+eurusdValue.innerText=data.markets?.eurusd?.value??"-";
+eurusdDate.innerText=data.markets?.eurusd?.date??"-";
 
 
+/* CRYPTO */
 
-/// GLOBAL NEWS
+btcValue.innerHTML=
+"$"+(data.crypto?.bitcoin?.usd??0).toLocaleString()+
+" "+ampel(data.crypto?.bitcoin?.usd_24h_change??0);
 
-try{
+nexoValue.innerHTML=
+"$"+(data.crypto?.nexo?.usd??0).toFixed(2)+
+" "+ampel(data.crypto?.nexo?.usd_24h_change??0);
 
-const newsBlock=document.getElementById("newsBlock");
+
+/* WEATHER */
+
+weatherNow.innerHTML=
+weatherIcon(data.weather?.code??0)+" "+
+(data.weather?.temp??0)+"°C";
+
+mIcon.innerHTML=weatherIcon(data.weather?.trend?.morning?.code??0);
+morning.innerText=(data.weather?.trend?.morning?.temp??0)+"°C";
+
+aIcon.innerHTML=weatherIcon(data.weather?.trend?.afternoon?.code??0);
+afternoon.innerText=(data.weather?.trend?.afternoon?.temp??0)+"°C";
+
+eIcon.innerHTML=weatherIcon(data.weather?.trend?.evening?.code??0);
+evening.innerText=(data.weather?.trend?.evening?.temp??0)+"°C";
+
+
+/* GLOBAL NEWS */
 
 if(data.news?.length){
 
 newsBlock.innerHTML=data.news.map(n=>`
 <div class="newsItem">
-<div style="font-weight:600;margin-bottom:6px">
-${n.title}
-</div>
-<a href="${n.url}" target="_blank" class="news-link">
-weiterlesen →
-</a>
-<div class="newsSource">
-${n.source}
-</div>
-</div>
-`).join("");
-
-}
-
-}catch(e){console.error("News error",e)}
-
-
-
-/// FOCUS
-
-try{
-
-if(data.focus){
-
-document.getElementById("focusBlock").innerHTML=`
-<div style="font-weight:600;margin-bottom:6px">
-${data.focus.title}
-</div>
-<div style="opacity:.8">
-${data.focus.text}
-</div>
-`;
-
-}
-
-}catch(e){console.error("Focus error",e)}
-
-
-
-/// REGIONAL
-
-try{
-
-const regionalBlock=document.getElementById("regional-news");
-
-if(data.regional?.length){
-
-regionalBlock.innerHTML=data.regional.map(r=>`
-<div class="newsItem">
-<div style="font-weight:600;margin-bottom:6px">
-${r.title}
-</div>
-<a href="${r.url}" target="_blank" class="news-link">
-weiterlesen →
-</a>
-<div class="newsSource">
-${r.source?.name ?? ""}
-</div>
-</div>
-`).join("");
-
-}
-
-}catch(e){console.error("Regional error",e)}
-
-
-
-/// EVENTS
-
-try{
-
-const eventsBlock=document.getElementById("events-list");
-
-let html="";
-
-if(data.events?.week?.length){
-
-html+="<div style='font-weight:600;margin-bottom:10px'>Diese Woche</div>";
-
-html+=data.events.week.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city ?? ""}</div>
-<div class="newsSource">${e.date ?? ""} ${e.time ?? ""}</div>
-</div>
-`).join("");
-
-}
-
-if(data.events?.upcoming?.length){
-
-html+="<div style='font-weight:600;margin-top:20px'>Demnächst</div>";
-
-html+=data.events.upcoming.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.location ?? e.city ?? ""}</div>
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-</div>
-`).join("");
-
-}
-
-if(data.events?.markets?.length){
-
-html+="<div style='font-weight:600;margin-top:20px'>Wochenmärkte</div>";
-
-html+=data.events.markets.map(m=>`
-<div class="newsItem">
-<div style="font-weight:600">${m.title}</div>
-<div class="newsSource">${m.location}</div>
-<div class="newsSource">${m.day} • ${m.time}</div>
-</div>
-`).join("");
-
-}
-
-eventsBlock.innerHTML=html;
-
-}catch(e){console.error("Events error",e)}
-
-
-
-/// DANCE
-
-try{
-
-const danceBlock=document.getElementById("dance-list");
-
-if(data.dance?.length){
-
-danceBlock.innerHTML=data.dance.map(d=>`
-<div class="newsItem">
-<div style="font-weight:600;margin-bottom:6px">
-${d.title}
-</div>
-<div class="newsSource">
-${d.city} • ${d.date}
-</div>
-<div class="newsSource">
-${d.location} • ${d.style}
-</div>
-</div>
-`).join("");
-
-}
-
-}catch(e){console.error("Dance error",e)}
-
-}
-catch(err){
-
-console.warn("API Fehler – Cache wird geladen");
-
-const cached = localStorage.getItem("dailyCache");
-
-if(cached){
-  const data = JSON.parse(cached);
-  renderFallback(data);
-}
-
-}
-
-console.error("LOAD ERROR",err)
-
-}
-
-}
-
-function fetchWithTimeout(url, timeout=5000){
-
-  return Promise.race([
-    fetch(url),
-    new Promise((_,reject)=>
-      setTimeout(()=>reject(new Error("timeout")),timeout)
-    )
-  ]);
-
-}
-
-   
-
-function renderFallback(data){
-
-document.getElementById("meta").innerText =
-"Offline Daten • v"+(data.version ?? "?");
-
-if(data.news?.length){
-
-document.getElementById("newsBlock").innerHTML =
-data.news.map(n=>`
-<div class="newsItem">
 <div style="font-weight:600">${n.title}</div>
+<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
 <div class="newsSource">${n.source}</div>
 </div>
 `).join("");
 
 }
 
-  window.addEventListener("load",loadData);  
-loadData();
+
+/* REGIONAL */
+
+if(data.regional?.length){
+
+document.getElementById("regional-news").innerHTML=
+data.regional.map(r=>`
+<div class="newsItem">
+<div style="font-weight:600">${r.title}</div>
+<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
+<div class="newsSource">${r.source?.name??""}</div>
+</div>
+`).join("");
+
+}
+
+
+/* FOCUS */
+
+if(data.focus){
+
+focusBlock.innerHTML=
+"<div style='font-weight:600'>"+data.focus.title+"</div>"+
+"<div>"+data.focus.text+"</div>";
+
+}
+
+
+/* EVENTS */
+
+if(data.events?.week){
+
+events-list.innerHTML=
+data.events.week.map(e=>`
+<div class="newsItem">
+<div style="font-weight:600">${e.title}</div>
+<div class="newsSource">${e.city??""}</div>
+<div class="newsSource">${e.date??""}</div>
+</div>
+`).join("");
+
+}
+
+
+/* DANCE */
+
+if(data.dance?.length){
+
+dance-list.innerHTML=
+data.dance.map(d=>`
+<div class="newsItem">
+<div style="font-weight:600">${d.title}</div>
+<div class="newsSource">${d.city} • ${d.date}</div>
+</div>
+`).join("");
+
+}
+
+}
+
+
+
+window.addEventListener("load",loadData);
 
 </script>
 
-</div>
-</div>
 </body>
 </html>
-
-
