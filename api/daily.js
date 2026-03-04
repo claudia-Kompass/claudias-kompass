@@ -201,13 +201,14 @@ url:"https://www.freizeitmesse.de"
 },
 
 {
+{
 title:"Genussmesse Heilbronn",
 location:"Redblue Messehalle Heilbronn",
 from:"2026-03-07",
 to:"2026-03-09",
 time:"10:00–18:00",
-url:"https://redblue.de"
-},
+url:"https://redblue.de/events/"
+}
 
 {
 title:"CMT Stuttgart",
