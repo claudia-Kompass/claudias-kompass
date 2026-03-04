@@ -331,12 +331,12 @@ async function loadData(){
     document.getElementById("btcValue").innerHTML =
   "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
   " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
-  ampel(data.crypto?.bitcoin?.change ?? 0) +
+  ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)
   '<a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
     document.getElementById("nexoValue").innerHTML =
   "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
   " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
-  ampel(data.crypto?.nexo?.change ?? 0) +
+  ampel(data.crypto?.nexo?.usd_24h_change ?? 0)
   '<a href="https://www.coingecko.com/en/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
 
     // WETTER
