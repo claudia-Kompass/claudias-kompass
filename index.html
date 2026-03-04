@@ -426,6 +426,22 @@ html+=data.events.today.map(e=>`
 
 }
 
+   /* WOCHENENDE */
+
+if(data.events.weekend?.length){
+
+html+="<div style='font-weight:600;margin-top:20px;'>Wochenende</div>";
+
+html+=data.events.weekend.map(e=>`
+<div class="newsItem">
+<div style="font-weight:600">${e.title}</div>
+<div class="newsSource">${e.city||""}</div>
+${e.date?`<div class="newsSource">${e.date} ${e.time||""}</div>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+</div>
+`).join("");
+
+} 
 /* DIESE WOCHE */
 
 if(data.events.week?.length){
