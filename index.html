@@ -320,7 +320,7 @@ return;
 }
 
 const data = await res.json();
-
+localStorage.setItem("dailyCache", JSON.stringify(data));
 document.getElementById("meta").innerText = formatMeta(data);
 
 
