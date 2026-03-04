@@ -312,7 +312,7 @@ async function loadData(){
 
 try{
 
-const res = await fetch("/api/daily");
+const res = await fetchWithTimeout("/api/daily",5000);
 
 if(!res.ok){
 console.error("API Fehler");
