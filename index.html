@@ -556,6 +556,17 @@ ${d.location} • ${d.style}
 }
 catch(err){
 
+console.warn("API Fehler – Cache wird geladen");
+
+const cached = localStorage.getItem("dailyCache");
+
+if(cached){
+  const data = JSON.parse(cached);
+  renderFallback(data);
+}
+
+}
+
 console.error("LOAD ERROR",err)
 
 }
