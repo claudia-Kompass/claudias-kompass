@@ -1,6 +1,6 @@
 module.exports = async function handler(req, res) {
 
-const version = "22.0.0";
+const version = "23.0.0";
 const now = new Date();
 const timestamp = now.toLocaleString("de-DE");
 const marketDate = now.toLocaleDateString("de-DE");
