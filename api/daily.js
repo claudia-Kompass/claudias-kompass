@@ -231,6 +231,62 @@ upcoming,
 markets:weeklyMarkets
 };
 
+/* =========================
+   PERSONAL MODULES
+========================= */
+
+/* TRAVEL */
+
+const travel = {
+title:"Altmühlsee – Fränkisches Seenland",
+text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer. Ideal für einen spontanen Wochenend-Trip.",
+image1:"/images/travel/altmuehlsee1.jpg",
+image2:"/images/travel/altmuehlsee2.jpg",
+url:"https://www.altmuehlsee.de",
+category:"natur"
+};
+
+
+/* AIRFRYER */
+
+const recipe = {
+title:"Knusprige Zucchini",
+ingredients:[
+"1 Zucchini",
+"Olivenöl",
+"Parmesan",
+"Pfeffer"
+],
+temperature:"200°C",
+time:"10 Minuten",
+tip:"Vor dem Airfryer leicht salzen damit Wasser austritt."
+};
+
+
+/* LANGUAGE */
+
+const language = {
+de:"Wo ist der Markt?",
+en:"Where is the market?",
+es:"¿Dónde está el mercado?"
+};
+
+
+/* UKULELE */
+
+const ukulele = {
+chords:"C – G – Am – F",
+tip:"Langsam im 4/4 Rhythmus anschlagen. Perfekt für viele Popsongs."
+};
+
+
+/* QUOTE */
+
+const quote = {
+text:"Der Weg entsteht beim Gehen.",
+author:"Franz Kafka"
+};
+   
 /* -----------------------------
    RESPONSE
 ----------------------------- */
