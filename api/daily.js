@@ -256,12 +256,62 @@ module.exports = async function handler(req, res) {
       }
     ];
 
-    const events={
-      today,
-      week,
-      upcoming,
-      markets:weeklyMarkets
-    };
+    /* =========================
+   EVENT RADAR
+========================= */
+
+function isWeekend(d){
+  const day=d.getDay();
+  return day===6 || day===0;
+}
+
+const todayStart=startOfDay(now);
+
+const weekendStart=new Date(now);
+weekendStart.setDate(now.getDate()+(6-now.getDay()));
+
+const weekendEnd=new Date(weekendStart);
+weekendEnd.setDate(weekendStart.getDate()+1);
+
+let today=[];
+let weekend=[];
+let week=[];
+let upcoming=[];
+
+eventDB.forEach(e=>{
+
+  if(!e.date){
+    upcoming.push(e);
+    return;
+  }
+
+  const d=startOfDay(new Date(e.date));
+
+  if(inRange(d,todayStart,todayStart)){
+    today.push(e);
+  }
+
+  else if(isWeekend(d)){
+    weekend.push(e);
+  }
+
+  else if(inRange(d,todayStart,endOfWeek(now))){
+    week.push(e);
+  }
+
+  else{
+    upcoming.push(e);
+  }
+
+});
+
+const events={
+  today,
+  weekend,
+  week,
+  upcoming,
+  markets:weeklyMarkets
+};
 
     /* =========================
        RESPONSE
