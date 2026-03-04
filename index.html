@@ -20,17 +20,24 @@ margin:auto;
 }
 
 h1{
-font-size:42px;
+font-size:44px;
 margin-bottom:8px;
 }
 
 .subtitle{opacity:.8}
 
+.meta{
+font-size:14px;
+opacity:.6;
+margin-top:4px;
+}
+
 button{
-margin-top:18px;
+margin-top:20px;
 padding:10px 18px;
-background:#e6c27a;
 border:none;
+background:#e6c27a;
+color:#081626;
 border-radius:6px;
 cursor:pointer;
 }
@@ -43,20 +50,47 @@ margin-top:40px;
 color:#e6c27a;
 border-bottom:1px solid rgba(255,255,255,.2);
 padding-bottom:6px;
-margin-bottom:18px;
+margin-bottom:20px;
 }
+
+/* Märkte */
 
 .line{
 display:flex;
 justify-content:space-between;
-margin:10px 0;
+margin:12px 0;
 }
 
-.newsItem{margin-bottom:18px}
+.info{
+color:#f1c40f;
+margin-left:10px;
+text-decoration:none;
+}
+
+/* Ampel */
+
+.ampel{
+width:10px;
+height:10px;
+border-radius:50%;
+display:inline-block;
+margin-left:8px;
+}
+
+.green{background:#2ecc71}
+.red{background:#e74c3c}
+.yellow{background:#f1c40f}
+
+/* News */
+
+.newsItem{
+margin-bottom:22px;
+}
 
 .newsSource{
 font-size:13px;
 opacity:.6;
+margin-top:4px;
 }
 
 .news-link{
@@ -64,24 +98,23 @@ color:#f1c40f;
 text-decoration:none;
 }
 
+/* Wetter */
+
 .weatherNow{
-font-size:24px;
-margin-bottom:10px;
+font-size:26px;
+margin-bottom:12px;
 }
 
 .trendBlock{
 display:flex;
-gap:60px;
-margin-left:40px;
+gap:70px;
+margin-left:50px;
 }
 
-.trendItem{
-text-align:center;
-}
+.trendItem{text-align:center}
 
 </style>
 </head>
-
 
 <body>
 
@@ -90,8 +123,7 @@ text-align:center;
 <h1>🌍 GLOBAL SOUL</h1>
 <div class="subtitle">Claudia’s Daily Compass</div>
 <div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
-
-<div id="meta"></div>
+<div id="meta" class="meta"></div>
 
 <button onclick="loadData()">Neue Ausgabe</button>
 
@@ -103,6 +135,7 @@ text-align:center;
 
 
 <div class="section">
+
 <h2>📊 Märkte & Krypto</h2>
 
 <div class="line">
@@ -141,6 +174,7 @@ text-align:center;
 
 
 <div class="section">
+
 <h2>Wetter – Ilshofen</h2>
 
 <div id="weatherNow" class="weatherNow"></div>
@@ -148,19 +182,19 @@ text-align:center;
 <div class="trendBlock">
 
 <div class="trendItem">
-<div id="morningIcon"></div>
+<div id="mIcon"></div>
 <div>09:00</div>
 <div id="morningTemp"></div>
 </div>
 
 <div class="trendItem">
-<div id="afternoonIcon"></div>
+<div id="aIcon"></div>
 <div>15:00</div>
 <div id="afternoonTemp"></div>
 </div>
 
 <div class="trendItem">
-<div id="eveningIcon"></div>
+<div id="eIcon"></div>
 <div>21:00</div>
 <div id="eveningTemp"></div>
 </div>
@@ -170,7 +204,6 @@ text-align:center;
 </div>
 
 </div>
-
 
 
 <script>
@@ -187,20 +220,35 @@ return "⛈️";
 
 }
 
+function ampel(change){
+
+if(change>1) return '<span class="ampel green"></span>';
+if(change<-1) return '<span class="ampel red"></span>';
+return '<span class="ampel yellow"></span>';
+
+}
+
+function formatDate(date){
+
+if(!date) return "";
+
+const d=new Date(date);
+return d.toLocaleDateString("de-DE");
+
+}
+
 
 
 async function loadData(){
 
 try{
 
-const res = await fetch("/api/daily");
-
-const data = await res.json();
+const res=await fetch("/api/daily");
+const data=await res.json();
 
 render(data);
 
-}
-catch(err){
+}catch(err){
 
 console.error("LOAD ERROR",err);
 
@@ -213,7 +261,7 @@ console.error("LOAD ERROR",err);
 function render(data){
 
 document.getElementById("meta").innerText =
-data.timestamp + " • v" + data.version;
+data.timestamp+" • v"+data.version;
 
 
 /* NEWS */
@@ -234,7 +282,6 @@ data.news.map(n=>`
 }
 
 
-
 /* MARKETS */
 
 document.getElementById("daxValue").innerText =
@@ -244,14 +291,20 @@ document.getElementById("eurusdValue").innerText =
 data.markets?.eurusd?.value ?? "-";
 
 
-
 /* CRYPTO */
 
-document.getElementById("btcValue").innerText =
-"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString();
+document.getElementById("btcValue").innerHTML =
+"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+
+" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+
+ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info →</a>';
 
-document.getElementById("nexoValue").innerText =
-"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2);
+
+document.getElementById("nexoValue").innerHTML =
+"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
+" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+
+ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info →</a>';
 
 
 
@@ -273,7 +326,6 @@ data.regional.map(r=>`
 }
 
 
-
 /* EVENTS */
 
 if(data.events?.week){
@@ -282,9 +334,19 @@ document.getElementById("eventsBlock").innerHTML =
 data.events.week.map(e=>`
 
 <div class="newsItem">
+
 <div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city}</div>
-<div class="newsSource">${e.date} ${e.time}</div>
+
+<div class="newsSource">
+${e.city ?? ""}
+</div>
+
+<div class="newsSource">
+${formatDate(e.date)} ${e.time ?? ""}
+</div>
+
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
 </div>
 
 `).join("");
@@ -292,31 +354,31 @@ data.events.week.map(e=>`
 }
 
 
-
 /* WEATHER */
 
 document.getElementById("weatherNow").innerHTML =
 weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
 
-document.getElementById("morningIcon").innerText =
+document.getElementById("mIcon").innerText =
 weatherIcon(data.weather.trend.morning.code);
 
 document.getElementById("morningTemp").innerText =
 data.weather.trend.morning.temp+"°C";
 
-document.getElementById("afternoonIcon").innerText =
+document.getElementById("aIcon").innerText =
 weatherIcon(data.weather.trend.afternoon.code);
 
 document.getElementById("afternoonTemp").innerText =
 data.weather.trend.afternoon.temp+"°C";
 
-document.getElementById("eveningIcon").innerText =
+document.getElementById("eIcon").innerText =
 weatherIcon(data.weather.trend.evening.code);
 
 document.getElementById("eveningTemp").innerText =
 data.weather.trend.evening.temp+"°C";
 
 }
+
 
 
 window.addEventListener("load",loadData);
