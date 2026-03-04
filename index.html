@@ -583,9 +583,27 @@ function fetchWithTimeout(url, timeout=5000){
   ]);
 
 }
-    
-loadData();
 
+   
+
+function renderFallback(data){
+
+document.getElementById("meta").innerText =
+"Offline Daten • v"+(data.version ?? "?");
+
+if(data.news?.length){
+
+document.getElementById("newsBlock").innerHTML =
+data.news.map(n=>`
+<div class="newsItem">
+<div style="font-weight:600">${n.title}</div>
+<div class="newsSource">${n.source}</div>
+</div>
+`).join("");
+
+}
+loadData();
+}
 </script>
 
 
