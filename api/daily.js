@@ -166,7 +166,7 @@ news=collected
 
 if(regionalRes){
   const xml=await regionalRes.text();
-  regional=parseRSS(xml,"Tagesschau BW").slice(0,4);
+  regional=parseRSS(xml,"SWR Baden-Württemberg").slice(0,4);
 }
 
 }catch(err){
