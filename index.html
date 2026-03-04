@@ -409,6 +409,17 @@ if(data.events){
 
 let html="";
 
+/* DEMNÄCHST */
+
+html+=data.events.upcoming.map(e=>`
+<div class="newsItem">
+<div style="font-weight:600">${e.title}</div>
+<div class="newsSource">${e.location||e.city||""}</div>
+${e.time?`<div class="newsSource">${e.time}</div>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+</div>
+`).join("");
+    
 /* HEUTE */
 
 if(data.events.today?.length){
