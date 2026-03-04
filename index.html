@@ -277,7 +277,8 @@ button{
 
 </div>
 
- <script>
+<script>
+
 function ampel(change){
   if(change > 1) return '<span class="ampel green"></span>';
   if(change < -1) return '<span class="ampel red"></span>';
@@ -293,7 +294,7 @@ function weatherIcon(code){
   }
   if(code === 1 || code === 2) return "🌤️";
   if(code === 3) return "☁️";
-if(code >= 45 && code <= 48) return "☁️";
+  if(code >= 45 && code <= 48) return "☁️";
   if(code >= 51 && code <= 65) return "🌧️";
   if(code >= 71 && code <= 75) return "❄️";
   if(code >= 95) return "⛈️";
@@ -308,235 +309,88 @@ function formatMeta(data){
 }
 
 async function loadData(){
+
   try{
+
     const res = await fetch("/api/daily");
-    if(!res.ok) throw new Error("API Fehler");
     const data = await res.json();
 
-    // META
     document.getElementById("meta").innerText = formatMeta(data);
 
-    // MÄRKTE
+    /* MARKETS */
+
     document.getElementById("daxValue").innerText =
       data.markets?.dax?.value ?? "-";
+
     document.getElementById("daxDate").innerText =
       data.markets?.dax?.date ?? "-";
 
     document.getElementById("eurusdValue").innerText =
       data.markets?.eurusd?.value ?? "-";
+
     document.getElementById("eurusdDate").innerText =
       data.markets?.eurusd?.date ?? "-";
 
-    // KRYPTO
-    document.getElementById("btcValue").innerHTML =
-  "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
-  " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
-  ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)
-  '<a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
-    document.getElementById("nexoValue").innerHTML =
-  "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
-  " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
-  ampel(data.crypto?.nexo?.usd_24h_change ?? 0)
-  '<a href="https://www.coingecko.com/en/coins/nexo" target="_blank" rel="noopener noreferrer" class="info">Info</a>'
 
-    // WETTER
+    /* CRYPTO */
+
+    document.getElementById("btcValue").innerHTML =
+      "$" + (data.crypto?.bitcoin?.usd ?? 0).toLocaleString() +
+      " (€" + (data.crypto?.bitcoin?.eur ?? 0).toLocaleString() + ")" +
+      ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0) +
+      ' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info</a>';
+
+    document.getElementById("nexoValue").innerHTML =
+      "$" + (data.crypto?.nexo?.usd ?? 0).toFixed(2) +
+      " (€" + (data.crypto?.nexo?.eur ?? 0).toFixed(3) + ")" +
+      ampel(data.crypto?.nexo?.usd_24h_change ?? 0) +
+      ' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info</a>';
+
+
+    /* WEATHER */
+
     document.getElementById("weatherNow").innerHTML =
       weatherIcon(data.weather?.code ?? 0) +
-      " <span>" + (data.weather?.temp ?? 0).toFixed(1) + "°C</span>";
+      " " + (data.weather?.temp ?? 0).toFixed(1) + "°C";
 
     document.getElementById("mIcon").innerHTML =
       weatherIcon(data.weather?.trend?.morning?.code ?? 0);
+
     document.getElementById("morning").innerText =
       (data.weather?.trend?.morning?.temp ?? 0).toFixed(1) + "°C";
 
     document.getElementById("aIcon").innerHTML =
       weatherIcon(data.weather?.trend?.afternoon?.code ?? 0);
+
     document.getElementById("afternoon").innerText =
       (data.weather?.trend?.afternoon?.temp ?? 0).toFixed(1) + "°C";
 
     document.getElementById("eIcon").innerHTML =
       weatherIcon(data.weather?.trend?.evening?.code ?? 0);
+
     document.getElementById("evening").innerText =
       (data.weather?.trend?.evening?.temp ?? 0).toFixed(1) + "°C";
 
-    // NEWS
+
+    /* GLOBAL NEWS */
+
     const newsBlock = document.getElementById("newsBlock");
+
     if(data.news?.length){
-      newsBlock.innerHTML = data.news.map(n => `
-        <div class="newsItem">
-          <div style="font-weight:600;margin-bottom:6px;">
-            ${n.title}
-          </div>
-          <a href="${n.url}" target="_blank" class="news-link">
-            weiterlesen →
-          </a>
-          <div class="newsSource">${n.source}</div>
+
+      newsBlock.innerHTML = data.news.map(n=>`
+
+      <div class="newsItem">
+        <div style="font-weight:600;margin-bottom:6px;">
+          ${n.title}
         </div>
-      `).join("");
-    }
 
-// FOCUS
-if (data.focus) {
-  document.getElementById("focusBlock").innerHTML = `
-    <div style="font-weight:600; margin-bottom:6px;">
-      ${data.focus.title}
-    </div>
-    <div style="opacity:0.8;">
-      ${data.focus.text}
-    </div>
-  `;
-}
-      
-    // REGIONAL
-    const regionalBlock = document.getElementById("regional-news");
-    if(data.regional?.length){
-      regionalBlock.innerHTML = data.regional.map(r => `
-        <div class="newsItem">
-          <div style="font-weight:600;margin-bottom:6px;">
-            ${r.title}
-          </div>
-          <a href="${r.url}" target="_blank" class="news-link">
-            weiterlesen →
-          </a>
-          <div class="newsSource">${r.source?.name ?? ""}</div>
-        </div>
-      `).join("");
-    }
+        <a href="${n.url}" target="_blank" class="news-link">
+          weiterlesen →
+        </a>
 
-const eventsBlock=document.getElementById("events-list");
-
-if(data.events){
-
-let html="";
-
-/* HEUTE */
-
-if(data.events.today && data.events.today.length){
-
-html+="<div style='font-weight:600;margin-bottom:10px;'>Heute</div>";
-
-html+=data.events.today.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city||""}</div>
-${e.time?`<div class="newsSource">${e.time}</div>`:""}
-</div>
-`).join("");
-
-}
-
-/* WOCHENENDE */
-
-if(data.events.weekend && data.events.weekend.length){
-
-html+="<div style='font-weight:600;margin-top:20px;'>Wochenende</div>";
-
-html+=data.events.weekend.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city||""}</div>
-${e.date?`<div class="newsSource">${e.date} ${e.time||""}</div>`:""}
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-</div>
-`).join("");
-
-}
-
-/* DIESE WOCHE */
-
-if(data.events.week && data.events.week.length){
-
-html+="<div style='font-weight:600;margin-top:20px;'>Diese Woche</div>";
-
-html+=data.events.week.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.city||""}</div>
-${e.date?`<div class="newsSource">${e.date} ${e.time||""}</div>`:""}
-</div>
-`).join("");
-
-}
-
-/* DEMNÄCHST */
-
-if(data.events.upcoming && data.events.upcoming.length){
-
-html+="<div style='font-weight:600;margin-top:20px;'>Demnächst</div>";
-
-html+=data.events.upcoming.map(e=>`
-<div class="newsItem">
-<div style="font-weight:600">${e.title}</div>
-<div class="newsSource">${e.location||e.city||""}</div>
-${e.time?`<div class="newsSource">${e.time}</div>`:""}
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-</div>
-`).join("");
-
-}
-
-/* WOCHENMÄRKTE */
-
-if(data.events.markets && data.events.markets.length){
-
-html+="<div style='font-weight:600;margin-top:20px;'>Wochenmärkte</div>";
-
-html+=data.events.markets.map(m=>`
-<div class="newsItem">
-<div style="font-weight:600">${m.title}</div>
-<div class="newsSource">${m.location}</div>
-<div class="newsSource">${m.day} • ${m.time}</div>
-</div>
-`).join("");
-
-}
-
-eventsBlock.innerHTML=html;
-
-}
-
-
-/* WOCHENMÄRKTE */
-
-if(data.events.markets?.length){
-html+="<div style='font-weight:600;margin-top:20px;'>Wochenmärkte</div>";
-
-html+=data.events.markets.map(m=>`
-<div class="newsItem">
-<div style="font-weight:600">${m.title}</div>
-<div class="newsSource">${m.location}</div>
-<div class="newsSource">${m.day} • ${m.time}</div>
-</div>
-`).join("");
-}
-
-eventsBlock.innerHTML=html;
-
-}
-
-// DANCE RENDER
-const danceBlock = document.getElementById("dance-list");
-
-if(data.dance && data.dance.length){
-  danceBlock.innerHTML = data.dance.map(d => `
-    <div class="newsItem">
-      <div style="font-weight:600; margin-bottom:6px;">
-        ${d.title}
-      </div>
-      <div class="newsSource">
-        ${d.city} • ${d.date}
-      </div>
-      <div class="newsSource">
-        ${d.location} • ${d.style}
-      </div>
-    </div>
-  `).join("");
-}
-      
-  } catch(err){
-    console.error("Frontend Fehler:", err);
-  }
-}
+        <div class="newsSource">
+          ${n.source
 
 loadData();
     </script>   
