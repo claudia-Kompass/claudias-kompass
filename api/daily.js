@@ -299,7 +299,13 @@ regional,
 events,
 markets,
 crypto:{bitcoin,nexo},
-weather
+weather,
+
+travel,
+recipe,
+language,
+ukulele,
+quote
 });
 
 };
