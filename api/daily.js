@@ -211,36 +211,6 @@ module.exports = async function handler(req, res) {
 
     ];
 
-    const todayStart=startOfDay(now);
-    const weekEnd=endOfWeek(now);
-    const next14=new Date(now);
-    next14.setDate(now.getDate()+14);
-
-    let today=[];
-    let week=[];
-    let upcoming=[];
-
-    eventDB.forEach(e=>{
-
-      if(!e.date){
-        upcoming.push(e);
-        return;
-      }
-
-      const d=startOfDay(new Date(e.date));
-
-      if(inRange(d,todayStart,todayStart)){
-        today.push(e);
-      }
-      else if(inRange(d,todayStart,weekEnd)){
-        week.push(e);
-      }
-      else if(inRange(d,weekEnd,next14)){
-        upcoming.push(e);
-      }
-
-    });
-
     const weeklyMarkets=[
       {
         title:"Wochenmarkt Schwäbisch Hall",
