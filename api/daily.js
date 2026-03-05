@@ -1,5 +1,41 @@
 module.exports = async function handler(req, res) {
 
+/* =========================
+   SECURITY
+========================= */
+
+/* Cache */
+
+res.setHeader("Cache-Control","s-maxage=300, stale-while-revalidate=600");
+
+/* Security Headers */
+
+res.setHeader("X-Content-Type-Options","nosniff");
+res.setHeader("X-Frame-Options","DENY");
+res.setHeader("X-XSS-Protection","1; mode=block");
+
+/* Nur GET erlauben */
+
+if(req.method !== "GET"){
+  return res.status(405).end();
+}
+
+/* Origin Check (nur deine Seite darf zugreifen) */
+
+const origin = req.headers.origin || "";
+
+if(origin && !origin.includes("vercel.app")){
+  return res.status(403).json({error:"Forbidden"});
+}
+
+/* Bot Protection */
+
+const ua = req.headers["user-agent"] || "";
+
+if(ua.length < 5){
+  return res.status(403).json({error:"Bot blocked"});
+}
+   
 const version = "23.0.0";
 const now = new Date();
 const timestamp = now.toLocaleString("de-DE");
