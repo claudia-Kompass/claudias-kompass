@@ -549,7 +549,6 @@ data.language.map(l=>`
 }
 
 
-
 /* UKULELE */
 
 const ukeDB=[
@@ -591,6 +590,42 @@ tempo:"70 bpm"
 },
 
 {
+title:"Reggae Skank",
+chart:`G      C      D
+A|---2-|---3-|---0-
+E|---3-|---0-|---2-
+C|---2-|---0-|---2-
+G|---0-|---0-|---2-`,
+strum:"↓   ↑ ↓   ↑",
+pick:"G → E → C → A",
+tempo:"80 bpm"
+},
+
+{
+title:"Simple Folk",
+chart:`C      F      C      G
+A|---3-|---0-|---3-|---2-
+E|---0-|---1-|---0-|---3-
+C|---0-|---0-|---0-|---2-
+G|---0-|---2-|---0-|---0-`,
+strum:"↓ ↓ ↑ ↑ ↓ ↑",
+pick:"G → C → E → A",
+tempo:"95 bpm"
+},
+
+{
+title:"Classic Island",
+chart:`F      G      C
+A|---0-|---2-|---3-
+E|---1-|---3-|---0-
+C|---0-|---2-|---0-
+G|---2-|---0-|---0-`,
+strum:"↓ ↑ ↓",
+pick:"G → C → E → A",
+tempo:"88 bpm"
+},
+
+{
 title:"Easy Blues",
 chart:`C      F      G
 A|---3-|---0-|---2-
@@ -603,18 +638,44 @@ tempo:"95 bpm"
 },
 
 {
-title:"Reggae Feel",
-chart:`G      C      D
-A|---2-|---3-|---0-
-E|---3-|---0-|---2-
-C|---2-|---0-|---2-
-G|---0-|---0-|---2-`,
-strum:"↓   ↑ ↓   ↑",
+title:"Soft Pop",
+chart:`Am     G      F      C
+A|---0-|---2-|---0-|---3-
+E|---0-|---3-|---1-|---0-
+C|---0-|---2-|---0-|---0-
+G|---2-|---0-|---2-|---0-`,
+strum:"↓ ↑ ↓ ↑",
 pick:"G → E → C → A",
-tempo:"80 bpm"
+tempo:"90 bpm"
+},
+
+{
+title:"Hawaii Flow",
+chart:`C      Am     F      G
+A|---3-|---0-|---0-|---2-
+E|---0-|---0-|---1-|---3-
+C|---0-|---0-|---0-|---2-
+G|---0-|---2-|---2-|---0-`,
+strum:"↓ ↓ ↑ ↓",
+pick:"G → C → E → A",
+tempo:"82 bpm"
+},
+
+{
+title:"Slow Ballad",
+chart:`F      C      G      Am
+A|---0-|---3-|---2-|---0-
+E|---1-|---0-|---3-|---0-
+C|---0-|---0-|---2-|---0-
+G|---2-|---0-|---0-|---2-`,
+strum:"↓ ↓↓",
+pick:"G → C → E → A",
+tempo:"65 bpm"
 }
 
 ]
+
+/* Rotation */
 
 const ukeIndex=Math.floor(Date.now()/86400000)%ukeDB.length
 const uke=ukeDB[ukeIndex]
@@ -641,6 +702,8 @@ ${uke.tempo}
 </pre>
 
 `
+
+
 
 
 
