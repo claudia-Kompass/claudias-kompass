@@ -524,6 +524,7 @@ RESPONSE
 res.status(200).json({
 
 version,
+build,
 timestamp,
 news,
 regional,
