@@ -15,7 +15,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="24.0.0"
+const version="25.0.0"
 
 const now=new Date()
 
@@ -90,23 +90,15 @@ const codes=d.hourly.weathercode
 function findHour(target){
 
 const today=new Date().toISOString().split("T")[0]
-
 const index=hours.findIndex(h=>h.startsWith(today+"T"+target))
 
 if(index>-1){
 
 let code=codes[index]
 
-/* Nachtlogik */
+if(target==="21:00" && code===0){code=100}
 
-if(target==="21:00" && code===0){
-code=100
-}
-
-return{
-temp:temps[index],
-code
-}
+return{temp:temps[index],code}
 
 }
 
@@ -153,20 +145,8 @@ eurusd:{value:"1.08",date:"Stand "+marketDate}
 
 const events={
 week:[
-{
-title:"Genussmesse Heilbronn",
-city:"Heilbronn",
-date:"2026-03-07",
-time:"10:00–18:00",
-url:"https://redblue.de/"
-},
-{
-title:"Freizeit Messe Nürnberg",
-city:"Nürnberg",
-date:"2026-03-08",
-time:"09:30–18:00",
-url:"https://www.freizeitmesse.de"
-}
+{title:"Genussmesse Heilbronn",city:"Heilbronn",date:"2026-03-07",time:"10:00–18:00",url:"https://redblue.de/"},
+{title:"Freizeit Messe Nürnberg",city:"Nürnberg",date:"2026-03-08",time:"09:30–18:00",url:"https://www.freizeitmesse.de"}
 ]
 }
 
@@ -193,11 +173,11 @@ const languageDB=[
 {en:"Where can we dance tonight?",es:"¿Dónde podemos bailar esta noche?",de:"Wo können wir heute Abend tanzen?"},
 {en:"Do you like salsa music?",es:"¿Te gusta la música salsa?",de:"Magst du Salsa Musik?"},
 {en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
-{en:"I would like a coffee",es:"Quisiera un café",de:"Ich hätte gern einen Kaffee"},
-{en:"Where is the bus station?",es:"¿Dónde está la estación de autobuses?",de:"Wo ist der Busbahnhof?"},
-{en:"Can you help me?",es:"¿Puedes ayudarme?",de:"Kannst du mir helfen?"},
-{en:"What time does it start?",es:"¿A qué hora empieza?",de:"Wann beginnt es?"},
-{en:"Is there live music tonight?",es:"¿Hay música en vivo esta noche?",de:"Gibt es heute Live Musik?"}
+{en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
+{en:"What time is it?",es:"¿Qué hora es?",de:"Wie spät ist es?"},
+{en:"Where can we eat?",es:"¿Dónde podemos comer?",de:"Wo können wir essen?"},
+{en:"I like this place",es:"Me gusta este lugar",de:"Ich mag diesen Ort"}
 
 ]
 
