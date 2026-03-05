@@ -474,16 +474,16 @@ document.getElementById("travelBlock").innerHTML=`
 if(data.language){
 
 document.getElementById("languageBlock").innerHTML =
-data.language.map((l,i)=>`
+data.language.map(l=>`
 
-<div class="languageCard" onclick="toggleLang(this)">
+<div class="languageCard">
 
-<div class="langLine">
+<div class="langLine" onclick="toggleLang(this.parentElement)">
 <span>🇬🇧 ${l.en}</span>
 <span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
 </div>
 
-<div class="langLine">
+<div class="langLine" onclick="toggleLang(this.parentElement)">
 <span>🇪🇸 ${l.es}</span>
 <span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
 </div>
