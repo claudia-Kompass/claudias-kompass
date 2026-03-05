@@ -205,15 +205,37 @@ portion:"2"
 const recipeIndex=Math.floor(Date.now()/86400000)%recipeDB.length
 const recipe=recipeDB[recipeIndex]
 
-/* LANGUAGE */
+/* LANGUAGE ENGINE */
 
-const language=[
+const languageDB=[
 
 {en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
+{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Wie viel kostet das?"},
+{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
+{en:"I would like a coffee.",es:"Quiero un café.",de:"Ich hätte gern einen Kaffee."},
+{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
+{en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?",de:"Kann ich mit Karte bezahlen?"},
+{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
+{en:"One moment please.",es:"Un momento por favor.",de:"Einen Moment bitte."},
+{en:"See you tomorrow.",es:"Hasta mañana.",de:"Bis morgen."},
 
-{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"}
+{en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
+{en:"I like this place.",es:"Me gusta este lugar.",de:"Mir gefällt dieser Ort."},
+{en:"What time does it open?",es:"¿A qué hora abre?",de:"Wann öffnet es?"},
+{en:"What time does it close?",es:"¿A qué hora cierra?",de:"Wann schließt es?"},
+{en:"I need help.",es:"Necesito ayuda.",de:"Ich brauche Hilfe."},
+{en:"Where can we dance?",es:"¿Dónde podemos bailar?",de:"Wo können wir tanzen?"},
+{en:"The music is great.",es:"La música es genial.",de:"Die Musik ist großartig."},
+{en:"Let's go dancing.",es:"Vamos a bailar.",de:"Lass uns tanzen gehen."},
+{en:"This food is delicious.",es:"Esta comida es deliciosa.",de:"Dieses Essen ist köstlich."},
+{en:"Can you recommend something?",es:"¿Puede recomendar algo?",de:"Können Sie etwas empfehlen?"}
 
 ]
+
+const langIndex = Math.floor(Date.now()/86400000) % languageDB.length
+
+const language=[ languageDB[langIndex] ]
 
 /* UKULELE */
 
