@@ -20,7 +20,8 @@ const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
 const version="v27.1.0-STABLE"
-
+const now=new Date()
+const build=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
 const now=new Date()
 
 const timestamp=now.toLocaleString("de-DE",{timeZone:"Europe/Berlin"})
