@@ -19,7 +19,6 @@ const version="27.1.0-STABLE"
 
 const now=new Date()
 
-const timestamp=now.toLocaleString("de-DE",{timeZone:"Europe/Berlin"})
 const marketDate=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
 
 
