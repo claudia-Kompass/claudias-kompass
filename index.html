@@ -438,21 +438,28 @@ document.getElementById("travelBlock").innerHTML=`
 
 if(data.language){
 
-document.getElementById("languageBlock").innerHTML=`
+document.getElementById("languageBlock").innerHTML =
+data.language.map((l,i)=>`
 
-<div class="newsItem">
-<span class="flag">🇬🇧</span> ${data.language.en}
+<div class="languageCard" onclick="toggleLang(this)">
+
+<div class="langLine">
+<span>🇬🇧 ${l.en}</span>
+<span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
 </div>
 
-<div class="newsItem">
-<span class="flag">🇪🇸</span> ${data.language.es}
+<div class="langLine">
+<span>🇪🇸 ${l.es}</span>
+<span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
 </div>
 
-<div class="newsItem">
-<span class="flag">🇩🇪</span> ${data.language.de}
+<div class="langNative">
+🇩🇪 ${l.de}
 </div>
 
-`;
+</div>
+
+`).join("");
 
 }
 
