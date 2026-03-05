@@ -454,6 +454,7 @@ RESPONSE
 res.status(200).json({
 
 version,
+timestamp
 news,
 regional,
 events,
