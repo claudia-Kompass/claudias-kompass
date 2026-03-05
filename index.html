@@ -352,9 +352,8 @@ console.error("LOAD ERROR",err);
 
 function render(data){
 
-document.getElementById("meta").innerText =
-data.timestamp+" • v"+data.version;
-
+document.getElementById("version").innerHTML =
+data.version + " • Build " + data.build
 
 
 /* NEWS */
