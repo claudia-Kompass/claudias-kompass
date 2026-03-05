@@ -375,31 +375,234 @@ url:"https://www.fraenkisches-seenland.de"
 AIRFRYER REZEPT ROTATION
 ======================================================= */
 
-const recipeDB=[]
+const recipeDB=[
 
-for(let i=1;i<=60;i++){
-
-recipeDB.push({
-
-title:"Airfryer Rezept "+i,
-
-ingredients:[
-"1 Gemüse oder Protein",
-"1 EL Olivenöl",
-"Gewürze nach Geschmack"
-],
-
-description:"Knusprig im Airfryer – einfach und schnell.",
-
-temp:"180-200°C",
-
-time:"10-18 Minuten",
-
+{
+title:"Knusprige Zucchini",
+ingredients:["1 Zucchini","1 EL Olivenöl","2 EL Parmesan","Salz, Pfeffer"],
+description:"Zucchini in Scheiben schneiden, mit Öl und Parmesan mischen.",
+temp:"200°C",
+time:"10 Minuten",
 portion:"2"
+},
 
-})
+{
+title:"Kartoffelwürfel mit Rosmarin",
+ingredients:["400g Kartoffeln","1 EL Olivenöl","Rosmarin","Salz"],
+description:"Kartoffeln würfeln und mit Öl und Rosmarin mischen.",
+temp:"200°C",
+time:"18 Minuten",
+portion:"2"
+},
 
+{
+title:"Paprika Crunch",
+ingredients:["2 Paprika","1 EL Olivenöl","Paprikapulver","Salz"],
+description:"Paprika in Streifen schneiden, würzen und mischen.",
+temp:"190°C",
+time:"12 Minuten",
+portion:"2"
+},
+
+{
+title:"Brokkoli Röstaroma",
+ingredients:["1 Brokkoli","1 EL Olivenöl","Knoblauchpulver","Salz"],
+description:"Brokkoli in Röschen teilen und würzen.",
+temp:"190°C",
+time:"10 Minuten",
+portion:"2"
+},
+
+{
+title:"Karotten Fries",
+ingredients:["3 Karotten","1 EL Olivenöl","Paprika edelsüß","Salz"],
+description:"Karotten in Sticks schneiden und würzen.",
+temp:"200°C",
+time:"15 Minuten",
+portion:"2"
+},
+
+{
+title:"Champignon Knusper",
+ingredients:["250g Champignons","1 EL Olivenöl","Knoblauch","Salz"],
+description:"Pilze halbieren und mit Öl und Gewürzen mischen.",
+temp:"190°C",
+time:"12 Minuten",
+portion:"2"
+},
+
+{
+title:"Süßkartoffel Würfel",
+ingredients:["1 Süßkartoffel","1 EL Olivenöl","Paprika","Salz"],
+description:"Süßkartoffel würfeln und würzen.",
+temp:"200°C",
+time:"16 Minuten",
+portion:"2"
+},
+
+{
+title:"Zucchini Parmesan Chips",
+ingredients:["1 Zucchini","2 EL Parmesan","Pfeffer"],
+description:"Zucchini dünn schneiden und mit Parmesan bestreuen.",
+temp:"200°C",
+time:"8 Minuten",
+portion:"2"
+},
+
+{
+title:"Blumenkohl Bites",
+ingredients:["1 Blumenkohl","1 EL Olivenöl","Currypulver","Salz"],
+description:"Blumenkohlröschen würzen und mischen.",
+temp:"190°C",
+time:"14 Minuten",
+portion:"2"
+},
+
+{
+title:"Auberginen Würfel",
+ingredients:["1 Aubergine","1 EL Olivenöl","Knoblauch","Salz"],
+description:"Aubergine würfeln und würzen.",
+temp:"200°C",
+time:"14 Minuten",
+portion:"2"
+},
+
+{
+title:"Mini Kartoffeln",
+ingredients:["400g kleine Kartoffeln","1 EL Öl","Rosmarin","Salz"],
+description:"Kartoffeln halbieren und würzen.",
+temp:"200°C",
+time:"20 Minuten",
+portion:"2"
+},
+
+{
+title:"Paprika-Zucchini Mix",
+ingredients:["1 Paprika","1 Zucchini","1 EL Öl","Salz"],
+description:"Gemüse würfeln und mischen.",
+temp:"190°C",
+time:"12 Minuten",
+portion:"2"
+},
+
+{
+title:"Brokkoli Parmesan",
+ingredients:["1 Brokkoli","1 EL Öl","2 EL Parmesan","Salz"],
+description:"Brokkoli mit Öl mischen und Parmesan darüber.",
+temp:"190°C",
+time:"10 Minuten",
+portion:"2"
+},
+
+{
+title:"Karotten Honig",
+ingredients:["3 Karotten","1 TL Honig","1 TL Öl","Salz"],
+description:"Karotten in Sticks schneiden und mischen.",
+temp:"190°C",
+time:"15 Minuten",
+portion:"2"
+},
+
+{
+title:"Kartoffelspalten",
+ingredients:["400g Kartoffeln","1 EL Öl","Paprika","Salz"],
+description:"Kartoffeln in Spalten schneiden und würzen.",
+temp:"200°C",
+time:"20 Minuten",
+portion:"2"
+},
+
+{
+title:"Knoblauch Champignons",
+ingredients:["250g Champignons","1 EL Öl","Knoblauch","Petersilie"],
+description:"Pilze mit Knoblauch würzen.",
+temp:"190°C",
+time:"12 Minuten",
+portion:"2"
+},
+
+{
+title:"Süßkartoffel Fries",
+ingredients:["1 Süßkartoffel","1 EL Öl","Paprika","Salz"],
+description:"Süßkartoffel in Sticks schneiden.",
+temp:"200°C",
+time:"15 Minuten",
+portion:"2"
+},
+
+{
+title:"Paprika Feta",
+ingredients:["2 Paprika","50g Feta","1 EL Öl"],
+description:"Paprika würfeln und mit Feta mischen.",
+temp:"190°C",
+time:"12 Minuten",
+portion:"2"
+},
+
+{
+title:"Zucchini Kräuter",
+ingredients:["1 Zucchini","1 EL Öl","ital. Kräuter"],
+description:"Zucchini in Scheiben schneiden.",
+temp:"200°C",
+time:"10 Minuten",
+portion:"2"
+},
+
+{
+title:"Blumenkohl Knusper",
+ingredients:["1 Blumenkohl","1 EL Öl","Paprika","Salz"],
+description:"Röschen würzen.",
+temp:"190°C",
+time:"15 Minuten",
+portion:"2"
+},
+
+{
+title:"Kartoffel-Paprika Mix",
+ingredients:["300g Kartoffeln","1 Paprika","1 EL Öl"],
+description:"Alles würfeln und mischen.",
+temp:"200°C",
+time:"18 Minuten",
+portion:"2"
+},
+
+{
+title:"Aubergine Kräuter",
+ingredients:["1 Aubergine","1 EL Öl","Kräuter"],
+description:"Aubergine würfeln.",
+temp:"200°C",
+time:"14 Minuten",
+portion:"2"
+},
+
+{
+title:"Karotten Sesam",
+ingredients:["3 Karotten","1 TL Sesam","1 TL Öl"],
+description:"Karotten schneiden und mischen.",
+temp:"190°C",
+time:"14 Minuten",
+portion:"2"
+},
+
+{
+title:"Brokkoli Zitrone",
+ingredients:["1 Brokkoli","1 EL Öl","Zitronensaft"],
+description:"Brokkoli würzen.",
+temp:"190°C",
+time:"10 Minuten",
+portion:"2"
+},
+
+{
+title:"Kartoffel Knoblauch",
+ingredients:["400g Kartoffeln","1 EL Öl","Knoblauch"],
+description:"Kartoffeln würfeln.",
+temp:"200°C",
+time:"18 Minuten",
+portion:"2"
 }
+
+]
 
 const recipeIndex=Math.floor(Date.now()/86400000)%recipeDB.length
 const recipe=recipeDB[recipeIndex]
