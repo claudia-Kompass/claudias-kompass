@@ -352,8 +352,8 @@ console.error("LOAD ERROR",err);
 
 function render(data){
 
-document.getElementById("version").innerHTML =
-data.version + " • Build " + data.build
+document.getElementById("meta").innerHTML =
+data.build + " • " + data.version
 
 
 /* NEWS */
