@@ -1,69 +1,40 @@
-/* ===========================
-GLOBAL SOUL v27.2-STABLE
-=========================== */
-
 module.exports = async function handler(req,res){
 
-res.setHeader("Cache-Control","s-maxage=900, stale-while-revalidate=3600")
+res.setHeader("Cache-Control","s-maxage=300, stale-while-revalidate=600")
 res.setHeader("X-Content-Type-Options","nosniff")
 res.setHeader("X-Frame-Options","DENY")
+res.setHeader("X-XSS-Protection","1; mode=block")
 
-if(req.method!=="GET") return res.status(405).end()
+if(req.method!=="GET"){return res.status(405).end()}
 
-const version="v27.2-STABLE"
+const origin=req.headers.origin||""
+if(origin && !origin.includes("vercel.app")){
+return res.status(403).json({error:"Forbidden"})
+}
+
+const ua=req.headers["user-agent"]||""
+if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
+
+const version="27.1.0-STABLE"
+
 const now=new Date()
 
-const build=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
-const timestamp=build
+const timestamp=now.toLocaleString("de-DE",{timeZone:"Europe/Berlin"})
+const marketDate=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
 
 
-
-/* ===========================
-SAFE FETCH
-=========================== */
-
-async function safeJSON(url){
-
-try{
-
-const r=await fetch(url)
-
-if(!r.ok) return null
-
-return await r.json()
-
-}catch{
-return null
+function fetchTimeout(url,ms=4000){
+return Promise.race([
+fetch(url),
+new Promise((_,reject)=>setTimeout(()=>reject("timeout"),ms))
+])
 }
 
-}
-
-async function safeText(url){
-
-try{
-
-const r=await fetch(url)
-
-if(!r.ok) return null
-
-return await r.text()
-
-}catch{
-return null
-}
-
-}
-
-
-
-/* ===========================
-RSS PARSER
-=========================== */
 
 function parseRSS(xml,source){
 
 const items=[]
-const matches=xml?.match(/<item>([\s\S]*?)<\/item>/g)||[]
+const matches=xml.match(/<item>([\s\S]*?)<\/item>/g)||[]
 
 matches.forEach(item=>{
 
@@ -87,23 +58,59 @@ return items
 }
 
 
-
-/* ===========================
-WEATHER
-=========================== */
+/* =======================================================
+DATA CONTAINER
+======================================================= */
 
 let weather={temp:0,code:0,trend:{morning:{temp:0,code:0},afternoon:{temp:0,code:0},evening:{temp:0,code:0}}}
 
-const weatherData=await safeJSON("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode")
+let bitcoin={usd:0,eur:0,usd_24h_change:0}
+let nexo={usd:0,eur:0,usd_24h_change:0}
 
-if(weatherData){
+let news=[]
+let regional=[]
 
-weather.temp=weatherData.current?.temperature_2m ?? 0
-weather.code=weatherData.current?.weathercode ?? 0
 
-const hours=weatherData.hourly?.time || []
-const temps=weatherData.hourly?.temperature_2m || []
-const codes=weatherData.hourly?.weathercode || []
+/* =======================================================
+API FETCH
+======================================================= */
+
+try{
+
+const[
+weatherRes,
+cryptoRes,
+tagesschauRes,
+spiegelRes,
+regionalRes
+]=await Promise.all([
+
+fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
+
+fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"),
+
+fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
+
+fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
+
+fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml")
+
+])
+
+
+
+/* WEATHER */
+
+if(weatherRes){
+
+const d=await weatherRes.json()
+
+weather.temp=d.current?.temperature_2m??0
+weather.code=d.current?.weathercode??0
+
+const hours=d.hourly.time
+const temps=d.hourly.temperature_2m
+const codes=d.hourly.weathercode
 
 function findHour(target){
 
@@ -114,9 +121,14 @@ if(index>-1){
 
 let code=codes[index]
 
-if(target==="21:00" && code===0) code=100
+if(target==="21:00" && code===0){
+code=100
+}
 
-return{temp:temps[index],code}
+return{
+temp:temps[index],
+code
+}
 
 }
 
@@ -132,84 +144,144 @@ weather.trend.evening=findHour("21:00")
 
 
 
-/* ===========================
-CRYPTO (CoinGecko)
-=========================== */
+/* CRYPTO */
 
-let bitcoin={usd:0,eur:0,usd_24h_change:0}
-let nexo={usd:0,eur:0,usd_24h_change:0}
+if(cryptoRes){
 
-const cryptoData=await safeJSON("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true")
+const d=await cryptoRes.json()
 
-if(cryptoData){
-
-bitcoin=cryptoData.bitcoin || bitcoin
-nexo=cryptoData.nexo || nexo
+bitcoin=d.bitcoin||bitcoin
+nexo=d.nexo||nexo
 
 }
 
 
 
-/* ===========================
-MARKETS
-=========================== */
-
-const markets={
-dax:{value:"18.742"},
-eurusd:{value:"1.08"}
-}
-
-
-
-/* ===========================
-NEWS
-=========================== */
+/* NEWS */
 
 let collected=[]
 
-const tagesschau=await safeText("https://www.tagesschau.de/xml/rss2/")
-const spiegel=await safeText("https://www.spiegel.de/schlagzeilen/tops/index.rss")
-const ntv=await safeText("https://www.n-tv.de/rss")
+if(tagesschauRes){
+const xml=await tagesschauRes.text()
+collected=collected.concat(parseRSS(xml,"Tagesschau"))
+}
 
-if(tagesschau) collected=collected.concat(parseRSS(tagesschau,"Tagesschau"))
-if(spiegel) collected=collected.concat(parseRSS(spiegel,"Spiegel"))
-if(ntv) collected=collected.concat(parseRSS(ntv,"ntv"))
+if(spiegelRes){
+const xml=await spiegelRes.text()
+collected=collected.concat(parseRSS(xml,"Spiegel"))
+}
 
-const news=collected.slice(0,5)
-
-
-
-/* ===========================
-REGIONAL
-=========================== */
-
-let regional=[]
-
-const regionalXML=await safeText("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml")
-
-if(regionalXML) regional=parseRSS(regionalXML,"SWR Baden-Württemberg").slice(0,4)
+news=collected.slice(0,5)
 
 
 
-/* ===========================
-EVENTS
-=========================== */
+/* REGIONAL */
 
-const events={
+if(regionalRes){
+const xml=await regionalRes.text()
+regional=parseRSS(xml,"SWR Baden-Württemberg").slice(0,4)
+}
 
-week:[
+}catch(e){console.log(e)}
+
+
+
+/* =======================================================
+MARKETS
+======================================================= */
+
+const markets={
+dax:{value:"18.742",date:"Stand "+marketDate},
+eurusd:{value:"1.08",date:"Stand "+marketDate}
+}
+
+
+
+/* =======================================================
+EVENT ENGINE
+======================================================= */
+
+function startOfDay(d){
+const x=new Date(d)
+x.setHours(0,0,0,0)
+return x
+}
+
+function endOfWeek(d){
+const x=new Date(d)
+const day=x.getDay()||7
+if(day!==7)x.setDate(x.getDate()+(7-day))
+x.setHours(23,59,59,999)
+return x
+}
+
+function inRange(date,a,b){
+return date>=a && date<=b
+}
+
+
+
+/* EVENT DATABASE */
+
+const eventDB=[
+
+{
+title:"Genussmesse Heilbronn",
+city:"Heilbronn",
+location:"redblue Messehalle",
+date:"2026-03-07",
+time:"10:00–18:00",
+url:"https://redblue.de"
+},
 
 {
 title:"Freizeit Messe Nürnberg",
 city:"Nürnberg",
+location:"Messezentrum Nürnberg",
 date:"2026-03-08",
 time:"09:30–18:00",
 url:"https://www.freizeitmesse.de"
+},
+
+{
+title:"Consumenta Nürnberg",
+city:"Nürnberg",
+location:"Messezentrum Nürnberg",
+date:"2026-10-25",
+time:"10:00–18:00",
+url:"https://www.consumenta.de"
+},
+
+{
+title:"CMT Stuttgart",
+city:"Stuttgart",
+location:"Messe Stuttgart",
+date:"2026-01-18",
+time:"10:00–18:00",
+url:"https://www.messe-stuttgart.de/cmt"
 }
 
-],
+]
 
-markets:[
+
+
+/* ANNUAL EVENTS */
+
+const annualEvents=[
+
+{title:"Haller Frühling",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
+{title:"Kuchen & Brunnenfest",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
+{title:"Jakobimarkt",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
+{title:"Sommernachtsfest",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
+{title:"Crailsheimer Volksfest",city:"Crailsheim",url:"https://www.crailsheim.de"}
+
+]
+
+
+
+/* WEEKLY MARKETS */
+
+const weeklyMarkets=[
 
 {
 title:"Wochenmarkt Schwäbisch Hall",
@@ -227,51 +299,125 @@ time:"07:00–13:00"
 
 ]
 
-}
 
 
+/* LAKES */
 
-/* ===========================
-TRAVEL
-=========================== */
+const lakes=[
 
-const travel={
-title:"Altmühlsee – Fränkisches Seenland",
-text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
+{
+title:"Altmühlsee Veranstaltungen",
+city:"Gunzenhausen",
+url:"https://www.altmuehlsee.de"
+},
+
+{
+title:"Brombachsee Veranstaltungen",
+city:"Ramsberg",
 url:"https://www.fraenkisches-seenland.de"
 }
 
-
-
-/* ===========================
-AIRFRYER ROTATION
-=========================== */
-
-const recipeDB=[
-
-{title:"Paprika Feta",ingredients:["2 Paprika","50g Feta","1 EL Öl"],description:"Paprika schneiden, Feta darüber bröseln.",temp:"190°C",time:"12 Minuten",portion:"2"},
-{title:"Zucchini Parmesan",ingredients:["1 Zucchini","2 EL Parmesan"],description:"Zucchini in Scheiben schneiden.",temp:"200°C",time:"10 Minuten",portion:"2"},
-{title:"Kartoffelwürfel",ingredients:["400g Kartoffeln","1 EL Öl"],description:"Kartoffeln würfeln und würzen.",temp:"200°C",time:"18 Minuten",portion:"2"},
-{title:"Brokkoli Crunch",ingredients:["1 Brokkoli","1 EL Öl"],description:"Brokkoli in Röschen.",temp:"190°C",time:"10 Minuten",portion:"2"}
-
 ]
+
+
+
+const todayStart=startOfDay(now)
+
+let week=[]
+let upcoming=[]
+
+eventDB.forEach(e=>{
+
+if(!e.date){
+upcoming.push(e)
+return
+}
+
+const d=startOfDay(new Date(e.date))
+
+if(inRange(d,todayStart,endOfWeek(now))){
+week.push(e)
+}else{
+upcoming.push(e)
+}
+
+})
+
+const events={
+week,
+upcoming,
+markets:weeklyMarkets,
+annual:annualEvents,
+lakes
+}
+
+
+
+/* =======================================================
+TRAVEL
+======================================================= */
+
+const travel={
+
+title:"Altmühlsee – Fränkisches Seenland",
+text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
+url:"https://www.fraenkisches-seenland.de"
+
+}
+
+
+
+/* =======================================================
+AIRFRYER REZEPT ROTATION
+======================================================= */
+
+const recipeDB=[]
+
+for(let i=1;i<=60;i++){
+
+recipeDB.push({
+
+title:"Airfryer Rezept "+i,
+
+ingredients:[
+"1 Gemüse oder Protein",
+"1 EL Olivenöl",
+"Gewürze nach Geschmack"
+],
+
+description:"Knusprig im Airfryer – einfach und schnell.",
+
+temp:"180-200°C",
+
+time:"10-18 Minuten",
+
+portion:"2"
+
+})
+
+}
 
 const recipeIndex=Math.floor(Date.now()/86400000)%recipeDB.length
 const recipe=recipeDB[recipeIndex]
 
 
 
-/* ===========================
+/* =======================================================
 LANGUAGE ROTATION
-=========================== */
+======================================================= */
 
 const languageDB=[
 
-{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
-{en:"Where is the bus stop?",es:"¿Dónde está la parada?",de:"Wo ist die Bushaltestelle?"},
+{en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
 {en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Wie viel kostet das?"},
-{en:"Two coffees please.",es:"Dos cafés por favor.",de:"Zwei Kaffee bitte."},
-{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"}
+{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
+{en:"I would like a coffee.",es:"Quiero un café.",de:"Ich hätte gern einen Kaffee."},
+{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
+{en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?",de:"Kann ich mit Karte bezahlen?"},
+{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
+{en:"One moment please.",es:"Un momento por favor.",de:"Einen Moment bitte."},
+{en:"See you tomorrow.",es:"Hasta mañana.",de:"Bis morgen."}
 
 ]
 
@@ -280,9 +426,9 @@ const language=[languageDB[langIndex]]
 
 
 
-/* ===========================
+/* =======================================================
 UKULELE
-=========================== */
+======================================================= */
 
 const ukulele={
 song:"Pop Progression",
@@ -291,9 +437,9 @@ chords:"C – G – Am – F"
 
 
 
-/* ===========================
+/* =======================================================
 QUOTE
-=========================== */
+======================================================= */
 
 const quote={
 text:"Der Weg entsteht beim Gehen.",
@@ -302,31 +448,19 @@ author:"Franz Kafka"
 
 
 
-/* ===========================
+/* =======================================================
 RESPONSE
-=========================== */
+======================================================= */
 
 res.status(200).json({
 
 version,
-build,
 timestamp,
-
 news,
 regional,
 events,
-
 markets,
-
-crypto:{
-bitcoin,
-nexo,
-links:{
-bitcoin:"https://www.tradingview.com/symbols/BTCUSD/",
-nexo:"https://www.tradingview.com/symbols/NEXOUSD/"
-}
-},
-
+crypto:{bitcoin,nexo},
 weather,
 travel,
 recipe,
@@ -336,4 +470,4 @@ quote
 
 })
 
-}
+   }
