@@ -353,7 +353,7 @@ console.error("LOAD ERROR",err);
 function render(data){
 
 document.getElementById("meta").innerHTML =
-data.build + " • " + data.version
+data.timestamp.split(",")[0] + " • " + data.version
 
 
 /* NEWS */
