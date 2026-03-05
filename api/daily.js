@@ -164,31 +164,71 @@ text:"1 Zucchini • Olivenöl • Parmesan • 200°C • 10 Minuten",
 url:"https://www.chefkoch.de/rezepte/3988791628617063/Knusprige-Zucchini.html"
 }
 
-/* LANGUAGE ROTATION */
+/* LANGUAGE CATEGORIES + ROTATION */
 
-const languageDB=[
+const languageCategories={
 
-{en:"Where is the market?",es:"¿Dónde está el mercado?",de:"Wo ist der Markt?"},
+travel:[
+
 {en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
 {en:"Where is the train station?",es:"¿Dónde está la estación de tren?",de:"Wo ist der Bahnhof?"},
-{en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
-{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
-{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Was kostet das?"},
-{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
-{en:"A glass of water please",es:"Un vaso de agua por favor",de:"Ein Glas Wasser bitte"},
-{en:"Can we pay here?",es:"¿Podemos pagar aquí?",de:"Können wir hier bezahlen?"},
-{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
+{en:"Where is the airport?",es:"¿Dónde está el aeropuerto?",de:"Wo ist der Flughafen?"},
+{en:"Where is the city center?",es:"¿Dónde está el centro?",de:"Wo ist das Stadtzentrum?"},
+{en:"Where can I buy tickets?",es:"¿Dónde puedo comprar billetes?",de:"Wo kann ich Tickets kaufen?"},
+{en:"Which bus goes there?",es:"¿Qué autobús va allí?",de:"Welcher Bus fährt dorthin?"},
+{en:"How long does it take?",es:"¿Cuánto tarda?",de:"Wie lange dauert es?"},
+{en:"Is it far?",es:"¿Está lejos?",de:"Ist es weit?"},
+{en:"Left or right?",es:"¿Izquierda o derecha?",de:"Links oder rechts?"},
+{en:"Straight ahead",es:"Todo recto",de:"Geradeaus"}
 
-{en:"What time is it?",es:"¿Qué hora es?",de:"Wie spät ist es?"},
-{en:"What time does it start?",es:"¿A qué hora empieza?",de:"Wann beginnt es?"},
-{en:"Where can we eat?",es:"¿Dónde podemos comer?",de:"Wo können wir essen?"},
-{en:"Where can we dance?",es:"¿Dónde podemos bailar?",de:"Wo können wir tanzen?"},
-{en:"Is there live music tonight?",es:"¿Hay música en vivo esta noche?",de:"Gibt es heute Live-Musik?"},
-{en:"I like this place",es:"Me gusta este lugar",de:"Ich mag diesen Ort"},
+],
+
+restaurant:[
+
+{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
+{en:"The menu please",es:"La carta por favor",de:"Die Speisekarte bitte"},
+{en:"A beer please",es:"Una cerveza por favor",de:"Ein Bier bitte"},
+{en:"Red wine please",es:"Vino tinto por favor",de:"Rotwein bitte"},
+{en:"White wine please",es:"Vino blanco por favor",de:"Weißwein bitte"},
 {en:"This is delicious",es:"Esto está delicioso",de:"Das ist lecker"},
-{en:"Another one please",es:"Otro por favor",de:"Noch einen bitte"},
-{en:"Cheers!",es:"¡Salud!",de:"Prost!"},
+{en:"The bill please",es:"La cuenta por favor",de:"Die Rechnung bitte"},
+{en:"Together or separate?",es:"¿Juntos o separado?",de:"Zusammen oder getrennt?"},
+{en:"Keep the change",es:"Quédese con el cambio",de:"Stimmt so"},
+{en:"Another one please",es:"Otro por favor",de:"Noch einen bitte"}
+
+],
+
+dance:[
+
+{en:"Do you like salsa?",es:"¿Te gusta la salsa?",de:"Magst du Salsa?"},
 {en:"Let's dance",es:"Vamos a bailar",de:"Lass uns tanzen"},
+{en:"Do you want to dance?",es:"¿Quieres bailar?",de:"Möchtest du tanzen?"},
+{en:"Great music tonight",es:"Gran música esta noche",de:"Tolle Musik heute Abend"},
+{en:"Where can we dance?",es:"¿Dónde podemos bailar?",de:"Wo können wir tanzen?"},
+{en:"I love this song",es:"Me encanta esta canción",de:"Ich liebe dieses Lied"},
+{en:"One more dance?",es:"¿Otro baile?",de:"Noch ein Tanz?"},
+{en:"You dance very well",es:"Bailas muy bien",de:"Du tanzt sehr gut"},
+{en:"That was fun",es:"Fue divertido",de:"Das hat Spaß gemacht"},
+{en:"See you on the dance floor",es:"Nos vemos en la pista",de:"Wir sehen uns auf der Tanzfläche"}
+
+],
+
+camping:[
+
+{en:"Where is the campsite?",es:"¿Dónde está el camping?",de:"Wo ist der Campingplatz?"},
+{en:"One night please",es:"Una noche por favor",de:"Eine Nacht bitte"},
+{en:"Two nights please",es:"Dos noches por favor",de:"Zwei Nächte bitte"},
+{en:"Do you have electricity?",es:"¿Tiene electricidad?",de:"Haben Sie Strom?"},
+{en:"Where are the showers?",es:"¿Dónde están las duchas?",de:"Wo sind die Duschen?"},
+{en:"Where is the lake?",es:"¿Dónde está el lago?",de:"Wo ist der See?"},
+{en:"Beautiful nature here",es:"Hermosa naturaleza aquí",de:"Schöne Natur hier"},
+{en:"Perfect for hiking",es:"Perfecto para caminar",de:"Perfekt zum Wandern"},
+{en:"Let's make a fire",es:"Hagamos fuego",de:"Lass uns ein Feuer machen"},
+{en:"Good night under the stars",es:"Buenas noches bajo las estrellas",de:"Gute Nacht unter den Sternen"}
+
+],
+
+smalltalk:[
 
 {en:"Where are you from?",es:"¿De dónde eres?",de:"Woher kommst du?"},
 {en:"I am from Germany",es:"Soy de Alemania",de:"Ich komme aus Deutschland"},
@@ -199,48 +239,27 @@ const languageDB=[
 {en:"Very good",es:"Muy bien",de:"Sehr gut"},
 {en:"Not bad",es:"No está mal",de:"Nicht schlecht"},
 {en:"See you later",es:"Hasta luego",de:"Bis später"},
-{en:"Good night",es:"Buenas noches",de:"Gute Nacht"},
-
-{en:"Where is the harbor?",es:"¿Dónde está el puerto?",de:"Wo ist der Hafen?"},
-{en:"Can we rent a boat?",es:"¿Podemos alquilar un barco?",de:"Können wir ein Boot mieten?"},
-{en:"The sea is beautiful",es:"El mar es hermoso",de:"Das Meer ist wunderschön"},
-{en:"Let's go sailing",es:"Vamos a navegar",de:"Lass uns segeln"},
-{en:"I like snorkeling",es:"Me gusta hacer snorkel",de:"Ich schnorchle gern"},
-{en:"I like diving",es:"Me gusta bucear",de:"Ich tauche gern"},
-{en:"Where is the campsite?",es:"¿Dónde está el camping?",de:"Wo ist der Campingplatz?"},
-{en:"Do you have electricity?",es:"¿Tiene electricidad?",de:"Haben Sie Strom?"},
-{en:"One night please",es:"Una noche por favor",de:"Eine Nacht bitte"},
-{en:"We stay two nights",es:"Nos quedamos dos noches",de:"Wir bleiben zwei Nächte"},
-
-{en:"Where is the city center?",es:"¿Dónde está el centro?",de:"Wo ist das Stadtzentrum?"},
-{en:"Is it far?",es:"¿Está lejos?",de:"Ist es weit?"},
-{en:"Let's take a taxi",es:"Tomemos un taxi",de:"Nehmen wir ein Taxi"},
-{en:"Call a taxi please",es:"Llame un taxi por favor",de:"Rufen Sie bitte ein Taxi"},
-{en:"Which bus goes there?",es:"¿Qué autobús va allí?",de:"Welcher Bus fährt dorthin?"},
-{en:"Which platform?",es:"¿Qué andén?",de:"Welches Gleis?"},
-{en:"Where is the ticket office?",es:"¿Dónde está la taquilla?",de:"Wo ist der Ticketschalter?"},
-{en:"One ticket please",es:"Un billete por favor",de:"Eine Fahrkarte bitte"},
-{en:"Return ticket please",es:"Billete de ida y vuelta",de:"Hin- und Rückticket bitte"},
-{en:"Next stop please",es:"Próxima parada por favor",de:"Nächste Haltestelle bitte"},
-
-{en:"What do you recommend?",es:"¿Qué recomienda?",de:"Was empfehlen Sie?"},
-{en:"The menu please",es:"La carta por favor",de:"Die Speisekarte bitte"},
-{en:"Without onions please",es:"Sin cebolla por favor",de:"Ohne Zwiebeln bitte"},
-{en:"A beer please",es:"Una cerveza por favor",de:"Ein Bier bitte"},
-{en:"Red wine please",es:"Vino tinto por favor",de:"Rotwein bitte"},
-{en:"White wine please",es:"Vino blanco por favor",de:"Weißwein bitte"},
-{en:"The bill please",es:"La cuenta por favor",de:"Die Rechnung bitte"},
-{en:"Together or separate?",es:"¿Juntos o separado?",de:"Zusammen oder getrennt?"},
-{en:"Keep the change",es:"Quédese con el cambio",de:"Stimmt so"},
-{en:"Thank you very much",es:"Muchas gracias",de:"Vielen Dank"}
+{en:"Good night",es:"Buenas noches",de:"Gute Nacht"}
 
 ]
 
-const dayIndex=now.getDate()%languageDB.length
+}
+
+/* Kategorie Rotation */
+
+const categoryKeys=Object.keys(languageCategories)
+
+const dayIndex=Math.floor(Date.now()/86400000)
+
+const category=categoryKeys[dayIndex%categoryKeys.length]
+
+const list=languageCategories[category]
+
+const sentenceIndex=dayIndex%list.length
 
 const language=[
-languageDB[dayIndex],
-languageDB[(dayIndex+1)%languageDB.length]
+list[sentenceIndex],
+list[(sentenceIndex+1)%list.length]
 ]
 
 const ukulele={
