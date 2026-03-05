@@ -424,8 +424,6 @@ LANGUAGE ROTATION
 
 const languageDB=[
 
-const languageDB=[
-
 {en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
 {en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
 {en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
