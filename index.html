@@ -24,20 +24,6 @@ font-size:44px;
 margin-bottom:8px;
 }
 
-/* Kompass Nadel */
-
-.compass{
-display:inline-block;
-margin-left:10px;
-animation:compassSpin 6s ease-in-out infinite;
-}
-
-@keyframes compassSpin{
-0%{transform:rotate(0deg)}
-50%{transform:rotate(12deg)}
-100%{transform:rotate(0deg)}
-}
-  
 .subtitle{opacity:.8}
 
 .meta{
@@ -103,7 +89,7 @@ margin-bottom:22px;
 
 .newsSource{
 font-size:13px;
-opacity:.6;
+opacity:.7;
 margin-top:4px;
 }
 
@@ -127,14 +113,20 @@ margin-left:50px;
 
 .trendItem{text-align:center}
 
+.flag{
+font-size:20px;
+margin-right:6px;
+}
+
 </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
-<h1>🌍 GLOBAL SOUL <span class="compass">🧭</span></h1>
+<h1>🌍 GLOBAL SOUL</h1>
 <div class="subtitle">Claudia’s Daily Compass</div>
 <div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
 <div id="meta" class="meta"></div>
@@ -180,34 +172,40 @@ margin-left:50px;
 <div id="regionalBlock"></div>
 </div>
 
+
+<div class="section">
+<h2>Veranstaltungen</h2>
+<div id="eventsBlock"></div>
+</div>
+
+
 <div class="section">
 <h2>🌍 Reiseimpuls</h2>
 <div id="travelBlock"></div>
 </div>
 
-<div class="section">
-<h2>🍲 Airfryer Rezept</h2>
-<div id="recipeBlock"></div>
-</div>
 
 <div class="section">
-<h2>🌍 Sprachimpuls</h2>
+<h2>🗣 Sprachimpuls</h2>
 <div id="languageBlock"></div>
 </div>
 
+
 <div class="section">
 <h2>🎸 Ukulele</h2>
-<div id="ukuleleBlock"></div>
+<div id="ukeBlock"></div>
 </div>
+
+
+<div class="section">
+<h2>🍳 Airfryer Rezept</h2>
+<div id="recipeBlock"></div>
+</div>
+
 
 <div class="section">
 <h2>✨ Zitat des Tages</h2>
 <div id="quoteBlock"></div>
-</div>
-  
-<div class="section">
-<h2>Veranstaltungen</h2>
-<div id="eventsBlock"></div>
 </div>
 
 
@@ -281,7 +279,7 @@ async function loadData(){
 
 try{
 
-const res=await fetch("/api/daily",{cache:"no-store"});
+const res=await fetch("/api/daily");
 const data=await res.json();
 
 render(data);
@@ -302,6 +300,7 @@ document.getElementById("meta").innerText =
 data.timestamp+" • v"+data.version;
 
 
+
 /* NEWS */
 
 if(data.news){
@@ -320,6 +319,7 @@ data.news.map(n=>`
 }
 
 
+
 /* MARKETS */
 
 document.getElementById("daxValue").innerText =
@@ -327,6 +327,7 @@ data.markets?.dax?.value ?? "-";
 
 document.getElementById("eurusdValue").innerText =
 data.markets?.eurusd?.value ?? "-";
+
 
 
 /* CRYPTO */
@@ -364,6 +365,7 @@ data.regional.map(r=>`
 }
 
 
+
 /* EVENTS */
 
 if(data.events?.week){
@@ -391,6 +393,8 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 }
 
+
+
 /* TRAVEL */
 
 if(data.travel){
@@ -408,26 +412,6 @@ document.getElementById("travelBlock").innerHTML=`
 }
 
 
-/* RECIPE */
-
-if(data.recipe){
-
-document.getElementById("recipeBlock").innerHTML=`
-
-<div class="newsItem">
-<div style="font-weight:600">${data.recipe.title}</div>
-<div class="newsSource">
-${data.recipe.ingredients.join(", ")}
-</div>
-<div class="newsSource">
-${data.recipe.temperature} • ${data.recipe.time}
-</div>
-</div>
-
-`;
-
-}
-
 
 /* LANGUAGE */
 
@@ -436,30 +420,56 @@ if(data.language){
 document.getElementById("languageBlock").innerHTML=`
 
 <div class="newsItem">
-<div><b>Deutsch:</b> ${data.language.de}</div>
-<div><b>English:</b> ${data.language.en}</div>
-<div><b>Español:</b> ${data.language.es}</div>
+<span class="flag">🇬🇧</span> ${data.language.en}
+</div>
+
+<div class="newsItem">
+<span class="flag">🇪🇸</span> ${data.language.es}
+</div>
+
+<div class="newsItem">
+<span class="flag">🇩🇪</span> ${data.language.de}
 </div>
 
 `;
 
 }
+
 
 
 /* UKULELE */
 
 if(data.ukulele){
 
-document.getElementById("ukuleleBlock").innerHTML=`
+document.getElementById("ukeBlock").innerHTML=`
 
 <div class="newsItem">
-<div style="font-weight:600">${data.ukulele.chords}</div>
-<div class="newsSource">${data.ukulele.tip}</div>
+<div style="font-weight:600">${data.ukulele.song}</div>
+<div class="newsSource">${data.ukulele.chords}</div>
 </div>
 
 `;
 
 }
+
+
+
+/* RECIPE */
+
+if(data.recipe){
+
+document.getElementById("recipeBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.recipe.title}</div>
+<div class="newsSource">${data.recipe.text}</div>
+<a href="${data.recipe.url}" target="_blank" class="news-link">Rezept →</a>
+</div>
+
+`;
+
+}
+
 
 
 /* QUOTE */
@@ -469,14 +479,16 @@ if(data.quote){
 document.getElementById("quoteBlock").innerHTML=`
 
 <div class="newsItem">
-<div style="font-style:italic">"${data.quote.text}"</div>
+"${data.quote.text}"
 <div class="newsSource">${data.quote.author}</div>
 </div>
 
 `;
 
 }
-  
+
+
+
 /* WEATHER */
 
 document.getElementById("weatherNow").innerHTML =
