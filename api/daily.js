@@ -1,4 +1,4 @@
-/* ===========================
+%/* ===========================
 GLOBAL SOUL v27.1.0 STABLE
 ============================ */
 
@@ -424,18 +424,70 @@ LANGUAGE ROTATION
 
 const languageDB=[
 
-{en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
-{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
-{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Wie viel kostet das?"},
-{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
-{en:"I would like a coffee.",es:"Quiero un café.",de:"Ich hätte gern einen Kaffee."},
-{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
-{en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?",de:"Kann ich mit Karte bezahlen?"},
-{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
-{en:"One moment please.",es:"Un momento por favor.",de:"Einen Moment bitte."},
-{en:"See you tomorrow.",es:"Hasta mañana.",de:"Bis morgen."}
+const languageDB=[
 
-]
+{en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
+{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
+{en:"Where can I buy tickets?",es:"¿Dónde puedo comprar billetes?",de:"Wo kann ich Tickets kaufen?"},
+{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Wie viel kostet das?"},
+{en:"Do you accept card?",es:"¿Acepta tarjeta?",de:"Akzeptieren Sie Karte?"},
+{en:"Cash only?",es:"¿Solo efectivo?",de:"Nur Bargeld?"},
+{en:"Two coffees please.",es:"Dos cafés por favor.",de:"Zwei Kaffee bitte."},
+{en:"One beer please.",es:"Una cerveza por favor.",de:"Ein Bier bitte."},
+{en:"A glass of water please.",es:"Un vaso de agua por favor.",de:"Ein Glas Wasser bitte."},
+
+{en:"I would like breakfast.",es:"Quiero desayunar.",de:"Ich möchte frühstücken."},
+{en:"Is breakfast included?",es:"¿El desayuno está incluido?",de:"Ist Frühstück inklusive?"},
+{en:"What time is breakfast?",es:"¿A qué hora es el desayuno?",de:"Wann ist Frühstück?"},
+{en:"Is there WiFi?",es:"¿Hay wifi?",de:"Gibt es WLAN?"},
+{en:"What is the WiFi password?",es:"¿Cuál es la contraseña del wifi?",de:"Wie ist das WLAN Passwort?"},
+{en:"Can I pay here?",es:"¿Puedo pagar aquí?",de:"Kann ich hier bezahlen?"},
+{en:"Can I sit here?",es:"¿Puedo sentarme aquí?",de:"Kann ich hier sitzen?"},
+{en:"Is this seat free?",es:"¿Está libre este asiento?",de:"Ist dieser Platz frei?"},
+{en:"Can I take this?",es:"¿Puedo llevar esto?",de:"Kann ich das nehmen?"},
+{en:"Is this local food?",es:"¿Es comida local?",de:"Ist das lokale Küche?"},
+
+{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
+{en:"I speak a little Spanish.",es:"Hablo un poco de español.",de:"Ich spreche ein wenig Spanisch."},
+{en:"Could you repeat that?",es:"¿Puede repetir?",de:"Können Sie das wiederholen?"},
+{en:"Please speak slowly.",es:"Por favor hable más despacio.",de:"Bitte langsamer sprechen."},
+{en:"I understand.",es:"Entiendo.",de:"Ich verstehe."},
+{en:"I do not understand.",es:"No entiendo.",de:"Ich verstehe nicht."},
+{en:"Just a moment please.",es:"Un momento por favor.",de:"Einen Moment bitte."},
+{en:"No problem.",es:"No hay problema.",de:"Kein Problem."},
+{en:"Thank you very much.",es:"Muchas gracias.",de:"Vielen Dank."},
+{en:"You're welcome.",es:"De nada.",de:"Gern geschehen."},
+
+{en:"Good morning.",es:"Buenos días.",de:"Guten Morgen."},
+{en:"Good afternoon.",es:"Buenas tardes.",de:"Guten Tag."},
+{en:"Good evening.",es:"Buenas noches.",de:"Guten Abend."},
+{en:"See you later.",es:"Hasta luego.",de:"Bis später."},
+{en:"See you tomorrow.",es:"Hasta mañana.",de:"Bis morgen."},
+{en:"Have a nice day.",es:"Que tenga buen día.",de:"Schönen Tag."},
+{en:"Enjoy your meal.",es:"Buen provecho.",de:"Guten Appetit."},
+{en:"Welcome!",es:"¡Bienvenido!",de:"Willkommen!"},
+{en:"Nice to meet you.",es:"Encantado.",de:"Freut mich."},
+{en:"How are you?",es:"¿Cómo estás?",de:"Wie geht es dir?"},
+
+{en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
+{en:"Where is the harbor?",es:"¿Dónde está el puerto?",de:"Wo ist der Hafen?"},
+{en:"Where is the market?",es:"¿Dónde está el mercado?",de:"Wo ist der Markt?"},
+{en:"Where is the city center?",es:"¿Dónde está el centro?",de:"Wo ist das Zentrum?"},
+{en:"Where is the supermarket?",es:"¿Dónde está el supermercado?",de:"Wo ist der Supermarkt?"},
+{en:"Where is the pharmacy?",es:"¿Dónde está la farmacia?",de:"Wo ist die Apotheke?"},
+{en:"Where is the hospital?",es:"¿Dónde está el hospital?",de:"Wo ist das Krankenhaus?"},
+{en:"Where is the taxi?",es:"¿Dónde hay taxi?",de:"Wo gibt es ein Taxi?"},
+{en:"Where can I rent a bike?",es:"¿Dónde puedo alquilar una bici?",de:"Wo kann ich ein Fahrrad mieten?"},
+{en:"Where can I park?",es:"¿Dónde puedo aparcar?",de:"Wo kann ich parken?"},
+
+{en:"Is it far?",es:"¿Está lejos?",de:"Ist es weit?"},
+{en:"Is it near?",es:"¿Está cerca?",de:"Ist es nah?"},
+{en:"Turn left.",es:"Gire a la izquierda.",de:"Links abbiegen."},
+{en:"Turn right.",es:"Gire a la derecha.",de:"Rechts abbiegen."},
+{en:"Go straight.",es:"Todo recto.",de:"Geradeaus gehen."},
+{en:"Stop here please.",es:"Pare aquí por favor.",de:"Hier bitte anhalten."},
+{en:"How long does it take?",es:"¿Cuánto tarda?",de:"Wie lange dauert es
 
 const langIndex=Math.floor(Date.now()/86400000)%languageDB.length
 const language=[languageDB[langIndex]]
