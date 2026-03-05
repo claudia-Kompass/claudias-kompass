@@ -24,6 +24,20 @@ font-size:44px;
 margin-bottom:8px;
 }
 
+/* Kompass Nadel */
+
+.compass{
+display:inline-block;
+margin-left:10px;
+animation:compassSpin 6s ease-in-out infinite;
+}
+
+@keyframes compassSpin{
+0%{transform:rotate(0deg)}
+50%{transform:rotate(12deg)}
+100%{transform:rotate(0deg)}
+}
+  
 .subtitle{opacity:.8}
 
 .meta{
