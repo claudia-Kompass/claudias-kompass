@@ -267,7 +267,7 @@ async function loadData(){
 
 try{
 
-const res=await fetch("/api/daily");
+const res=await fetch("/api/daily",{cache:"no-store"});
 const data=await res.json();
 
 render(data);
