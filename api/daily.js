@@ -87,10 +87,31 @@ const hours=d.hourly.time
 const temps=d.hourly.temperature_2m
 const codes=d.hourly.weathercode
 
-function findHour(t){
-const i=hours.findIndex(h=>h.includes(t))
-if(i>-1){return{temp:temps[i],code:codes[i]}}
+function findHour(target){
+
+const today=new Date().toISOString().split("T")[0]
+
+const index=hours.findIndex(h=>h.startsWith(today+"T"+target))
+
+if(index>-1){
+
+let code=codes[index]
+
+/* Nachtlogik */
+
+if(target==="21:00" && code===0){
+code=100
+}
+
+return{
+temp:temps[index],
+code
+}
+
+}
+
 return{temp:0,code:0}
+
 }
 
 weather.trend.morning=findHour("09:00")
