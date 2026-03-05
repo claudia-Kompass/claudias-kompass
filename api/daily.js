@@ -39,7 +39,7 @@ if(ua.length < 5){
 const version = "23.0.0";
 const now = new Date();
 const timestamp = now.toLocaleString("de-DE", { timeZone: "Europe/Berlin" });
-const marketDate = now.toLocaleDateString("de-DE");
+const marketDate = now.toLocaleDateString("de-DE", { timeZone: "Europe/Berlin" });
 
 /* -----------------------------
    HELPERS
