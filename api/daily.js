@@ -1,6 +1,6 @@
-/* =========
+/* ===========================
 GLOBAL SOUL v27.1.0 STABLE
-============ */
+============================ */
 
 module.exports = async function handler(req,res){
 
