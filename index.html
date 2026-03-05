@@ -577,7 +577,20 @@ data.weather.trend.evening.temp+"°C";
 
 }
 
+function toggleLang(card){
+card.classList.toggle("open")
+}
 
+function speak(e,lang,text){
+
+e.stopPropagation()
+
+const utterance=new SpeechSynthesisUtterance(text)
+utterance.lang=lang
+
+speechSynthesis.speak(utterance)
+
+}
 
 window.addEventListener("load",loadData);
 
