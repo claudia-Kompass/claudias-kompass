@@ -552,18 +552,95 @@ data.language.map(l=>`
 
 /* UKULELE */
 
-if(data.ukulele){
+const ukeDB=[
+
+{
+title:"Pop Progression",
+chart:`C      G      Am     F
+A|---3-|---2-|---0-|---0-
+E|---0-|---3-|---0-|---1-
+C|---0-|---2-|---0-|---0-
+G|---0-|---0-|---2-|---2-`,
+strum:"↓ ↓↑ ↑↓↑",
+pick:"G → C → E → A",
+tempo:"90 bpm"
+},
+
+{
+title:"Island Groove",
+chart:`C      F      G
+A|---3-|---0-|---2-
+E|---0-|---1-|---3-
+C|---0-|---0-|---2-
+G|---0-|---2-|---0-`,
+strum:"↓ ↓ ↑",
+pick:"G → E → C → A",
+tempo:"85 bpm"
+},
+
+{
+title:"Ballad Pattern",
+chart:`Am     F      C      G
+A|---0-|---0-|---3-|---2-
+E|---0-|---1-|---0-|---3-
+C|---0-|---0-|---0-|---2-
+G|---2-|---2-|---0-|---0-`,
+strum:"↓ ↓↓ ↑↓",
+pick:"G → C → E → A",
+tempo:"70 bpm"
+},
+
+{
+title:"Easy Blues",
+chart:`C      F      G
+A|---3-|---0-|---2-
+E|---0-|---1-|---3-
+C|---0-|---0-|---2-
+G|---0-|---2-|---0-`,
+strum:"↓ ↓ ↓ ↑",
+pick:"G → C → E → C",
+tempo:"95 bpm"
+},
+
+{
+title:"Reggae Feel",
+chart:`G      C      D
+A|---2-|---3-|---0-
+E|---3-|---0-|---2-
+C|---2-|---0-|---2-
+G|---0-|---0-|---2-`,
+strum:"↓   ↑ ↓   ↑",
+pick:"G → E → C → A",
+tempo:"80 bpm"
+}
+
+]
+
+const ukeIndex=Math.floor(Date.now()/86400000)%ukeDB.length
+const uke=ukeDB[ukeIndex]
 
 document.getElementById("ukeBlock").innerHTML=`
 
-<div class="newsItem">
-<div style="font-weight:600">${data.ukulele.song}</div>
-<div class="newsSource">${data.ukulele.chords}</div>
-</div>
+<div class="ukuleleTitle">🎸 Ukulele des Tages</div>
 
-`;
+<pre class="ukeChart">
 
-}
+${uke.title}
+
+${uke.chart}
+
+Strum
+${uke.strum}
+
+Fingerpicking
+${uke.pick}
+
+Tempo
+${uke.tempo}
+
+</pre>
+
+`
 
 
 
