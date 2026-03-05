@@ -524,9 +524,17 @@ if(data.recipe){
 document.getElementById("recipeBlock").innerHTML=`
 
 <div class="newsItem">
+
 <div style="font-weight:600">${data.recipe.title}</div>
-<div class="newsSource">${data.recipe.text}</div>
+
+<div class="newsSource">${data.recipe.ingredients}</div>
+
+<div class="newsSource">
+🔥 ${data.recipe.temp} • ⏱ ${data.recipe.time} • 🍽 ${data.recipe.portion} Portion
+</div>
+
 <a href="${data.recipe.url}" target="_blank" class="news-link">Rezept →</a>
+
 </div>
 
 `;
