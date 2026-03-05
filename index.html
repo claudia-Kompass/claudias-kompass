@@ -266,6 +266,8 @@ vertical-align:middle;
 
 function weatherIcon(code){
 
+if(code===100) return "🌙";
+
 if(code===0) return "☀️";
 if(code<=2) return "🌤️";
 if(code===3) return "☁️";
