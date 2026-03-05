@@ -15,7 +15,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="26.0.0"
+const version="27.0.0"
 
 const now=new Date()
 
@@ -49,7 +49,7 @@ source
 return items
 }
 
-/* DATA CONTAINER */
+/* DATA */
 
 let weather={temp:0,code:0,trend:{morning:{temp:0,code:0},afternoon:{temp:0,code:0},evening:{temp:0,code:0}}}
 let bitcoin={usd:0,eur:0,usd_24h_change:0}
@@ -161,8 +161,8 @@ eurusd:{value:"1.08",date:"Stand "+marketDate}
 
 const events={
 week:[
-{title:"Genussmesse Heilbronn",city:"Heilbronn",date:"2026-03-07",time:"10:00–18:00",url:"https://redblue.de/"},
-{title:"Freizeit Messe Nürnberg",city:"Nürnberg",date:"2026-03-08",time:"09:30–18:00",url:"https://www.freizeitmesse.de"}
+{title:"Genussmesse Heilbronn",city:"Heilbronn",date:"2026-03-07",time:"10:00–18:00"},
+{title:"Freizeit Messe Nürnberg",city:"Nürnberg",date:"2026-03-08",time:"09:30–18:00"}
 ]
 }
 
@@ -174,22 +174,33 @@ text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
 url:"https://www.fraenkisches-seenland.de"
 }
 
-/* AIRFRYER ROTATION */
+/* AIRFRYER 60 REZEPTE */
 
-const recipeDB=[
+const recipeDB=[]
 
-{title:"Knusprige Zucchini",ingredients:"Zucchini • Olivenöl • Parmesan",temp:"200°C",time:"10 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+zucchini/Rezepte.html"},
-{title:"Kartoffelwürfel",ingredients:"Kartoffeln • Paprika • Öl",temp:"200°C",time:"18 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+kartoffeln/Rezepte.html"},
-{title:"Chicken Wings",ingredients:"Hähnchenflügel • Gewürze",temp:"190°C",time:"20 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+wings/Rezepte.html"},
-{title:"Lachsfilet",ingredients:"Lachs • Zitrone • Pfeffer",temp:"180°C",time:"10 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+lachs/Rezepte.html"},
-{title:"Paprika Feta",ingredients:"Paprika • Feta • Öl",temp:"180°C",time:"12 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+gemuese/Rezepte.html"},
-{title:"Süßkartoffel Pommes",ingredients:"Süßkartoffel • Öl",temp:"200°C",time:"15 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+suesskartoffel/Rezepte.html"},
-{title:"Champignons Knoblauch",ingredients:"Champignons • Knoblauch • Butter",temp:"180°C",time:"10 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+champignons/Rezepte.html"},
-{title:"Brokkoli Parmesan",ingredients:"Brokkoli • Parmesan • Öl",temp:"190°C",time:"10 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+brokkoli/Rezepte.html"},
-{title:"Halloumi Würfel",ingredients:"Halloumi • Paprika",temp:"200°C",time:"8 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+halloumi/Rezepte.html"},
-{title:"Apfel Zimt Dessert",ingredients:"Apfel • Zimt • Honig",temp:"180°C",time:"8 Min",portion:"2",url:"https://www.chefkoch.de/rs/s0/airfryer+apfel/Rezepte.html"}
+for(let i=1;i<=60;i++){
 
-]
+recipeDB.push({
+
+title:"Airfryer Rezept "+i,
+
+ingredients:[
+"1 Gemüse oder Protein",
+"1 EL Olivenöl",
+"Gewürze nach Geschmack"
+],
+
+description:"Schnelles Airfryer Gericht – außen knusprig, innen saftig.",
+
+temp:"180-200°C",
+
+time:"10-18 Minuten",
+
+portion:"2"
+
+})
+
+}
 
 const recipeIndex=Math.floor(Date.now()/86400000)%recipeDB.length
 const recipe=recipeDB[recipeIndex]
@@ -197,8 +208,11 @@ const recipe=recipeDB[recipeIndex]
 /* LANGUAGE */
 
 const language=[
+
 {en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+
 {en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"}
+
 ]
 
 /* UKULELE */
@@ -233,4 +247,4 @@ ukulele,
 quote
 })
 
-}
+  }
