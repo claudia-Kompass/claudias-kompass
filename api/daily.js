@@ -184,11 +184,29 @@ text:"1 Zucchini • Olivenöl • Parmesan • 200°C • 10 Minuten",
 url:"https://www.chefkoch.de/rezepte/3988791628617063/Knusprige-Zucchini.html"
 }
 
-const language={
-en:"Where is the market?",
-es:"¿Dónde está el mercado?",
-de:"Wo ist der Markt?"
-}
+/* LANGUAGE ROTATION */
+
+const languageDB=[
+
+{en:"Where is the market?",es:"¿Dónde está el mercado?",de:"Wo ist der Markt?"},
+{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Was kostet das?"},
+{en:"Where can we dance tonight?",es:"¿Dónde podemos bailar esta noche?",de:"Wo können wir heute Abend tanzen?"},
+{en:"Do you like salsa music?",es:"¿Te gusta la música salsa?",de:"Magst du Salsa Musik?"},
+{en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
+{en:"I would like a coffee",es:"Quisiera un café",de:"Ich hätte gern einen Kaffee"},
+{en:"Where is the bus station?",es:"¿Dónde está la estación de autobuses?",de:"Wo ist der Busbahnhof?"},
+{en:"Can you help me?",es:"¿Puedes ayudarme?",de:"Kannst du mir helfen?"},
+{en:"What time does it start?",es:"¿A qué hora empieza?",de:"Wann beginnt es?"},
+{en:"Is there live music tonight?",es:"¿Hay música en vivo esta noche?",de:"Gibt es heute Live Musik?"}
+
+]
+
+const dayIndex=now.getDate()%languageDB.length
+
+const language=[
+languageDB[dayIndex],
+languageDB[(dayIndex+1)%languageDB.length]
+]
 
 const ukulele={
 song:"Pop Progression",
