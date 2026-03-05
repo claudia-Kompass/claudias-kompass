@@ -423,11 +423,15 @@ data.regional.map(r=>`
 
 
 /* EVENTS */
+/* EVENTS */
+
+let html=""
+
+/* Events dieser Woche */
 
 if(data.events?.week){
 
-document.getElementById("eventsBlock").innerHTML =
-data.events.week.map(e=>`
+html+=data.events.week.map(e=>`
 
 <div class="newsItem">
 
@@ -445,10 +449,44 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
-`).join("");
+`).join("")
 
 }
 
+
+/* Wochenmärkte */
+
+if(data.events?.markets){
+
+html+=`
+
+<div style="margin-top:20px;font-weight:600;opacity:.9">
+🧺 Wochenmärkte
+</div>
+
+`
+
+html+=data.events.markets.map(m=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${m.title}</div>
+
+<div class="newsSource">
+${m.location}
+</div>
+
+<div class="newsSource">
+${m.day} • ${m.time}
+</div>
+
+</div>
+
+`).join("")
+
+}
+
+document.getElementById("eventsBlock").innerHTML=html
 
 
 /* TRAVEL */
