@@ -15,7 +15,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="27.1.0"
+const version="27.1.0-STABLE"
 
 const now=new Date()
 
