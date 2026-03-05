@@ -375,14 +375,15 @@ data.news.map(n=>`
 }
 
 
-
 /* MARKETS */
 
-document.getElementById("daxValue").innerText =
-data.markets?.dax?.value ?? "-";
+document.getElementById("daxValue").innerHTML =
+(data.markets?.dax?.value ?? "-") +
+' <a href="https://www.tradingview.com/symbols/INDEX-DAX/" target="_blank" class="info">Analyse →</a>';
 
-document.getElementById("eurusdValue").innerText =
-data.markets?.eurusd?.value ?? "-";
+document.getElementById("eurusdValue").innerHTML =
+(data.markets?.eurusd?.value ?? "-") +
+' <a href="https://www.tradingview.com/symbols/EURUSD/" target="_blank" class="info">Analyse →</a>';
 
 
 
