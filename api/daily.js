@@ -157,21 +157,180 @@ dax:{value:"18.742",date:"Stand "+marketDate},
 eurusd:{value:"1.08",date:"Stand "+marketDate}
 }
 
-/* EVENTS */
+/* =========================
+   EVENT ENGINE
+========================= */
 
-const events={
-week:[
-{title:"Genussmesse Heilbronn",city:"Heilbronn",date:"2026-03-07",time:"10:00–18:00"},
-{title:"Freizeit Messe Nürnberg",city:"Nürnberg",date:"2026-03-08",time:"09:30–18:00"}
-]
+function startOfDay(d){
+const x=new Date(d)
+x.setHours(0,0,0,0)
+return x
 }
 
-/* TRAVEL */
+function endOfWeek(d){
+const x=new Date(d)
+const day=x.getDay()||7
+if(day!==7)x.setDate(x.getDate()+(7-day))
+x.setHours(23,59,59,999)
+return x
+}
 
-const travel={
-title:"Altmühlsee – Fränkisches Seenland",
-text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
+function inRange(date,a,b){
+return date>=a && date<=b
+}
+
+/* EVENTS DATABASE */
+
+const eventDB=[
+
+{
+title:"Genussmesse Heilbronn",
+city:"Heilbronn",
+location:"redblue Messehalle",
+date:"2026-03-07",
+time:"10:00–18:00",
+url:"https://redblue.de"
+},
+
+{
+title:"Freizeit Messe Nürnberg",
+city:"Nürnberg",
+location:"Messezentrum Nürnberg",
+date:"2026-03-08",
+time:"09:30–18:00",
+url:"https://www.freizeitmesse.de"
+},
+
+{
+title:"Consumenta Nürnberg",
+city:"Nürnberg",
+location:"Messezentrum Nürnberg",
+date:"2026-10-25",
+time:"10:00–18:00",
+url:"https://www.consumenta.de"
+},
+
+{
+title:"CMT Stuttgart",
+city:"Stuttgart",
+location:"Messe Stuttgart",
+date:"2026-01-18",
+time:"10:00–18:00",
+url:"https://www.messe-stuttgart.de/cmt"
+}
+
+]
+
+/* JÄHRLICHE EVENTS */
+
+const annualEvents=[
+
+{
+title:"Haller Frühling",
+city:"Schwäbisch Hall",
+time:"Innenstadt",
+url:"https://www.schwaebischhall.de"
+},
+
+{
+title:"Kuchen & Brunnenfest",
+city:"Schwäbisch Hall",
+time:"Altstadt",
+url:"https://www.schwaebischhall.de"
+},
+
+{
+title:"Jakobimarkt",
+city:"Schwäbisch Hall",
+time:"Innenstadt",
+url:"https://www.schwaebischhall.de"
+},
+
+{
+title:"Sommernachtsfest",
+city:"Schwäbisch Hall",
+time:"Altstadt",
+url:"https://www.schwaebischhall.de"
+},
+
+{
+title:"Crailsheimer Volksfest",
+city:"Crailsheim",
+time:"Volksfestplatz",
+url:"https://www.crailsheim.de"
+}
+
+]
+
+/* WOCHENMÄRKTE */
+
+const weeklyMarkets=[
+
+{
+title:"Wochenmarkt Schwäbisch Hall",
+location:"Marktplatz 74523 Schwäbisch Hall",
+day:"Mittwoch & Samstag",
+time:"07:00–13:00"
+},
+
+{
+title:"Wochenmarkt Crailsheim",
+location:"Marktplatz 74564 Crailsheim",
+day:"Samstag",
+time:"07:00–13:00"
+}
+
+]
+
+/* SEEN EVENTS */
+
+const lakes=[
+
+{
+title:"Altmühlsee Veranstaltungen",
+city:"Gunzenhausen",
+url:"https://www.altmuehlsee.de"
+},
+
+{
+title:"Brombachsee Veranstaltungen",
+city:"Ramsberg",
 url:"https://www.fraenkisches-seenland.de"
+}
+
+]
+
+/* FILTER LOGIK */
+
+const todayStart=startOfDay(now)
+
+let week=[]
+let upcoming=[]
+
+eventDB.forEach(e=>{
+
+if(!e.date){
+upcoming.push(e)
+return
+}
+
+const d=startOfDay(new Date(e.date))
+
+if(inRange(d,todayStart,endOfWeek(now))){
+week.push(e)
+}else{
+upcoming.push(e)
+}
+
+})
+
+const events={
+week,
+upcoming,
+markets:weeklyMarkets,
+annual:annualEvents,
+lakes
+}-seenland.de"
 }
 
 /* AIRFRYER 60 REZEPTE */
