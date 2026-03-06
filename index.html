@@ -747,7 +747,19 @@ speechSynthesis.speak(utterance)
 
 }
 
-window.addEventListener("load",loadData);
+let compassClicks = 0;
+
+document.getElementById("compass").addEventListener("click", () => {
+
+compassClicks++;
+
+if(compassClicks >= 3){
+
+document.getElementById("versionTag").style.opacity = "0.35";
+
+}
+
+});
 
 </script>
 
