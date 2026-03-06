@@ -732,16 +732,14 @@ ${data.ukulele.tabs}
 
 /* Akkorde aus Tabs erkennen */
 
-const chords = data.ukulele.tabs
+const chords = [...new Set(
+data.ukulele.tabs
 .split(/\s+/)
 .filter(c => /^[A-G]/.test(c))
+)]
 
 document.querySelector(".uke-chords").innerHTML =
-chords.map(c =>
-`<img src="https://raw.githubusercontent.com/ritterim/ukulele-chords/master/png/${c}.png" alt="${c}">`
-).join("")
-
-        }
+chords.map(c => drawUkeChord(c)).join("")
 
 
 /* RECIPE */
