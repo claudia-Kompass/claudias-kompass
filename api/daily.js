@@ -604,7 +604,7 @@ const today = new Date();
 const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
 
 const song = ukuleleSongs[dayIndex];
-
+const ukulele = song;
 
 /* =======================================================
 QUOTE
