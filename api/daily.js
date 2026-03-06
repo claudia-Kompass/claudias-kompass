@@ -430,7 +430,27 @@ const language=[languageDB[langIndex]]
 /* =======================================================
 UKULELE
 ======================================================= */
+const today = new Date();
+const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
 
+const song = ukuleleSongs[dayIndex];
+const ukulele = song;
+
+  ukulele:{
+title:"Warm Sand",
+tabs:`C      Dm      G      C
+
+Strum
+↓ ↓ ↑ ↓
+
+Fingerpicking
+G → C → E → A
+
+Tempo
+82 bpm`
+  }
+
+  
 const ukuleleSongs = [
 
 {
@@ -600,25 +620,7 @@ tabs:`G   Em   C   D`
 
 
 
-const today = new Date();
-const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
 
-const song = ukuleleSongs[dayIndex];
-const ukulele = song;
-
-  ukulele:{
-title:"Warm Sand",
-tabs:`C      Dm      G      C
-
-Strum
-↓ ↓ ↑ ↓
-
-Fingerpicking
-G → C → E → A
-
-Tempo
-82 bpm`
-  }
 
    
 /* =======================================================
