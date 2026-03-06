@@ -486,7 +486,64 @@ return d.toLocaleDateString("de-DE");
 
 }
 
+/* =================================
+   UKULELE CHORD MAP
+================================= */
 
+const ukeChordMap = {
+C:[0,0,0,3],
+Dm:[2,2,1,0],
+G:[0,2,3,2],
+F:[2,0,1,0],
+Am:[2,0,0,0],
+Em:[0,4,3,2],
+D:[2,2,2,0],
+A:[2,1,0,0]
+}
+
+
+/* =================================
+   SVG CHORD RENDERER
+================================= */
+
+function drawUkeChord(name){
+
+const fing = ukeChordMap[name]
+if(!fing) return `<div>${name}</div>`
+
+const stringX=[10,25,40,55]
+const fretY=[20,35,50,65]
+
+let dots=""
+
+fing.forEach((f,i)=>{
+if(f>0){
+dots+=`<circle cx="${stringX[i]}" cy="${fretY[f-1]}" r="4"/>`
+}
+})
+
+return `
+<div class="uke-diagram">
+<div class="uke-name">${name}</div>
+
+<svg width="70" height="90">
+
+<line x1="10" y1="20" x2="55" y2="20"/>
+<line x1="10" y1="35" x2="55" y2="35"/>
+<line x1="10" y1="50" x2="55" y2="50"/>
+<line x1="10" y1="65" x2="55" y2="65"/>
+
+<line x1="10" y1="20" x2="10" y2="65"/>
+<line x1="25" y1="20" x2="25" y2="65"/>
+<line x1="40" y1="20" x2="40" y2="65"/>
+<line x1="55" y1="20" x2="55" y2="65"/>
+
+${dots}
+
+</svg>
+</div>
+`
+}
 
 async function loadData(){
 
