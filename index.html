@@ -762,7 +762,13 @@ compassClicks++;
 
 if(compassClicks >= 3){
 
-document.getElementById("versionTag").style.opacity = "0.35";
+const v = document.getElementById("versionTag");
+v.style.opacity = "0.6";
+
+setTimeout(()=>{
+v.style.opacity = "0";
+compassClicks = 0;
+},5000);
 
 }
 
