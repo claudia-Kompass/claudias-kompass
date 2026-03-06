@@ -606,6 +606,21 @@ const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
 const song = ukuleleSongs[dayIndex];
 const ukulele = song;
 
+  ukulele:{
+title:"Warm Sand",
+tabs:`C      Dm      G      C
+
+Strum
+↓ ↓ ↑ ↓
+
+Fingerpicking
+G → C → E → A
+
+Tempo
+82 bpm`
+  }
+
+   
 /* =======================================================
 QUOTE
 ======================================================= */
