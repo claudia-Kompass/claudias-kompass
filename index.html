@@ -230,6 +230,32 @@ border-radius:6px;
 padding:4px;
 }
 
+  .uke-chords{
+display:flex;
+gap:16px;
+margin-top:16px;
+flex-wrap:wrap;
+}
+
+.uke-diagram{
+text-align:center;
+color:#e6c27a;
+}
+
+.uke-name{
+font-size:14px;
+margin-bottom:4px;
+}
+
+.uke-diagram svg{
+background:white;
+border-radius:6px;
+padding:4px;
+}
+
+.uke-diagram circle{
+fill:#2c3e50;
+}
   
 .footer{
 display:flex;
@@ -479,6 +505,16 @@ console.error("LOAD ERROR",err);
 
 }
 
+  const ukeChordMap = {
+C:  [0,0,0,3],
+Dm: [2,2,1,0],
+G:  [0,2,3,2],
+F:  [2,0,1,0],
+Am: [2,0,0,0],
+Em: [0,4,3,2],
+D:  [2,2,2,0],
+A:  [2,1,0,0]
+}
 
 function render(data){
 
