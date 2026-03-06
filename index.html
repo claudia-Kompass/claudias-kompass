@@ -754,19 +754,25 @@ speechSynthesis.speak(utterance)
 
 }
 
+window.addEventListener("load",loadData);
+
 let compassClicks = 0;
 
-document.getElementById("compass").addEventListener("click", () => {
+window.addEventListener("load", () => {
+
+const compass = document.getElementById("compass");
+const version = document.getElementById("versionTag");
+
+compass.addEventListener("click", () => {
 
 compassClicks++;
 
 if(compassClicks >= 3){
 
-const v = document.getElementById("versionTag");
-v.style.opacity = "0.6";
+version.style.opacity = "0.6";
 
 setTimeout(()=>{
-v.style.opacity = "0";
+version.style.opacity = "0";
 compassClicks = 0;
 },5000);
 
@@ -774,8 +780,8 @@ compassClicks = 0;
 
 });
 
-window.addEventListener("load",loadData);
-
+});
+  
 </script>
 
 
