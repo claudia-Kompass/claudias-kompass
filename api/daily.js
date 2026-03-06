@@ -435,7 +435,7 @@ const ukuleleSongs = [
 
 {
 title:"Hawaii Flow",
-tabs:`C     Am     F      G
+tabs:`C   Am   F   G
 A|---3-|---0-|---0-|---2-
 E|---0-|---0-|---1-|---3-
 C|---0-|---0-|---0-|---2-
@@ -453,165 +453,152 @@ Tempo
 
 {
 title:"Island Breeze",
-tabs:`G     Em     C      D
-A|---2-|---2-|---3-|---0-
-E|---3-|---3-|---0-|---2-
-C|---2-|---4-|---0-|---2-
-G|---0-|---0-|---0-|---2-
-
-Strum
-↓ ↓ ↑ ↓`
+tabs:`G   Em   C   D`
 },
 
 {
 title:"Sunny Walk",
-tabs:`F     C     G     Am
-A|---0-|---3-|---2-|---0-
-E|---1-|---0-|---3-|---0-
-C|---0-|---0-|---2-|---0-
-G|---2-|---0-|---0-|---2-`
+tabs:`F   C   G   Am`
 },
 
 {
 title:"Ocean Mood",
-tabs:`Am    F     C     G
-A|---0-|---0-|---3-|---2-
-E|---0-|---1-|---0-|---3-
-C|---0-|---0-|---0-|---2-
-G|---2-|---2-|---0-|---0-`
+tabs:`Am   F   C   G`
 },
 
 {
 title:"Lazy Afternoon",
-tabs:`C     G     Am     F`
+tabs:`C   G   Am   F`
 },
 
 {
 title:"Tropical Drift",
-tabs:`D     A     G     A`
+tabs:`D   A   G   A`
 },
 
 {
 title:"Sunset Chords",
-tabs:`Em    C     G     D`
+tabs:`Em   C   G   D`
 },
 
 {
 title:"Beach Rhythm",
-tabs:`F     G     Em     Am`
+tabs:`F   G   Em   Am`
 },
 
 {
 title:"Palm Trees",
-tabs:`C     F     C     G`
+tabs:`C   F   C   G`
 },
 
 {
 title:"Island Steps",
-tabs:`G     D     Em     C`
+tabs:`G   D   Em   C`
 },
 
 {
 title:"Soft Waves",
-tabs:`Am    G     F     E`
+tabs:`Am   G   F   E`
 },
 
 {
 title:"Morning Coffee",
-tabs:`C     Am     Dm     G`
+tabs:`C   Am   Dm   G`
 },
 
 {
 title:"Blue Lagoon",
-tabs:`F     Am     G     C`
+tabs:`F   Am   G   C`
 },
 
 {
 title:"Golden Shore",
-tabs:`G     Em     Am     D`
+tabs:`G   Em   Am   D`
 },
 
 {
 title:"Island Pulse",
-tabs:`C     G     F     G`
+tabs:`C   G   F   G`
 },
 
 {
 title:"Summer Ride",
-tabs:`D     G     A     G`
+tabs:`D   G   A   G`
 },
 
 {
 title:"Ukulele Chill",
-tabs:`C     C7     F     G`
+tabs:`C   C7   F   G`
 },
 
 {
 title:"Evening Glow",
-tabs:`Am    C     G     F`
+tabs:`Am   C   G   F`
 },
 
 {
 title:"Quiet Bay",
-tabs:`F     C     Dm     Bb`
+tabs:`F   C   Dm   Bb`
 },
 
 {
 title:"Wind over Water",
-tabs:`G     C     D     G`
+tabs:`G   C   D   G`
 },
 
 {
 title:"Island Loop",
-tabs:`C     Am     F     G`
+tabs:`C   Am   F   G`
 },
 
 {
 title:"Slow Ocean",
-tabs:`Em    G     C     D`
+tabs:`Em   G   C   D`
 },
 
 {
 title:"Golden Rhythm",
-tabs:`F     G     Am     F`
+tabs:`F   G   Am   F`
 },
 
 {
 title:"Seaside Walk",
-tabs:`C     F     G     C`
+tabs:`C   F   G   C`
 },
 
 {
 title:"Sun Path",
-tabs:`D     A     Bm     G`
+tabs:`D   A   Bm   G`
 },
 
 {
 title:"Island Air",
-tabs:`Am    F     C     G`
+tabs:`Am   F   C   G`
 },
 
 {
 title:"Ukulele Drift",
-tabs:`G     C     Em     D`
+tabs:`G   C   Em   D`
 },
 
 {
 title:"Blue Horizon",
-tabs:`F     C     Am     Bb`
+tabs:`F   C   Am   Bb`
 },
 
 {
 title:"Warm Sand",
-tabs:`C     Dm     G     C`
+tabs:`C   Dm   G   C`
 },
 
 {
 title:"Pacific Light",
-tabs:`G     Em     C     D`
+tabs:`G   Em   C   D`
 }
 
-];
+]
+
+
 
 const today = new Date();
 const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
