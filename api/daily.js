@@ -605,9 +605,6 @@ const dayIndex = Math.floor(today / 86400000) % ukuleleSongs.length;
 
 const song = ukuleleSongs[dayIndex];
 
-document.getElementById("uke-title").textContent = song.title;
-document.getElementById("uke-tabs").textContent = song.tabs;
-
 
 /* =======================================================
 QUOTE
