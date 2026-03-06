@@ -630,20 +630,31 @@ data.language.map(l=>`
 
 /* UKULELE */
 
-<div class="ukulele-section">
+/* UKULELE */
 
-<h2>🎸 Ukulele</h2>
+if(data.ukulele){
+
+document.getElementById("ukeBlock").innerHTML = `
+
+<div class="ukulele-section">
 
 <div class="ukulele-card">
 
-<div class="ukulele-title" id="uke-title"></div>
-
-<pre class="ukulele-tabs" id="uke-tabs"></pre>
-
+<div class="ukulele-title">
+${data.ukulele.title}
 </div>
 
-</div>
+<pre class="ukulele-tabs">
+${data.ukulele.tabs}
 </pre>
+
+</div>
+
+</div>
+
+`;
+
+}
 
 `
 
