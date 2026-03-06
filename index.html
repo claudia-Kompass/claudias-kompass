@@ -560,44 +560,8 @@ ${dots}
 </div>
 `
 }
-const lines = data.ukulele.tabs.split("\n")
+  
 
-let strum = ""
-let picking = ""
-
-lines.forEach((l,i)=>{
-
-if(l.toLowerCase().includes("strum")){
-strum = lines[i+1] || ""
-}
-
-if(l.toLowerCase().includes("fingerpicking")){
-picking = lines[i+1] || ""
-}
-
-})
-
-/* STRUM anzeigen */
-
-if(strum){
-
-document.querySelector(".uke-strum").innerHTML = `
-<div class="uke-label">Strum</div>
-<div class="uke-strum-pattern">${strum}</div>
-`
-
-}
-
-/* FINGERPICKING anzeigen */
-
-if(picking){
-
-document.querySelector(".uke-picking").innerHTML = `
-<div class="uke-label">Fingerpicking</div>
-<div class="uke-pick-pattern">${picking}</div>
-`
-
-}
 async function loadData(){
 
 try{
