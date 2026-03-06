@@ -189,8 +189,9 @@ white-space:pre;
 }
 
 .footer{
-display:grid;
-grid-template-columns:1fr 1fr;
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
 
 margin-top:80px;
 padding-top:25px;
@@ -198,13 +199,19 @@ padding-top:25px;
 border-top:1px solid rgba(255,255,255,0.15);
 
 font-size:13px;
+}
+
+.footer-left{
+line-height:1.6;
 opacity:0.9;
-row-gap:4px;
 }
 
 .footer-right{
 text-align:right;
+line-height:1.6;
 opacity:0.75;
+max-width:420px;
+margin-top:4px;
 }
 
 </style>
@@ -815,14 +822,16 @@ window.addEventListener("load",loadData);
 
 <footer class="footer">
 
-<div>GLOBAL SOUL • Daily Compass</div>
-<div class="footer-right">GLOBAL – mein Blick über Heimat und Horizont hinaus.</div>
+<div class="footer-left">
+GLOBAL SOUL • Daily Compass<br>
+© 2026 Claudia Förstner<br>
+Built with curiosity 🌍
+</div>
 
-<div>© 2026 Claudia Förstner</div>
-<div class="footer-right">SOUL – die Dinge, die das Leben lebendig machen.</div>
-
-<div>Built with curiosity 🌍</div>
-<div></div>
+<div class="footer-right">
+<div>GLOBAL – mein Blick über Heimat und Horizont hinaus.</div>
+<div>SOUL – die Dinge, die das Leben lebendig machen.</div>
+</div>
 
 </footer>
   
