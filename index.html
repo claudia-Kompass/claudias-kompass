@@ -685,13 +685,26 @@ ${data.ukulele.title}
 ${data.ukulele.tabs}
 </pre>
 
+<div class="uke-chords"></div>
+
 </div>
 
 </div>
 
 `;
 
-  }
+/* Akkorde aus Tabs erkennen */
+
+const chords = data.ukulele.tabs
+.split(/\s+/)
+.filter(c => /^[A-G]/.test(c))
+
+document.querySelector(".uke-chords").innerHTML =
+chords.map(c =>
+`<img src="https://ukulele-chords.com/images/chords/${c}.png" alt="${c}">`
+).join("")
+
+        }
 
 
 /* RECIPE */
