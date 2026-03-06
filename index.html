@@ -453,7 +453,6 @@ console.error("LOAD ERROR",err);
 }
 
 
-
 function render(data){
 
 const now = new Date()
@@ -465,6 +464,9 @@ document.getElementById("meta").innerText =
 weekday + " • " + date
 
 
+document.getElementById("versionTag").innerText = "v"+data.version;
+  
+  
 /* NEWS */
 
 if(data.news){
