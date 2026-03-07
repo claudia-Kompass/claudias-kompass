@@ -792,9 +792,129 @@ data.language.map(l=>`
 
 /* UKULELE */
 
+/* =========================
+   UKULELE MODULE
+========================= */
+
 if(data.ukulele){
 
 document.getElementById("ukeBlock").innerHTML = `
+
+<div class="ukulele-section">
+
+<div class="ukulele-card">
+
+<div class="ukulele-title">
+${data.ukulele.title}
+</div>
+
+<div class="ukulele-tabs">${data.ukulele.tabs}</div>
+
+<div class="uke-strum"></div>
+
+<div class="uke-picking"></div>
+
+<div class="uke-chords"></div>
+
+<div class="uke-trainer">
+<div class="uke-label">Chord Trainer</div>
+<div class="uke-trainer-chords"></div>
+<button onclick="startTrainer()">Start Trainer</button>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+
+/* Akkorde erkennen */
+
+const chords = [...new Set(
+data.ukulele.tabs
+.split(/\s+/)
+.filter(c => /^[A-G]/.test(c))
+)]
+
+document.querySelector(".uke-chords").innerHTML =
+chords.map(c => drawUkeChord(c)).join("")
+
+
+/* Strum + Picking erkennen */
+
+const lines = data.ukulele.tabs.split("\n")
+
+let strum=""
+let picking=""
+
+lines.forEach((l,i)=>{
+
+if(l.toLowerCase().includes("strum")){
+strum = lines[i+1] || ""
+}
+
+if(l.toLowerCase().includes("fingerpicking")){
+picking = lines[i+1] || ""
+}
+
+})
+
+
+if(strum){
+
+document.querySelector(".uke-strum").innerHTML=`
+<div class="uke-label">Strumming</div>
+<div class="uke-strum-pattern">${strum}</div>
+`
+}
+
+
+if(picking){
+
+document.querySelector(".uke-picking").innerHTML=`
+<div class="uke-label">Fingerpicking</div>
+<div class="uke-pick-pattern">${picking}</div>
+`
+}
+
+
+/* Trainer vorbereiten */
+
+const progression = data.ukulele.tabs
+.split(/\s+/)
+.filter(c => /^[A-G]/.test(c))
+
+document.querySelector(".uke-trainer-chords").innerHTML =
+progression.map(c=>`<div class="uke-trainer-chord">${c}</div>`).join("")
+
+
+/* Trainer Logik */
+
+window.startTrainer = function(){
+
+const tempo = data.ukulele.tempo || 80
+const interval = 60000 / tempo
+
+const elements = document.querySelectorAll(".uke-trainer-chord")
+
+let index = 0
+
+setInterval(()=>{
+
+elements.forEach(e=>e.classList.remove("uke-trainer-active"))
+
+elements[index].classList.add("uke-trainer-active")
+
+index++
+
+if(index>=elements.length){
+index=0
+}
+
+},interval)
+
+}
 
 }
 
