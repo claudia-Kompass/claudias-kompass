@@ -472,7 +472,9 @@ weather,
 travel,
 recipe,
 language,
-ukulele: ukuleleSongs[Math.floor(Math.random()*ukuleleSongs.length)],
+ukulele: ukuleleSongs.length 
+? ukuleleSongs[Math.floor(Date.now()/86400000)%ukuleleSongs.length]
+: null,
 quote
 
 })
