@@ -1,5 +1,6 @@
 const ukuleleSongs = require("./data/ukulele")
 const quotes = require("./data/quotes")
+const recipes = require("./data/recipes")
 
 module.exports = async function handler(req,res){
 
@@ -375,34 +376,7 @@ url:"https://www.fraenkisches-seenland.de"
 AIRFRYER REZEPT ROTATION
 ======================================================= */
 
-const recipeDB=[]
-
-for(let i=1;i<=60;i++){
-
-recipeDB.push({
-
-title:"Airfryer Rezept "+i,
-
-ingredients:[
-"1 Gemüse oder Protein",
-"1 EL Olivenöl",
-"Gewürze nach Geschmack"
-],
-
-description:"Knusprig im Airfryer – einfach und schnell.",
-
-temp:"180-200°C",
-
-time:"10-18 Minuten",
-
-portion:"2"
-
-})
-
-}
-
-const recipeIndex=Math.floor(Date.now()/86400000)%recipeDB.length
-const recipe=recipeDB[recipeIndex]
+const recipe = recipes[Math.floor(Date.now()/86400000) % recipes.length]
 
 
 
