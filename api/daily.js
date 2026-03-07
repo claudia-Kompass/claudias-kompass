@@ -411,9 +411,8 @@ UKULELE
 QUOTE
 ======================================================= */
 
- const day = Math.floor(Date.now()/86400000)
-const seed = 37
-const quote = quotes[(day * seed) % quotes.length]
+ const quoteSeed = 37
+const quote = quotes[(day * quoteSeed) % quotes.length]
 
 /* =======================================================
 RESPONSE
