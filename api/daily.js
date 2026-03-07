@@ -432,39 +432,49 @@ UKULELE
 
 const ukuleleSongs = [
 
-{ title:"Hawaii Flow", tabs:`...` },
-{ title:"Island Breeze", tabs:`G Em C D` },
-{ title:"Sunny Walk", tabs:`F C G Am` },
-{ title:"Ocean Mood", tabs:`Am F C G` },
-{ title:"Lazy Afternoon", tabs:`C G Am F` },
-{ title:"Tropical Drift", tabs:`D A G A` },
-{ title:"Sunset Chords", tabs:`Em C G D` },
-{ title:"Beach Rhythm", tabs:`F G Em Am` },
-{ title:"Palm Trees", tabs:`C F C G` },
-{ title:"Island Steps", tabs:`G D Em C` },
-{ title:"Soft Waves", tabs:`Am G F E` },
-{ title:"Morning Coffee", tabs:`C Am Dm G` },
-{ title:"Blue Lagoon", tabs:`F Am G C` },
-{ title:"Golden Shore", tabs:`G Em Am D` },
-{ title:"Island Pulse", tabs:`C G F G` },
-{ title:"Summer Ride", tabs:`D G A G` },
-{ title:"Ukulele Chill", tabs:`C C7 F G` },
-{ title:"Evening Glow", tabs:`Am C G F` },
-{ title:"Quiet Bay", tabs:`F C Dm Bb` },
-{ title:"Wind over Water", tabs:`G C D G` },
-{ title:"Island Loop", tabs:`C Am F G` },
-{ title:"Slow Ocean", tabs:`Em G C D` },
-{ title:"Golden Rhythm", tabs:`F G Am F` },
-{ title:"Seaside Walk", tabs:`C F G C` },
-{ title:"Sun Path", tabs:`D A Bm G` },
-{ title:"Island Air", tabs:`Am F C G` },
-{ title:"Ukulele Drift", tabs:`G C Em D` },
-{ title:"Blue Horizon", tabs:`F C Am Bb` },
-{ title:"Warm Sand", tabs:`C Dm G C` },
-{ title:"Pacific Light", tabs:`G Em C D` }
+const ukuleleSongs = [
+
+{
+title:"Hawaii Flow",
+tabs:`C Am F G`,
+tempo:82,
+strum:"↓ ↓ ↑ ↓",
+picking:"G → C → E → A"
+},
+
+{
+title:"Island Breeze",
+tabs:`G Em C D`,
+tempo:80,
+strum:"↓ ↑ ↓ ↑",
+picking:"G → C → E → A"
+},
+
+{
+title:"Sunny Walk",
+tabs:`F C G Am`,
+tempo:78,
+strum:"↓ ↓ ↑ ↓",
+picking:"G → C → E → A"
+},
+
+{
+title:"Ocean Mood",
+tabs:`Am F C G`,
+tempo:74,
+strum:"↓ ↑ ↓",
+picking:"G → C → E → A"
+},
+
+{
+title:"Pacific Light",
+tabs:`G Em C D`,
+tempo:80,
+strum:"↓ ↓ ↑ ↓",
+picking:"G → C → E → A"
+}
 
 ]
-
 const dayIndex = Math.floor(Date.now()/86400000) % ukuleleSongs.length
 const ukulele = ukuleleSongs[dayIndex]
 
