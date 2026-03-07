@@ -426,7 +426,7 @@ const langIndex=Math.floor(Date.now()/86400000)%languageDB.length
 const language=[languageDB[langIndex]]
 
 
-/* =======================================================
+/*=======================================================
 UKULELE
 ======================================================= */
 
@@ -434,7 +434,12 @@ const ukuleleSongs = [
 
 {
 title:"Hawaii Flow",
-tabs:`C Am F G`,
+tabs:`C      Am     F      G
+
+A|--3-|--0-|--0-|--2-|
+E|--0-|--0-|--1-|--3-|
+C|--0-|--0-|--0-|--2-|
+G|--0-|--2-|--2-|--0-|`,
 tempo:82,
 strum:"↓ ↓ ↑ ↓",
 picking:"G → C → E → A"
@@ -442,7 +447,12 @@ picking:"G → C → E → A"
 
 {
 title:"Island Breeze",
-tabs:`G Em C D`,
+tabs:`G      Em     C      D
+
+A|--2-|--2-|--3-|--0-|
+E|--3-|--3-|--0-|--2-|
+C|--2-|--4-|--0-|--2-|
+G|--0-|--0-|--0-|--2-|`,
 tempo:80,
 strum:"↓ ↑ ↓ ↑",
 picking:"G → C → E → A"
@@ -450,7 +460,12 @@ picking:"G → C → E → A"
 
 {
 title:"Sunny Walk",
-tabs:`F C G Am`,
+tabs:`F      C      G      Am
+
+A|--0-|--3-|--2-|--0-|
+E|--1-|--0-|--3-|--0-|
+C|--0-|--0-|--2-|--0-|
+G|--2-|--0-|--0-|--2-|`,
 tempo:78,
 strum:"↓ ↓ ↑ ↓",
 picking:"G → C → E → A"
@@ -458,7 +473,12 @@ picking:"G → C → E → A"
 
 {
 title:"Ocean Mood",
-tabs:`Am F C G`,
+tabs:`Am     F      C      G
+
+A|--0-|--0-|--3-|--2-|
+E|--0-|--1-|--0-|--3-|
+C|--0-|--0-|--0-|--2-|
+G|--2-|--2-|--0-|--0-|`,
 tempo:74,
 strum:"↓ ↑ ↓",
 picking:"G → C → E → A"
@@ -466,7 +486,12 @@ picking:"G → C → E → A"
 
 {
 title:"Pacific Light",
-tabs:`G Em C D`,
+tabs:`G      Em     C      D
+
+A|--2-|--2-|--3-|--0-|
+E|--3-|--3-|--0-|--2-|
+C|--2-|--4-|--0-|--2-|
+G|--0-|--0-|--0-|--2-|`,
 tempo:80,
 strum:"↓ ↓ ↑ ↓",
 picking:"G → C → E → A"
