@@ -432,8 +432,6 @@ UKULELE
 
 const ukuleleSongs = [
 
-const ukuleleSongs = [
-
 {
 title:"Hawaii Flow",
 tabs:`C Am F G`,
