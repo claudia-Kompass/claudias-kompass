@@ -1,4 +1,5 @@
 const ukuleleSongs = require("./data/ukulele")
+const quotes = require("./data/quotes")
 
 module.exports = async function handler(req,res){
 
