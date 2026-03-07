@@ -506,11 +506,23 @@ const ukulele = ukuleleSongs[dayIndex]
 QUOTE
 ======================================================= */
 
-const quote={
-text:"Der Weg entsteht beim Gehen.",
-author:"Franz Kafka"
-}
+const quoteDB=[
 
+{text:"Der Weg entsteht beim Gehen.",author:"Franz Kafka"},
+{text:"Nicht weil es schwer ist, wagen wir es nicht – sondern weil wir es nicht wagen, ist es schwer.",author:"Seneca"},
+{text:"Die größte Entdeckung meiner Generation ist, dass der Mensch sein Leben ändern kann.",author:"William James"},
+{text:"Reisen bedeutet zu leben.",author:"Hans Christian Andersen"},
+{text:"Das Geheimnis des Vorwärtskommens besteht darin, den ersten Schritt zu tun.",author:"Mark Twain"},
+{text:"Wer immer tut, was er schon kann, bleibt immer das, was er schon ist.",author:"Henry Ford"},
+{text:"Mut steht am Anfang des Handelns, Glück am Ende.",author:"Demokrit"},
+{text:"Nicht der Wind, sondern die Segel bestimmen die Richtung.",author:"Sprichwort"},
+{text:"Man entdeckt keine neuen Erdteile, ohne den Mut zu haben, alte Küsten aus den Augen zu verlieren.",author:"André Gide"},
+{text:"Leben heißt Veränderung.",author:"Heraklit"}
+
+]
+
+const quoteIndex=Math.floor(Date.now()/86400000)%quoteDB.length
+const quote=quoteDB[quoteIndex]
 
 
 /* =======================================================
