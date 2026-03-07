@@ -473,9 +473,9 @@ picking:"G → C → E → A"
 }
 
 ]
+
 const dayIndex = Math.floor(Date.now()/86400000) % ukuleleSongs.length
 const ukulele = ukuleleSongs[dayIndex]
-
    
 /* =======================================================
 QUOTE
