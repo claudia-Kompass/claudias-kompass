@@ -853,13 +853,14 @@ data.language.map(l=>`
 }
 
 
-/* UKULELE */
-
 /* =========================
    UKULELE MODULE
 ========================= */
 
 if(data.ukulele){
+
+const tabs = data.ukulele.tabs || ""
+const tempo = data.ukulele.tempo || 80
 
 document.getElementById("ukeBlock").innerHTML = `
 
@@ -871,115 +872,72 @@ document.getElementById("ukeBlock").innerHTML = `
 ${data.ukulele.title}
 </div>
 
-<div class="ukulele-tabs">${data.ukulele.tabs}</div>
+<div class="uke-tabblock">
+<pre>${tabs}</pre>
+</div>
 
-<div class="uke-strum"></div>
-
-<div class="uke-picking"></div>
-
-<div class="uke-chords"></div>
+<div class="uke-meta">
+${tempo ? `<div><b>Tempo</b> ${tempo} bpm</div>` : ""}
+</div>
 
 <div class="uke-trainer">
+
 <div class="uke-label">Chord Trainer</div>
-<div class="uke-trainer-chords"></div>
-<button onclick="startTrainer()">Start Trainer</button>
-</div>
+
+<div class="uke-trainer-row"></div>
+
+<button onclick="startUkeTrainer()">Start Trainer</button>
 
 </div>
 
 </div>
 
-`;
+</div>
 
-
-/* Akkorde erkennen */
-
-const chords = [...new Set(
-data.ukulele.tabs
-.split(/\s+/)
-.filter(c => /^[A-G]/.test(c))
-)]
-
-document.querySelector(".uke-chords").innerHTML =
-chords.map(c => drawUkeChord(c)).join("")
-
-
-/* Strum + Picking erkennen */
-
-const lines = data.ukulele.tabs.split("\n")
-
-let strum=""
-let picking=""
-
-lines.forEach((l,i)=>{
-
-if(l.toLowerCase().includes("strum")){
-strum = lines[i+1] || ""
-}
-
-if(l.toLowerCase().includes("fingerpicking")){
-picking = lines[i+1] || ""
-}
-
-})
-
-
-if(strum){
-
-document.querySelector(".uke-strum").innerHTML=`
-<div class="uke-label">Strumming</div>
-<div class="uke-strum-pattern">${strum}</div>
 `
-}
 
+/* Akkorde aus Tabs extrahieren */
 
-if(picking){
-
-document.querySelector(".uke-picking").innerHTML=`
-<div class="uke-label">Fingerpicking</div>
-<div class="uke-pick-pattern">${picking}</div>
-`
-}
-
-
-/* Trainer vorbereiten */
-
-const progression = data.ukulele.tabs
+const progression = tabs
 .split(/\s+/)
 .filter(c => /^[A-G]/.test(c))
 
-document.querySelector(".uke-trainer-chords").innerHTML =
-progression.map(c=>`<div class="uke-trainer-chord">${c}</div>`).join("")
+document.querySelector(".uke-trainer-row").innerHTML =
+progression.map(c=>`<div class="uke-step">${c}</div>`).join("")
 
 
-/* Trainer Logik */
+/* Trainer */
 
-window.startTrainer = function(){
+window.startUkeTrainer = function(){
 
-const tempo = data.ukulele.tempo || 80
-const interval = 60000 / tempo
-
-const elements = document.querySelectorAll(".uke-trainer-chord")
+const steps = document.querySelectorAll(".uke-step")
 
 let index = 0
 
+const interval = 60000 / tempo
+
 setInterval(()=>{
 
-elements.forEach(e=>e.classList.remove("uke-trainer-active"))
+steps.forEach(s=>s.classList.remove("active"))
 
-elements[index].classList.add("uke-trainer-active")
+steps[index].classList.add("active")
 
 index++
 
-if(index>=elements.length){
-index=0
+if(index >= steps.length){
+index = 0
 }
 
-},interval)
+}, interval)
 
 }
 
 }
+
+
+
+
+
 
 
   
