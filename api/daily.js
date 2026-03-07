@@ -370,13 +370,14 @@ url:"https://www.fraenkisches-seenland.de"
 
 }
 
+/* ======================
+RECIPE ROTATION
+====================== */
 
+const day = Math.floor(Date.now()/86400000)
+const seed = 23
 
-/* =======================================================
-AIRFRYER REZEPT ROTATION
-======================================================= */
-
-const recipe = recipes[Math.floor(Date.now()/86400000) % recipes.length]
+const recipe = recipes[(day * seed) % recipes.length]
 
 /* =======================================================
 LANGUAGE ROTATION
