@@ -1,63 +1,113 @@
 module.exports = [
 
-{
-en:"Where is the bus stop?",
-es:"¿Dónde está la parada de autobús?",
-de:"Wo ist die Bushaltestelle?"
-},
+{en:"Where is the bus stop?",es:"¿Dónde está la parada de autobús?",de:"Wo ist die Bushaltestelle?"},
+{en:"Two coffees please",es:"Dos cafés por favor",de:"Zwei Kaffee bitte"},
+{en:"How much does this cost?",es:"¿Cuánto cuesta esto?",de:"Wie viel kostet das?"},
+{en:"Where is the restroom?",es:"¿Dónde está el baño?",de:"Wo ist die Toilette?"},
+{en:"I would like a coffee.",es:"Quiero un café.",de:"Ich hätte gern einen Kaffee."},
+{en:"Do you speak English?",es:"¿Habla inglés?",de:"Sprechen Sie Englisch?"},
+{en:"Can I pay by card?",es:"¿Puedo pagar con tarjeta?",de:"Kann ich mit Karte bezahlen?"},
+{en:"Where is the train station?",es:"¿Dónde está la estación?",de:"Wo ist der Bahnhof?"},
+{en:"One moment please.",es:"Un momento por favor.",de:"Einen Moment bitte."},
+{en:"See you tomorrow.",es:"Hasta mañana.",de:"Bis morgen."},
 
-{
-en:"Two coffees please",
-es:"Dos cafés por favor",
-de:"Zwei Kaffee bitte"
-},
+{en:"Good morning.",es:"Buenos días.",de:"Guten Morgen."},
+{en:"Good afternoon.",es:"Buenas tardes.",de:"Guten Tag."},
+{en:"Good evening.",es:"Buenas noches.",de:"Guten Abend."},
+{en:"Good night.",es:"Buenas noches.",de:"Gute Nacht."},
+{en:"Thank you.",es:"Gracias.",de:"Danke."},
+{en:"You're welcome.",es:"De nada.",de:"Gern geschehen."},
+{en:"Excuse me.",es:"Perdón.",de:"Entschuldigung."},
+{en:"Sorry.",es:"Lo siento.",de:"Tut mir leid."},
+{en:"No problem.",es:"No hay problema.",de:"Kein Problem."},
+{en:"Please.",es:"Por favor.",de:"Bitte."},
 
-{
-en:"How much does this cost?",
-es:"¿Cuánto cuesta esto?",
-de:"Wie viel kostet das?"
-},
+{en:"What time is it?",es:"¿Qué hora es?",de:"Wie spät ist es?"},
+{en:"I am learning Spanish.",es:"Estoy aprendiendo español.",de:"Ich lerne Spanisch."},
+{en:"I am learning English.",es:"Estoy aprendiendo inglés.",de:"Ich lerne Englisch."},
+{en:"Could you repeat that?",es:"¿Puede repetir eso?",de:"Können Sie das wiederholen?"},
+{en:"I don't understand.",es:"No entiendo.",de:"Ich verstehe nicht."},
+{en:"Could you speak slower?",es:"¿Puede hablar más despacio?",de:"Können Sie langsamer sprechen?"},
+{en:"What does that mean?",es:"¿Qué significa eso?",de:"Was bedeutet das?"},
+{en:"How do you say this?",es:"¿Cómo se dice esto?",de:"Wie sagt man das?"},
+{en:"Can you help me?",es:"¿Puede ayudarme?",de:"Können Sie mir helfen?"},
+{en:"That's interesting.",es:"Eso es interesante.",de:"Das ist interessant."},
 
-{
-en:"Where is the restroom?",
-es:"¿Dónde está el baño?",
-de:"Wo ist die Toilette?"
-},
+{en:"Where are you from?",es:"¿De dónde eres?",de:"Woher kommst du?"},
+{en:"I am from Germany.",es:"Soy de Alemania.",de:"Ich komme aus Deutschland."},
+{en:"Nice to meet you.",es:"Mucho gusto.",de:"Freut mich."},
+{en:"How are you?",es:"¿Cómo estás?",de:"Wie geht es dir?"},
+{en:"I'm fine.",es:"Estoy bien.",de:"Mir geht es gut."},
+{en:"Not bad.",es:"No está mal.",de:"Nicht schlecht."},
+{en:"Everything is fine.",es:"Todo está bien.",de:"Alles gut."},
+{en:"See you later.",es:"Hasta luego.",de:"Bis später."},
+{en:"See you soon.",es:"Hasta pronto.",de:"Bis bald."},
+{en:"Take care.",es:"Cuídate.",de:"Mach's gut."},
 
-{
-en:"I would like a coffee.",
-es:"Quiero un café.",
-de:"Ich hätte gern einen Kaffee."
-},
+{en:"Where can I eat?",es:"¿Dónde puedo comer?",de:"Wo kann ich essen?"},
+{en:"The food is delicious.",es:"La comida está deliciosa.",de:"Das Essen ist lecker."},
+{en:"I am vegetarian.",es:"Soy vegetariano.",de:"Ich bin Vegetarier."},
+{en:"No meat please.",es:"Sin carne por favor.",de:"Bitte kein Fleisch."},
+{en:"Just vegetables.",es:"Solo verduras.",de:"Nur Gemüse."},
+{en:"Can we sit outside?",es:"¿Podemos sentarnos afuera?",de:"Können wir draußen sitzen?"},
+{en:"A table for two please.",es:"Una mesa para dos por favor.",de:"Einen Tisch für zwei bitte."},
+{en:"The bill please.",es:"La cuenta por favor.",de:"Die Rechnung bitte."},
+{en:"Is this spicy?",es:"¿Esto es picante?",de:"Ist das scharf?"},
+{en:"Very tasty.",es:"Muy sabroso.",de:"Sehr lecker."},
 
-{
-en:"Do you speak English?",
-es:"¿Habla inglés?",
-de:"Sprechen Sie Englisch?"
-},
+{en:"Where is the hotel?",es:"¿Dónde está el hotel?",de:"Wo ist das Hotel?"},
+{en:"Do you have a room?",es:"¿Tiene una habitación?",de:"Haben Sie ein Zimmer?"},
+{en:"For one night.",es:"Para una noche.",de:"Für eine Nacht."},
+{en:"For two nights.",es:"Para dos noches.",de:"Für zwei Nächte."},
+{en:"Is breakfast included?",es:"¿El desayuno está incluido?",de:"Ist Frühstück inklusive?"},
+{en:"What is the WiFi password?",es:"¿Cuál es la contraseña del WiFi?",de:"Wie ist das WLAN Passwort?"},
+{en:"Can I check in?",es:"¿Puedo registrarme?",de:"Kann ich einchecken?"},
+{en:"I have a reservation.",es:"Tengo una reserva.",de:"Ich habe eine Reservierung."},
+{en:"What time is checkout?",es:"¿A qué hora es la salida?",de:"Wann ist Checkout?"},
+{en:"Thank you for your help.",es:"Gracias por su ayuda.",de:"Danke für Ihre Hilfe."},
 
-{
-en:"Can I pay by card?",
-es:"¿Puedo pagar con tarjeta?",
-de:"Kann ich mit Karte bezahlen?"
-},
+{en:"Where is the beach?",es:"¿Dónde está la playa?",de:"Wo ist der Strand?"},
+{en:"The view is beautiful.",es:"La vista es hermosa.",de:"Die Aussicht ist wunderschön."},
+{en:"Let's go for a walk.",es:"Vamos a caminar.",de:"Lass uns spazieren gehen."},
+{en:"The weather is nice.",es:"Hace buen tiempo.",de:"Das Wetter ist schön."},
+{en:"It is very hot.",es:"Hace mucho calor.",de:"Es ist sehr heiß."},
+{en:"It is cold today.",es:"Hace frío hoy.",de:"Heute ist es kalt."},
+{en:"It might rain.",es:"Puede que llueva.",de:"Es könnte regnen."},
+{en:"Bring a jacket.",es:"Trae una chaqueta.",de:"Nimm eine Jacke mit."},
+{en:"Let's take a photo.",es:"Tomemos una foto.",de:"Lass uns ein Foto machen."},
+{en:"What a great day.",es:"Qué gran día.",de:"Was für ein toller Tag."},
 
-{
-en:"Where is the train station?",
-es:"¿Dónde está la estación?",
-de:"Wo ist der Bahnhof?"
-},
+{en:"I like this place.",es:"Me gusta este lugar.",de:"Ich mag diesen Ort."},
+{en:"This city is beautiful.",es:"Esta ciudad es hermosa.",de:"Diese Stadt ist schön."},
+{en:"The market is lively.",es:"El mercado es animado.",de:"Der Markt ist lebendig."},
+{en:"Music is playing.",es:"Hay música.",de:"Es läuft Musik."},
+{en:"Let's dance.",es:"Vamos a bailar.",de:"Lass uns tanzen."},
+{en:"This song is great.",es:"Esta canción es genial.",de:"Dieses Lied ist großartig."},
+{en:"I enjoy traveling.",es:"Disfruto viajar.",de:"Ich reise gern."},
+{en:"Travel opens the mind.",es:"Viajar abre la mente.",de:"Reisen öffnet den Geist."},
+{en:"New experiences matter.",es:"Las nuevas experiencias importan.",de:"Neue Erfahrungen zählen."},
+{en:"Life is beautiful.",es:"La vida es hermosa.",de:"Das Leben ist schön."},
 
-{
-en:"One moment please.",
-es:"Un momento por favor.",
-de:"Einen Moment bitte."
-},
+{en:"Stay curious.",es:"Mantente curioso.",de:"Bleib neugierig."},
+{en:"Enjoy the moment.",es:"Disfruta el momento.",de:"Genieße den Moment."},
+{en:"Every day is new.",es:"Cada día es nuevo.",de:"Jeder Tag ist neu."},
+{en:"Learn something new.",es:"Aprende algo nuevo.",de:"Lerne etwas Neues."},
+{en:"Keep going.",es:"Sigue adelante.",de:"Mach weiter."},
+{en:"Small steps matter.",es:"Los pequeños pasos importan.",de:"Kleine Schritte zählen."},
+{en:"Dream big.",es:"Sueña en grande.",de:"Träume groß."},
+{en:"Stay positive.",es:"Mantente positivo.",de:"Bleib positiv."},
+{en:"Trust yourself.",es:"Confía en ti.",de:"Vertrau dir."},
+{en:"Enjoy learning.",es:"Disfruta aprender.",de:"Lernen macht Freude."},
 
-{
-en:"See you tomorrow.",
-es:"Hasta mañana.",
-de:"Bis morgen."
-}
+{en:"What do you recommend?",es:"¿Qué recomienda?",de:"Was empfehlen Sie?"},
+{en:"Can I try this?",es:"¿Puedo probar esto?",de:"Kann ich das probieren?"},
+{en:"Just looking.",es:"Solo mirando.",de:"Ich schaue nur."},
+{en:"Maybe later.",es:"Quizás más tarde.",de:"Vielleicht später."},
+{en:"That's perfect.",es:"Eso es perfecto.",de:"Das ist perfekt."},
+{en:"I agree.",es:"Estoy de acuerdo.",de:"Ich stimme zu."},
+{en:"Sounds good.",es:"Suena bien.",de:"Klingt gut."},
+{en:"That's a good idea.",es:"Es una buena idea.",de:"Das ist eine gute Idee."},
+{en:"Let's try it.",es:"Vamos a intentarlo.",de:"Lass es uns versuchen."},
+{en:"Why not?",es:"¿Por qué no?",de:"Warum nicht?"}
 
 ]
