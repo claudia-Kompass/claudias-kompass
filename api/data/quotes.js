@@ -1,174 +1,124 @@
 module.exports = [
 
-{
-text:"Der Weg entsteht beim Gehen.",
-author:"Franz Kafka"
-},
+{text:"Der Weg entsteht beim Gehen.",author:"Franz Kafka"},
+{text:"Reisen bedeutet zu leben.",author:"Hans Christian Andersen"},
+{text:"Nicht der Wind bestimmt die Richtung, sondern die Segel.",author:"Sprichwort"},
+{text:"Mut steht am Anfang des Handelns, Glück am Ende.",author:"Demokrit"},
+{text:"Wer immer tut, was er schon kann, bleibt immer das, was er schon ist.",author:"Henry Ford"},
+{text:"Man entdeckt keine neuen Erdteile ohne den Mut, alte Küsten aus den Augen zu verlieren.",author:"André Gide"},
+{text:"Der beste Weg, die Zukunft vorherzusagen, ist sie zu gestalten.",author:"Peter Drucker"},
+{text:"Die größte Entdeckung meiner Generation ist, dass der Mensch sein Leben ändern kann.",author:"William James"},
+{text:"Der Sinn des Lebens besteht nicht darin, ein erfolgreicher Mensch zu sein, sondern ein wertvoller.",author:"Albert Einstein"},
+{text:"Das Leben beginnt dort, wo die Komfortzone endet.",author:"Neale Donald Walsch"},
 
-{
-text:"Reisen bedeutet zu leben.",
-author:"Hans Christian Andersen"
-},
+{text:"Der Weg ist das Ziel.",author:"Konfuzius"},
+{text:"Wer kämpft kann verlieren, wer nicht kämpft hat schon verloren.",author:"Bertolt Brecht"},
+{text:"Auch aus Steinen die dir in den Weg gelegt werden kann etwas Schönes gebaut werden.",author:"Goethe"},
+{text:"Glück ist das einzige das sich verdoppelt wenn man es teilt.",author:"Albert Schweitzer"},
+{text:"Nur wer sein Ziel kennt findet den Weg.",author:"Laotse"},
+{text:"Man reist nicht um anzukommen sondern um zu reisen.",author:"Goethe"},
+{text:"Alles was du kannst oder träumst es zu können beginne es.",author:"Goethe"},
+{text:"Die größte Reise ist die nach innen.",author:"Dag Hammarskjöld"},
+{text:"Ein Schiff im Hafen ist sicher aber dafür werden Schiffe nicht gebaut.",author:"John A. Shedd"},
+{text:"Das Leben ist wie Fahrrad fahren um die Balance zu halten musst du in Bewegung bleiben.",author:"Albert Einstein"},
 
-{
-text:"Nicht der Wind bestimmt die Richtung, sondern die Segel.",
-author:"Sprichwort"
-},
+{text:"Wer den Hafen nicht kennt in den er segeln will für den ist kein Wind der richtige.",author:"Seneca"},
+{text:"Jeder Tag ist eine neue Chance.",author:"Unbekannt"},
+{text:"Die Zukunft gehört denen die an die Schönheit ihrer Träume glauben.",author:"Eleanor Roosevelt"},
+{text:"Die beste Zeit für einen Neuanfang ist jetzt.",author:"Unbekannt"},
+{text:"Erfolg hat drei Buchstaben TUN.",author:"Goethe"},
+{text:"Träume nicht dein Leben sondern lebe deinen Traum.",author:"Unbekannt"},
+{text:"Nur wer seinen eigenen Weg geht kann von niemandem überholt werden.",author:"Marlon Brando"},
+{text:"Große Dinge entstehen aus kleinen Anfängen.",author:"Laotse"},
+{text:"Die Reise von tausend Meilen beginnt mit einem Schritt.",author:"Laotse"},
+{text:"Veränderung ist das Gesetz des Lebens.",author:"John F. Kennedy"},
 
-{
-text:"Mut steht am Anfang des Handelns, Glück am Ende.",
-author:"Demokrit"
-},
+{text:"Wer nicht neugierig ist erfährt nichts.",author:"Goethe"},
+{text:"Die beste Bildung findet ein gescheiter Mensch auf Reisen.",author:"Goethe"},
+{text:"Mut ist der erste Schritt zum Erfolg.",author:"Unbekannt"},
+{text:"Wer loslässt hat beide Hände frei.",author:"Unbekannt"},
+{text:"Geduld ist der Schlüssel zur Freude.",author:"Rumi"},
+{text:"Man sieht nur mit dem Herzen gut.",author:"Antoine de Saint-Exupéry"},
+{text:"Was du heute kannst besorgen das verschiebe nicht auf morgen.",author:"Benjamin Franklin"},
+{text:"Der Sinn des Lebens ist ein Leben mit Sinn.",author:"Robert Burns"},
+{text:"Reisen ist die Sehnsucht nach dem Leben.",author:"Kurt Tucholsky"},
+{text:"Das Leben gehört den Lebenden an und wer lebt muss auf Wechsel gefasst sein.",author:"Goethe"},
 
-{
-text:"Wer immer tut, was er schon kann, bleibt immer das, was er schon ist.",
-author:"Henry Ford"
-},
+{text:"Der Anfang ist die Hälfte des Ganzen.",author:"Aristoteles"},
+{text:"Das Glück begünstigt den Mutigen.",author:"Virgil"},
+{text:"Ein Ziel ohne Plan ist nur ein Wunsch.",author:"Antoine de Saint-Exupéry"},
+{text:"Alles Große in der Welt geschieht nur weil jemand mehr tut als er muss.",author:"Hermann Gmeiner"},
+{text:"Die Freiheit liegt im Mut.",author:"Perikles"},
+{text:"Wer immer das tut was er schon kann bleibt immer das was er schon ist.",author:"Henry Ford"},
+{text:"Man muss das Unmögliche versuchen um das Mögliche zu erreichen.",author:"Hermann Hesse"},
+{text:"Die Welt gehört dem der sie genießt.",author:"Giacomo Leopardi"},
+{text:"Jeder neue Tag ist eine neue Chance.",author:"Unbekannt"},
+{text:"Nicht weil es schwer ist wagen wir es nicht sondern weil wir es nicht wagen ist es schwer.",author:"Seneca"},
 
-{
-text:"Man entdeckt keine neuen Erdteile ohne den Mut, alte Küsten aus den Augen zu verlieren.",
-author:"André Gide"
-},
+{text:"Der Mensch wächst mit seinen Aufgaben.",author:"Unbekannt"},
+{text:"Der beste Zeitpunkt einen Baum zu pflanzen war vor zwanzig Jahren der zweitbeste ist jetzt.",author:"Chinesisches Sprichwort"},
+{text:"Alles hat seine Zeit.",author:"Bibel"},
+{text:"Wer das Ziel kennt findet den Weg.",author:"Laotse"},
+{text:"Die Zukunft hängt davon ab was wir heute tun.",author:"Mahatma Gandhi"},
+{text:"Gedanken sind der Anfang von Taten.",author:"Ralph Waldo Emerson"},
+{text:"Träume groß beginne klein handle jetzt.",author:"Robin Sharma"},
+{text:"Leben heißt Veränderung.",author:"Heraklit"},
+{text:"Der Mensch wird am Du zum Ich.",author:"Martin Buber"},
+{text:"Die wahre Reise beginnt im Herzen.",author:"Unbekannt"},
 
-{
-text:"Der beste Weg, die Zukunft vorherzusagen, ist sie zu gestalten.",
-author:"Peter Drucker"
-},
+{text:"Der Weg zur Weisheit ist ein lebenslanger.",author:"Konfuzius"},
+{text:"Das Glück liegt oft in den kleinen Dingen.",author:"Unbekannt"},
+{text:"Wer immer tut was er schon kann bleibt immer das was er schon ist.",author:"Henry Ford"},
+{text:"Die beste Vorbereitung für morgen ist heute sein Bestes zu geben.",author:"Jackson Brown"},
+{text:"Lernen ist Erfahrung alles andere ist Information.",author:"Albert Einstein"},
+{text:"Der Sinn des Reisens ist es an ein Ziel zu kommen der Sinn des Wanderns unterwegs zu sein.",author:"Theodor Heuss"},
+{text:"Die größte Kraft liegt im ruhigen Geist.",author:"Unbekannt"},
+{text:"Die Welt ist ein Buch wer nie reist sieht nur eine Seite.",author:"Augustinus"},
+{text:"Ein Schritt nach dem anderen führt zum Ziel.",author:"Unbekannt"},
+{text:"Das Geheimnis des Erfolges ist Beständigkeit.",author:"Benjamin Disraeli"},
 
-{
-text:"Die größte Entdeckung meiner Generation ist, dass der Mensch sein Leben ändern kann.",
-author:"William James"
-},
+{text:"Das Leben ist eine Reise.",author:"Ralph Waldo Emerson"},
+{text:"Mut ist der Zauber der Träume Wirklichkeit werden lässt.",author:"Goethe"},
+{text:"Wer sich selbst besiegt ist der größte Sieger.",author:"Konfuzius"},
+{text:"Der Mensch ist so jung wie seine Zuversicht.",author:"Samuel Ullman"},
+{text:"Geduld bringt Rosen.",author:"Sprichwort"},
+{text:"Die größte Freude liegt im Tun.",author:"Unbekannt"},
+{text:"Alles Gute beginnt mit einem offenen Herzen.",author:"Unbekannt"},
+{text:"Ein neuer Tag ein neuer Anfang.",author:"Unbekannt"},
+{text:"Die besten Dinge im Leben sind nicht Dinge.",author:"Art Buchwald"},
+{text:"Der Weg zum Glück besteht darin sich um nichts zu sorgen.",author:"Dalai Lama"},
 
-{
-text:"Der Sinn des Lebens besteht nicht darin, ein erfolgreicher Mensch zu sein, sondern ein wertvoller.",
-author:"Albert Einstein"
-},
+{text:"Jeder Schritt zählt.",author:"Unbekannt"},
+{text:"Das Leben ist zu kurz für irgendwann.",author:"Unbekannt"},
+{text:"Wachstum beginnt außerhalb der Komfortzone.",author:"Unbekannt"},
+{text:"Ein Ziel gibt dem Leben Richtung.",author:"Unbekannt"},
+{text:"Der Mut wächst mit der Tat.",author:"Unbekannt"},
+{text:"Träume weisen den Weg.",author:"Unbekannt"},
+{text:"Der Horizont erweitert sich mit jedem Schritt.",author:"Unbekannt"},
+{text:"Die größte Reise ist die zu dir selbst.",author:"Unbekannt"},
+{text:"Jeder Tag ist ein neues Kapitel.",author:"Unbekannt"},
+{text:"Der Kompass des Lebens ist das Herz.",author:"Unbekannt"},
 
-{
-text:"Das Leben beginnt dort, wo die Komfortzone endet.",
-author:"Neale Donald Walsch"
-}
+{text:"Gelassenheit ist Stärke.",author:"Unbekannt"},
+{text:"Der erste Schritt ist immer der wichtigste.",author:"Unbekannt"},
+{text:"Die Welt verändert sich durch Ideen.",author:"Unbekannt"},
+{text:"Hoffnung ist der Anker der Seele.",author:"Unbekannt"},
+{text:"In der Ruhe liegt die Kraft.",author:"Sprichwort"},
+{text:"Ein freier Geist kennt keine Grenzen.",author:"Unbekannt"},
+{text:"Alles beginnt mit einer Entscheidung.",author:"Unbekannt"},
+{text:"Das Leben liebt Mut.",author:"Unbekannt"},
+{text:"Neue Wege entstehen beim Gehen.",author:"Unbekannt"},
+{text:"Der Horizont gehört den Neugierigen.",author:"Unbekannt"},
 
-{
-text:"Der Weg ist das Ziel.",
-author:"Konfuzius"
-},
-{
-text:"Wer kämpft kann verlieren, wer nicht kämpft hat schon verloren.",
-author:"Bertolt Brecht"
-},
-{
-text:"Auch aus Steinen die dir in den Weg gelegt werden kann etwas Schönes gebaut werden.",
-author:"Johann Wolfgang von Goethe"
-},
-{
-text:"Glück ist das einzige, das sich verdoppelt, wenn man es teilt.",
-author:"Albert Schweitzer"
-},
-{
-text:"Nur wer sein Ziel kennt findet den Weg.",
-author:"Laotse"
-},
-{
-text:"Man reist nicht um anzukommen sondern um zu reisen.",
-author:"Johann Wolfgang von Goethe"
-},
-{
-text:"Alles was du kannst oder träumst es zu können beginne es.",
-author:"Goethe"
-},
-{
-text:"Die größte Reise ist die nach innen.",
-author:"Dag Hammarskjöld"
-},
-{
-text:"Ein Schiff im Hafen ist sicher aber dafür werden Schiffe nicht gebaut.",
-author:"John A. Shedd"
-},
-{
-text:"Das Leben ist wie Fahrrad fahren. Um die Balance zu halten musst du in Bewegung bleiben.",
-author:"Albert Einstein"
-},
-{
-text:"Wer den Hafen nicht kennt in den er segeln will für den ist kein Wind der richtige.",
-author:"Seneca"
-},
-{
-text:"Jeder Tag ist eine neue Chance.",
-author:"Unbekannt"
-},
-{
-text:"Die Zukunft gehört denen die an die Schönheit ihrer Träume glauben.",
-author:"Eleanor Roosevelt"
-},
-{
-text:"Die beste Zeit für einen Neuanfang ist jetzt.",
-author:"Unbekannt"
-},
-{
-text:"Erfolg hat drei Buchstaben: TUN.",
-author:"Johann Wolfgang von Goethe"
-},
-{
-text:"Träume nicht dein Leben sondern lebe deinen Traum.",
-author:"Unbekannt"
-},
-{
-text:"Nur wer seinen eigenen Weg geht kann von niemandem überholt werden.",
-author:"Marlon Brando"
-},
-{
-text:"Große Dinge entstehen aus kleinen Anfängen.",
-author:"Laotse"
-},
-{
-text:"Die Reise von tausend Meilen beginnt mit einem Schritt.",
-author:"Laotse"
-},
-{
-text:"Veränderung ist das Gesetz des Lebens.",
-author:"John F. Kennedy"
-},
-{
-text:"Wer nicht neugierig ist erfährt nichts.",
-author:"Goethe"
-},
-{
-text:"Die beste Bildung findet ein gescheiter Mensch auf Reisen.",
-author:"Goethe"
-},
-{
-text:"Mut ist der erste Schritt zum Erfolg.",
-author:"Unbekannt"
-},
-{
-text:"Wer loslässt hat beide Hände frei.",
-author:"Unbekannt"
-},
-{
-text:"Geduld ist der Schlüssel zur Freude.",
-author:"Rumi"
-},
-{
-text:"Man sieht nur mit dem Herzen gut.",
-author:"Antoine de Saint-Exupéry"
-},
-{
-text:"Was du heute kannst besorgen das verschiebe nicht auf morgen.",
-author:"Benjamin Franklin"
-},
-{
-text:"Der Sinn des Lebens ist ein Leben mit Sinn.",
-author:"Robert Burns"
-},
-{
-text:"Reisen ist die Sehnsucht nach dem Leben.",
-author:"Kurt Tucholsky"
-},
-{
-text:"Das Leben gehört den Lebenden an und wer lebt muss auf Wechsel gefasst sein.",
-author:"Goethe"
-},
-  
+{text:"Das Abenteuer beginnt außerhalb der Gewohnheit.",author:"Unbekannt"},
+{text:"Wer sucht der findet.",author:"Sprichwort"},
+{text:"Die besten Geschichten beginnen mit Mut.",author:"Unbekannt"},
+{text:"Reisen erweitert den Blick.",author:"Unbekannt"},
+{text:"Jeder Moment ist einmalig.",author:"Unbekannt"},
+{text:"Der Sinn des Lebens liegt im Erleben.",author:"Unbekannt"},
+{text:"Alles Große beginnt im Kleinen.",author:"Unbekannt"},
+{text:"Die Zukunft beginnt heute.",author:"Unbekannt"},
+{text:"Träume sind Wegweiser.",author:"Unbekannt"},
+{text:"Der Weg gehört den Mutigen.",author:"Unbekannt"}
+
 ]
