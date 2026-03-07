@@ -848,7 +848,7 @@ ${picking ? `<div style="margin-top:6px"><b>Fingerpicking</b> ${picking}</div>` 
 
 const progression = tabs
 .split(/\s+/)
-.filter(c => /^[A-G]/.test(c))
+.filter(c => /^[A-G][m0-9#]*$/.test(c))
 
 document.querySelector(".uke-trainer-row").innerHTML =
 progression.map(c=>`<div class="uke-step">${c}</div>`).join("")
