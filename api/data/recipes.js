@@ -1,71 +1,79 @@
 module.exports = [
 
 {
-title:"Airfryer Gemüse Mix",
+title:"Hähnchen Kräuter",
+
+tag:"Saftig & aromatisch",
+
+short:"Hähnchenbrust in Streifen geschnitten und mit Kräutern im Airfryer gegart.",
+
+program:"Air Fry",
+
 ingredients:[
-"Paprika",
-"Zucchini",
-"Olivenöl",
+"2 Hähnchenbrüste",
+"1 EL Olivenöl",
+"Italienische Kräuter",
 "Salz",
 "Pfeffer"
 ],
-description:"Buntes Ofengemüse knusprig aus dem Airfryer.",
-temp:"180°C",
-time:"12 Minuten",
+
+prep:"Hähnchenbrust in etwa 2 cm breite Streifen schneiden und mit Öl und Gewürzen vermengen.",
+
+description:"Die Hähnchenstreifen locker im Korb verteilen und nach der Hälfte der Garzeit einmal wenden.",
+
+temp:"185°C",
+time:"14 Minuten",
 portion:"2"
 },
 
 {
-title:"Airfryer Kartoffelspalten",
+title:"Knusprige Kartoffelspalten",
+
+tag:"Rustikal & knusprig",
+
+short:"Kartoffeln in Spalten geschnitten und goldbraun im Airfryer gegart.",
+
+program:"Air Fry",
+
 ingredients:[
-"Kartoffeln",
-"Olivenöl",
+"400 g Kartoffeln",
+"1 EL Olivenöl",
 "Paprikapulver",
 "Salz"
 ],
-description:"Knusprige Kartoffelspalten ohne viel Fett.",
+
+prep:"Kartoffeln waschen und in Spalten schneiden. Mit Öl und Gewürzen mischen.",
+
+description:"Kartoffelspalten im Korb verteilen und einmal während der Garzeit durchschütteln.",
+
 temp:"200°C",
-time:"15 Minuten",
+time:"18 Minuten",
 portion:"2"
 },
 
 {
-title:"Airfryer Lachsfilet",
+title:"Mediterranes Ofengemüse",
+
+tag:"Leicht & aromatisch",
+
+short:"Zucchini, Paprika und Karotten als mediterraner Gemüse-Mix.",
+
+program:"Air Fry",
+
 ingredients:[
-"Lachsfilet",
-"Zitrone",
-"Olivenöl",
-"Pfeffer"
+"1 Zucchini",
+"1 Paprika",
+"1 Karotte",
+"1 EL Olivenöl",
+"Italienische Kräuter"
 ],
-description:"Saftiger Lachs mit leichter Zitronennote.",
+
+prep:"Gemüse in mundgerechte Stücke schneiden und mit Öl und Kräutern vermengen.",
+
+description:"Gemüse locker im Korb verteilen und nach etwa 7 Minuten einmal wenden.",
+
 temp:"180°C",
-time:"10 Minuten",
-portion:"2"
-},
-
-{
-title:"Airfryer Hähnchenstreifen",
-ingredients:[
-"Hähnchenbrust",
-"Olivenöl",
-"Paprika",
-"Knoblauchpulver"
-],
-description:"Würzige Hähnchenstreifen perfekt für Salate.",
-temp:"190°C",
-time:"12 Minuten",
-portion:"2"
-},
-
-{
-title:"Airfryer Apfelchips",
-ingredients:[
-"Äpfel",
-"Zimt"
-],
-description:"Süßer Snack aus dünnen Apfelscheiben.",
-temp:"160°C",
-time:"15 Minuten",
+time:"14 Minuten",
 portion:"2"
 }
 
