@@ -376,39 +376,7 @@ url:"https://www.fraenkisches-seenland.de"
 AIRFRYER REZEPT ROTATION
 ======================================================= */
 
-const recipe = data.recipe
-
-document.getElementById("recipeBlock").innerHTML = `
-
-<div class="recipe-card">
-
-<div class="recipe-title">
-${recipe.title}
-</div>
-
-<div class="recipe-ingredients">
-${recipe.ingredients.join(" • ")}
-</div>
-
-<div class="recipe-desc">
-${recipe.short}
-</div>
-
-<div class="recipe-prep">
-${recipe.prep}
-</div>
-
-<div class="recipe-cook">
-${recipe.cook}
-</div>
-
-<div class="recipe-meta">
-🔥 ${recipe.temp} • ⏱ ${recipe.time} • 🍽 ${recipe.portion} Portion
-</div>
-
-</div>
-`
-
+const recipe = recipes[Math.floor(Date.now()/86400000) % recipes.length]
 
 /* =======================================================
 LANGUAGE ROTATION
