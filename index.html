@@ -885,41 +885,58 @@ index = 0
 
 }
 
-  
-/* RECIPE */
 
-document.getElementById("recipeBlock").innerHTML=`
-const recipe = data.recipe
+/* =========================
+   RECIPE
+========================= */
+
+if(data.recipe){
+
+const r = data.recipe
 
 document.getElementById("recipeBlock").innerHTML = `
 
-<div class="recipe-card">
+<div class="newsItem">
 
-<div class="recipe-title">
-${recipe.title}
+<div style="font-weight:600;font-size:18px">
+${r.title}
 </div>
 
-<div class="recipe-ingredients">
-${recipe.ingredients.join(" • ")}
+<div class="newsSource" style="margin-top:6px">
+${r.ingredients.join(" • ")}
 </div>
 
-<div class="recipe-desc">
-${recipe.short}
+<div class="newsSource" style="margin-top:6px">
+${r.short}
 </div>
 
-<div class="recipe-prep">
-${recipe.prep}
+<div class="newsSource" style="margin-top:10px">
+<b>Vorbereitung</b><br>
+${r.prep}
 </div>
 
-<div class="recipe-cook">
-${recipe.cook}
+<div class="newsSource" style="margin-top:8px">
+<b>Zubereitung</b><br>
+${r.cook}
 </div>
 
-<div class="recipe-meta">
-🔥 ${recipe.temp} • ⏱ ${recipe.time} • 🍽 ${recipe.portion} Portion
+<div class="newsSource" style="margin-top:10px">
+
+🔥 ${r.program} • ${r.temp}  
+⏱ ${r.time}
+
+</div>
+
+<div class="newsSource">
+🔁 ${r.shake}
+</div>
+
+<div class="newsSource">
+🍽 ${r.portion} Portionen
 </div>
 
 </div>
+
 `
 
 }
