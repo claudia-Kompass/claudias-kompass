@@ -889,21 +889,34 @@ index = 0
 /* RECIPE */
 
 document.getElementById("recipeBlock").innerHTML=`
+const recipe = data.recipe
 
-<div class="newsItem">
+document.getElementById("recipeBlock").innerHTML = `
 
-<div style="font-weight:600">${data.recipe.title}</div>
+<div class="recipe-card">
 
-<div class="newsSource">
-${data.recipe.ingredients.join(" • ")}
+<div class="recipe-title">
+${recipe.title}
 </div>
 
-<div class="newsSource">
-${data.recipe.description}
+<div class="recipe-ingredients">
+${recipe.ingredients.join(" • ")}
 </div>
 
-<div class="newsSource">
-🔥 ${data.recipe.temp} • ⏱ ${data.recipe.time} • 🍽 ${data.recipe.portion} Portion
+<div class="recipe-desc">
+${recipe.short}
+</div>
+
+<div class="recipe-prep">
+${recipe.prep}
+</div>
+
+<div class="recipe-cook">
+${recipe.cook}
+</div>
+
+<div class="recipe-meta">
+🔥 ${recipe.temp} • ⏱ ${recipe.time} • 🍽 ${recipe.portion} Portion
 </div>
 
 </div>
