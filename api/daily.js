@@ -460,7 +460,6 @@ const quote=quoteDB[quoteIndex]
 /* =======================================================
 RESPONSE
 ======================================================= */
-
 res.status(200).json({
 
 version:fullVersion,
@@ -477,3 +476,5 @@ ukulele: ukuleleSongs[Math.floor(Math.random()*ukuleleSongs.length)],
 quote
 
 })
+
+}
