@@ -473,9 +473,7 @@ weather,
 travel,
 recipe,
 language,
-ukulele,
+ukulele: ukuleleSongs[Math.floor(Math.random()*ukuleleSongs.length)],
 quote
 
 })
-
-   }
