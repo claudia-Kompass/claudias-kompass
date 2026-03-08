@@ -521,14 +521,14 @@ if(e.month && e.day){
 
 let d=new Date(now.getFullYear(),e.month-1,e.day)
 
-if(d<now){
+if(d < startOfDay(now)){
 d=new Date(now.getFullYear()+1,e.month-1,e.day)
 }
 
 return d
 }
 
-return null
+return nullää
 }
 
 
