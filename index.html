@@ -706,9 +706,50 @@ data.regional.map(r=>`
 
 let html=""
 
-/* Events dieser Woche */
+/* HEUTE */
 
-if(data.events?.week){
+if(data.events?.today?.length){
+
+html+=`
+<div style="font-weight:600;margin-bottom:8px">
+📍 Heute in der Region
+</div>
+`
+
+html+=data.events.today.map(e=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${e.title}</div>
+
+<div class="newsSource">
+${e.city ?? ""} ${e.location ? "• "+e.location : ""}
+</div>
+
+<div class="newsSource">
+${e.time ?? ""}
+</div>
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`).join("")
+
+}
+
+
+/* DIESE WOCHE */
+
+if(data.events?.week?.length){
+
+html+=`
+<div style="margin-top:18px;font-weight:600">
+🗓 Diese Woche
+</div>
+`
 
 html+=data.events.week.map(e=>`
 
@@ -724,6 +765,8 @@ ${e.city ?? ""}
 ${formatDate(e.date)} ${e.time ?? ""}
 </div>
 
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+
 ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
@@ -733,31 +776,66 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 }
 
 
-/* Wochenmärkte */
+/* DEMNÄCHST */
 
-if(data.events?.markets){
+if(data.events?.upcoming?.length){
 
 html+=`
-
-<div style="margin-top:20px;font-weight:600;opacity:.9">
-🧺 Wochenmärkte
+<div style="margin-top:18px;font-weight:600">
+🔜 Demnächst
 </div>
-
 `
 
-html+=data.events.markets.map(m=>`
+html+=data.events.upcoming.slice(0,5).map(e=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${e.title}</div>
+
+<div class="newsSource">
+${e.city ?? ""}
+</div>
+
+<div class="newsSource">
+${formatDate(e.date)}
+</div>
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`).join("")
+
+}
+
+
+/* HEUTIGE WOCHENMÄRKTE */
+
+if(data.events?.marketsToday?.length){
+
+html+=`
+<div style="margin-top:18px;font-weight:600">
+🧺 Heute Wochenmärkte
+</div>
+`
+
+html+=data.events.marketsToday.map(m=>`
 
 <div class="newsItem">
 
 <div style="font-weight:600">${m.title}</div>
 
 <div class="newsSource">
-${m.location}
+${m.city} • ${m.location}
 </div>
 
 <div class="newsSource">
-${m.day} • ${m.time}
+${m.time}
 </div>
+
+<a href="${m.maps}" target="_blank" class="news-link">📍 Karte →</a>
 
 </div>
 
@@ -766,6 +844,8 @@ ${m.day} • ${m.time}
 }
 
 document.getElementById("eventsBlock").innerHTML=html
+
+
 
 
 /* TRAVEL */
