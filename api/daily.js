@@ -244,14 +244,39 @@ news = result
 
 /* REGIONAL */
 
+let regionalCollected=[]
+
 if(regionalRes){
 const xml=await regionalRes.text()
-regional=parseRSS(xml,"SWR Baden-Württemberg").slice(0,4)
+regionalCollected = regionalCollected.concat(
+parseRSS(xml,"SWR Baden-Württemberg")
+)
 }
 
-}catch(e){
-console.log("API fetch warning:",e)
+if(stzRes){
+const xml=await stzRes.text()
+regionalCollected = regionalCollected.concat(
+parseRSS(xml,"Stuttgarter Zeitung")
+)
 }
+
+if(stimmeRes){
+const xml=await stimmeRes.text()
+regionalCollected = regionalCollected.concat(
+parseRSS(xml,"Heilbronner Stimme")
+)
+}
+
+if(htRes){
+const xml=await htRes.text()
+regionalCollected = regionalCollected.concat(
+parseRSS(xml,"Hohenloher Tagblatt")
+)
+}
+
+/* maximal 4 regionale Meldungen */
+
+regional = regionalCollected.slice(0,4)
 
 
 
