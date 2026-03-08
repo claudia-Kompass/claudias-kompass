@@ -250,6 +250,7 @@ news = result
 /* REGIONAL */
 
 let regionalCollected=[]
+let businessCollected=[]
 
 const regionalCompanies=[
 "würth",
@@ -290,85 +291,6 @@ return true
 return false
 }
 
-
-/* SWR */
-
-if(regionalRes){
-
-const xml=await regionalRes.text()
-const items=parseRSS(xml,"SWR Baden-Württemberg")
-
-for(const item of items){
-
-if(isRegionalBusiness(item.title)){
-businessCollected.push(item)
-}else{
-regionalCollected.push(item)
-}
-
-}
-
-}
-
-
-/* STUTTGARTER ZEITUNG */
-
-if(stzRes){
-
-const xml=await stzRes.text()
-const items=parseRSS(xml,"Stuttgarter Zeitung")
-
-for(const item of items){
-
-if(isRegionalBusiness(item.title)){
-businessCollected.push(item)
-}else{
-regionalCollected.push(item)
-}
-
-}
-
-}
-
-
-/* HEILBRONNER STIMME */
-
-if(stimmeRes){
-
-const xml=await stimmeRes.text()
-const items=parseRSS(xml,"Heilbronner Stimme")
-
-for(const item of items){
-
-if(isRegionalBusiness(item.title)){
-businessCollected.push(item)
-}else{
-regionalCollected.push(item)
-}
-
-}
-
-}
-
-
-/* HOHENLOHER TAGBLATT */
-
-if(htRes){
-
-const xml=await htRes.text()
-const items=parseRSS(xml,"Hohenloher Tagblatt")
-
-for(const item of items){
-
-if(isRegionalBusiness(item.title)){
-businessCollected.push(item)
-}else{
-regionalCollected.push(item)
-}
-
-}
-
-}
 
 
 /* DUPLIKATE ENTFERNEN */
