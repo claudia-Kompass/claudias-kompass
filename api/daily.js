@@ -216,7 +216,21 @@ collected.sort((a,b)=>priority[a.source]-priority[b.source])
 
 /* maximal 5 Nachrichten */
 
-news = collected.slice(0,5)
+const result=[]
+const count={}
+
+for(const item of collected){
+
+count[item.source] = (count[item.source]||0)+1
+
+if(count[item.source] <= 2){
+result.push(item)
+}
+
+if(result.length===5) break
+}
+
+news = result
 
 
 /* REGIONAL */
