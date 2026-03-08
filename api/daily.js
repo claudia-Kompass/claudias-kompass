@@ -686,8 +686,8 @@ UKULELE
 QUOTE
 ======================================================= */
 
- const quoteSeed = 37
-const quote = quotes[(day * quoteSeed) % quotes.length]
+const quoteSeed = 37
+const quote = quotes[(dayIndex * quoteSeed) % quotes.length]
 
 /* =======================================================
 RESPONSE
