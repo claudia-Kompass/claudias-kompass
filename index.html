@@ -357,28 +357,32 @@ async function loadData(){
 
 try{
 
-const res=await fetch("/api/daily");
-const data=await res.json();
+const res = await fetch("/api/daily")
+const data = await res.json()
 
-render(data);
+render(data)
 
 }catch(err){
-console.error("LOAD ERROR",err);
+
+console.error("LOAD ERROR",err)
+
 }
 
 }
 
 function render(data){
 
-document.getElementById("versionTag").innerText = "v" + data.version;
+document.getElementById("versionTag").innerText =
+"v"+data.version
 
-const now = new Date()
-
-const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
-const date = now.toLocaleDateString("de-DE")
+const now=new Date()
 
 document.getElementById("meta").innerText =
-weekday + " • " + date
+now.toLocaleDateString("de-DE",{weekday:"long"})+
+" • "+
+now.toLocaleDateString("de-DE")
+
+
 
 /* NEWS */
 
@@ -393,17 +397,23 @@ data.news.map(n=>`
 <div class="newsSource">${n.source}</div>
 </div>
 
-`).join("");
+`).join("")
 
 }
 
+
+
 /* MARKETS */
 
-document.getElementById("daxValue").innerText =
-(data.markets?.dax?.value ?? "-") + " (" + (data.markets?.dax?.date ?? "") + ")";
+document.getElementById("daxValue").innerHTML =
+(data.markets?.dax?.value ?? "-")+
+` <span class="market-date">(${data.markets?.dax?.date ?? ""})</span>`
 
-document.getElementById("eurusdValue").innerText =
-(data.markets?.eurusd?.value ?? "-") + " (" + (data.markets?.eurusd?.date ?? "") + ")";
+document.getElementById("eurusdValue").innerHTML =
+(data.markets?.eurusd?.value ?? "-")+
+` <span class="market-date">(${data.markets?.eurusd?.date ?? ""})</span>`
+
+
 
 /* CRYPTO */
 
@@ -419,6 +429,8 @@ document.getElementById("nexoValue").innerHTML =
 ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
 ' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info →</a>';
 
+
+
 /* REGIONAL */
 
 if(data.regional){
@@ -432,9 +444,11 @@ data.regional.map(r=>`
 <div class="newsSource">${r.source}</div>
 </div>
 
-`).join("");
+`).join("")
 
 }
+
+
 
 /* EVENTS */
 
@@ -480,13 +494,9 @@ html+=data.events.markets.map(m=>`
 
 <div style="font-weight:600">${m.title}</div>
 
-<div class="newsSource">
-${m.location}
-</div>
+<div class="newsSource">${m.location}</div>
 
-<div class="newsSource">
-${m.day} • ${m.time}
-</div>
+<div class="newsSource">${m.day} • ${m.time}</div>
 
 </div>
 
@@ -495,6 +505,8 @@ ${m.day} • ${m.time}
 }
 
 document.getElementById("eventsBlock").innerHTML=html
+
+
 
 /* TRAVEL */
 
@@ -508,57 +520,138 @@ document.getElementById("travelBlock").innerHTML=`
 <a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
 </div>
 
-`;
+`
 
 }
+
+
+
+/* LANGUAGE */
+
+if(data.language){
+
+document.getElementById("languageBlock").innerHTML =
+data.language.map(l=>`
+
+<div class="languageCard">
+
+<div class="langLine">
+<span>🇬🇧 ${l.en}</span>
+</div>
+
+<div class="langLine">
+<span>🇪🇸 ${l.es}</span>
+</div>
+
+<div class="langNative">
+🇩🇪 ${l.de}
+</div>
+
+</div>
+
+`).join("")
+
+}
+
+
+
+/* UKULELE */
+
+if(data.ukulele){
+
+document.getElementById("ukeBlock").innerHTML =
+
+`<div class="newsItem">
+
+<div style="font-weight:600">${data.ukulele.title}</div>
+
+<pre>${data.ukulele.tabs}</pre>
+
+</div>`
+
+}
+
+
+
+/* RECIPE */
+
+if(data.recipe){
+
+const r=data.recipe
+
+document.getElementById("recipeBlock").innerHTML=
+
+`<div class="newsItem">
+
+<div style="font-weight:600">${r.title}</div>
+
+<div class="newsSource">
+${r.ingredients.join(" • ")}
+</div>
+
+<div class="newsSource">
+${r.short}
+</div>
+
+</div>`
+
+}
+
+
 
 /* QUOTE */
 
 if(data.quote){
 
-document.getElementById("quoteBlock").innerHTML=`
+document.getElementById("quoteBlock").innerHTML=
 
-<div class="newsItem">
+`<div class="newsItem">
+
 "${data.quote.text}"
-<div class="newsSource">${data.quote.author}</div>
+
+<div class="newsSource">
+${data.quote.author}
 </div>
 
-`;
+</div>`
 
 }
+
+
 
 /* WEATHER */
 
 if(data.weather){
 
 document.getElementById("weatherNow").innerHTML =
-weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
+weatherIcon(data.weather.code)+" "+data.weather.temp+"°C"
 
 document.getElementById("mIcon").innerText =
-weatherIcon(data.weather.trend.morning.code);
+weatherIcon(data.weather.trend.morning.code)
 
 document.getElementById("morningTemp").innerText =
-data.weather.trend.morning.temp+"°C";
+data.weather.trend.morning.temp+"°C"
 
 document.getElementById("aIcon").innerText =
-weatherIcon(data.weather.trend.afternoon.code);
+weatherIcon(data.weather.trend.afternoon.code)
 
 document.getElementById("afternoonTemp").innerText =
-data.weather.trend.afternoon.temp+"°C";
+data.weather.trend.afternoon.temp+"°C"
 
 document.getElementById("eIcon").innerText =
-weatherIcon(data.weather.trend.evening.code);
+weatherIcon(data.weather.trend.evening.code)
 
 document.getElementById("eveningTemp").innerText =
-data.weather.trend.evening.temp+"°C";
+data.weather.trend.evening.temp+"°C"
 
 }
 
 }
 
-window.addEventListener("load",loadData);
+window.addEventListener("load",loadData)
 
 </script>
+
 
 </body>
 </html>
