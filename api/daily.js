@@ -280,7 +280,20 @@ parseRSS(xml,"Hohenloher Tagblatt")
 
 /* maximal 4 regionale Meldungen */
 
-regional = regionalCollected.slice(0,4)
+const regionalResult=[]
+const regionalSeen=new Set()
+
+for(const item of regionalCollected){
+
+if(regionalSeen.has(item.title)) continue
+
+regionalResult.push(item)
+regionalSeen.add(item.title)
+
+if(regionalResult.length===4) break
+}
+
+regional = regionalResult
 
 
 
