@@ -662,10 +662,10 @@ url:"https://www.fraenkisches-seenland.de"
 RECIPE ROTATION
 ====================== */
 
-const day = Math.floor(Date.now()/86400000)
+const dayIndex = Math.floor(Date.now()/86400000)
 const seed = 23
 
-const recipe = recipes[(day * seed) % recipes.length]
+const recipe = recipes[(dayIndex * seed) % recipes.length]
 
 /* =======================================================
 LANGUAGE ROTATION
