@@ -143,7 +143,7 @@ htRes
 
 /* WEATHER */
 
-if(weatherRes){
+if(weatherRes && weatherRes.json){
 
 const d=await weatherRes.json()
 
