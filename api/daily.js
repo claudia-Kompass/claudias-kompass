@@ -173,6 +173,8 @@ nexo=d.nexo||nexo
 
 let collected = []
 
+/* deutsche Quellen zuerst */
+
 if(tagesschauRes){
 const xml = await tagesschauRes.text()
 collected = collected.concat(parseRSS(xml,"Tagesschau"))
@@ -182,6 +184,8 @@ if(spiegelRes){
 const xml = await spiegelRes.text()
 collected = collected.concat(parseRSS(xml,"Spiegel"))
 }
+
+/* internationale Quellen */
 
 if(ntvRes){
 const xml = await ntvRes.text()
@@ -198,10 +202,21 @@ const xml = await bbcRes.text()
 collected = collected.concat(parseRSS(xml,"BBC"))
 }
 
-/* maximal 5 Nachrichten anzeigen */
+/* Reihenfolge stabilisieren */
+
+const priority = {
+"Tagesschau":1,
+"Spiegel":2,
+"n-tv":3,
+"Reuters":4,
+"BBC":5
+}
+
+collected.sort((a,b)=>priority[a.source]-priority[b.source])
+
+/* maximal 5 Nachrichten */
 
 news = collected.slice(0,5)
-
 
 
 /* REGIONAL */
