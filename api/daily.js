@@ -111,7 +111,7 @@ fetchTimeout("https://www.reuters.com/world/rss"),
 
 fetchTimeout("https://feeds.bbci.co.uk/news/world/rss.xml"),
 
-fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml")
+fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml"),
 
 fetchTimeout("https://www.stuttgarter-zeitung.de/rss/feed.xml"),
    
