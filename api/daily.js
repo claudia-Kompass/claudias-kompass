@@ -640,7 +640,12 @@ const weekEnd=endOfWeek(now)
 let todayEvents=[]
 let week=[]
 
-[...eventDB,...movableEvents()].forEach(e=>{
+const allEvents = [
+...(Array.isArray(eventDB) ? eventDB : []),
+...movableEvents()
+]
+
+allEvents.forEach(e=>{
 
 const d=resolveDate(e)
 if(!d) return
