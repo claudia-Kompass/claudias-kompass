@@ -29,7 +29,7 @@ const now=new Date()
 const marketDate=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
 
 
-function fetchTimeout(url,ms=4000){
+function fetchTimeout(url,ms=2500){
 return Promise.race([
 fetch(url),
 new Promise((_,reject)=>setTimeout(()=>reject("timeout"),ms))
