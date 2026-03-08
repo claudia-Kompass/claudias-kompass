@@ -100,19 +100,7 @@ API FETCH
 
 try{
 
-const[
-weatherRes,
-cryptoRes,
-tagesschauRes,
-spiegelRes,
-ntvRes,
-reutersRes,
-bbcRes,
-regionalRes,
-stzRes,
-stimmeRes,
-htRes
-]=await Promise.allSettled([
+const results = await Promise.allSettled([
 
 fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
 
@@ -131,13 +119,26 @@ fetchTimeout("https://feeds.bbci.co.uk/news/world/rss.xml"),
 fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml"),
 
 fetchTimeout("https://www.stuttgarter-zeitung.de/rss"),
-   
+
 fetchTimeout("https://www.stimme.de/rss/"),
-   
-fetchTimeout("https://www.swp.de/crailsheim/rss.xml"),
-   
+
+fetchTimeout("https://www.swp.de/crailsheim/rss.xml")
+
 ])
 
+const [
+weatherRes,
+cryptoRes,
+tagesschauRes,
+spiegelRes,
+ntvRes,
+reutersRes,
+bbcRes,
+regionalRes,
+stzRes,
+stimmeRes,
+htRes
+] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
 
 /* WEATHER */
