@@ -1,774 +1,865 @@
-<!DOCTYPE html>  <html lang="de">  
-<head>  
-<meta charset="UTF-8">  
-<title>GLOBAL SOUL</title>  <style>  
-  
-body{  
-background: linear-gradient(  
-180deg,  
-#071a2c 0%,  
-#0c2a42 55%,  
-#143a57 100%  
-);  
-color:#e6edf3;  
-}  
-    
-.container{  
-padding:40px;  
-max-width:900px;  
-margin:auto;  
-}  
-  
-h1{  
-font-size:44px;  
-margin-bottom:8px;  
-}  
-  
-.subtitle{opacity:.8}  
-  
-.meta{  
-font-size:14px;  
-opacity:.6;  
-margin-top:4px;  
-}  
-  
-button{  
-margin-top:20px;  
-padding:10px 18px;  
-border:none;  
-background:#e6c27a;  
-color:#081626;  
-border-radius:6px;  
-cursor:pointer;  
-}  
-  
-.section hr{  
-opacity:0.35;  
-}  
-  
-.section h2{  
-color:#e6c27a;  
-border-bottom:1px solid rgba(255,255,255,.2);  
-padding-bottom:6px;  
-margin-bottom:20px;  
-}  
-  
-/* Märkte */  
-  
-.line{  
-display:flex;  
-justify-content:space-between;  
-margin:12px 0;  
-}  
-  
-.info{  
-color:#f1c40f;  
-margin-left:10px;  
-text-decoration:none;  
-}  
-  
-/* Ampel */  
-  
-.ampel{  
-width:10px;  
-height:10px;  
-border-radius:50%;  
-display:inline-block;  
-margin-left:8px;  
-}  
-  
-.green{background:#2ecc71}  
-.red{background:#e74c3c}  
-.yellow{background:#f1c40f}  
-  
-/* News */  
-  
-.newsItem{  
-margin-bottom:22px;  
-}  
-  
-.newsSource{  
-font-size:13px;  
-opacity:.7;  
-margin-top:4px;  
-}  
-  
-.news-link{  
-color:#f1c40f;  
-text-decoration:none;  
-}  
-  
-/* Wetter */  
-  
-.weatherNow{  
-font-size:26px;  
-margin-bottom:12px;  
-}  
-  
-.trendBlock{  
-display:flex;  
-gap:40px;  
-margin-top:10px;  
-}  
-  
-.trendItem{text-align:center}  
-  
-.flag{  
-font-size:20px;  
-margin-right:6px;  
-}  
-  
-.compass{  
-font-size:34px;  
-display:inline-block;  
-margin-left:10px;  
-animation:spin 10s linear infinite;  
-vertical-align:middle;  
-}  
-  
-@keyframes spin{  
-0%{transform:rotate(0deg)}  
-100%{transform:rotate(360deg)}  
-}  
-  
-.languageCard{  
-margin-bottom:18px;  
-padding:10px;  
-border-radius:6px;  
-background:rgba(255,255,255,0.03);  
-cursor:pointer;  
-}  
-  
-.langLine{  
-font-size:18px;  
-margin-bottom:6px;  
-display:flex;  
-justify-content:space-between;  
-align-items:center;  
-}  
-  
-.langBtn{  
-cursor:pointer;  
-margin-left:8px;  
-}  
-  
-.langNative{  
-font-size:15px;  
-opacity:0;  
-max-height:0;  
-overflow:hidden;  
-transition:all .3s;  
-}  
-  
-.languageCard.open .langNative{  
-opacity:.85;  
-max-height:40px;  
-margin-top:6px;  
-}  
-  
-/* =========================  
-   UKULELE SECTION  
-========================= */  
-  
-.ukulele-section{  
-margin-top:32px;  
-}  
-  
-.ukulele-section h2{  
-color:#d6b36a;  
-font-weight:600;  
-margin-bottom:12px;  
-}  
-  
-.ukulele-day{  
-color:#d6b36a;  
-font-weight:500;  
-margin-bottom:12px;  
-}  
-  
-.ukulele-card{  
-background:rgba(255,255,255,0.04);  
-border-radius:12px;  
-padding:22px;  
-}  
-  
-.ukulele-title{  
-color:#d6b36a;  
-font-weight:600;  
-margin-bottom:14px;  
-font-size:18px;  
-}  
-  
-.ukulele-tabs{  
-font-family:monospace;  
-font-size:15px;  
-line-height:1.6;  
-color:#e6edf3;  
-white-space:pre;  
-}  
-  
-.uke-chords img{  
-width:65px;  
-background:white;  
-border-radius:8px;  
-padding:6px;  
-box-shadow:0 2px 6px rgba(0,0,0,.3);  
-}  
-  
-.uke-chords img{  
-width:70px;  
-background:white;  
-border-radius:6px;  
-padding:4px;  
-}  
-  
-  .uke-chords{  
-display:flex;  
-gap:16px;  
-margin-top:16px;  
-flex-wrap:wrap;  
-}  
-  
-.uke-diagram{  
-text-align:center;  
-color:#e6c27a;  
-}  
-  
-.uke-name{  
-font-size:14px;  
-margin-bottom:4px;  
-}  
-  
-.uke-diagram svg{  
-background:white;  
-border-radius:6px;  
-padding:4px;  
-}  
-  
-.uke-diagram circle{  
-fill:#2c3e50;  
-}  
-  
-.uke-label{  
-margin-top:18px;  
-font-weight:600;  
-color:#e6c27a;  
-}  
-  
-.uke-strum-pattern{  
-font-size:22px;  
-letter-spacing:10px;  
-margin-top:6px;  
-}  
-  
-.uke-pick-pattern{  
-margin-top:6px;  
-font-size:16px;  
-letter-spacing:2px;  
-}  
-  
-/* Uke Trainer */  
-  
-.uke-trainer{  
-margin-top:20px;  
-}  
-  
-.uke-trainer-chords{  
-display:flex;  
-gap:12px;  
-flex-wrap:wrap;  
-margin-top:8px;  
-}  
-  
-.uke-trainer-chord{  
-padding:6px 12px;  
-background:rgba(255,255,255,0.08);  
-border-radius:6px;  
-font-weight:600;  
-transition:all .2s;  
-}  
-  
-.uke-trainer-active{  
-background:#e6c27a;  
-color:#081626;  
-}  
-    
-  
-  
-/* =========================  
-   UKULELE TAB UI  
-========================= */  
-  
-.uke-tabblock{  
-display:inline-block;  
-background:transparent;  
-padding:12px 0;  
-font-family:monospace;  
-font-size:15px;  
-line-height:1.7;  
-color:#ffffff;  
-}  
-  
-.uke-tabblock pre{  
-margin:0;  
-letter-spacing:1px;  
-}  
-    
-.uke-meta{  
-margin-top:14px;  
-font-size:14px;  
-color:#e6edf3;  
-}  
-  
-.uke-meta b{  
-color:#e6c27a;  
-}  
-  
-.uke-trainer{  
-margin-top:16px;  
-}  
-  
-.uke-trainer-row{  
-display:flex;  
-gap:10px;  
-flex-wrap:wrap;  
-margin-top:8px;  
-}  
-  
-.uke-step{  
-padding:6px 12px;  
-background:rgba(255,255,255,0.08);  
-border-radius:6px;  
-font-weight:600;  
-}  
-  
-.uke-step.active{  
-background:#e6c27a;  
-color:#081626;  
-}  
-  
-.uke-trainer button{  
-margin-top:10px;  
-padding:8px 14px;  
-border:none;  
-background:#e6c27a;  
-color:#081626;  
-border-radius:6px;  
-cursor:pointer;  
-}  
-  
-  
-.footer{  
-display:flex;  
-justify-content:space-between;  
-align-items:flex-start;  
-gap:40px;  
-  
-margin-top:80px;  
-margin-bottom:40px;  
-padding-top:22px;  
-  
-border-top:1px solid rgba(255,255,255,0.15);  
-  
-font-size:14px;  
-opacity:0.85;  
-}  
-    
-.footer-left{  
-max-width:50%;  
-line-height:1.6;  
-}  
-  
-.footer-right{  
-max-width:40%;  
-text-align:left;  
-line-height:1.6;  
-}  
-  
-@media (max-width:700px){  
-  
-.footer{  
-flex-direction:column;  
-gap:12px;  
-}  
-  
-.footer-left{  
-max-width:100%;  
-}  
-  
-.footer-right{  
-max-width:100%;  
-text-align:left;  
-}  
-  
-}  
-    
-.version{  
-position:fixed;  
-top:10px;  
-right:14px;  
-font-size:11px;  
-opacity:0;  
-color:#e6edf3;  
-font-family:monospace;  
-background:rgba(0,0,0,0.35);  
-padding:4px 6px;  
-border-radius:4px;  
-transition:opacity .25s;  
-pointer-events:none;  
-z-index:9999;  
-}  
-  
-.market-date{  
-font-size:0.8em;  
-opacity:0.7;  
-margin-left:6px;  
-}  
-    
-.container{  
-max-width:1100px;  
-margin:0 auto;  
-padding:0 20px;  
-}  
-    
-</style>  </head>  <body>  <div id="versionTag" class="version"></div>  <div class="container">  <h1>🌍 GLOBAL SOUL <span class="compass" id="compass">🧭</span></h1>  
-<div class="subtitle">Claudia’s Daily Compass</div>  
-<div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>  
-<div id="meta" class="meta"></div>  <button onclick="loadData()">Neue Ausgabe</button>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>GLOBAL SOUL</title>
 
-<div class="section">  
-<h2>Politik & Weltgeschehen</h2>  
-<div id="newsBlock"></div>  
-</div>  <div class="section">  <h2>📊 Märkte & Krypto</h2>  <div class="line">  
-<div>DAX</div>  
-<div id="daxValue"></div>  
-</div>  <div class="line">  
-<div>EUR/USD</div>  
-<div id="eurusdValue"></div>  
-</div>  <div class="line">  
-<div>Bitcoin</div>  
-<div id="btcValue"></div>  
-</div>  <div class="line">  
-<div>Nexo</div>  
-<div id="nexoValue"></div>  
-</div>  </div>  <div class="section">  
-<h2>Regional – Landkreis Schwäbisch Hall</h2>  
-<div id="regionalBlock"></div>  
-</div>  <div class="section">  
-<h2>Veranstaltungen</h2>  
-<div id="eventsBlock"></div>  
-</div>  <div class="section">  
-<h2>🌍 Reiseimpuls</h2>  
-<div id="travelBlock"></div>  
-</div>  <div class="section">  
-<h2>🗣 Sprachimpuls</h2>  
-<div id="languageBlock"></div>  
-</div>  <div class="section">  
-<h2>🎸 Ukulele</h2>  
-<div id="ukeBlock"></div>  
-</div>  <div class="section">  
-<h2>🍳 Airfryer Rezept</h2>  
-<div id="recipeBlock"></div>  
-</div>  <div class="section">  
-<h2>✨ Zitat des Tages</h2>  
-<div id="quoteBlock"></div>  
-</div>  <div class="section">  <h2>Wetter – Ilshofen</h2>  <div id="weatherNow" class="weatherNow"></div>  <div class="trendBlock">  <div class="trendItem">  
-<div id="mIcon"></div>  
-<div>09:00</div>  
-<div id="morningTemp"></div>  
-</div>  <div class="trendItem">  
-<div id="aIcon"></div>  
-<div>15:00</div>  
-<div id="afternoonTemp"></div>  
-</div>  <div class="trendItem">  
-<div id="eIcon"></div>  
-<div>21:00</div>  
-<div id="eveningTemp"></div>  
-</div>  </div>  </div>  </div>  <script>  
-  
-  
-function weatherIcon(code){  
-  
-if(code===100) return "🌙";  
-  
-if(code===0) return "☀️";  
-if(code<=2) return "🌤️";  
-if(code===3) return "☁️";  
-if(code<=65) return "🌧️";  
-if(code<=75) return "❄️";  
-return "⛈️";  
-  
-}  
-  
-function ampel(change){  
-  
-if(change>1) return '<span class="ampel green"></span>';  
-if(change<-1) return '<span class="ampel red"></span>';  
-return '<span class="ampel yellow"></span>';  
-  
-}  
-  
-function formatDate(date){  
-  
-if(!date) return "";  
-  
-const d=new Date(date);  
-return d.toLocaleDateString("de-DE");  
-  
-}  
-  
-  
-async function loadData(){  
-  
-try{  
-  
-const res=await fetch("/api/daily");  
-const data=await res.json();  
-  
-render(data);  
-  
-}catch(err){  
-  
-console.error("LOAD ERROR",err);  
-  
-}  
-  
-}  
-  
-    
-function render(data){  
-  
-document.getElementById("versionTag").innerText = "v" + data.version;  
-  
-const now = new Date()  
-  
-const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})  
-const date = now.toLocaleDateString("de-DE")  
-  
-document.getElementById("meta").innerText =  
-weekday + " • " + date  
-  
-    
-/* NEWS */  
-  
-if(data.news){  
-  
-document.getElementById("newsBlock").innerHTML =  
-data.news.map(n=>`  
-  
-<div class="newsItem">  
-<div style="font-weight:600">${n.title}</div>  
-<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>  
-<div class="newsSource">${n.source}</div>  
-</div>  
-  
-`).join("");  
-  
-}  
-  
-  
-/* MARKETS */  
-  
-document.getElementById("daxValue").innerText =  
-data.markets.dax.value + " (" + markets.dax.date + ")";  
-  
-document.getElementById("eurusdValue").innerText =  
-data.markets?.eurusd?.value ?? "-";  
-  
-  
-  
-/* CRYPTO */  
-  
-document.getElementById("btcValue").innerHTML =  
-"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+  
-" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+  
-ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+  
-' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info →</a>';  
-  
-document.getElementById("nexoValue").innerHTML =  
-"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+  
-" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+  
-ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+  
-' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info →</a>';  
-  
-/* REGIONAL */  
-  
-if(data.regional){  
-  
-document.getElementById("regionalBlock").innerHTML =  
-data.regional.map(r=>`  
-  
-<div class="newsItem">  
-<div style="font-weight:600">${r.title}</div>  
-<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>  
-<div class="newsSource">${r.source}</div>  
-</div>  
-  
-`).join("");  
-  
-}  
-  
-  
-  
-/* EVENTS */  
-  
-let html=""  
-  
-/* Events dieser Woche */  
-  
-if(data.events?.week){  
-  
-html+=data.events.week.map(e=>`  
-  
-<div class="newsItem">  
-  
-<div style="font-weight:600">${e.title}</div>  
-  
-<div class="newsSource">  
-${e.city ?? ""}  
-</div>  
-  
-<div class="newsSource">  
-${formatDate(e.date)} ${e.time ?? ""}  
-</div>  
-  
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}  
-  
-</div>  
-  
-`).join("")  
-  
-}  
-  
-  
-/* Wochenmärkte */  
-  
-if(data.events?.markets){  
-  
-html+=`  
-  
-<div style="margin-top:20px;font-weight:600;opacity:.9">  
-🧺 Wochenmärkte  
-</div>  
-  
-`  
-  
-html+=data.events.markets.map(m=>`  
-  
-<div class="newsItem">  
-  
-<div style="font-weight:600">${m.title}</div>  
-  
-<div class="newsSource">  
-${m.location}  
-</div>  
-  
-<div class="newsSource">  
-${m.day} • ${m.time}  
-</div>  
-  
-</div>  
-  
-`).join("")  
-  
-}  
-  
-document.getElementById("eventsBlock").innerHTML=html  
-  
-  
-/* TRAVEL */  
-  
-if(data.travel){  
-  
-document.getElementById("travelBlock").innerHTML=`  
-  
-<div class="newsItem">  
-<div style="font-weight:600">${data.travel.title}</div>  
-<div class="newsSource">${data.travel.text}</div>  
-<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>  
-</div>  
-  
-`;  
-  
-}  
-  
-  
-  
-/* LANGUAGE */  
-  
-if(data.language){  
-  
-document.getElementById("languageBlock").innerHTML =  
-data.language.map(l=>`  
-  
-<div class="languageCard">  
-  
-<div class="langLine" onclick="toggleLang(this.parentElement)">  
-<span>🇬🇧 ${l.en}</span>  
-<span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>  
-</div>  
-  
-<div class="langLine" onclick="toggleLang(this.parentElement)">  
-<span>🇪🇸 ${l.es}</span>  
-<span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>  
-</div>  
-  
-<div class="langNative">  
-🇩🇪 ${l.de}  
-</div>  
-  
-</div>  
-  
-`).join("");  
-  
-}  
-  
-  
-/* =========================  
-   UKULELE MODULE  
-========================= */  
-  
-if(data.ukulele){  
-  
-const tabs = data.ukulele.tabs || ""  
-const tempo = data.ukulele.tempo || 80  
-const strum = data.ukulele.strum || ""  
-const picking = data.ukulele.picking || ""  
-  
-/* Akkorde aus erster Zeile */  
-const firstLine = tabs.split("\n")[0]  
-const chords = firstLine.split(/\s+/).filter(c => c)  
-  
-/* Tabteil ohne Akkordzeile */  
-const tabLines = tabs.split("\n").slice(2).join("\n")  
-  
-document.getElementById("ukeBlock").innerHTML = `  
-  
-<div class="ukulele-card">  
-  
-<div class="ukulele-title">  
-${data.ukulele.title}  
-</div>  
-  
-<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">  
-${chords.join("   ")}  
-</div>  
-  
-<div class="uke-tabblock">  
-<pre>  
-┌────────────────────────┐  
-${tabLines}  
-└────────────────────────┘  
-</pre>  </div>  <div class="uke-meta">  <div><b>Tempo</b> ${tempo} bpm</div>  ${strum ? <div><b>Strum</b> ${strum}</div> : ""}
+<style>
 
-${picking ? <div><b>Fingerpicking</b> ${picking}</div> : ""}
+body{
+background: linear-gradient(
+180deg,
+#071a2c 0%,
+#0c2a42 55%,
+#143a57 100%
+);
+color:#e6edf3;
+}
+  
+.container{
+padding:40px;
+max-width:900px;
+margin:auto;
+}
 
-</div>  <div class="uke-trainer">  <div class="uke-label">Chord Trainer</div>  <div class="uke-trainer-row">  
-${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}  
-</div>  <button onclick="startUkeTrainer()">Start Trainer</button>
+h1{
+font-size:44px;
+margin-bottom:8px;
+}
 
-</div>  </div>  
-`  /* Trainer */
+.subtitle{opacity:.8}
+
+.meta{
+font-size:14px;
+opacity:.6;
+margin-top:4px;
+}
+
+button{
+margin-top:20px;
+padding:10px 18px;
+border:none;
+background:#e6c27a;
+color:#081626;
+border-radius:6px;
+cursor:pointer;
+}
+
+.section hr{
+opacity:0.35;
+}
+
+.section h2{
+color:#e6c27a;
+border-bottom:1px solid rgba(255,255,255,.2);
+padding-bottom:6px;
+margin-bottom:20px;
+}
+
+/* Märkte */
+
+.line{
+display:flex;
+justify-content:space-between;
+margin:12px 0;
+}
+
+.info{
+color:#f1c40f;
+margin-left:10px;
+text-decoration:none;
+}
+
+/* Ampel */
+
+.ampel{
+width:10px;
+height:10px;
+border-radius:50%;
+display:inline-block;
+margin-left:8px;
+}
+
+.green{background:#2ecc71}
+.red{background:#e74c3c}
+.yellow{background:#f1c40f}
+
+/* News */
+
+.newsItem{
+margin-bottom:22px;
+}
+
+.newsSource{
+font-size:13px;
+opacity:.7;
+margin-top:4px;
+}
+
+.news-link{
+color:#f1c40f;
+text-decoration:none;
+}
+
+/* Wetter */
+
+.weatherNow{
+font-size:26px;
+margin-bottom:12px;
+}
+
+.trendBlock{
+display:flex;
+gap:40px;
+margin-top:10px;
+}
+
+.trendItem{text-align:center}
+
+.flag{
+font-size:20px;
+margin-right:6px;
+}
+
+.compass{
+font-size:34px;
+display:inline-block;
+margin-left:10px;
+animation:spin 10s linear infinite;
+vertical-align:middle;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
+.languageCard{
+margin-bottom:18px;
+padding:10px;
+border-radius:6px;
+background:rgba(255,255,255,0.03);
+cursor:pointer;
+}
+
+.langLine{
+font-size:18px;
+margin-bottom:6px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.langBtn{
+cursor:pointer;
+margin-left:8px;
+}
+
+.langNative{
+font-size:15px;
+opacity:0;
+max-height:0;
+overflow:hidden;
+transition:all .3s;
+}
+
+.languageCard.open .langNative{
+opacity:.85;
+max-height:40px;
+margin-top:6px;
+}
+
+/* =========================
+   UKULELE SECTION
+========================= */
+
+.ukulele-section{
+margin-top:32px;
+}
+
+.ukulele-section h2{
+color:#d6b36a;
+font-weight:600;
+margin-bottom:12px;
+}
+
+.ukulele-day{
+color:#d6b36a;
+font-weight:500;
+margin-bottom:12px;
+}
+
+.ukulele-card{
+background:rgba(255,255,255,0.04);
+border-radius:12px;
+padding:22px;
+}
+
+.ukulele-title{
+color:#d6b36a;
+font-weight:600;
+margin-bottom:14px;
+font-size:18px;
+}
+
+.ukulele-tabs{
+font-family:monospace;
+font-size:15px;
+line-height:1.6;
+color:#e6edf3;
+white-space:pre;
+}
+
+.uke-chords img{
+width:65px;
+background:white;
+border-radius:8px;
+padding:6px;
+box-shadow:0 2px 6px rgba(0,0,0,.3);
+}
+
+.uke-chords img{
+width:70px;
+background:white;
+border-radius:6px;
+padding:4px;
+}
+
+  .uke-chords{
+display:flex;
+gap:16px;
+margin-top:16px;
+flex-wrap:wrap;
+}
+
+.uke-diagram{
+text-align:center;
+color:#e6c27a;
+}
+
+.uke-name{
+font-size:14px;
+margin-bottom:4px;
+}
+
+.uke-diagram svg{
+background:white;
+border-radius:6px;
+padding:4px;
+}
+
+.uke-diagram circle{
+fill:#2c3e50;
+}
+
+.uke-label{
+margin-top:18px;
+font-weight:600;
+color:#e6c27a;
+}
+
+.uke-strum-pattern{
+font-size:22px;
+letter-spacing:10px;
+margin-top:6px;
+}
+
+.uke-pick-pattern{
+margin-top:6px;
+font-size:16px;
+letter-spacing:2px;
+}
+
+/* Uke Trainer */
+
+.uke-trainer{
+margin-top:20px;
+}
+
+.uke-trainer-chords{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+.uke-trainer-chord{
+padding:6px 12px;
+background:rgba(255,255,255,0.08);
+border-radius:6px;
+font-weight:600;
+transition:all .2s;
+}
+
+.uke-trainer-active{
+background:#e6c27a;
+color:#081626;
+}
+  
+
+
+/* =========================
+   UKULELE TAB UI
+========================= */
+
+.uke-tabblock{
+display:inline-block;
+background:transparent;
+padding:12px 0;
+font-family:monospace;
+font-size:15px;
+line-height:1.7;
+color:#ffffff;
+}
+
+.uke-tabblock pre{
+margin:0;
+letter-spacing:1px;
+}
+  
+.uke-meta{
+margin-top:14px;
+font-size:14px;
+color:#e6edf3;
+}
+
+.uke-meta b{
+color:#e6c27a;
+}
+
+.uke-trainer{
+margin-top:16px;
+}
+
+.uke-trainer-row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+.uke-step{
+padding:6px 12px;
+background:rgba(255,255,255,0.08);
+border-radius:6px;
+font-weight:600;
+}
+
+.uke-step.active{
+background:#e6c27a;
+color:#081626;
+}
+
+.uke-trainer button{
+margin-top:10px;
+padding:8px 14px;
+border:none;
+background:#e6c27a;
+color:#081626;
+border-radius:6px;
+cursor:pointer;
+}
+
+
+.footer{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:40px;
+
+margin-top:80px;
+margin-bottom:40px;
+padding-top:22px;
+
+border-top:1px solid rgba(255,255,255,0.15);
+
+font-size:14px;
+opacity:0.85;
+}
+  
+.footer-left{
+max-width:50%;
+line-height:1.6;
+}
+
+.footer-right{
+max-width:40%;
+text-align:left;
+line-height:1.6;
+}
+
+@media (max-width:700px){
+
+.footer{
+flex-direction:column;
+gap:12px;
+}
+
+.footer-left{
+max-width:100%;
+}
+
+.footer-right{
+max-width:100%;
+text-align:left;
+}
+
+}
+  
+.version{
+position:fixed;
+top:10px;
+right:14px;
+font-size:11px;
+opacity:0;
+color:#e6edf3;
+font-family:monospace;
+background:rgba(0,0,0,0.35);
+padding:4px 6px;
+border-radius:4px;
+transition:opacity .25s;
+pointer-events:none;
+z-index:9999;
+}
+
+  
+.container{
+max-width:1100px;
+margin:0 auto;
+padding:0 20px;
+}
+  
+</style>
+</head>
+
+  
+<body>
+
+<div id="versionTag" class="version"></div>
+
+<div class="container">
+
+<h1>🌍 GLOBAL SOUL <span class="compass" id="compass">🧭</span></h1>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
+<div id="meta" class="meta"></div>
+
+  
+<button onclick="loadData()">Neue Ausgabe</button>
+
+
+<div class="section">
+<h2>Politik & Weltgeschehen</h2>
+<div id="newsBlock"></div>
+</div>
+
+
+<div class="section">
+
+<h2>📊 Märkte & Krypto</h2>
+
+<div class="line">
+<div>DAX</div>
+<div id="daxValue"></div>
+</div>
+
+<div class="line">
+<div>EUR/USD</div>
+<div id="eurusdValue"></div>
+</div>
+
+<div class="line">
+<div>Bitcoin</div>
+<div id="btcValue"></div>
+</div>
+
+<div class="line">
+<div>Nexo</div>
+<div id="nexoValue"></div>
+</div>
+
+</div>
+
+
+<div class="section">
+<h2>Regional – Landkreis Schwäbisch Hall</h2>
+<div id="regionalBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>Veranstaltungen</h2>
+<div id="eventsBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🌍 Reiseimpuls</h2>
+<div id="travelBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🗣 Sprachimpuls</h2>
+<div id="languageBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🎸 Ukulele</h2>
+<div id="ukeBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🍳 Airfryer Rezept</h2>
+<div id="recipeBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>✨ Zitat des Tages</h2>
+<div id="quoteBlock"></div>
+</div>
+
+
+<div class="section">
+
+<h2>Wetter – Ilshofen</h2>
+
+<div id="weatherNow" class="weatherNow"></div>
+
+<div class="trendBlock">
+
+<div class="trendItem">
+<div id="mIcon"></div>
+<div>09:00</div>
+<div id="morningTemp"></div>
+</div>
+
+<div class="trendItem">
+<div id="aIcon"></div>
+<div>15:00</div>
+<div id="afternoonTemp"></div>
+</div>
+
+<div class="trendItem">
+<div id="eIcon"></div>
+<div>21:00</div>
+<div id="eveningTemp"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+function weatherIcon(code){
+
+if(code===100) return "🌙";
+
+if(code===0) return "☀️";
+if(code<=2) return "🌤️";
+if(code===3) return "☁️";
+if(code<=65) return "🌧️";
+if(code<=75) return "❄️";
+return "⛈️";
+
+}
+
+function ampel(change){
+
+if(change>1) return '<span class="ampel green"></span>';
+if(change<-1) return '<span class="ampel red"></span>';
+return '<span class="ampel yellow"></span>';
+
+}
+
+function formatDate(date){
+
+if(!date) return "";
+
+const d=new Date(date);
+return d.toLocaleDateString("de-DE");
+
+}
+
+
+async function loadData(){
+
+try{
+
+const res=await fetch("/api/daily");
+const data=await res.json();
+
+render(data);
+
+}catch(err){
+
+console.error("LOAD ERROR",err);
+
+}
+
+}
+
+  
+function render(data){
+
+document.getElementById("versionTag").innerText = "v" + data.version;
+
+const now = new Date()
+
+const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
+const date = now.toLocaleDateString("de-DE")
+
+document.getElementById("meta").innerText =
+weekday + " • " + date
+
+  
+/* NEWS */
+
+if(data.news){
+
+document.getElementById("newsBlock").innerHTML =
+data.news.map(n=>`
+
+<div class="newsItem">
+<div style="font-weight:600">${n.title}</div>
+<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
+<div class="newsSource">${n.source}</div>
+</div>
+
+`).join("");
+
+}
+
+
+/* MARKETS */
+
+document.getElementById("daxValue").innerText =
+data.markets?.dax?.value ?? "-";
+
+document.getElementById("eurusdValue").innerText =
+data.markets?.eurusd?.value ?? "-";
+
+
+
+/* CRYPTO */
+
+document.getElementById("btcValue").innerHTML =
+"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+
+" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+
+ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" class="info">Info →</a>';
+
+document.getElementById("nexoValue").innerHTML =
+"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
+" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+
+ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/en/coins/nexo" target="_blank" class="info">Info →</a>';
+
+/* REGIONAL */
+
+if(data.regional){
+
+document.getElementById("regionalBlock").innerHTML =
+data.regional.map(r=>`
+
+<div class="newsItem">
+<div style="font-weight:600">${r.title}</div>
+<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
+<div class="newsSource">${r.source}</div>
+</div>
+
+`).join("");
+
+}
+
+
+
+/* EVENTS */
+
+let html=""
+
+/* Events dieser Woche */
+
+if(data.events?.week){
+
+html+=data.events.week.map(e=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${e.title}</div>
+
+<div class="newsSource">
+${e.city ?? ""}
+</div>
+
+<div class="newsSource">
+${formatDate(e.date)} ${e.time ?? ""}
+</div>
+
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`).join("")
+
+}
+
+
+/* Wochenmärkte */
+
+if(data.events?.markets){
+
+html+=`
+
+<div style="margin-top:20px;font-weight:600;opacity:.9">
+🧺 Wochenmärkte
+</div>
+
+`
+
+html+=data.events.markets.map(m=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${m.title}</div>
+
+<div class="newsSource">
+${m.location}
+</div>
+
+<div class="newsSource">
+${m.day} • ${m.time}
+</div>
+
+</div>
+
+`).join("")
+
+}
+
+document.getElementById("eventsBlock").innerHTML=html
+
+
+/* TRAVEL */
+
+if(data.travel){
+
+document.getElementById("travelBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.travel.title}</div>
+<div class="newsSource">${data.travel.text}</div>
+<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
+</div>
+
+`;
+
+}
+
+
+
+/* LANGUAGE */
+
+if(data.language){
+
+document.getElementById("languageBlock").innerHTML =
+data.language.map(l=>`
+
+<div class="languageCard">
+
+<div class="langLine" onclick="toggleLang(this.parentElement)">
+<span>🇬🇧 ${l.en}</span>
+<span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
+</div>
+
+<div class="langLine" onclick="toggleLang(this.parentElement)">
+<span>🇪🇸 ${l.es}</span>
+<span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
+</div>
+
+<div class="langNative">
+🇩🇪 ${l.de}
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* =========================
+   UKULELE MODULE
+========================= */
+
+if(data.ukulele){
+
+const tabs = data.ukulele.tabs || ""
+const tempo = data.ukulele.tempo || 80
+const strum = data.ukulele.strum || ""
+const picking = data.ukulele.picking || ""
+
+/* Akkorde aus erster Zeile */
+const firstLine = tabs.split("\n")[0]
+const chords = firstLine.split(/\s+/).filter(c => c)
+
+/* Tabteil ohne Akkordzeile */
+const tabLines = tabs.split("\n").slice(2).join("\n")
+
+document.getElementById("ukeBlock").innerHTML = `
+
+<div class="ukulele-card">
+
+<div class="ukulele-title">
+${data.ukulele.title}
+</div>
+
+<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">
+${chords.join("   ")}
+</div>
+
+<div class="uke-tabblock">
+<pre>
+┌────────────────────────┐
+${tabLines}
+└────────────────────────┘
+</pre>
+</div>
+
+<div class="uke-meta">
+
+<div><b>Tempo</b> ${tempo} bpm</div>
+
+${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
+
+${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
+
+</div>
+
+<div class="uke-trainer">
+
+<div class="uke-label">Chord Trainer</div>
+
+<div class="uke-trainer-row">
+${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
+</div>
+
+<button onclick="startUkeTrainer()">Start Trainer</button>
+
+</div>
+
+</div>
+`
+
+/* Trainer */
 
 window.startUkeTrainer = function(){
 
@@ -794,8 +885,9 @@ index = 0
 
 }
 
+
 /* =========================
-RECIPE
+   RECIPE
 ========================= */
 
 if(data.recipe){
@@ -804,26 +896,48 @@ const r = data.recipe
 
 document.getElementById("recipeBlock").innerHTML = `
 
-<div class="newsItem">  <div style="font-weight:600;font-size:18px">  
-${r.title}  
-</div>  <div class="newsSource" style="margin-top:6px">  
-${r.ingredients.join(" • ")}  
-</div>  <div class="newsSource" style="margin-top:6px">  
-${r.short}  
-</div>  <div class="newsSource" style="margin-top:10px">  
-<b>Vorbereitung</b><br>  
-${r.prep}  
-</div>  <div class="newsSource" style="margin-top:8px">  
-<b>Zubereitung</b><br>  
-${r.cook}  
-</div>  <div class="newsSource" style="margin-top:10px">  🔥 ${r.program} • ${r.temp}
+<div class="newsItem">
+
+<div style="font-weight:600;font-size:18px">
+${r.title}
+</div>
+
+<div class="newsSource" style="margin-top:6px">
+${r.ingredients.join(" • ")}
+</div>
+
+<div class="newsSource" style="margin-top:6px">
+${r.short}
+</div>
+
+<div class="newsSource" style="margin-top:10px">
+<b>Vorbereitung</b><br>
+${r.prep}
+</div>
+
+<div class="newsSource" style="margin-top:8px">
+<b>Zubereitung</b><br>
+${r.cook}
+</div>
+
+<div class="newsSource" style="margin-top:10px">
+
+🔥 ${r.program} • ${r.temp}  
 ⏱ ${r.time}
 
-</div>  <div class="newsSource">  
-🔁 ${r.shake}  
-</div>  <div class="newsSource">  
-🍽 ${r.portion} Portionen  
-</div>  </div>  `
+</div>
+
+<div class="newsSource">
+🔁 ${r.shake}
+</div>
+
+<div class="newsSource">
+🍽 ${r.portion} Portionen
+</div>
+
+</div>
+
+`
 
 }
 
@@ -833,12 +947,16 @@ if(data.quote){
 
 document.getElementById("quoteBlock").innerHTML=`
 
-<div class="newsItem">  
-"${data.quote.text}"  
-<div class="newsSource">${data.quote.author}</div>  
-</div>  `;
+<div class="newsItem">
+"${data.quote.text}"
+<div class="newsSource">${data.quote.author}</div>
+</div>
+
+`;
 
 }
+
+
 
 /* WEATHER */
 
@@ -907,14 +1025,25 @@ compassClicks = 0;
 });
 
 });
+  
+</script>
 
-</script>  <footer class="footer">  <div class="footer-left">  
-GLOBAL SOUL • Daily Compass<br>  
-© 2026 Claudia Förstner<br>  
-Built with curiosity 🌍  
-</div>  <div class="footer-right">  
-GLOBAL – mein Blick über Heimat und Horizont hinaus.<br>  
-SOUL – die Dinge, die das Leben lebendig machen.  
-</div>  </footer>  </body>  
-</html>  Bitte prüfen korrigiere und liefer den correkt kompletten zuersetzenden Code
-Keine einzelnen Zeilen
+
+<footer class="footer">
+
+<div class="footer-left">
+GLOBAL SOUL • Daily Compass<br>
+© 2026 Claudia Förstner<br>
+Built with curiosity 🌍
+</div>
+
+<div class="footer-right">
+GLOBAL – mein Blick über Heimat und Horizont hinaus.<br>
+SOUL – die Dinge, die das Leben lebendig machen.
+</div>
+
+  
+</footer>
+
+</body>
+</html>
