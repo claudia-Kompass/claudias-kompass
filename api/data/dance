@@ -1,0 +1,18 @@
+module.exports = [
+{
+title:"Salsa Social Stuttgart",
+city:"Stuttgart",
+date:"2026-03-14",
+style:"salsa",
+location:"Salsa Company",
+url:""
+},
+{
+title:"Bachata Night Nürnberg",
+city:"Nürnberg",
+date:"2026-03-20",
+style:"bachata",
+location:"La Rumba",
+url:""
+}
+]
