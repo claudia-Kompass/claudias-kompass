@@ -643,12 +643,11 @@ let week=[]
 [...eventDB,...movableEvents()].forEach(e=>{
 
 const d=resolveDate(e)
-if(!d)return
+if(!d) return
 
 const eventDate=startOfDay(d)
 
 const event={
-
 title:e.title,
 city:e.city,
 date:d.toISOString().split("T")[0],
@@ -658,7 +657,6 @@ url:e.url||"",
 maps:e.address
 ?`https://maps.google.com/?q=${encodeURIComponent(e.address)}`
 :""
-
 }
 
 if(eventDate.getTime()===todayStart.getTime()){
@@ -667,12 +665,8 @@ todayEvents.push(event)
 else if(eventDate>=todayStart && eventDate<=weekEnd){
 week.push(event)
 }
-else if(eventDate>weekEnd){
-return
-}
 
 })
-
 
 
 /* ======================
