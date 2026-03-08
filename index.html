@@ -641,11 +641,13 @@ data.news.map(n=>`
 
 /* MARKETS */
 
-document.getElementById("daxValue").innerText =
-data.markets?.dax?.value ?? "-";
+document.getElementById("daxValue").innerHTML =
+(data.markets?.dax?.value ?? "-") +
+` <span class="market-date">(${data.markets?.dax?.date ?? ""})</span>`;
 
-document.getElementById("eurusdValue").innerText =
-data.markets?.eurusd?.value ?? "-";
+document.getElementById("eurusdValue").innerHTML =
+(data.markets?.eurusd?.value ?? "-") +
+` <span class="market-date">(${data.markets?.eurusd?.date ?? ""})</span>`;
 
 
 
