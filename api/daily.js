@@ -440,7 +440,7 @@ if(businessResult.length===3) break
 }
 
 regionalBusiness = businessResult
-
+*
 rssCache = {
 news,
 regional,
@@ -528,7 +528,7 @@ d=new Date(now.getFullYear()+1,e.month-1,e.day)
 return d
 }
 
-return nullää
+return null
 }
 
 
