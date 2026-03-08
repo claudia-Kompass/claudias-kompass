@@ -112,7 +112,7 @@ regionalRes,
 stzRes,
 stimmeRes,
 htRes
-]=await Promise.all([
+]=await Promise.allSettled([
 
 fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
 
