@@ -117,7 +117,7 @@ fetchTimeout("https://www.stuttgarter-zeitung.de/rss/feed.xml"),
    
 fetchTimeout("https://www.stimme.de/rss/"),
    
-fetchTimeout("https://www.swp.de/rss/suedwest/politik/"),
+fetchTimeout("https://www.swp.de/crailsheim/rss.xml"),
    
 ])
 
