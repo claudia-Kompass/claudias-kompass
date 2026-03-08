@@ -647,7 +647,7 @@ data.news.map(n=>`
 /* MARKETS */
 
 document.getElementById("daxValue").innerText =
-data.markets?.dax?.value ?? "-";
+data.markets.dax.value + " (" + markets.dax.date + ")";
 
 document.getElementById("eurusdValue").innerText =
 data.markets?.eurusd?.value ?? "-";
