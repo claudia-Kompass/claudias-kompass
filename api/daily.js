@@ -29,11 +29,27 @@ const now=new Date()
 const marketDate=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
 
 
-function fetchTimeout(url,ms=2500){
-return Promise.race([
-fetch(url),
-new Promise((_,reject)=>setTimeout(()=>reject("timeout"),ms))
-])
+async function fetchTimeout(url,ms=2500){
+
+try{
+
+const controller = new AbortController()
+const id = setTimeout(()=>controller.abort(),ms)
+
+const res = await fetch(url,{signal:controller.signal})
+
+clearTimeout(id)
+
+if(!res.ok) return null
+
+return res
+
+}catch(e){
+
+return null
+
+}
+
 }
 
 
