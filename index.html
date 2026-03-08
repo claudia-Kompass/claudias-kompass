@@ -716,7 +716,7 @@ html+=`
 </div>
 `
 
-html+=data.events.today.map(e=>`
+data.events.week.slice(0,4).map(e=>
 
 <div class="newsItem">
 
@@ -776,39 +776,6 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 }
 
 
-/* DEMNÄCHST */
-
-if(data.events?.upcoming?.length){
-
-html+=`
-<div style="margin-top:18px;font-weight:600">
-🔜 Demnächst
-</div>
-`
-
-html+=data.events.upcoming.slice(0,5).map(e=>`
-
-<div class="newsItem">
-
-<div style="font-weight:600">${e.title}</div>
-
-<div class="newsSource">
-${e.city ?? ""}
-</div>
-
-<div class="newsSource">
-${formatDate(e.date)}
-</div>
-
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
-</div>
-
-`).join("")
-
-}
 
 
 /* HEUTIGE WOCHENMÄRKTE */
