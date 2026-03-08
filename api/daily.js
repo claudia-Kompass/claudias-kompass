@@ -88,6 +88,9 @@ weatherRes,
 cryptoRes,
 tagesschauRes,
 spiegelRes,
+ntvRes,
+reutersRes,
+bbcRes,
 regionalRes
 ]=await Promise.all([
 
@@ -98,6 +101,12 @@ fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
+
+fetchTimeout("https://www.n-tv.de/rss"),
+
+fetchTimeout("https://www.reuters.com/world/rss"),
+
+fetchTimeout("https://feeds.bbci.co.uk/news/world/rss.xml"),
 
 fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml")
 
