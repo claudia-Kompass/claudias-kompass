@@ -565,4 +565,14 @@ quote
 
 })
 
+}catch(err){
+
+console.error("API ERROR",err)
+
+res.status(500).json({
+error:"api_failed"
+})
+
+}
+
 }
