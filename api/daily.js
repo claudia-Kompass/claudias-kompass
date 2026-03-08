@@ -692,7 +692,6 @@ maps:`https://maps.google.com/?q=${encodeURIComponent(m.address)}`
 const events={
 today:todayEvents,
 week,
-upcoming,
 marketsToday
 }
 
