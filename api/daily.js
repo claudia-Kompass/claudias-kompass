@@ -683,7 +683,7 @@ maps:e.address
 }
 
 if(eventDate.getTime()===todayStart.getTime()){
-today.push(event)
+todayEvents.push(event)
 }
 else if(eventDate>=todayStart && eventDate<=weekEnd){
 week.push(event)
