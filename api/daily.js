@@ -582,11 +582,17 @@ time:"11:00–20:00"
 }
 
 function movableEvents(){
+function movableEvents(){
 
+const now = new Date()
+const year = now.getFullYear()
 const list=[]
+
+/* Verkaufsoffener Sonntag April */
 
 const verkaufsoffen = getSecondSunday(4)
 
+if(verkaufsoffen >= startOfDay(now)){
 list.push({
 title:"Verkaufsoffener Sonntag",
 city:"Schwäbisch Hall",
@@ -595,8 +601,15 @@ address:"Marktplatz 1, 74523 Schwäbisch Hall",
 date:verkaufsoffen.toISOString().split("T")[0],
 time:"13:00–18:00"
 })
+}
+
+/* Weihnachtsmarkt nur ab November anzeigen */
+
+if(now.getMonth()>=10){
 
 list.push(...getAdventMarkets())
+
+}
 
 return list
 
