@@ -29,8 +29,6 @@ const fullVersion=version+"."+build
 
 const now=new Date()
 
-const marketDate=now.toLocaleDateString("de-DE",{timeZone:"Europe/Berlin"})
-
 
 async function fetchTimeout(url,ms=2500){
 
