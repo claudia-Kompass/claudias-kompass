@@ -275,9 +275,6 @@ if(result.length===5) break
 
 news = result
 
-
-/* REGIONAL */
-
 /* REGIONAL */
 
 let regionalCollected=[]
@@ -454,6 +451,31 @@ regionalBusiness
 rssCacheTime = Date.now()
 }
 
+
+/* =========================================
+   MARKET DATE LOGIC
+========================================= */
+
+const today = new Date()
+
+let marketDate = new Date(today)
+
+const day = today.getDay()
+
+// Sonntag
+if(day === 0){
+marketDate.setDate(today.getDate()-2)
+}
+
+// Samstag
+if(day === 6){
+marketDate.setDate(today.getDate()-1)
+}
+
+const marketDateString =
+marketDate.toLocaleDateString("de-DE")
+
+   
 /* =======================================================
 MARKETS
 ======================================================= */
