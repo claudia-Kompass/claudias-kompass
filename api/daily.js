@@ -530,20 +530,16 @@ return d
 return null
 }
 
-
-/* ======================
-EVENT DATABASE
-====================== */
-
 /* ======================
 MOVABLE EVENTS
 ====================== */
 
 function getSecondSunday(month){
-const now = new Date()
-const year = now.getFullYear()
 
-let d = new Date(year,month-1,1)
+const now=new Date()
+const year=now.getFullYear()
+
+let d=new Date(year,month-1,1)
 
 while(d.getDay()!==0){
 d.setDate(d.getDate()+1)
@@ -556,19 +552,20 @@ return d
 
 function getAdventMarkets(){
 
-const now = new Date()
-const year = now.getFullYear()
+const now=new Date()
+const year=now.getFullYear()
 
-let d = new Date(year,11,24)
+let d=new Date(year,11,24)
 
 while(d.getDay()!==0){
 d.setDate(d.getDate()-1)
 }
 
-const firstAdvent = new Date(d)
+const firstAdvent=new Date(d)
 firstAdvent.setDate(d.getDate()-21)
 
 return [
+
 {
 title:"Weihnachtsmarkt Schwäbisch Hall",
 city:"Schwäbisch Hall",
@@ -577,33 +574,36 @@ address:"Marktplatz 1, 74523 Schwäbisch Hall",
 date:firstAdvent.toISOString().split("T")[0],
 time:"11:00–20:00"
 }
+
 ]
 
 }
 
 function movableEvents(){
-function movableEvents(){
 
-const now = new Date()
-const year = now.getFullYear()
+const now=new Date()
 const list=[]
 
-/* Verkaufsoffener Sonntag April */
+/* Verkaufsoffener Sonntag */
 
-const verkaufsoffen = getSecondSunday(4)
+const verkaufsoffen=getSecondSunday(4)
 
-if(verkaufsoffen >= startOfDay(now)){
+if(verkaufsoffen>=startOfDay(now)){
+
 list.push({
+
 title:"Verkaufsoffener Sonntag",
 city:"Schwäbisch Hall",
 location:"Innenstadt",
 address:"Marktplatz 1, 74523 Schwäbisch Hall",
 date:verkaufsoffen.toISOString().split("T")[0],
 time:"13:00–18:00"
+
 })
+
 }
 
-/* Weihnachtsmarkt nur ab November anzeigen */
+/* Weihnachtsmarkt nur ab November */
 
 if(now.getMonth()>=10){
 
@@ -641,8 +641,6 @@ time:"07:00–13:00"
 
 ]
 
-
-
 /* ======================
 ENGINE
 ====================== */
@@ -653,19 +651,22 @@ const weekEnd=endOfWeek(now)
 let todayEvents=[]
 let week=[]
 
-const allEvents = [
-...(Array.isArray(eventDB) ? eventDB : []),
+const allEvents=[
+
+...(Array.isArray(eventDB)?eventDB:[]),
 ...movableEvents()
+
 ]
 
 allEvents.forEach(e=>{
 
 const d=resolveDate(e)
-if(!d) return
+if(!d)return
 
 const eventDate=startOfDay(d)
 
 const event={
+
 title:e.title,
 city:e.city,
 date:d.toISOString().split("T")[0],
@@ -675,17 +676,18 @@ url:e.url||"",
 maps:e.address
 ?`https://maps.google.com/?q=${encodeURIComponent(e.address)}`
 :""
+
 }
 
 if(eventDate.getTime()===todayStart.getTime()){
 todayEvents.push(event)
 }
+
 else if(eventDate>=todayStart && eventDate<=weekEnd){
 week.push(event)
 }
 
 })
-
 
 /* ======================
 TODAY MARKETS
@@ -705,13 +707,13 @@ maps:`https://maps.google.com/?q=${encodeURIComponent(m.address)}`
 
 }))
 
-
-
 const events={
 today:todayEvents,
 week,
 marketsToday
-}
+}==================================================== */
+
+
 
 
 
