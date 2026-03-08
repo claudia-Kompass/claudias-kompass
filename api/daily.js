@@ -248,8 +248,9 @@ news = result
 
 /* REGIONAL */
 
-let regionalCollected=[]
-let businessCollected=[]
+let news=[]
+let regional=[]
+let regionalBusiness=[]
 
 const regionalCompanies=[
 "würth",
