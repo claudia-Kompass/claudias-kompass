@@ -411,47 +411,6 @@ regionalBusiness = businessResult
 
 
 
-/* DUPLIKATE ENTFERNEN */
-
-const regionalResult=[]
-const regionalSeen=new Set()
-
-for(const item of regionalCollected){
-
-if(regionalSeen.has(item.title)) continue
-
-regionalResult.push(item)
-regionalSeen.add(item.title)
-
-if(regionalResult.length===4) break
-
-}
-
-regional = regionalResult
-
-
-const businessResult=[]
-const businessSeen=new Set()
-
-for(const item of businessCollected){
-
-if(businessSeen.has(item.title)) continue
-
-businessResult.push(item)
-businessSeen.add(item.title)
-
-if(businessResult.length===3) break
-
-}
-
-regionalBusiness = businessResult
-
-
-
-
-
-
-
 /* =======================================================
 MARKETS
 ======================================================= */
