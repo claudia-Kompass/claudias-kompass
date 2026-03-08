@@ -171,32 +171,36 @@ nexo=d.nexo||nexo
 
 /* NEWS */
 
-let collected=[]
+let collected = []
 
 if(tagesschauRes){
-const xml=await tagesschauRes.text()
-collected=collected.concat(parseRSS(xml,"Tagesschau"))
+const xml = await tagesschauRes.text()
+collected = collected.concat(parseRSS(xml,"Tagesschau"))
 }
 
 if(spiegelRes){
-const xml=await spiegelRes.text()
-collected=collected.concat(parseRSS(xml,"Spiegel"))
+const xml = await spiegelRes.text()
+collected = collected.concat(parseRSS(xml,"Spiegel"))
 }
 
 if(ntvRes){
-const xml=await ntvRes.text()
-collected=collected.concat(parseRSS(xml,"n-tv"))
+const xml = await ntvRes.text()
+collected = collected.concat(parseRSS(xml,"n-tv"))
 }
 
 if(reutersRes){
-const xml=await reutersRes.text()
-collected=collected.concat(parseRSS(xml,"Reuters"))
+const xml = await reutersRes.text()
+collected = collected.concat(parseRSS(xml,"Reuters"))
 }
 
 if(bbcRes){
-const xml=await bbcRes.text()
-collected=collected.concat(parseRSS(xml,"BBC"))
-})
+const xml = await bbcRes.text()
+collected = collected.concat(parseRSS(xml,"BBC"))
+}
+
+/* maximal 5 Nachrichten anzeigen */
+
+news = collected.slice(0,5)
 
 
 
