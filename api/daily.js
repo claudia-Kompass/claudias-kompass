@@ -2,6 +2,7 @@ const ukuleleSongs = require("./data/ukulele")
 const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
+const eventsDB = require("./data/events")
 
 let rssCache = null
 let rssCacheTime = 0
@@ -534,91 +535,6 @@ return null
 /* ======================
 EVENT DATABASE
 ====================== */
-
-const eventDB=[
-
-{
-title:"Freizeit Messe Nürnberg",
-city:"Nürnberg",
-location:"Messezentrum Nürnberg",
-address:"Messezentrum 1, 90471 Nürnberg",
-month:3,
-day:8,
-time:"09:30–18:00",
-url:"https://www.freizeitmesse.de"
-},
-
-{
-title:"Consumenta",
-city:"Nürnberg",
-location:"Messezentrum Nürnberg",
-address:"Messezentrum 1, 90471 Nürnberg",
-month:10,
-day:25,
-time:"10:00–18:00",
-url:"https://www.consumenta.de"
-},
-
-{
-title:"CMT – Urlaubsmesse",
-city:"Stuttgart",
-location:"Messe Stuttgart",
-address:"Messepiazza 1, 70629 Stuttgart",
-month:1,
-day:17,
-time:"10:00–18:00",
-url:"https://www.messe-stuttgart.de/cmt"
-},
-
-{
-title:"Genussmesse Heilbronn",
-city:"Heilbronn",
-location:"redblue Messehalle",
-address:"Wannenäckerstr 50, 74078 Heilbronn",
-month:3,
-day:7,
-time:"10:00–18:00",
-url:"https://redblue.de"
-},
-
-{
-title:"Jakobimarkt",
-city:"Schwäbisch Hall",
-location:"Altstadt",
-address:"Marktplatz 1, 74523 Schwäbisch Hall",
-month:7,
-day:26,
-time:"10:00–18:00"
-},
-
-{
-title:"Sommernachtsfest",
-city:"Schwäbisch Hall",
-location:"Altstadt",
-address:"Marktplatz 1, 74523 Schwäbisch Hall",
-month:8,
-day:10
-},
-
-{
-title:"Crailsheimer Volksfest",
-city:"Crailsheim",
-location:"Volksfestplatz",
-address:"Beuerlbacher Str, 74564 Crailsheim",
-month:9,
-day:19
-},
-
-{
-title:"Kinderzeche",
-city:"Dinkelsbühl",
-location:"Altstadt",
-address:"Marktplatz, 91550 Dinkelsbühl",
-month:7,
-day:20
-}
-
-]
 
 
 
