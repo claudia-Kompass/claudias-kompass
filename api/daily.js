@@ -623,6 +623,7 @@ res.status(200).json({
 version:fullVersion,
 news,
 regional,
+regionalBusiness,
 events,
 markets,
 crypto:{bitcoin,nexo},
