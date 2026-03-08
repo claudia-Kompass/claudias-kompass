@@ -481,8 +481,14 @@ MARKETS
 ======================================================= */
 
 const markets={
-dax:{value:"18.742",date:"Stand "+marketDate},
-eurusd:{value:"1.08",date:"Stand "+marketDate}
+dax:{
+value:"18.742",
+date:marketDateString
+},
+eurusd:{
+value:"1.08",
+date:marketDateString
+}
 }
 
 
