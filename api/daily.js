@@ -435,7 +435,14 @@ if(businessResult.length===3) break
 
 regionalBusiness = businessResult
 
+rssCache = {
+news,
+regional,
+regionalBusiness
+}
 
+rssCacheTime = Date.now()
+}
 
 /* =======================================================
 MARKETS
