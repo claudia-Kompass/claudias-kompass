@@ -536,7 +536,72 @@ return nullää
 EVENT DATABASE
 ====================== */
 
+/* ======================
+MOVABLE EVENTS
+====================== */
 
+function getSecondSunday(month){
+const now = new Date()
+const year = now.getFullYear()
+
+let d = new Date(year,month-1,1)
+
+while(d.getDay()!==0){
+d.setDate(d.getDate()+1)
+}
+
+d.setDate(d.getDate()+7)
+
+return d
+}
+
+function getAdventMarkets(){
+
+const now = new Date()
+const year = now.getFullYear()
+
+let d = new Date(year,11,24)
+
+while(d.getDay()!==0){
+d.setDate(d.getDate()-1)
+}
+
+const firstAdvent = new Date(d)
+firstAdvent.setDate(d.getDate()-21)
+
+return [
+{
+title:"Weihnachtsmarkt Schwäbisch Hall",
+city:"Schwäbisch Hall",
+location:"Marktplatz",
+address:"Marktplatz 1, 74523 Schwäbisch Hall",
+date:firstAdvent.toISOString().split("T")[0],
+time:"11:00–20:00"
+}
+]
+
+}
+
+function movableEvents(){
+
+const list=[]
+
+const verkaufsoffen = getSecondSunday(4)
+
+list.push({
+title:"Verkaufsoffener Sonntag",
+city:"Schwäbisch Hall",
+location:"Innenstadt",
+address:"Marktplatz 1, 74523 Schwäbisch Hall",
+date:verkaufsoffen.toISOString().split("T")[0],
+time:"13:00–18:00"
+})
+
+list.push(...getAdventMarkets())
+
+return list
+
+}
 
 /* ======================
 WEEKLY MARKETS
@@ -577,7 +642,7 @@ let todayEvents=[]
 let week=[]
 let upcoming=[]
 
-eventDB.forEach(e=>{
+[...eventDB,...movableEvents()].forEach(e=>{
 
 const d=resolveDate(e)
 if(!d)return
