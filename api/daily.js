@@ -75,6 +75,7 @@ let nexo={usd:0,eur:0,usd_24h_change:0}
 
 let news=[]
 let regional=[]
+let regionalBusiness=[]
 
 
 /* =======================================================
