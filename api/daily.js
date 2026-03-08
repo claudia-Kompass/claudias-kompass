@@ -774,19 +774,25 @@ RESPONSE
 res.status(200).json({
 
 version:fullVersion,
+
 news,
 regional,
 regionalBusiness,
+
 events,
+
 markets,
 crypto:{bitcoin,nexo},
+
 weather,
 travel,
 recipe,
 language,
+
 ukulele: ukuleleSongs.length 
 ? ukuleleSongs[Math.floor(Date.now()/86400000)%ukuleleSongs.length]
 : null,
+
 quote
 
 })
