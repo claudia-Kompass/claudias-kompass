@@ -288,7 +288,14 @@ const regionalCompanies=[
 "bürger",
 "ziehl-abegg",
 "bausparkasse schwäbisch hall",
-"stadtwerke schwäbisch hall"
+"stadtwerke schwäbisch hall",
+"ebm-papst",
+"voith",
+"ritter sport",
+"bosch",
+"lidl",
+"kaufland",
+"dhl"
 ]
 
 const regionalPlaces=[
