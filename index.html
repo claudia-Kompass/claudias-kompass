@@ -478,4 +478,87 @@ html+=data.events.markets.map(m=>`
 
 <div class="newsItem">
 
-<div style="font-weight:600">${m.title}</
+<div style="font-weight:600">${m.title}</div>
+
+<div class="newsSource">
+${m.location}
+</div>
+
+<div class="newsSource">
+${m.day} • ${m.time}
+</div>
+
+</div>
+
+`).join("")
+
+}
+
+document.getElementById("eventsBlock").innerHTML=html
+
+/* TRAVEL */
+
+if(data.travel){
+
+document.getElementById("travelBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.travel.title}</div>
+<div class="newsSource">${data.travel.text}</div>
+<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
+</div>
+
+`;
+
+}
+
+/* QUOTE */
+
+if(data.quote){
+
+document.getElementById("quoteBlock").innerHTML=`
+
+<div class="newsItem">
+"${data.quote.text}"
+<div class="newsSource">${data.quote.author}</div>
+</div>
+
+`;
+
+}
+
+/* WEATHER */
+
+if(data.weather){
+
+document.getElementById("weatherNow").innerHTML =
+weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
+
+document.getElementById("mIcon").innerText =
+weatherIcon(data.weather.trend.morning.code);
+
+document.getElementById("morningTemp").innerText =
+data.weather.trend.morning.temp+"°C";
+
+document.getElementById("aIcon").innerText =
+weatherIcon(data.weather.trend.afternoon.code);
+
+document.getElementById("afternoonTemp").innerText =
+data.weather.trend.afternoon.temp+"°C";
+
+document.getElementById("eIcon").innerText =
+weatherIcon(data.weather.trend.evening.code);
+
+document.getElementById("eveningTemp").innerText =
+data.weather.trend.evening.temp+"°C";
+
+}
+
+}
+
+window.addEventListener("load",loadData);
+
+</script>
+
+</body>
+</html>
