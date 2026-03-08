@@ -508,83 +508,141 @@ x.setHours(23,59,59,999)
 return x
 }
 
-function inRange(date,a,b){
-return date>=a && date<=b
+function resolveDate(e){
+
+const now=new Date()
+
+if(e.date){
+return new Date(e.date)
+}
+
+if(e.month && e.day){
+
+let d=new Date(now.getFullYear(),e.month-1,e.day)
+
+if(d<now){
+d=new Date(now.getFullYear()+1,e.month-1,e.day)
+}
+
+return d
+}
+
+return null
 }
 
 
-
-/* EVENT DATABASE */
+/* ======================
+EVENT DATABASE
+====================== */
 
 const eventDB=[
-
-{
-title:"Genussmesse Heilbronn",
-city:"Heilbronn",
-location:"redblue Messehalle",
-date:"2026-03-07",
-time:"10:00–18:00",
-url:"https://redblue.de"
-},
 
 {
 title:"Freizeit Messe Nürnberg",
 city:"Nürnberg",
 location:"Messezentrum Nürnberg",
-date:"2026-03-08",
+address:"Messezentrum 1, 90471 Nürnberg",
+month:3,
+day:8,
 time:"09:30–18:00",
 url:"https://www.freizeitmesse.de"
 },
 
 {
-title:"Consumenta Nürnberg",
+title:"Consumenta",
 city:"Nürnberg",
 location:"Messezentrum Nürnberg",
-date:"2026-10-25",
+address:"Messezentrum 1, 90471 Nürnberg",
+month:10,
+day:25,
 time:"10:00–18:00",
 url:"https://www.consumenta.de"
 },
 
 {
-title:"CMT Stuttgart",
+title:"CMT – Urlaubsmesse",
 city:"Stuttgart",
 location:"Messe Stuttgart",
-date:"2026-01-18",
+address:"Messepiazza 1, 70629 Stuttgart",
+month:1,
+day:17,
 time:"10:00–18:00",
 url:"https://www.messe-stuttgart.de/cmt"
+},
+
+{
+title:"Genussmesse Heilbronn",
+city:"Heilbronn",
+location:"redblue Messehalle",
+address:"Wannenäckerstr 50, 74078 Heilbronn",
+month:3,
+day:7,
+time:"10:00–18:00",
+url:"https://redblue.de"
+},
+
+{
+title:"Jakobimarkt",
+city:"Schwäbisch Hall",
+location:"Altstadt",
+address:"Marktplatz 1, 74523 Schwäbisch Hall",
+month:7,
+day:26,
+time:"10:00–18:00"
+},
+
+{
+title:"Sommernachtsfest",
+city:"Schwäbisch Hall",
+location:"Altstadt",
+address:"Marktplatz 1, 74523 Schwäbisch Hall",
+month:8,
+day:10
+},
+
+{
+title:"Crailsheimer Volksfest",
+city:"Crailsheim",
+location:"Volksfestplatz",
+address:"Beuerlbacher Str, 74564 Crailsheim",
+month:9,
+day:19
+},
+
+{
+title:"Kinderzeche",
+city:"Dinkelsbühl",
+location:"Altstadt",
+address:"Marktplatz, 91550 Dinkelsbühl",
+month:7,
+day:20
 }
 
 ]
 
 
-/* ANNUAL EVENTS */
 
-const annualEvents=[
-
-{title:"Haller Frühling",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
-{title:"Kuchen & Brunnenfest",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
-{title:"Jakobimarkt",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
-{title:"Sommernachtsfest",city:"Schwäbisch Hall",url:"https://www.schwaebischhall.de"},
-{title:"Crailsheimer Volksfest",city:"Crailsheim",url:"https://www.crailsheim.de"}
-
-]
-
-
-/* WEEKLY MARKETS */
+/* ======================
+WEEKLY MARKETS
+====================== */
 
 const weeklyMarkets=[
 
 {
 title:"Wochenmarkt Schwäbisch Hall",
+city:"Schwäbisch Hall",
 location:"Marktplatz",
-day:"Mittwoch & Samstag",
+address:"Marktplatz 1, 74523 Schwäbisch Hall",
+weekday:[3,6],
 time:"07:00–13:00"
 },
 
 {
 title:"Wochenmarkt Crailsheim",
+city:"Crailsheim",
 location:"Marktplatz",
-day:"Samstag",
+address:"Marktplatz 1, 74564 Crailsheim",
+weekday:[6],
 time:"07:00–13:00"
 }
 
@@ -592,54 +650,77 @@ time:"07:00–13:00"
 
 
 
-/* LAKES */
-
-const lakes=[
-
-{
-title:"Altmühlsee Veranstaltungen",
-city:"Gunzenhausen",
-url:"https://www.altmuehlsee.de"
-},
-
-{
-title:"Brombachsee Veranstaltungen",
-city:"Ramsberg",
-url:"https://www.fraenkisches-seenland.de"
-}
-
-]
-
-
+/* ======================
+ENGINE
+====================== */
 
 const todayStart=startOfDay(now)
+const weekEnd=endOfWeek(now)
 
+let today=[]
 let week=[]
 let upcoming=[]
 
 eventDB.forEach(e=>{
 
-if(!e.date){
-upcoming.push(e)
-return
+const d=resolveDate(e)
+if(!d)return
+
+const eventDate=startOfDay(d)
+
+const event={
+
+title:e.title,
+city:e.city,
+date:d.toISOString().split("T")[0],
+time:e.time||"",
+location:e.location||"",
+url:e.url||"",
+maps:e.address
+?`https://maps.google.com/?q=${encodeURIComponent(e.address)}`
+:""
+
 }
 
-const d=startOfDay(new Date(e.date))
-
-if(inRange(d,todayStart,endOfWeek(now))){
-week.push(e)
-}else{
-upcoming.push(e)
+if(eventDate.getTime()===todayStart.getTime()){
+today.push(event)
+}
+else if(eventDate>=todayStart && eventDate<=weekEnd){
+week.push(event)
+}
+else{
+upcoming.push(event)
 }
 
 })
 
+
+
+/* ======================
+TODAY MARKETS
+====================== */
+
+const weekday=now.getDay()||7
+
+const marketsToday=weeklyMarkets
+.filter(m=>m.weekday.includes(weekday))
+.map(m=>({
+
+title:m.title,
+city:m.city,
+time:m.time,
+location:m.location,
+maps:`https://maps.google.com/?q=${encodeURIComponent(m.address)}`
+
+}))
+
+
+
 const events={
+today,
 week,
 upcoming,
-markets:weeklyMarkets,
-annual:annualEvents,
-lakes
+marketsToday
 }
 
 
