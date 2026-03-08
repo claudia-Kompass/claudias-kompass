@@ -226,7 +226,9 @@ const xml=await regionalRes.text()
 regional=parseRSS(xml,"SWR Baden-Württemberg").slice(0,4)
 }
 
-}catch(e){console.log(e)}
+}catch(e){
+console.log("API fetch warning:",e)
+}
 
 
 
