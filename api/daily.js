@@ -40,7 +40,7 @@ new Promise((_,reject)=>setTimeout(()=>reject("timeout"),ms))
 function parseRSS(xml,source){
 
 const items=[]
-const matches=xml.match(/<item>([\s\S]*?)<\/item>/g)||[]
+const matches = xml.match(/<item>[\s\S]*?<\/item>/g) || []
 
 matches.forEach(item=>{
 
