@@ -250,7 +250,6 @@ news = result
 /* REGIONAL */
 
 let regionalCollected=[]
-let businessCollected=[]
 
 const regionalCompanies=[
 "würth",
