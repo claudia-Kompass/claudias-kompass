@@ -196,6 +196,15 @@ nexo=d.nexo||nexo
 
 }
 
+if(rssCache && Date.now() - rssCacheTime < 600000){
+
+news = rssCache.news
+regional = rssCache.regional
+regionalBusiness = rssCache.regionalBusiness
+
+}else{
+
+   
 /* NEWS */
 
 let collected = []
