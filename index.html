@@ -776,15 +776,11 @@ ${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 }
 
 
-
-
-/* HEUTIGE WOCHENMÄRKTE */
-
-if(data.events?.marketsToday?.length){
+/* NÄCHSTE WOCHENMÄRKTE */
 
 html+=`
 <div style="margin-top:18px;font-weight:600">
-🧺 Heute
+🧺 Nächste Wochenmärkte
 </div>
 `
 
@@ -807,7 +803,6 @@ ${m.time}
 </div>
 
 `).join("")
-
 }
 
 document.getElementById("eventsBlock").innerHTML=html
