@@ -54,7 +54,7 @@ return null
 
 
 function parseRSS(xml,source){
-
+if(!xml) return []
 const items=[]
 const matches = xml.match(/<item>[\s\S]*?<\/item>/g) || []
 
