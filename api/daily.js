@@ -227,13 +227,17 @@ collected.sort((a,b)=>priority[a.source]-priority[b.source])
 
 const result=[]
 const count={}
+const seen=new Set()
 
 for(const item of collected){
+
+if(seen.has(item.title)) continue
 
 count[item.source] = (count[item.source]||0)+1
 
 if(count[item.source] <= 2){
 result.push(item)
+seen.add(item.title)
 }
 
 if(result.length===5) break
