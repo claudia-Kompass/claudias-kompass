@@ -717,7 +717,7 @@ maps:`https://maps.google.com/?q=${encodeURIComponent(m.address)}`
 
 
 const events={
-today,
+today:todayEvents,
 week,
 upcoming,
 marketsToday
