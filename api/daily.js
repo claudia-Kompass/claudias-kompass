@@ -639,7 +639,6 @@ const weekEnd=endOfWeek(now)
 
 let todayEvents=[]
 let week=[]
-let upcoming=[]
 
 [...eventDB,...movableEvents()].forEach(e=>{
 
@@ -668,8 +667,8 @@ todayEvents.push(event)
 else if(eventDate>=todayStart && eventDate<=weekEnd){
 week.push(event)
 }
-else{
-upcoming.push(event)
+else if(eventDate>weekEnd){
+return
 }
 
 })
