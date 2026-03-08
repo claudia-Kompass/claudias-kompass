@@ -169,8 +169,6 @@ nexo=d.nexo||nexo
 
 }
 
-
-
 /* NEWS */
 
 let collected=[]
@@ -185,7 +183,20 @@ const xml=await spiegelRes.text()
 collected=collected.concat(parseRSS(xml,"Spiegel"))
 }
 
-news=collected.slice(0,5)
+if(ntvRes){
+const xml=await ntvRes.text()
+collected=collected.concat(parseRSS(xml,"n-tv"))
+}
+
+if(reutersRes){
+const xml=await reutersRes.text()
+collected=collected.concat(parseRSS(xml,"Reuters"))
+}
+
+if(bbcRes){
+const xml=await bbcRes.text()
+collected=collected.concat(parseRSS(xml,"BBC"))
+})
 
 
 
