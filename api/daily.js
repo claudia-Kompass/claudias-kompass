@@ -320,6 +320,80 @@ const items=parseRSS(xml,"Stuttgarter Zeitung")
 
 for(const item of items){
 
+/* REGIONAL */
+
+let regionalCollected=[]
+let businessCollected=[]
+
+const regionalCompanies=[
+"würth",
+"recaro",
+"optima",
+"schubert",
+"bürger",
+"ziehl-abegg",
+"bausparkasse schwäbisch hall",
+"stadtwerke schwäbisch hall"
+]
+
+const regionalPlaces=[
+"schwäbisch hall",
+"crailsheim",
+"künzelsau",
+"hohenlohe",
+"hohenlohekreis"
+]
+
+function isRegionalBusiness(title){
+
+const t = title.toLowerCase()
+
+if(regionalCompanies.some(k=>t.includes(k))) return true
+
+if(regionalPlaces.some(k=>t.includes(k)) &&
+(
+t.includes("firma") ||
+t.includes("unternehmen") ||
+t.includes("produktion") ||
+t.includes("invest") ||
+t.includes("expand")
+)){
+return true
+}
+
+return false
+}
+
+
+/* SWR */
+
+if(regionalRes){
+
+const xml = await regionalRes.text()
+const items = parseRSS(xml,"SWR Baden-Württemberg")
+
+for(const item of items){
+
+if(isRegionalBusiness(item.title)){
+businessCollected.push(item)
+}else{
+regionalCollected.push(item)
+}
+
+}
+
+}
+
+
+/* STUTTGARTER ZEITUNG */
+
+if(stzRes){
+
+const xml = await stzRes.text()
+const items = parseRSS(xml,"Stuttgarter Zeitung")
+
+for(const item of items){
+
 if(isRegionalBusiness(item.title)){
 businessCollected.push(item)
 }else{
@@ -335,8 +409,8 @@ regionalCollected.push(item)
 
 if(stimmeRes){
 
-const xml=await stimmeRes.text()
-const items=parseRSS(xml,"Heilbronner Stimme")
+const xml = await stimmeRes.text()
+const items = parseRSS(xml,"Heilbronner Stimme")
 
 for(const item of items){
 
@@ -355,56 +429,15 @@ regionalCollected.push(item)
 
 if(htRes){
 
-const xml=await htRes.text()
-const items=parseRSS(xml,"Hohenloher Tagblatt")
+const xml = await htRes.text()
+const items = parseRSS(xml,"Hohenloher Tagblatt")
 
 for(const item of items){
 
 if(isRegionalBusiness(item.title)){
 businessCollected.push(item)
 }else{
-regionalCollected.push(item)
-}
-
-}
-
-}
-
-
-/* DUPLIKATE ENTFERNEN */
-
-const regionalResult=[]
-const regionalSeen=new Set()
-
-for(const item of regionalCollected){
-
-if(regionalSeen.has(item.title)) continue
-
-regionalResult.push(item)
-regionalSeen.add(item.title)
-
-if(regionalResult.length===4) break
-
-}
-
-regional=regionalResult
-
-
-const businessResult=[]
-const businessSeen=new Set()
-
-for(const item of businessCollected){
-
-if(businessSeen.has(item.title)) continue
-
-businessResult.push(item)
-businessSeen.add(item.title)
-
-if(businessResult.length===3) break
-
-}
-
-regionalBusiness=businessResult
+regionalCollected.push
 
 
 
