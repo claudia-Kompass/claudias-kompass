@@ -657,7 +657,7 @@ ENGINE
 const todayStart=startOfDay(now)
 const weekEnd=endOfWeek(now)
 
-let today=[]
+let todayEvents=[]
 let week=[]
 let upcoming=[]
 
