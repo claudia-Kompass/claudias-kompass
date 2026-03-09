@@ -932,7 +932,8 @@ const todayEvents = (data.dance.today || [])
 
 const weekEvents = (data.dance.week || [])
 .filter(e => isRelevantDance(e.style))
-
+.sort((a,b)=>a.weekday-b.weekday)
+  
 const festivalEvents = (data.dance.festivals || [])
 .filter(e => isRelevantDance(e.style))
 
