@@ -528,6 +528,12 @@ return R * c
 
    }
 
+const HOME = {
+lat:49.169,
+lon:9.918
+}
+
+
    
 function resolveDate(e){
 
