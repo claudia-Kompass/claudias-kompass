@@ -741,6 +741,81 @@ week,
 marketsToday
 }
 
+
+/* =======================================================
+DANCE ENGINE
+======================================================= */
+
+const todayDay = now.getDay() || 7
+const month = now.getMonth()+1
+
+let danceToday=[]
+let danceWeek=[]
+let danceFestivals=[]
+
+danceEvents.forEach(e=>{
+
+let dist=null
+
+if(e.lat && e.lon){
+
+dist = distanceKm(
+HOME.lat,
+HOME.lon,
+e.lat,
+e.lon
+)
+
+/* Radar 200 km */
+
+if(dist>200) return
+
+}
+
+const event={
+
+title:e.title,
+city:e.city,
+location:e.location||"",
+time:e.time||"",
+style:e.style||"",
+distance:dist?Math.round(dist):null,
+
+maps:e.address
+?`https://maps.google.com/?q=${encodeURIComponent(e.address)}`
+:"",
+
+url:e.url||""
+
+}
+
+/* WÖCHENTLICHE EVENTS */
+
+if(e.type==="weekly"){
+
+if(e.weekday===todayDay){
+danceToday.push(event)
+}else{
+danceWeek.push(event)
+}
+
+}
+
+/* FESTIVALS */
+
+if(e.type==="festival" && e.month===month){
+
+danceFestivals.push(event)
+
+}
+
+})
+
+/* SORTIERUNG NACH ENTFERNUNG */
+
+danceToday.sort((a,b)=>a.distance-b.distance)
+danceWeek.sort((a,b)=>a.distance-b.distance)
+
    
 /* =======================================================
 TRAVEL
@@ -797,7 +872,11 @@ regional,
 regionalBusiness,
 
 events,
-dance:danceEvents,
+dance:{
+today:danceToday,
+week:danceWeek,
+festivals:danceFestivals
+},
    
 markets,
 crypto:{bitcoin,nexo},
