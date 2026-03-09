@@ -512,6 +512,12 @@ border-radius:10px;
 
 
 <div class="section">
+<h2>💃 Tanz</h2>
+<div id="danceWeek"></div>
+</div>
+
+  
+<div class="section">
 <h2>🌍 Reiseimpuls</h2>
 <div id="travelBlock"></div>
 </div>
@@ -819,18 +825,26 @@ document.getElementById("eventsBlock").innerHTML = html
 
 
 /* dance event */
-  
-<section id="dance">
-<h2>💃 Tanz</h2>
 
-<div id="danceToday"></div>
+/* TANZ EVENTS */
 
-<div id="danceWeek"></div>
+if(data.dance){
 
-<div id="danceEurope"></div>
+const danceWeek = document.getElementById("danceWeek")
 
-</section>
+danceWeek.innerHTML = data.dance.map(e=>`
 
+<div class="card">
+
+<strong>${e.title}</strong><br>
+${e.city} • ${formatDate(e.date)}<br>
+${e.style}
+
+</div>
+
+`).join("")
+
+}
 
 /* TRAVEL */
 
