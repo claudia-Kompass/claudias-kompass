@@ -16,6 +16,20 @@ url:"https://mobilat-club.de"
 
 {
 type:"weekly",
+title:"Fiesta Cubanisimo",
+city:"Öhringen",
+weekday:2,
+style:"cuban salsa • rueda",
+location:"Cubanisimo",
+address:"Bismark Str. 21, 74613 Öhringen",
+lat:49.201825,
+lon:9.502749,
+region:"eu",
+url:"http://www.salsacubanisimo.de"
+},
+
+{
+type:"weekly",
 title:"Salsa Social Nürnberg",
 city:"Nürnberg",
 weekday:5,
