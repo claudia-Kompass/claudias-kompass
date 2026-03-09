@@ -28,7 +28,19 @@ lon:11.0767,
 url:"https://labodega-nuernberg.de"
 },
 
-
+{
+type:"weekly",
+title:"Fiesta Cubanisimo",
+city:"Öhringen",
+weekday:2,
+style:"cuban salsa • rueda",
+location:"Cubanisimo",
+address:"Bismark Str. 21, 74613 Öhringen",
+lat:49,201825,
+lon:9,502749,
+region:"eu",
+url:"http://www.salsacubanisimo.de"
+},
 
 
 {
