@@ -627,6 +627,33 @@ return days[n] || ""
 
 }
 
+function renderDanceCard(e){
+
+return `
+
+<div class="card">
+
+<strong>${e.title}</strong><br>
+
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
+
+${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
+
+${e.style}<br>
+
+${e.time ? e.time : ""}
+
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
+
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
+
+</div>
+
+`
+
+}
+
+
   
 async function loadData(){
 
