@@ -3,6 +3,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
+const danceEvents = require("./data/dance")
 
 let rssCache = null
 let rssCacheTime = 0
@@ -781,6 +782,8 @@ ukulele: ukuleleSongs.length
 ? ukuleleSongs[Math.floor(Date.now()/86400000)%ukuleleSongs.length]
 : null,
 
+dance:danceEvents
+   
 quote
 
 })
