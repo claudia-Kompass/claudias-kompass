@@ -715,34 +715,6 @@ week,
 marketsToday
 }
 
-
-/* ==≈====≈====================
-DanceEvents 
-============================== */
-
-const danceToday = document.getElementById("danceToday")
-const danceWeek = document.getElementById("danceWeek")
-
-if(data.dance){
-
-data.dance.forEach(e=>{
-
-const card=document.createElement("div")
-card.className="card"
-
-card.innerHTML=`
-<strong>${e.title}</strong><br>
-${e.city} • ${e.date}<br>
-${e.style}
-`
-
-danceWeek.appendChild(card)
-
-})
-
-}
-
-   
    
 /* =======================================================
 TRAVEL
@@ -799,7 +771,7 @@ regional,
 regionalBusiness,
 
 events,
-dance:danceEvents
+dance:danceEvents,
    
 markets,
 crypto:{bitcoin,nexo},
