@@ -5,36 +5,6 @@ const languages = require("./data/languages")
 const eventDB = require("./data/events")
 const dance = require("./data/dance")
 
-function validateDanceDB(data){
-
-if(!Array.isArray(data)){
-throw new Error("Dance DB ist kein Array")
-}
-
-data.forEach((e,i)=>{
-
-if(!e.type) throw new Error(`Eintrag ${i}: type fehlt`)
-if(!e.title) throw new Error(`Eintrag ${i}: title fehlt`)
-if(!e.city) throw new Error(`Eintrag ${i}: city fehlt`)
-
-if(e.type === "weekly"){
-if(e.weekday === undefined)
-throw new Error(`Eintrag ${i}: weekday fehlt`)
-}
-
-if(e.type === "festival"){
-if(!e.month)
-throw new Error(`Eintrag ${i}: month fehlt`)
-}
-
-})
-
-return data
-}
-
-const danceData = validateDanceDB(dance)
-
-
 
 let rssCache = null
 let rssCacheTime = 0
