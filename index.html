@@ -1080,37 +1080,34 @@ ${events.slice(1).map(e=>renderDanceCard(e)).join("")}
 
 
 /* FESTIVALS */
+/* FESTIVALS */
 
 if(festivalEvents.length){
 
 const month = new Date().toLocaleDateString("de-DE",{month:"long"})
 
-html += `<div style="margin-top:12px;font-weight:600">
-🎪 Festivals (${month})
+html += `<div style="margin-top:14px;font-weight:600">
+🌍 Festivals (${month})
 </div>`
-  
-html += festivalEvents.map(e=>`
 
-<div class="card">
+html += festivalEvents.slice(0,2).map(e=>renderDanceCard(e)).join("")
 
-<strong>${e.title}</strong><br>
+if(festivalEvents.length>2){
 
-${detectDanceType(e.title + " " + e.style) ?
-`<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>` : ""}
-
-${e.city}<br>
-
-${e.style}
-
-${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte →</a>`:""}
-
-${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
+html += `
+<div class="moreBtn" onclick="showMoreDance(this)">
++${festivalEvents.length-2} weitere Festivals
 </div>
 
-`).join("")
+<div class="moreEvents" style="display:none">
+${festivalEvents.slice(2).map(e=>renderDanceCard(e)).join("")}
+</div>
+`
 
 }
+
+}
+
 
 document.getElementById("danceWeek").innerHTML = html
 
