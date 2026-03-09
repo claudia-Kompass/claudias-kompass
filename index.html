@@ -829,6 +829,19 @@ if(data.dance){
 
 let html=""
 
+/* Tanz Radar */
+
+const cities = [...new Set(
+(data.dance.week || []).map(e=>e.city)
+)]
+
+if(cities.length){
+html += `<div style="opacity:.7;margin-bottom:10px">
+💃 Diese Woche tanzen: ${cities.join(" • ")}
+</div>`
+}
+
+  
 /* HEUTE */
 
 if(data.dance.today.length){
