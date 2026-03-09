@@ -978,6 +978,10 @@ document.getElementById("eventsBlock").innerHTML = html
    TANZ ENGINE V2
 ========================= */
 
+/* =========================
+   TANZ ENGINE V2
+========================= */
+
 const DANCE_STYLES = [
 "cuban salsa",
 "salsa cubana",
@@ -987,19 +991,13 @@ const DANCE_STYLES = [
 ]
 
 function isRelevantDance(style){
-
 if(!style) return false
-
 style = style.toLowerCase()
-
 return DANCE_STYLES.some(s => style.includes(s))
-
 }
 
 function detectDanceType(text){
-
 if(!text) return ""
-
 text = text.toLowerCase()
 
 let types = []
@@ -1009,12 +1007,11 @@ if(text.includes("social")) types.push("Social Dance")
 if(text.includes("party")) types.push("Party")
 
 return types.join(" + ")
-
 }
 
 if(data.dance){
 
-let html=""
+let html = ""
 
 /* EVENTS FILTERN */
 
@@ -1024,35 +1021,35 @@ const todayEvents = (data.dance.today || [])
 const weekEvents = (data.dance.week || [])
 .filter(e => isRelevantDance(e.style))
 .sort((a,b)=>a.weekday-b.weekday)
-  
+
 const festivalEvents = (data.dance.festivals || [])
 .filter(e => isRelevantDance(e.style))
-
 
 /* HEUTE */
 
 if(todayEvents.length){
 
 html += `<div style="font-weight:600;margin-bottom:6px">🔥 Heute</div>`
-  
+
 html += todayEvents.map(e=>`
 
 <div class="card">
 
 <strong>${e.title}</strong><br>
 
-${detectDanceType(e.title + " " + e.style) ?
-`<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>` : ""}
+${detectDanceType(e.title + " " + e.style)
+? `<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>`
+: ""}
 
 ${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
 
 ${e.style}<br>
 
-${e.time ? e.time : ""}
+${e.time || ""}
 
-${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte →</a>`:""}
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
 
-${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
 
 </div>
 
@@ -1064,18 +1061,13 @@ ${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""
 
 if(weekEvents.length){
 
-html += `<div style="margin-top:12px;font-weight:600">⭐ Diese Woche</div>`
+html += `<div style="margin-top:14px;font-weight:600">⭐ Diese Woche</div>`
 
 const grouped = {}
 
 weekEvents.forEach(e=>{
-
-if(!grouped[e.weekday]){
-grouped[e.weekday] = []
-}
-
+if(!grouped[e.weekday]) grouped[e.weekday] = []
 grouped[e.weekday].push(e)
-
 })
 
 Object.keys(grouped).sort((a,b)=>a-b).forEach(day=>{
@@ -1093,58 +1085,28 @@ ${events.map(e=>renderDanceCard(e)).join("")}
 `
 
 })
-if(events.length>1){
-
-html += `
-<div class="moreBtn" onclick="showMoreDance(this)">
-+${events.length-1} weitere
-</div>
-
-<div class="moreEvents" style="display:none">
-${events.slice(1).map(e=>renderDanceCard(e)).join("")}
-</div>
-`
 
 }
 
-})
-
-}
-
-
-/* FESTIVALS */
 /* FESTIVALS */
 
 if(festivalEvents.length){
 
 const month = new Date().toLocaleDateString("de-DE",{month:"long"})
 
-html += `<div style="margin-top:14px;font-weight:600">
+html += `<div style="margin-top:16px;font-weight:600">
 🌍 Festivals (${month})
 </div>`
 
-html += festivalEvents.slice(0,2).map(e=>renderDanceCard(e)).join("")
+html += festivalEvents.map(e=>renderDanceCard(e)).join("")
 
-Object.keys(grouped).sort((a,b)=>a-b).forEach(day=>{
+}
 
-const events = grouped[day]
-
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ ${weekdayFromNumber(Number(day))} <span>(${events.length})</span>
-</div>
-
-<div class="dayEvents">
-${events.map(e=>renderDanceCard(e)).join("")}
-</div>
-`
-
-})
-
+/* RENDER */
 
 document.getElementById("danceWeek").innerHTML = html
 
-        }
+}
 
 /* TRAVEL */
 
