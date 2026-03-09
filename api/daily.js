@@ -696,6 +696,7 @@ const event={
 
 title:e.title,
 city:e.city,
+weekday:e.weekday || null,
 date:d.toISOString().split("T")[0],
 time:e.time||"",
 location:e.location||"",
