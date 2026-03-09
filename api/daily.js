@@ -755,7 +755,13 @@ let danceToday=[]
 let danceWeek=[]
 let danceFestivals=[]
 
-(dance || []).forEach(e=>{
+const safeDance = Array.isArray(dance) ? dance : []
+
+safeDance.forEach(e=>{
+
+try{
+
+if(!e || !e.type) return
 
 let dist=null
 
@@ -764,8 +770,8 @@ if(e.lat && e.lon){
 dist = distanceKm(
 HOME.lat,
 HOME.lon,
-e.lat,
-e.lon
+Number(e.lat),
+Number(e.lon)
 )
 
 /* Radar 200 km */
@@ -776,8 +782,8 @@ if(dist>200) return
 
 const event = {
 
-title:e.title,
-city:e.city,
+title:e.title || "",
+city:e.city || "",
 weekday:e.weekday || null,
 location:e.location || "",
 time:e.time || "",
@@ -790,9 +796,9 @@ maps:e.address
 
 url:e.url || ""
 
-   }
+}
 
-/* WÖCHENTLICHE EVENTS */
+/* WÖCHENTLICH */
 
 if(e.type==="weekly"){
 
@@ -804,7 +810,7 @@ danceWeek.push(event)
 
 }
 
-/* FESTIVALS */
+/* FESTIVAL */
 
 if(e.type==="festival" && e.month===month){
 
@@ -812,12 +818,16 @@ danceFestivals.push(event)
 
 }
 
+}catch(err){
+
+console.error("Dance DB error:",e)
+
+}
+
 })
 
-/* SORTIERUNG NACH ENTFERNUNG */
-
-danceToday.sort((a,b)=>a.distance-b.distance)
-danceWeek.sort((a,b)=>a.distance-b.distance)
+danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
+danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
    
 /* =======================================================
