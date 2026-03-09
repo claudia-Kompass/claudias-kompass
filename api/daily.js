@@ -755,7 +755,7 @@ let danceToday=[]
 let danceWeek=[]
 let danceFestivals=[]
 
-danceEvents.forEach(e=>{
+dance.forEach(e=>{
 
 let dist=null
 
