@@ -883,92 +883,173 @@ ${m.time}
 
 document.getElementById("eventsBlock").innerHTML = html
 
+/* =========================
+   TANZ ENGINE V2
+========================= */
 
-/* dance event */
+const DANCE_STYLES = [
+"cuban salsa",
+"salsa cubana",
+"bachata",
+"kizomba",
+"semba"
+]
+
+function isRelevantDance(style){
+
+if(!style) return false
+
+style = style.toLowerCase()
+
+return DANCE_STYLES.some(s => style.includes(s))
+
+}
+
+function detectDanceType(text){
+
+if(!text) return ""
+
+text = text.toLowerCase()
+
+let types = []
+
+if(text.includes("workshop")) types.push("Workshop")
+if(text.includes("social")) types.push("Social Dance")
+if(text.includes("party")) types.push("Party")
+
+return types.join(" + ")
+
+}
 
 if(data.dance){
 
 let html=""
 
-/* Tanz Radar */
+/* EVENTS FILTERN */
+
+const todayEvents = (data.dance.today || [])
+.filter(e => isRelevantDance(e.style))
+
+const weekEvents = (data.dance.week || [])
+.filter(e => isRelevantDance(e.style))
+
+const festivalEvents = (data.dance.festivals || [])
+.filter(e => isRelevantDance(e.style))
+
+/* RADAR STÄDTE */
 
 const cities = [...new Set(
-(data.dance.week || []).map(e=>e.city)
+weekEvents.map(e=>e.city)
 )]
+
+if(cities.length){
 
 html += `<div style="opacity:.6;margin-bottom:10px">
 ${cities.join(" • ")}
 </div>`
 
-  
+}
+
 /* HEUTE */
 
-if(data.dance.today.length){
+if(todayEvents.length){
 
-html+=`<div style="font-weight:600;margin-bottom:6px">Heute</div>`
+html += `<div style="font-weight:600;margin-bottom:6px">Heute</div>`
 
-html+=data.dance.today.map(e=>`
+html += todayEvents.map(e=>`
 
 <div class="card">
 
 <strong>${e.title}</strong><br>
-${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
-${e.style}<br>
-${e.time}
 
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+${detectDanceType(e.title + " " + e.style) ?
+`<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>` : ""}
+
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
+
+${e.style}<br>
+
+${e.time ? e.time : ""}
+
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte →</a>`:""}
+
+${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
 `).join("")
+
 }
 
 /* DIESE WOCHE */
 
-if(data.dance.week.length){
+if(weekEvents.length){
 
-html+=`<div style="margin-top:12px;font-weight:600">Events</div>`
+html += `<div style="margin-top:12px;font-weight:600">Events</div>`
 
-html+=data.dance.week.map(e=>`
+html += weekEvents.map(e=>`
 
 <div class="card">
 
 <strong>${e.title}</strong><br>
-${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
-${e.style}<br>
-${e.time}
 
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+${detectDanceType(e.title + " " + e.style) ?
+`<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>` : ""}
+
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
+
+${e.style}<br>
+
+${e.time ? e.time : ""}
+
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte →</a>`:""}
+
+${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
 `).join("")
+
 }
 
 /* FESTIVALS */
 
-if(data.dance.festivals.length){
+if(festivalEvents.length){
 
-html+=`<div style="margin-top:12px;font-weight:600">Festivals</div>`
+const month = new Date().toLocaleDateString("de-DE",{month:"long"})
 
-html+=data.dance.festivals.map(e=>`
+html += `<div style="margin-top:12px;font-weight:600">
+Festivals (${month})
+</div>`
+
+html += festivalEvents.map(e=>`
 
 <div class="card">
 
 <strong>${e.title}</strong><br>
+
+${detectDanceType(e.title + " " + e.style) ?
+`<div style="opacity:.8;font-size:13px">${detectDanceType(e.title + " " + e.style)}</div>` : ""}
+
 ${e.city}<br>
+
 ${e.style}
 
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte →</a>`:""}
+
+${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
 `).join("")
+
 }
 
+document.getElementById("danceWeek").innerHTML = html
+
+        }
+
+  
 document.getElementById("danceWeek").innerHTML = html
 
 }
