@@ -655,8 +655,8 @@ const now = new Date()
 const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
 
-document.getElementById("meta").innerText =
-weekday + " • " + date
+document.getElementById("meta").innerHTML =
+"<b>" + weekday + "</b> • " + date
 
 /* DAILY RADAR */
 
