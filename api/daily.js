@@ -773,15 +773,23 @@ if(dist>200) return
 
 }
 
-const event={
+const event = {
 
 title:e.title,
 city:e.city,
 weekday:e.weekday || null,
-location:e.location||"",
-time:e.time||"",
-style:e.style||"",
-distance:dist?Math.round(dist):null,
+location:e.location || "",
+time:e.time || "",
+style:e.style || "",
+distance:dist ? Math.round(dist) : null,
+
+maps:e.address
+? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
+: "",
+
+url:e.url || ""
+
+   }
 
 /* WÖCHENTLICHE EVENTS */
 
