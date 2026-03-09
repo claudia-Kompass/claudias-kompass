@@ -825,23 +825,79 @@ document.getElementById("eventsBlock").innerHTML = html
 
 /* dance event */
 
-/* TANZ EVENTS */
-
 if(data.dance){
 
-const danceWeek = document.getElementById("danceWeek")
+let html=""
 
-danceWeek.innerHTML = data.dance.map(e=>`
+/* HEUTE */
+
+if(data.dance.today.length){
+
+html+=`<div style="font-weight:600;margin-bottom:6px">Heute</div>`
+
+html+=data.dance.today.map(e=>`
 
 <div class="card">
 
 <strong>${e.title}</strong><br>
-${e.city} • ${formatDate(e.date)}<br>
-${e.style}
+${e.city}${e.distance?` • ${e.distance} km`:""}<br>
+${e.style}<br>
+${e.time}
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
 `).join("")
+}
+
+/* DIESE WOCHE */
+
+if(data.dance.week.length){
+
+html+=`<div style="margin-top:12px;font-weight:600">Diese Woche</div>`
+
+html+=data.dance.week.map(e=>`
+
+<div class="card">
+
+<strong>${e.title}</strong><br>
+${e.city}${e.distance?` • ${e.distance} km`:""}<br>
+${e.style}<br>
+${e.time}
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`).join("")
+}
+
+/* FESTIVALS */
+
+if(data.dance.festivals.length){
+
+html+=`<div style="margin-top:12px;font-weight:600">Festivals</div>`
+
+html+=data.dance.festivals.map(e=>`
+
+<div class="card">
+
+<strong>${e.title}</strong><br>
+${e.city}<br>
+${e.style}
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`).join("")
+}
+
+document.getElementById("danceWeek").innerHTML = html
 
 }
 
