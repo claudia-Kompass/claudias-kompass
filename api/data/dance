@@ -174,21 +174,3 @@ url:"https://www.bratislavakizombafestival.com"
 ]
 
 
-
-
-
-{
-type:"festival",
-title:"Croatian Summer Salsa Festival",
-city:"Rovinj",
-month:6,
-style:"salsa • bachata • kizomba",
-location:"Rovinj Altstadt",
-address:"Rovinj Croatia",
-lat:45.0812,
-lon:13.6387,
-region:"eu",
-url:"https://www.crosalsafestival.com"
-}
-
-]
