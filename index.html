@@ -1079,12 +1079,17 @@ Object.keys(grouped).sort((a,b)=>a-b).forEach(day=>{
 
 const events = grouped[day]
 
-html += `<div style="margin-top:10px;font-weight:600">
-${weekdayFromNumber(Number(day))}
-</div>`
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ${weekdayFromNumber(Number(day))} <span>(${events.length})</span>
+</div>
 
-html += renderDanceCard(events[0])
+<div class="dayEvents">
+${events.map(e=>renderDanceCard(e)).join("")}
+</div>
+`
 
+})
 if(events.length>1){
 
 html += `
