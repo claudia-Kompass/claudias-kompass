@@ -1122,21 +1122,21 @@ html += `<div style="margin-top:14px;font-weight:600">
 
 html += festivalEvents.slice(0,2).map(e=>renderDanceCard(e)).join("")
 
-if(festivalEvents.length>2){
+Object.keys(grouped).sort((a,b)=>a-b).forEach(day=>{
+
+const events = grouped[day]
 
 html += `
-<div class="moreBtn" onclick="showMoreDance(this)">
-+${festivalEvents.length-2} weitere Festivals
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ${weekdayFromNumber(Number(day))} <span>(${events.length})</span>
 </div>
 
-<div class="moreEvents" style="display:none">
-${festivalEvents.slice(2).map(e=>renderDanceCard(e)).join("")}
+<div class="dayEvents">
+${events.map(e=>renderDanceCard(e)).join("")}
 </div>
 `
 
-}
-
-}
+})
 
 
 document.getElementById("danceWeek").innerHTML = html
