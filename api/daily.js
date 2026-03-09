@@ -772,7 +772,8 @@ regional,
 regionalBusiness,
 
 events,
-
+dance:danceEvents
+   
 markets,
 crypto:{bitcoin,nexo},
 
@@ -785,7 +786,7 @@ ukulele: ukuleleSongs.length
 ? ukuleleSongs[Math.floor(Date.now()/86400000)%ukuleleSongs.length]
 : null,
 
-dance:danceEvents
+
    
 quote
 
