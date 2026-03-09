@@ -668,10 +668,38 @@ if(data.weather){
 radar.push("🌤 " + data.weather.temp + "°")
 }
 
-/* Tanz */
+/* Tanz Radar */
 
-if(data.dance?.week?.length){
-radar.push("💃 " + data.dance.week[0].city)
+if(data.dance){
+
+const today = new Date().getDay()
+
+const allDanceEvents = [
+...(data.dance.today || []),
+...(data.dance.week || [])
+]
+
+let nextDance = null
+
+for(const e of allDanceEvents){
+
+if(e.weekday !== undefined && e.weekday >= today){
+nextDance = e
+break
+}
+
+}
+
+if(nextDance){
+
+const daysShort = ["So","Mo","Di","Mi","Do","Fr","Sa"]
+
+radar.push(
+"💃 " + daysShort[nextDance.weekday] + " " + nextDance.city
+)
+
+}
+
 }
 
 /* Markt */
