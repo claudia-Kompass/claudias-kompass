@@ -972,18 +972,6 @@ const weekEvents = (data.dance.week || [])
 const festivalEvents = (data.dance.festivals || [])
 .filter(e => isRelevantDance(e.style))
 
-/* RADAR STÄDTE */
-
-const cities = [...new Set(
-weekEvents.map(e=>e.city)
-)]
-
-if(cities.length){
-
-html += `<div style="opacity:.6;margin-bottom:10px">
-${cities.join(" • ")}
-</div>`
-
 }
 
 /* HEUTE */
