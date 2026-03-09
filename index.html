@@ -643,6 +643,52 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerText =
 weekday + " • " + date
 
+/* DAILY RADAR */
+
+let radar = []
+
+/* Wetter */
+
+if(data.weather){
+radar.push("🌤 " + data.weather.temp + "°")
+}
+
+/* Tanz */
+
+if(data.dance?.week?.length){
+radar.push("💃 " + data.dance.week[0].city)
+}
+
+/* Markt */
+
+const marketDay = {
+3:"Mi",
+6:"Sa"
+}
+
+if(data.events?.marketsToday?.length){
+radar.push("🧺 Markt")
+}else{
+
+/* nächster Markt (statisch aus deiner Engine) */
+
+const today = new Date().getDay()
+
+if(today < 3) radar.push("🧺 Markt Mi")
+else if(today < 6) radar.push("🧺 Markt Sa")
+
+}
+
+/* Reise */
+
+if(data.travel){
+radar.push("🌍 " + data.travel.title.split(" – ")[0])
+}
+
+document.getElementById("dailyRadar").innerText =
+radar.join(" • ")
+
+
   
 /* NEWS */
 
