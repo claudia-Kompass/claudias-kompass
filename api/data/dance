@@ -60,7 +60,7 @@ url:"https://salsa-y-ritmo.de"
 type:"weekly",
 title:"Latin Party Heilbronn",
 city:"Heilbronn",
-weekday:5,
+weekday:3,
 time:"21:00–02:00",
 style:"salsa • bachata",
 location:"K2acht / Zigarre",
@@ -180,20 +180,6 @@ lat:45.0812,
 lon:13.6387,
 region:"eu",
 url:"https://www.seasunsalsa.com"
-},
-
-{
-type:"festival",
-title:"Croatian Summer Salsa Festival",
-city:"Rovinj",
-month:6,
-style:"salsa • bachata • kizomba",
-location:"Rovinj Altstadt",
-address:"Rovinj Croatia",
-lat:45.0812,
-lon:13.6387,
-region:"eu",
-url:"https://www.crosalsafestival.com"
 },
 
 {
