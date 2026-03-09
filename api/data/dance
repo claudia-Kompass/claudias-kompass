@@ -169,6 +169,244 @@ lat:48.1486,
 lon:17.1077,
 region:"eu",
 url:"https://www.bratislavakizombafestival.com"
+},
+
+{
+type:"weekly",
+title:"Latin Social Würzburg",
+city:"Würzburg",
+weekday:6,
+time:"20:30–01:00",
+style:"salsa • bachata • kizomba",
+location:"Family Time Tanzschule",
+address:"Pleichertorstraße 2, 97070 Würzburg",
+lat:49.7943,
+lon:9.9380,
+url:"https://www.tanzschule-familytime.de"
+},
+
+{
+type:"weekly",
+title:"KIZZ am Neckar",
+city:"Remseck",
+weekday:6,
+time:"21:00–02:00",
+style:"kizomba • urban kiz",
+location:"Fitness & Tanzwerkstatt",
+address:"Neckarstraße 137, 71686 Remseck am Neckar",
+lat:48.8720,
+lon:9.2794,
+url:"https://salsa-y-ritmo.de"
+},
+
+{
+type:"weekly",
+title:"Latin Party Heilbronn",
+city:"Heilbronn",
+weekday:5,
+time:"21:00–02:00",
+style:"salsa • bachata",
+location:"K2acht / Zigarre",
+address:"Weststraße 28, 74072 Heilbronn",
+lat:49.1427,
+lon:9.2109,
+url:""
+},
+
+{
+type:"weekly",
+title:"Latin Party Ludwigsburg",
+city:"Ludwigsburg",
+weekday:6,
+time:"21:00–02:00",
+style:"salsa • bachata • kizomba",
+location:"Die Luke",
+address:"Stuttgarter Straße 2, 71638 Ludwigsburg",
+lat:48.8973,
+lon:9.1916,
+url:""
+},
+
+{
+type:"weekly",
+title:"Latin Night Stuttgart",
+city:"Stuttgart",
+weekday:5,
+time:"21:00–02:00",
+style:"salsa • bachata",
+location:"NIL Club",
+address:"Hirschstraße 14, 70173 Stuttgart",
+lat:48.7758,
+lon:9.1829,
+url:""
+},
+
+{
+type:"weekly",
+title:"Latin Party Augsburg",
+city:"Augsburg",
+weekday:6,
+time:"21:00–02:00",
+style:"salsa • bachata • kizomba",
+location:"Pi Club",
+address:"Maximilianstraße 27, 86150 Augsburg",
+lat:48.3665,
+lon:10.8985,
+url:""
+},
+
+{
+type:"festival",
+title:"Angola Kizomba Festival",
+city:"Luanda",
+month:10,
+style:"kizomba • semba",
+location:"Luanda",
+address:"Luanda Angola",
+lat:-8.8390,
+lon:13.2894,
+region:"global",
+url:"https://www.angolakizombafestival.com"
+},
+
+{
+type:"festival",
+title:"Prague Kwanza Festival",
+city:"Prag",
+month:2,
+style:"kizomba • semba",
+location:"Prag",
+address:"Prague Czech Republic",
+lat:50.0755,
+lon:14.4378,
+region:"eu",
+url:"https://www.facebook.com/praguekwanza"
+},
+
+{
+type:"festival",
+title:"Prague Kwanza Summer Festival",
+city:"Prag",
+month:9,
+style:"kizomba • semba",
+location:"Prag",
+address:"Prague Czech Republic",
+lat:50.0755,
+lon:14.4378,
+region:"eu",
+url:"https://www.facebook.com/praguekwanza"
+},
+
+{
+type:"festival",
+title:"Kizznfection Festival",
+city:"Nürnberg",
+month:10,
+style:"kizomba • urban kiz",
+location:"Nürnberg",
+address:"Nürnberg Germany",
+lat:49.4521,
+lon:11.0767,
+region:"eu",
+url:"https://www.kizznfection.com"
+},
+
+{
+type:"festival",
+title:"SeaSunSalsa Festival",
+city:"Rovinj",
+month:6,
+style:"salsa • bachata • kizomba",
+location:"Rovinj Altstadt",
+address:"Rovinj Croatia",
+lat:45.0812,
+lon:13.6387,
+region:"eu",
+url:"https://www.seasunsalsa.com"
+},
+
+{
+type:"festival",
+title:"Croatian Summer Salsa Festival",
+city:"Rovinj",
+month:6,
+style:"salsa • bachata • kizomba",
+location:"Rovinj Altstadt",
+address:"Rovinj Croatia",
+lat:45.0812,
+lon:13.6387,
+region:"eu",
+url:"https://www.crosalsafestival.com"
+},
+
+{
+type:"festival",
+title:"Salsa Summer Camp",
+city:"Siófok",
+month:8,
+style:"cuban salsa • bachata",
+location:"Siófok Balaton",
+address:"Siofok Hungary",
+lat:46.9062,
+lon:18.0583,
+region:"eu",
+url:"https://www.salsadiabolica.com"
+},
+
+{
+type:"festival",
+title:"Rueda y Ritmo",
+city:"Heilbronn",
+month:7,
+style:"cuban salsa • rueda",
+location:"K2acht / Zigarre",
+address:"Weststraße 28, 74072 Heilbronn",
+lat:49.1427,
+lon:9.2109,
+region:"eu",
+url:""
+},
+
+{
+type:"festival",
+title:"KizSummer",
+city:"Tenerife",
+month:7,
+style:"kizomba • semba",
+location:"Tenerife",
+address:"Tenerife Spain",
+lat:28.2916,
+lon:-16.6291,
+region:"global",
+url:"https://www.kizsummer.com"
+},
+
+{
+type:"festival",
+title:"Egypt World Dance Congress",
+city:"Sharm El Sheikh",
+month:4,
+style:"kizomba • salsa • bachata",
+location:"Sharm El Sheikh",
+address:"Sharm El Sheikh Egypt",
+lat:27.9158,
+lon:34.3299,
+region:"global",
+url:"https://egyptdancecongress.com"
+},
+
+{
+type:"festival",
+title:"Bratislava Kizomba Festival",
+city:"Bratislava",
+month:7,
+style:"kizomba • semba • urban kiz",
+location:"Bratislava",
+address:"Bratislava Slovakia",
+lat:48.1486,
+lon:17.1077,
+region:"eu",
+url:"https://www.bratislavakizombafestival.com"
 }
 
 ]
