@@ -938,7 +938,7 @@ html+=data.dance.week.map(e=>`
 <div class="card">
 
 <strong>${e.title}</strong><br>
-${e.city}${e.distance?` • ${e.distance} km`:""}<br>
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}${e.distance?` • ${e.distance} km`:""}<br>
 ${e.style}<br>
 ${e.time}
 
