@@ -1426,6 +1426,24 @@ btn.remove()
 
 }
 
+function toggleDay(el){
+
+const box = el.nextElementSibling
+
+if(box.style.display === "block"){
+
+box.style.display = "none"
+el.innerHTML = el.innerHTML.replace("▼","▶")
+
+}else{
+
+box.style.display = "block"
+el.innerHTML = el.innerHTML.replace("▶","▼")
+
+}
+
+}
+  
   
 </script>
 
