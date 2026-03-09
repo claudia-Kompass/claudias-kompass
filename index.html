@@ -679,20 +679,25 @@ const allDanceEvents = [
 ...(data.dance.week || [])
 ]
 
-let nextDance = null
+const futureEvents = allDanceEvents
+.filter(e => e.weekday !== undefined && e.weekday >= today)
+.sort((a,b)=>a.weekday-b.weekday)
 
-for(const e of allDanceEvents){
+if(futureEvents.length){
 
-if(e.weekday !== undefined && e.weekday >= today){
-nextDance = e
-break
-}
-
-}
-
-if(nextDance){
+const nextDance = futureEvents[0]
 
 const daysShort = ["So","Mo","Di","Mi","Do","Fr","Sa"]
+
+/* UX: wenn Event heute */
+
+if(nextDance.weekday === today){
+
+radar.push(
+"🔥 Heute " + nextDance.city
+)
+
+}else{
 
 radar.push(
 "💃 " + daysShort[nextDance.weekday] + " " + nextDance.city
@@ -701,6 +706,8 @@ radar.push(
 }
 
 }
+
+        }
 
 /* Markt */
 
