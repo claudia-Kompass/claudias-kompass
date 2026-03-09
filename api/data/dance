@@ -1,18 +1,45 @@
 module.exports = [
+
 {
-title:"Salsa Social Stuttgart",
-city:"Stuttgart",
-date:"2026-03-14",
-style:"salsa",
-location:"Salsa Company",
-url:""
+type:"weekly",
+title:"Latin Social Heilbronn",
+city:"Heilbronn",
+weekday:6,
+time:"20:30–01:30",
+style:"bachata • salsa",
+location:"Mobilat",
+address:"Karlstraße 27, 74072 Heilbronn",
+lat:49.1427,
+lon:9.2109,
+url:"https://mobilat-club.de"
 },
+
 {
-title:"Bachata Night Nürnberg",
+type:"weekly",
+title:"Salsa Social Nürnberg",
 city:"Nürnberg",
-date:"2026-03-20",
-style:"bachata",
-location:"La Rumba",
-url:""
+weekday:5,
+time:"21:00–02:00",
+style:"cuban salsa • bachata",
+location:"La Bodega",
+address:"Klaragasse 8, 90402 Nürnberg",
+lat:49.4521,
+lon:11.0767,
+url:"https://labodega-nuernberg.de"
+},
+
+{
+type:"festival",
+title:"Croatian Summer Salsa Festival",
+city:"Rovinj",
+month:6,
+style:"salsa • bachata • kizomba",
+location:"Rovinj Altstadt",
+address:"Rovinj Croatia",
+lat:45.0812,
+lon:13.6387,
+region:"eu",
+url:"https://www.crosalsafestival.com"
 }
+
 ]
