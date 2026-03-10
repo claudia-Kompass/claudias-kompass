@@ -1414,6 +1414,67 @@ speechSynthesis.speak(utterance)
 
 }
 
+async function loadRadar(){
+
+const res = await fetch("/api/radar")
+const data = await res.json()
+
+if(!data.radar) return
+
+let html=""
+
+data.radar.forEach(e=>{
+
+html += `
+<div class="card">
+
+<strong>${e.title}</strong><br>
+
+<button onclick="addEvent(this)"
+data-title="${e.title}"
+data-city="${e.city || ""}"
+data-style="${e.style || ""}"
+data-location="${e.location || ""}"
+data-address="${e.address || ""}"
+data-month="${e.month || ""}">
+Übernehmen
+</button>
+
+</div>
+`
+
+})
+
+document.getElementById("danceRadar").innerHTML = html
+
+}
+
+async function addEvent(btn){
+
+const event = {
+
+title:btn.dataset.title,
+city:btn.dataset.city,
+style:btn.dataset.style,
+location:btn.dataset.location,
+address:btn.dataset.address,
+month:btn.dataset.month
+
+}
+
+await fetch("/api/approve-event",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(event)
+})
+
+alert("Event übernommen")
+
+}
+
+  
 window.addEventListener("load",loadData);
 
 let compassClicks = 0;
