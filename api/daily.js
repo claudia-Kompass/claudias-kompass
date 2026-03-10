@@ -809,7 +809,7 @@ safeDance.forEach(e=>{
 
 try{
 
-if(!e || !e.type) return
+if(!e || !e.type || !e.title) return
 
 let dist=null
 
