@@ -3,7 +3,6 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
-let dance = require("./data/dance")
 
 let rssCache = null
 let rssCacheTime = 0
