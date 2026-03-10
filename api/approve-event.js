@@ -111,3 +111,22 @@ res.status(500).json({error:"failed"})
 }
 
 }
+async function geocode(address){
+
+const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+
+const res = await fetch(url,{
+headers:{ "User-Agent":"global-soul-app"}
+})
+
+const data = await res.json()
+
+if(data.length){
+return {
+lat:Number(data[0].lat),
+lon:Number(data[0].lon)
+}
+}
+
+return null
+}
