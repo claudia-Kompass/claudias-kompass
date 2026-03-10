@@ -682,7 +682,54 @@ ${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""
 
 }
 
+function buildDanceRadar(dance){
 
+const today = new Date().getDay()
+
+const radar = {
+today:null,
+next:null,
+festival:null
+}
+
+const all = [
+...(dance.today || []),
+...(dance.week || [])
+]
+
+/* HEUTE */
+
+if(dance.today && dance.today.length){
+
+radar.today = dance.today
+.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+}
+
+/* NÄCHSTES EVENT */
+
+const future = all
+.filter(e => e.weekday >= today)
+.sort((a,b)=>a.weekday-b.weekday)
+
+if(future.length){
+radar.next = future[0]
+}
+
+/* FESTIVAL */
+
+if(dance.festivals && dance.festivals.length){
+
+radar.festival = dance.festivals
+.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+}
+
+return radar
+
+}
+
+  
   
 async function loadData(){
 
