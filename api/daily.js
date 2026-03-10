@@ -805,8 +805,7 @@ let danceToday=[]
 let danceWeek=[]
 let danceFestivals=[]
 
-const safeDance = Array.isArray(dance) ? dance : []
-
+const safeDance = await loadDanceEvents()
 safeDance.forEach(e=>{
 
 try{
