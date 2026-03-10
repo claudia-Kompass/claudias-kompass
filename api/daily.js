@@ -14,13 +14,7 @@ const sheetData = await sheet.json()
 
 dance = [
 ...dance,
-...sheetData.map(e=>({
-...e,
-lat:e.lat ? Number(e.lat) : null,
-lon:e.lon ? Number(e.lon) : null,
-weekday:e.weekday ? Number(e.weekday) : null,
-month:e.month ? Number(e.month) : null
-}))
+...sheetData
 ]
 
 }catch(err){
@@ -28,25 +22,7 @@ month:e.month ? Number(e.month) : null
 console.log("Google Sheet load failed")
 
 }
-
    
-const sheet = await fetch("https://opensheet.elk.sh/1-VRVeLv5nyHe3ul86d6Mqfd7sfcA4S5-gXkV12rLpZw/1")
-const sheetData = await sheet.json()
-
-dance = [
-...dance,
-...sheetData.map(e=>({
-...e,
-lat:e.lat ? Number(e.lat) : null,
-lon:e.lon ? Number(e.lon) : null,
-weekday:e.weekday ? Number(e.weekday) : null,
-month:e.month ? Number(e.month) : null
-}))
-]
-
-}catch(err){
-console.log("Sheet load failed")
-}
 
 let rssCache = null
 let rssCacheTime = 0
