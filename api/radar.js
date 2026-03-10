@@ -2,33 +2,32 @@ module.exports = async function handler(req,res){
 
 try{
 
-const searches = [
+const feeds = [
 
-"https://www.google.com/search?q=kizomba+event+deutschland",
-"https://www.google.com/search?q=cuban+salsa+event+deutschland",
-"https://www.google.com/search?q=semba+festival+europe"
+"https://www.meetup.com/find/events/rss/?keywords=kizomba&source=EVENTS",
+"https://www.meetup.com/find/events/rss/?keywords=salsa&source=EVENTS"
 
 ]
 
 let radar=[]
 
-for(const url of searches){
+for(const url of feeds){
 
-const r = await fetch(url,{
-headers:{
-"User-Agent":"Mozilla/5.0"
-}
-})
+const r = await fetch(url)
+const xml = await r.text()
 
-const html = await r.text()
+const items = xml.match(/<title>(.*?)<\/title>/g) || []
 
-const matches = html.match(/<h3.*?>(.*?)<\/h3>/g) || []
+items.forEach(i=>{
 
-matches.forEach(m=>{
+const title = i.replace(/<\/?title>/g,"")
 
-const title = m.replace(/<[^>]+>/g,"").trim()
-
-if(title.length>10){
+if(
+title.toLowerCase().includes("kizomba") ||
+title.toLowerCase().includes("salsa") ||
+title.toLowerCase().includes("bachata") ||
+title.toLowerCase().includes("semba")
+){
 radar.push({title})
 }
 
@@ -42,7 +41,7 @@ res.status(200).json({radar})
 
 }catch(err){
 
-console.log("Radar error",err)
+console.log("Radar error")
 
 res.status(200).json({radar:[]})
 
