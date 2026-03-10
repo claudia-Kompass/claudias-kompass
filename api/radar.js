@@ -2,40 +2,24 @@ module.exports = async function handler(req,res){
 
 try{
 
-const feeds = [
+const base = require("./data/dance")
 
-"https://www.meetup.com/find/events/rss/?keywords=kizomba&source=EVENTS",
-"https://www.meetup.com/find/events/rss/?keywords=salsa&source=EVENTS"
+const sheet = await fetch(
+"https://opensheet.elk.sh/1-VRVeLv5nyHe3ul86d6Mqfd7sfcA4S5-gXkV12rLpZw/1"
+)
 
-]
+const sheetData = await sheet.json()
 
-let radar=[]
-
-for(const url of feeds){
-
-const r = await fetch(url)
-const xml = await r.text()
-
-const items = xml.match(/<title>(.*?)<\/title>/g) || []
-
-items.forEach(i=>{
-
-const title = i.replace(/<\/?title>/g,"")
-
-if(
-title.toLowerCase().includes("kizomba") ||
-title.toLowerCase().includes("salsa") ||
-title.toLowerCase().includes("bachata") ||
-title.toLowerCase().includes("semba")
-){
-radar.push({title})
-}
-
-})
-
-}
-
-radar = radar.slice(0,10)
+const radar = sheetData
+.filter(e => e.title)
+.map(e => ({
+title: e.title,
+city: e.city || "",
+style: e.style || "",
+location: e.location || "",
+url: e.url || ""
+}))
+.slice(0,20)
 
 res.status(200).json({radar})
 
