@@ -3,7 +3,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
-const dance = require("./data/dance")
+let dance = require("./data/dance")
 try{
 
 const sheet = await fetch("https://opensheet.elk.sh/1-VRVeLv5nyHe3ul86d6Mqfd7sfcA4S5-gXkV12rLpZw/1")
