@@ -61,18 +61,19 @@ return res.status(400).json({error:"missing_title"})
 
 const type = detectFestival(e.title)
 
-let lat=null
-let lon=null
+let lat = null
+let lon = null
 
 if(e.address){
 
 const geo = await geocode(e.address)
 
+if(geo){
 lat = geo.lat
 lon = geo.lon
-
 }
 
+}
 const event = {
 
 type,
