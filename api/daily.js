@@ -860,12 +860,24 @@ danceWeek.push(event)
 }
 
 /* FESTIVAL */
+   
+if(e.type==="festival"){
 
-if(e.type==="festival" && e.month===month){
+if(e.month === month){
 
 danceFestivals.push(event)
 
 }
+
+/* nächste Festivals merken */
+
+if(e.month >= month){
+
+event.next = true
+
+}
+
+          }
 
 }catch(err){
 
