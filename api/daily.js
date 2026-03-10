@@ -4,25 +4,6 @@ const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
 let dance = require("./data/dance")
-try{
-
-const sheet = await fetch(
-"https://opensheet.elk.sh/1-VRVeLv5nyHe3ul86d6Mqfd7sfcA4S5-gXkV12rLpZw/1"
-)
-
-const sheetData = await sheet.json()
-
-dance = [
-...dance,
-...sheetData
-]
-
-}catch(err){
-
-console.log("Google Sheet load failed")
-
-}
-   
 
 let rssCache = null
 let rssCacheTime = 0
