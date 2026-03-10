@@ -1426,9 +1426,16 @@ let html=""
 data.radar.forEach(e=>{
 
 html += `
-<div class="card">
 
-<strong>${e.title}</strong><br>
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ${e.city || ""} — ${e.title}
+</div>
+
+<div class="dayEvents">
+
+${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.address)}" target="_blank" class="news-link">📍 Karte →</a><br>` : ""}
+
+${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos →</a><br>` : ""}
 
 <button onclick="addEvent(this)"
 data-title="${e.title}"
@@ -1437,10 +1444,11 @@ data-style="${e.style || ""}"
 data-location="${e.location || ""}"
 data-address="${e.address || ""}"
 data-month="${e.month || ""}">
-Übernehmen
+➕ übernehmen
 </button>
 
 </div>
+
 `
 
 })
