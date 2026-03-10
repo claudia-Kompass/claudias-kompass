@@ -1,4 +1,4 @@
-export default async function handler(req,res){
+module.exports = async function handler(req,res){
 
 try{
 
@@ -14,15 +14,22 @@ let radar=[]
 
 for(const url of sources){
 
-const r = await fetch(url)
+const r = await fetch(url,{
+headers:{
+"User-Agent":"Mozilla/5.0"
+}
+})
 
 const html = await r.text()
 
-const matches = html.match(/<title>(.*?)<\/title>/g) || []
+const matches = html.match(/event-card__title">(.*?)</g) || []
 
 matches.forEach(t=>{
 
-const title = t.replace(/<\/?title>/g,"")
+const title = t
+.replace('event-card__title">',"")
+.replace("<","")
+.trim()
 
 const text = title.toLowerCase()
 
@@ -33,9 +40,7 @@ text.includes("salsa") ||
 text.includes("bachata")
 ){
 
-radar.push({
-title:title
-})
+radar.push({title})
 
 }
 
@@ -47,7 +52,7 @@ res.status(200).json({radar})
 
 }catch(err){
 
-console.log("Radar failed")
+console.log("Radar error",err)
 
 res.status(200).json({radar:[]})
 
