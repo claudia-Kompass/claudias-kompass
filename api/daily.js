@@ -32,8 +32,11 @@ const fullVersion=version+"."+build
 const now=new Date()
 
 /* ======================
-   GOOGLE SHEET IMPORT
+   Dance Loader
 ====================== */
+async function loadDanceEvents(){
+
+let base = require("./data/dance")
 
 try{
 
@@ -43,20 +46,39 @@ const sheet = await fetch(
 
 const sheetData = await sheet.json()
 
-dance = [
-...dance,
-...sheetData.map(e=>({
-...e,
+const cleaned = sheetData.map(e=>({
+
+type:e.type || "",
+title:e.title || "",
+city:e.city || "",
+
+weekday:e.weekday ? Number(e.weekday) : null,
+month:e.month ? Number(e.month) : null,
+
+style:e.style || "",
+location:e.location || "",
+address:e.address || "",
+time:e.time || "",
+
 lat:e.lat ? Number(e.lat) : null,
 lon:e.lon ? Number(e.lon) : null,
-weekday:e.weekday ? Number(e.weekday) : null,
-month:e.month ? Number(e.month) : null
+
+url:e.url || ""
+
 }))
+
+return [
+...base,
+...cleaned
 ]
 
 }catch(err){
 
 console.log("Sheet load failed")
+
+return base
+
+}
 
 }
    
