@@ -1604,13 +1604,12 @@ const tempo = song.tempo || 80
 const strum = song.strum || ""
 const picking = song.picking || ""
 
-const firstLine = tabs.split("\n")[0]
-const chords = firstLine.split(/\s+/).filter(c => c)
+const firstLine = tabs.split("\n")[0] || ""
+const chords = firstLine.split(/\s+/).filter(c=>c)
 
 const tabLines = tabs.split("\n").slice(2).join("\n")
 
 document.getElementById("ukeBlock").innerHTML = `
-
 <div class="ukulele-card">
 
 <div class="ukulele-title">
@@ -1630,9 +1629,12 @@ ${tabLines}
 </div>
 
 <div class="uke-meta">
+
 <div><b>Tempo</b> ${tempo} bpm</div>
+
 ${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
 ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
+
 </div>
 
 <button class="nextSongBtn" onclick="nextSong()">
@@ -1640,23 +1642,7 @@ ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
 </button>
 
 </div>
-
 `
-
-}
-
-
-function nextSong(){
-
-if(!ukeSongs.length) return
-
-ukeIndex++
-
-if(ukeIndex >= ukeSongs.length){
-ukeIndex = 0
-}
-
-
 }
   
 </script>
