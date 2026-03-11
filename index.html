@@ -1657,6 +1657,56 @@ el.innerHTML = el.innerHTML.replace("▶","▼")
 
 }
   
+function renderUkulele(song){
+
+const tabs = song.tabs || ""
+const tempo = song.tempo || 80
+const strum = song.strum || ""
+const picking = song.picking || ""
+
+const firstLine = tabs.split("\n")[0]
+const chords = firstLine.split(/\s+/).filter(c => c)
+
+const tabLines = tabs.split("\n").slice(2).join("\n")
+
+document.getElementById("ukeBlock").innerHTML = `
+
+<div class="ukulele-card">
+
+<div class="ukulele-title">
+${song.title}
+</div>
+
+<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">
+${chords.join("   ")}
+</div>
+
+<div class="uke-tabblock">
+<pre>
+┌────────────────────────┐
+${tabLines}
+└────────────────────────┘
+</pre>
+</div>
+
+<div class="uke-meta">
+
+<div><b>Tempo</b> ${tempo} bpm</div>
+
+${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
+${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
+
+</div>
+
+<button class="nextSongBtn" onclick="nextSong()">
+▶ Next Song
+</button>
+
+</div>
+
+`
+
+}
 
 let ukeIndex = 0
 
@@ -1668,13 +1718,17 @@ fetch("/api/daily")
 
 if(!data.ukulele) return
 
+const songs = Array.isArray(data.ukulele)
+? data.ukulele
+: [data.ukulele]
+
 ukeIndex++
 
-if(ukeIndex >= data.ukulele.length){
+if(ukeIndex >= songs.length){
 ukeIndex = 0
 }
 
-renderUkulele(data.ukulele[ukeIndex])
+renderUkulele(songs[ukeIndex])
 
 })
 
