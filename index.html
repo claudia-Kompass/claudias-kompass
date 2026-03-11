@@ -487,6 +487,12 @@ font-size:12px;
 border-radius:6px;
 }
 
+#danceWeek .dayHeader{
+color:#e6c27a;
+font-weight:600;
+}
+
+  
   
 </style>
 </head>
@@ -1165,10 +1171,11 @@ const allEvents = [
 
 if(todayEvents.length){
 
-danceHtml += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ 🔥 Heute <span>(${todayEvents.length})</span>
+<div class="dayHeader">
+▼ 🔥 Heute
 </div>
+
+<div class="dayEvents" style="display:block">
 
 <div class="dayEvents">
 ${todayEvents.map(e=>renderDanceCard(e)).join("")}
