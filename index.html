@@ -1035,12 +1035,246 @@ ${m.time}
 }
 
 document.getElementById("eventsBlock").innerHTML = html
-
-/* =========================
-   TANZ ENGINE V2
-========================= */
  
+/* =========================
+   TANZ ENGINE V3
+========================= */
 
+const DANCE_STYLES = [
+"salsa",
+"cuban salsa",
+"salsa cubana",
+"bachata",
+"kizomba",
+"semba"
+]
+
+const HOME = {
+lat:49.167,
+lon:9.921
+}
+
+function distanceKm(lat1,lon1,lat2,lon2){
+
+const R = 6371
+const dLat = (lat2-lat1) * Math.PI/180
+const dLon = (lon2-lon1) * Math.PI/180
+
+const a =
+Math.sin(dLat/2)*Math.sin(dLat/2) +
+Math.cos(lat1*Math.PI/180) *
+Math.cos(lat2*Math.PI/180) *
+Math.sin(dLon/2)*Math.sin(dLon/2)
+
+const c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))
+
+return Math.round(R*c)
+
+}
+
+function flagFromCountry(country){
+
+const map = {
+Germany:"🇩🇪",
+France:"🇫🇷",
+Spain:"🇪🇸",
+Portugal:"🇵🇹",
+Italy:"🇮🇹",
+Poland:"🇵🇱",
+Croatia:"🇭🇷"
+}
+
+return map[country] || "🌍"
+
+}
+
+function isRelevantDance(style){
+
+if(!style) return false
+
+style = style.toLowerCase()
+
+return DANCE_STYLES.some(s=>style.includes(s))
+
+}
+
+function renderDanceCard(e){
+
+let distance = ""
+
+if(e.lat && e.lon){
+
+distance =
+distanceKm(
+HOME.lat,
+HOME.lon,
+e.lat,
+e.lon
+) + " km"
+
+}
+
+return `
+
+<div class="card">
+
+<strong>${flagFromCountry(e.country)} ${e.title}</strong><br>
+
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
+
+${distance ? `<span style="opacity:.7">${distance}</span><br>` : ""}
+
+${e.style || ""}<br>
+
+${e.time || ""}
+
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
+
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
+
+</div>
+
+`
+
+}
+
+if(data.dance){
+
+let danceHtml=""
+
+const today = new Date().getDay()
+
+const todayEvents =
+(data.dance.today || [])
+.filter(e=>isRelevantDance(e.style))
+
+const weekEvents =
+(data.dance.week || [])
+.filter(e=>isRelevantDance(e.style))
+.sort((a,b)=>a.weekday-b.weekday)
+
+const festivals =
+(data.dance.festivals || [])
+
+const allEvents = [
+...(data.dance.today || []),
+...(data.dance.week || [])
+]
+
+/* HEUTE */
+
+if(todayEvents.length){
+
+danceHtml += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🔥 Heute <span>(${todayEvents.length})</span>
+</div>
+
+<div class="dayEvents">
+${todayEvents.map(e=>renderDanceCard(e)).join("")}
+</div>
+`
+
+}
+
+/* WOCHE */
+
+if(weekEvents.length){
+
+const grouped={}
+
+weekEvents.forEach(e=>{
+
+if(!grouped[e.weekday]){
+grouped[e.weekday]=[]
+}
+
+grouped[e.weekday].push(e)
+
+})
+
+let weekBlock=""
+
+Object.keys(grouped)
+.sort((a,b)=>a-b)
+.forEach(day=>{
+
+weekBlock += `
+
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ${weekdayFromNumber(day)}
+</div>
+
+<div class="dayEvents">
+${grouped[day].map(e=>renderDanceCard(e)).join("")}
+</div>
+
+`
+
+})
+
+danceHtml += `
+
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ⭐ Diese Woche
+</div>
+
+<div class="dayEvents">
+${weekBlock}
+</div>
+
+`
+
+}
+
+/* NÄCHSTES EVENT */
+
+const future =
+allEvents
+.filter(e=>e.weekday>=today)
+.sort((a,b)=>a.weekday-b.weekday)
+
+if(future.length){
+
+danceHtml += `
+
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 📅 Nächstes Event
+</div>
+
+<div class="dayEvents">
+${renderDanceCard(future[0])}
+</div>
+
+`
+
+}
+
+/* FESTIVAL EUROPA */
+
+if(festivals.length){
+
+const nextFestival =
+festivals
+.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+danceHtml += `
+
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🌍 Festival Europa
+</div>
+
+<div class="dayEvents">
+${renderDanceCard(nextFestival)}
+</div>
+
+`
+
+}
+
+document.getElementById("danceWeek").innerHTML = danceHtml
+
+  }
 
 
 /* ==≈=========================
