@@ -24,7 +24,7 @@ const block = i[1]
 const title = (block.match(/<title>(.*?)<\/title>/)||[])[1] || ""
 const link = (block.match(/<link>(.*?)<\/link>/)||[])[1] || ""
 
-if(!/salsa|kizomba|semba/i.test(title)) return
+if(!/salsa|kizomba|semba|bachata|latin/i.test(title)) return
 
 festivals.push({
 title,
