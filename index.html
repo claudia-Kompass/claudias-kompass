@@ -1434,17 +1434,55 @@ const data = await res.json()
 
 if(!data.radar) return
 
-let html=""
+const today = new Date().getDay()
+
+let todayEvent = null
+let nextEvent = null
+let festival = null
+let others = []
 
 data.radar.forEach(e=>{
 
-html += `
+if(e.weekday === today && !todayEvent){
+todayEvent = e
+return
+}
+
+if(e.month && !festival){
+festival = e
+return
+}
+
+if(!nextEvent){
+nextEvent = e
+return
+}
+
+others.push(e)
+
+})
+
+let html = ""
+
+function renderEvent(e){
+
+return `
 
 <div class="dayHeader" onclick="toggleDay(this)">
 ▶ ${e.city || ""} — ${e.title}
 </div>
 
 <div class="dayEvents">
+
+<div style="opacity:.8;margin-top:6px">
+
+${e.style ? e.style : ""}
+
+${e.location ? " • " + e.location : ""}
+
+${e.month ? "<br>"+e.month : ""}
+
+</div>
 
 <div class="radarLine">
 
@@ -1468,12 +1506,34 @@ data-month="${e.month || ""}">
 
 `
 
+}
+
+if(todayEvent){
+html += `<div style="margin-top:10px;font-weight:600">🔥 Heute</div>`
+html += renderEvent(todayEvent)
+}
+
+if(nextEvent){
+html += `<div style="margin-top:14px;font-weight:600">📅 Nächstes Event</div>`
+html += renderEvent(nextEvent)
+}
+
+if(festival){
+html += `<div style="margin-top:14px;font-weight:600">🌍 Festival</div>`
+html += renderEvent(festival)
+}
+
+if(others.length){
+html += `<div style="margin-top:14px;font-weight:600">📡 Weitere Events</div>`
+
+others.forEach(e=>{
+html += renderEvent(e)
 })
+}
 
 document.getElementById("danceRadar").innerHTML = html
 
 }
-
 async function addEvent(btn){
 
 const event = {
