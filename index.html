@@ -1448,9 +1448,9 @@ html += `
 
 <div class="radarLine">
 
-${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.address)}" target="_blank" class="news-link">📍 Karte →</a>` : ""}
+${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.address)}" target="_blank" class="news-link">📍 Karte</a>` : ""}
 
-${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos →</a>` : ""}
+${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos</a>` : ""}
 
 <button onclick="addEvent(this)"
 data-title="${e.title}"
@@ -1472,6 +1472,7 @@ data-month="${e.month || ""}">
 
 document.getElementById("danceRadar").innerHTML = html
 
+}
 }
 
 async function addEvent(btn){
