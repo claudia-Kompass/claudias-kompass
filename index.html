@@ -1736,25 +1736,15 @@ let ukeIndex = 0
 
 function nextSong(){
 
-fetch("/api/daily")
-.then(r=>r.json())
-.then(data=>{
-
-if(!data.ukulele) return
-
-const songs = Array.isArray(data.ukulele)
-? data.ukulele
-: [data.ukulele]
+if(!ukeSongs.length) return
 
 ukeIndex++
 
-if(ukeIndex >= songs.length){
+if(ukeIndex >= ukeSongs.length){
 ukeIndex = 0
 }
 
-renderUkulele(songs[ukeIndex])
-
-})
+renderUkulele(ukeSongs[ukeIndex])
 
 }
   
