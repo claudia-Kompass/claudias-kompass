@@ -1187,21 +1187,37 @@ ${weekContent}
 
 if(festivalEvents.length){
 
-const month = new Date().toLocaleDateString("de-DE",{month:"long"})
+html += `<div style="margin-top:14px;font-weight:600">🌍 Festivals Europa</div>`
+
+const months = {}
+
+festivalEvents.forEach(e=>{
+
+const m = e.month || "Andere"
+
+if(!months[m]){
+months[m] = []
+}
+
+months[m].push(e)
+
+})
+
+Object.keys(months).forEach(month=>{
+
+const list = months[month]
 
 html += `
-<div style="margin-top:14px;font-weight:600">
-🌍 Festivals (${month})
-</div>
-
 <div class="dayHeader" onclick="toggleDay(this)">
-▶ Festivals anzeigen <span>(${festivalEvents.length})</span>
+▶ ${month} <span>(${list.length})</span>
 </div>
 
 <div class="dayEvents">
-${festivalEvents.map(e=>renderDanceCard(e)).join("")}
+${list.map(e=>renderDanceCard(e)).join("")}
 </div>
 `
+
+})
 
 }
 
