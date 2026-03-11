@@ -1268,6 +1268,12 @@ data.language.map(l=>`
 
 if(data.ukulele){
 
+ukeSongs = Array.isArray(data.ukulele)
+? data.ukulele
+: [data.ukulele]
+
+ukeIndex = 0
+  
 const tabs = data.ukulele.tabs || ""
 const tempo = data.ukulele.tempo || 80
 const strum = data.ukulele.strum || ""
