@@ -1099,7 +1099,7 @@ return types.join(" + ")
 
 if(data.dance){
 
-let html=""
+let dancehtml=""
 
 const todayEvents = (data.dance.today || [])
 .filter(e => isRelevantDance(e.style))
@@ -1115,9 +1115,9 @@ const festivalEvents = data.dance.festivals || []
 
 if(todayEvents.length){
 
-html += `<div style="font-weight:600;margin-bottom:6px">🔥 Heute</div>`
+dancehtml += `<div style="font-weight:600;margin-bottom:6px">🔥 Heute</div>`
 
-html += todayEvents.map(e=>`
+dancehtml += todayEvents.map(e=>`
 
 <div class="card">
 
@@ -1187,7 +1187,7 @@ ${weekContent}
 
 if(festivalEvents.length){
 
-html += `<div style="margin-top:14px;font-weight:600">🌍 Festivals Europa</div>`
+dancehtml += `<div style="margin-top:14px;font-weight:600">🌍 Festivals Europa</div>`
 
 const months = {}
 
@@ -1207,7 +1207,7 @@ Object.keys(months).forEach(month=>{
 
 const list = months[month]
 
-html += `
+dancehtml += `
 <div class="dayHeader" onclick="toggleDay(this)">
 ▶ ${month} <span>(${list.length})</span>
 </div>
