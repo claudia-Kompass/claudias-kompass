@@ -668,8 +668,37 @@ return d.toLocaleDateString("de-DE");
 
 }
 
-function weekdayFromNumber(n){
 function flagFromCountry(country){
+
+const map = {
+Germany:"🇩🇪",
+France:"🇫🇷",
+Spain:"🇪🇸",
+Portugal:"🇵🇹",
+Italy:"🇮🇹",
+Poland:"🇵🇱",
+Croatia:"🇭🇷"
+}
+
+return map[country] || "🌍"
+
+}
+
+function weekdayFromNumber(n){
+
+const days = [
+"Sonntag",
+"Montag",
+"Dienstag",
+"Mittwoch",
+"Donnerstag",
+"Freitag",
+"Samstag"
+]
+
+return days[n] || ""
+
+}
 
 const map = {
 Germany:"🇩🇪",
