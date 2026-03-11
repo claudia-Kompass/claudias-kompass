@@ -1274,67 +1274,8 @@ ukeSongs = Array.isArray(data.ukulele)
 
 ukeIndex = 0
   
-const tabs = data.ukulele.tabs || ""
-const tempo = data.ukulele.tempo || 80
-const strum = data.ukulele.strum || ""
-const picking = data.ukulele.picking || ""
-
-/* Akkorde aus erster Zeile */
-const firstLine = tabs.split("\n")[0]
-const chords = firstLine.split(/\s+/).filter(c => c)
-
-/* Tabteil ohne Akkordzeile */
-const tabLines = tabs.split("\n").slice(2).join("\n")
-
-document.getElementById("ukeBlock").innerHTML = `
-
-<div class="ukulele-card">
-
-<div class="ukulele-title">
-${data.ukulele.title}
-</div>
-
-<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">
-${chords.join("   ")}
-</div>
-
-<div class="uke-tabblock">
-<pre>
-┌────────────────────────┐
-${tabLines}
-└────────────────────────┘
-</pre>
-</div>
-
-<div class="uke-meta">
-
-<div><b>Tempo</b> ${tempo} bpm</div>
-
-${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
-
-${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
-
-</div>
-
-<div class="uke-trainer">
-
-<div class="uke-label">Chord Trainer</div>
-
-<div class="uke-trainer-row">
-${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
-</div>
-
-<button onclick="startUkeTrainer()">Start Trainer</button>
-
-</div>
-
-<div style="margin-top:14px">
-<button onclick="nextSong()">▶ Next Song</button>
-</div>
-
-</div>
-`
-
+renderUkulele(ukeSongs[0])
+  
 /* Trainer */
 
 window.startUkeTrainer = function(){
