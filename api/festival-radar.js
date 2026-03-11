@@ -1,43 +1,50 @@
-export default async function handler(req,res){
+export default async function handler(req, res) {
 
-const feeds = [
-"https://www.goandance.com/en/events.rss",
-"https://allevents.in/rss/salsa",
-"https://bachatafestivalcalendar.com/feed"
-]
+  const feeds = [
+    "https://www.goandance.com/en/events.rss",
+    "https://allevents.in/rss/salsa",
+    "https://bachatafestivalcalendar.com/feed",
+    "https://www.eventbrite.com/d/online/latin-dance--events/rss/"
+  ];
 
-let festivals = []
+  const KEYWORDS = /salsa|kizomba|semba|bachata|latin|afro/i;
 
-for(const url of feeds){
+  let festivals = [];
 
-try{
+  for (const url of feeds) {
+    try {
+      const r = await fetch(url);
+      const xml = await r.text();
 
-const r = await fetch(url)
-const xml = await r.text()
+      const items = [...xml.matchAll(/<item>(.*?)<\/item>/gs)];
 
-const items = [...xml.matchAll(/<item>(.*?)<\/item>/gs)]
+      items.forEach(i => {
+        const block = i[1];
 
-items.forEach(i=>{
+        const title = (block.match(/<title>(.*?)<\/title>/i) || [])[1] || "";
+        const link  = (block.match(/<link>(.*?)<\/link>/i)  || [])[1] || "";
 
-const block = i[1]
+        if (!KEYWORDS.test(title)) return;
 
-const title = (block.match(/<title>(.*?)<\/title>/)||[])[1] || ""
-const link = (block.match(/<link>(.*?)<\/link>/)||[])[1] || ""
+        festivals.push({
+          title,
+          url: link,
+          style: "festival"
+        });
+      });
 
-if(!/salsa|kizomba|semba|bachata|latin/i.test(title)) return
+    } catch (e) {
+      console.log("feed error", url);
+    }
+  }
 
-festivals.push({
-title,
-url:link,
-style:"festival"
-})
+  // Duplikate entfernen
+  const seen = new Set();
+  festivals = festivals.filter(f => {
+    if (seen.has(f.title)) return false;
+    seen.add(f.title);
+    return true;
+  });
 
-})
-
-}catch(e){}
-
-}
-
-res.json({festivals})
-
+  res.json({ festivals });
 }
