@@ -926,7 +926,7 @@ console.error("Dance DB error:",e)
 }
 
 })
-
+danceFestivals.sort((a,b)=>(a.month||12)-(b.month||12))
 danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
 danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
