@@ -799,6 +799,27 @@ marketsToday
 DANCE ENGINE
 ======================================================= */
 
+let radarFestivals = []
+
+try{
+
+const radar = await fetch(
+process.env.VERCEL_URL
+? "https://" + process.env.VERCEL_URL + "/api/festival-radar"
+: "http://localhost:3000/api/festival-radar"
+)
+
+const radarData = await radar.json()
+
+radarFestivals = radarData.festivals || []
+
+}catch(e){
+
+console.log("Festival radar failed")
+
+}
+
+   
 const todayDay = now.getDay() || 7
 const month = now.getMonth()+1
 
