@@ -1653,35 +1653,10 @@ compassClicks = 0;
 
 });
 
-function showMoreDance(btn){
 
-const box = btn.nextElementSibling
-
-box.style.display="block"
-
-btn.remove()
-
-}
-
-function toggleDay(el){
-
-const box = el.nextElementSibling
-
-if(box.style.display === "block"){
-
-box.style.display = "none"
-el.innerHTML = el.innerHTML.replace("▼","▶")
-
-}else{
-
-box.style.display = "block"
-el.innerHTML = el.innerHTML.replace("▶","▼")
-
-}
-
-}
-  
 function renderUkulele(song){
+
+if(!song) return
 
 const tabs = song.tabs || ""
 const tempo = song.tempo || 80
@@ -1693,7 +1668,7 @@ const chords = firstLine.split(/\s+/).filter(c => c)
 
 const tabLines = tabs.split("\n").slice(2).join("\n")
 
-renderUkulele(ukeSongs[0])
+document.getElementById("ukeBlock").innerHTML = `
 
 <div class="ukulele-card">
 
@@ -1714,12 +1689,9 @@ ${tabLines}
 </div>
 
 <div class="uke-meta">
-
 <div><b>Tempo</b> ${tempo} bpm</div>
-
 ${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
 ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
-
 </div>
 
 <button class="nextSongBtn" onclick="nextSong()">
