@@ -825,25 +825,33 @@ let danceToday=[]
 let danceWeek=[]
 let danceFestivals=[]
 
-/* Radar Festivals hinzufügen */
+/* Radar Festivals – nur nächstes Festival */
 
-radarFestivals.forEach(f=>{
+const nowMonth = now.getMonth()+1
+
+const upcomingFestivals = radarFestivals
+.filter(f => !f.month || f.month >= nowMonth)
+.sort((a,b)=>(a.month||12)-(b.month||12))
+
+if(upcomingFestivals.length){
+
+const nextFestival = upcomingFestivals[0]
 
 danceFestivals.push({
 
-title:f.title,
-city:"",
+title:nextFestival.title,
+city:nextFestival.city || "",
 style:"festival",
 weekday:null,
-location:"",
-time:"",
+location:nextFestival.location || "",
+time:nextFestival.time || "",
 distance:null,
 maps:"",
-url:f.url || ""
+url:nextFestival.url || ""
 
 })
 
-})
+}
    
 const safeDance = await loadDanceEvents()
 safeDance.forEach(e=>{
