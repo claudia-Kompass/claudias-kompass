@@ -818,7 +818,7 @@ console.log("Festival radar failed")
 }
 
    
-const todayDay = now.getDay() || 7
+const todayDay = now.getDay() || 0
 const month = now.getMonth()+1
 
 let danceToday=[]
