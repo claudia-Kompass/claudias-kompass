@@ -1120,8 +1120,6 @@ ${e.url?` <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""
 
 if(weekEvents.length){
 
-html += `<div style="margin-top:12px;font-weight:600">⭐ Diese Woche</div>`
-
 const grouped = {}
 
 weekEvents.forEach(e=>{
@@ -1131,11 +1129,13 @@ grouped[e.weekday] = []
 grouped[e.weekday].push(e)
 })
 
+let weekContent = ""
+
 Object.keys(grouped).sort((a,b)=>a-b).forEach(day=>{
 
 const events = grouped[day]
 
-html += `
+weekContent += `
 <div class="dayHeader" onclick="toggleDay(this)">
 ▶ ${weekdayFromNumber(Number(day))} <span>(${events.length})</span>
 </div>
@@ -1146,6 +1146,16 @@ ${events.map(e=>renderDanceCard(e)).join("")}
 `
 
 })
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ⭐ Diese Woche
+</div>
+
+<div class="dayEvents">
+${weekContent}
+</div>
+`
 
 }
 
