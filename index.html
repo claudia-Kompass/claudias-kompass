@@ -1171,15 +1171,16 @@ const allEvents = [
 
 if(todayEvents.length){
 
+danceHtml += `
+
 <div class="dayHeader">
 ▼ 🔥 Heute
 </div>
 
 <div class="dayEvents" style="display:block">
-
-<div class="dayEvents">
 ${todayEvents.map(e=>renderDanceCard(e)).join("")}
 </div>
+
 `
 
 }
