@@ -1452,7 +1452,7 @@ ${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.addres
 
 ${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos</a>` : ""}
 
-<button onclick="addEvent(this)"
+<a href="#" onclick="addEvent(this);return false;" class="news-link"
 data-title="${e.title}"
 data-city="${e.city || ""}"
 data-style="${e.style || ""}"
@@ -1460,7 +1460,7 @@ data-location="${e.location || ""}"
 data-address="${e.address || ""}"
 data-month="${e.month || ""}">
 ➕ übernehmen
-</button>
+</a>
 
 </div>
 
