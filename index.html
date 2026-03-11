@@ -1519,26 +1519,45 @@ data-month="${e.month || ""}">
 }
 
 if(todayEvent){
-html += `<div style="margin-top:10px;font-weight:600">🔥 Heute</div>`
-html += renderEvent(todayEvent)
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🔥 Heute
+</div>
+
+<div class="dayEvents">
+${renderEvent(todayEvent)}
+</div>
+`
+
 }
 
 if(nextEvent){
-html += `<div style="margin-top:14px;font-weight:600">📅 Nächstes Event</div>`
-html += renderEvent(nextEvent)
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 📅 Nächstes Event
+</div>
+
+<div class="dayEvents">
+${renderEvent(nextEvent)}
+</div>
+`
+
 }
 
 if(festival){
-html += `<div style="margin-top:14px;font-weight:600">🌍 Festival</div>`
-html += renderEvent(festival)
-}
 
-if(others.length){
-html += `<div style="margin-top:14px;font-weight:600">📡 Weitere Events</div>`
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🌍 Festival
+</div>
 
-others.forEach(e=>{
-html += renderEvent(e)
-})
+<div class="dayEvents">
+${renderEvent(festival)}
+</div>
+`
+
 }
 
 document.getElementById("danceRadar").innerHTML = html
