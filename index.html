@@ -1053,6 +1053,29 @@ const DANCE_STYLES = [
 "semba"
 ]
 
+function flagFromCountry(country){
+
+if(!country) return ""
+
+const map = {
+"Germany":"🇩🇪",
+"Deutschland":"🇩🇪",
+"France":"🇫🇷",
+"Frankreich":"🇫🇷",
+"Spain":"🇪🇸",
+"Spanien":"🇪🇸",
+"Poland":"🇵🇱",
+"Polen":"🇵🇱",
+"Croatia":"🇭🇷",
+"Kroatien":"🇭🇷",
+"Portugal":"🇵🇹",
+"Italy":"🇮🇹"
+}
+
+return map[country] || "🌍"
+
+}
+  
 function isRelevantDance(style){
 if(!style) return false
 style = style.toLowerCase()
