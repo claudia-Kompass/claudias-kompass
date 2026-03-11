@@ -871,9 +871,10 @@ Number(e.lat),
 Number(e.lon)
 )
 
-/* Radar 200 km */
+/* Radius */
 
-if(dist>200) return
+if(e.type==="weekly" && dist>200) return
+if(e.type==="festival" && dist>800) return
 
 }
 
