@@ -1304,6 +1304,10 @@ ${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
 
 </div>
 
+<div style="margin-top:14px">
+<button onclick="nextSong()">▶ Next Song</button>
+</div>
+
 </div>
 `
 
@@ -1653,6 +1657,28 @@ el.innerHTML = el.innerHTML.replace("▶","▼")
 
 }
   
+
+let ukeIndex = 0
+
+function nextSong(){
+
+fetch("/api/daily")
+.then(r=>r.json())
+.then(data=>{
+
+if(!data.ukulele) return
+
+ukeIndex++
+
+if(ukeIndex >= data.ukulele.length){
+ukeIndex = 0
+}
+
+renderUkulele(data.ukulele[ukeIndex])
+
+})
+
+}
   
 </script>
 
