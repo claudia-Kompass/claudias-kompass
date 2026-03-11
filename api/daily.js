@@ -817,7 +817,39 @@ console.log("Festival radar failed")
 
 }
 
-   
+/* FALLBACK FESTIVALS */
+
+radarFestivals = radarFestivals.concat([
+
+{
+title:"Paris Semba Festival",
+city:"Paris",
+country:"France",
+style:"festival",
+month:10,
+url:"https://paris-semba-festival.com"
+},
+
+{
+title:"Lisbon Kizomba Congress",
+city:"Lisbon",
+country:"Portugal",
+style:"festival",
+month:9,
+url:"https://kizombacongress.com"
+},
+
+{
+title:"Warsaw Salsa Festival",
+city:"Warsaw",
+country:"Poland",
+style:"festival",
+month:11,
+url:"https://warsawsalsafestival.com"
+}
+
+])
+
 const todayDay = now.getDay() || 0
 const month = now.getMonth()+1
 
