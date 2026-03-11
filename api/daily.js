@@ -24,7 +24,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="32.0"+Math.floor(Date.now()/86400000)
+const version="32."+Math.floor(Date.now()/86400000)
 const build=(process.env.VERCEL_GIT_COMMIT_SHA||"local").slice(0,7)
 const fullVersion=version+"."+build
 
