@@ -827,6 +827,26 @@ let danceToday=[]
 let danceWeek=[]
 let danceFestivals=[]
 
+/* Radar Festivals hinzufügen */
+
+radarFestivals.forEach(f=>{
+
+danceFestivals.push({
+
+title:f.title,
+city:"",
+style:"festival",
+weekday:null,
+location:"",
+time:"",
+distance:null,
+maps:"",
+url:f.url || ""
+
+})
+
+})
+   
 const safeDance = await loadDanceEvents()
 safeDance.forEach(e=>{
 
