@@ -1731,44 +1731,7 @@ ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
 `
 
 }
-function renderUkulele(song){
 
-if(!song) return
-
-const tabs = song.tabs || ""
-const tempo = song.tempo || 80
-const strum = song.strum || ""
-const picking = song.picking || ""
-
-const firstLine = tabs.split("\n")[0] || ""
-const chords = firstLine.split(/\s+/).filter(c=>c)
-
-const tabLines = tabs.split("\n").slice(1).join("\n")
-
-document.getElementById("ukeBlock").innerHTML = `
-<div class="ukulele-card">
-
-<div class="ukulele-title">
-${song.title}
-</div>
-
-<div style="margin-top:10px;font-weight:600;font-size:18px">
-${chords.join("   ")}
-</div>
-
-<pre class="uke-tabblock">${tabLines}</pre>
-
-<div class="uke-meta">
-<b>Tempo</b> ${tempo} bpm<br>
-<b>Strum</b> ${strum}<br>
-<b>Fingerpicking</b> ${picking}
-</div>
-
-<button class="nextSongBtn" onclick="nextSong()">▶ Next Song</button>
-
-</div>
-`
-}
 let ukeIndex = 0
 
 function nextSong(){
