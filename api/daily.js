@@ -2,8 +2,6 @@ const ukuleleSongs = require("./data/ukulele")
 const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
-const eventDB = require("./data/events")
-data.dance.festivals = sheetData.festivals || []
 
 
 let rssCache = null
