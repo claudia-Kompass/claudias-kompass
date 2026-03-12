@@ -1677,7 +1677,7 @@ Start Trainer
 </div>
 `
 }
-  function nextSong(){
+  window.nextSong = function(){
 
 if(!ukeSongs.length) return
 
@@ -1689,7 +1689,7 @@ ukeIndex = 0
 
 renderUkulele(ukeSongs[ukeIndex])
 
-  }
+}
 
 function startUkeTrainer(tempo){
 
