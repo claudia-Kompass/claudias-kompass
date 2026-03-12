@@ -1280,8 +1280,6 @@ console.log("UkeSongs geladen:", ukeSongs.length)
   
 if(data.ukulele){
 
-ukeSongs = []
-
 if(Array.isArray(data.ukulele)){
 ukeSongs = data.ukulele
 }else{
@@ -1290,11 +1288,12 @@ ukeSongs = [data.ukulele]
 
 ukeIndex = 0
 
-if(ukeSongs.length){
-renderUkulele(ukeSongs[0])
-}
+console.log("Ukulele Songs:", ukeSongs.length)
+
+renderUkulele(ukeSongs[ukeIndex])
 
 }
+  
 /* Trainer */
 
 let ukeTrainerTimer = null
