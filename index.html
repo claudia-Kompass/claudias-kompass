@@ -1268,14 +1268,21 @@ data.language.map(l=>`
 
 if(data.ukulele){
 
-ukeSongs = Array.isArray(data.ukulele)
-? data.ukulele
-: [data.ukulele]
+ukeSongs = []
+
+if(Array.isArray(data.ukulele)){
+ukeSongs = data.ukulele
+}else{
+ukeSongs = [data.ukulele]
+}
 
 ukeIndex = 0
-  
+
+if(ukeSongs.length){
 renderUkulele(ukeSongs[0])
-  
+}
+
+}
 /* Trainer */
 
 window.startUkeTrainer = function(){
