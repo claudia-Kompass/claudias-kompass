@@ -1425,15 +1425,6 @@ speechSynthesis.speak(utterance)
 
 }
 
-e.stopPropagation()
-
-const utterance=new SpeechSynthesisUtterance(text)
-utterance.lang=lang
-
-speechSynthesis.speak(utterance)
-
-}
-
 async function loadRadar(){
 
 const res = await fetch("/api/radar")
