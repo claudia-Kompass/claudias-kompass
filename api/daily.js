@@ -1033,10 +1033,7 @@ travel,
 recipe,
 language,
 
-ukulele: ukuleleSongs.length 
-? ukuleleSongs[Math.floor(Date.now()/86400000)%ukuleleSongs.length]
-: null,
-
+ukulele: ukuleleSongs,
 
    
 quote
