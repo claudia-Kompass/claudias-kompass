@@ -1690,31 +1690,6 @@ ukeIndex = 0
 renderUkulele(ukeSongs[ukeIndex])
 
 }
-
-function startUkeTrainer(tempo){
-
-const steps = document.querySelectorAll(".uke-step")
-
-if(!steps.length) return
-
-let index = 0
-const interval = 60000 / tempo
-
-setInterval(()=>{
-
-steps.forEach(s=>s.classList.remove("active"))
-
-steps[index].classList.add("active")
-
-index++
-
-if(index >= steps.length){
-index = 0
-}
-
-}, interval)
-
-}
   
 function toggleDay(el){
 
