@@ -146,19 +146,21 @@ margin-top:6px;
 ========================= */
 
 .line{
-display:flex;
-justify-content:space-between;
+display:grid;
+grid-template-columns: 1fr auto auto;
+align-items:center;
+gap:12px;
 margin:12px 0;
 }
 
 .info{
-color:#e6c27a;
-margin-left:10px;
-text-decoration:none;
+margin-left:6px;
 }
 
-.marketBlock{
-text-align:right;
+marketBlock{
+text-align:left;      /* statt right */
+font-weight:600;
+min-width:110px;      /* hält Wertspalte stabil */
 }
 
 .market-date{
