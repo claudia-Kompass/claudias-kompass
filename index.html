@@ -1669,13 +1669,13 @@ ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
 ${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
 </div>
 
-<button onclick="startUkeTrainer(${tempo})">
-Start Trainer
+<button class="uke-btn" onclick="startUkeTrainer(${tempo})">
+▶ Start Trainer
 </button>
 
 </div>
 
-<button class="nextSongBtn" onclick="nextSong()">
+<button class="uke-btn" onclick="nextSong()">
 ▶ Next Song
 </button>
 
