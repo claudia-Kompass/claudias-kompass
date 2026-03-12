@@ -1062,19 +1062,19 @@ let html = ""
 
 /* HEUTE */
 
-if(todayEvents.length){
-
 html += `
 <div class="dayHeader">
-▸ 🔥 Heute
+▾ 🔥 Heute
 </div>
 
 <div class="dayEvents" style="display:block">
-${todayEvents.map(renderDanceCard).join("")}
+${
+todayEvents.length
+? todayEvents.map(renderDanceCard).join("")
+: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
+}
 </div>
 `
-
-}
 
 /* WOCHE */
 
