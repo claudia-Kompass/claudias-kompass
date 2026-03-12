@@ -1287,16 +1287,22 @@ renderUkulele(ukeSongs[0])
 }
 /* Trainer */
 
+let ukeTrainerTimer = null
+
 window.startUkeTrainer = function(tempo){
 
 const steps = document.querySelectorAll(".uke-step")
 
 if(!steps.length) return
 
+if(ukeTrainerTimer){
+clearInterval(ukeTrainerTimer)
+}
+
 let index = 0
 const interval = 60000 / tempo
 
-setInterval(()=>{
+ukeTrainerTimer = setInterval(()=>{
 
 steps.forEach(s=>s.classList.remove("active"))
 
@@ -1310,7 +1316,7 @@ index = 0
 
 }, interval)
 
-  }
+}
 
 
 /* =========================
