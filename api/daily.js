@@ -3,6 +3,12 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
+const financeRes = await fetch(
+process.env.BASE_URL + "/api/finance-news"
+)
+
+const financeData = await financeRes.json()
+
 
 let rssCache = null
 let rssCacheTime = 0
@@ -539,7 +545,7 @@ value:"1.08",
 date:marketDateString
 }
 }
-
+financeNews: financeData.financeNews
 
 /* =======================================================
 EVENT ENGINE
