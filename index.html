@@ -1066,7 +1066,7 @@ if(todayEvents.length){
 
 html += `
 <div class="dayHeader">
-▼ 🔥 Heute
+▸ 🔥 Heute
 </div>
 
 <div class="dayEvents" style="display:block">
@@ -1095,7 +1095,7 @@ Object.keys(grouped)
 
 weekBlock += `
 <div class="dayHeader" onclick="toggleDay(this)">
-▶ ${weekdayFromNumber(day)}
+▸ ${weekdayFromNumber(day)}
 </div>
 
 <div class="dayEvents">
@@ -1107,7 +1107,7 @@ ${grouped[day].map(renderDanceCard).join("")}
 
 html += `
 <div class="dayHeader" onclick="toggleDay(this)">
-▶ ⭐ Diese Woche
+▸ ⭐ Diese Woche
 </div>
 
 <div class="dayEvents">
@@ -1129,7 +1129,7 @@ if(future.length){
 
 html += `
 <div class="dayHeader" onclick="toggleDay(this)">
-▶ 📅 Nächstes Event
+▸ 📅 Nächstes Event
 </div>
 
 <div class="dayEvents">
@@ -1148,7 +1148,7 @@ festivals.sort((a,b)=>(a.month||12)-(b.month||12))[0]
 
 html += `
 <div class="dayHeader" onclick="toggleDay(this)">
-▶ 🌍 Festival Europa
+▸ 🌍 Festival Europa
 </div>
 
 <div class="dayEvents">
