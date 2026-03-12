@@ -1414,7 +1414,16 @@ function toggleLang(card){
 card.classList.toggle("open")
 }
 
-function speak(e,lang,text){
+window.speak = function(e,lang,text){
+
+e.stopPropagation()
+
+const utterance = new SpeechSynthesisUtterance(text)
+utterance.lang = lang
+
+speechSynthesis.speak(utterance)
+
+}
 
 e.stopPropagation()
 
