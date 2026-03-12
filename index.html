@@ -909,7 +909,26 @@ document.getElementById("eurusdValue").innerHTML =
 </div>
 `;
 
+/* FINANCE NEWS */
 
+if(data.financeNews){
+
+document.getElementById("financeNewsBlock").innerHTML =
+data.financeNews.map(n=>`
+
+<div class="newsItem">
+<div style="font-weight:600">${n.title}</div>
+
+<a href="${n.url}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+
+<div class="newsSource">${n.source}</div>
+</div>
+
+`).join("")
+
+}
 
 /* CRYPTO */
 
@@ -942,6 +961,8 @@ data.regional.map(r=>`
 
 }
 
+
+   
 
 /* EVENTS */
 
