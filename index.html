@@ -1644,6 +1644,41 @@ ${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
 </div>
 `
 }
+  function nextSong(){
+
+if(!ukeSongs.length) return
+
+ukeIndex++
+
+if(ukeIndex >= ukeSongs.length){
+ukeIndex = 0
+}
+
+renderUkulele(ukeSongs[ukeIndex])
+
+  }
+
+
+function toggleDay(el){
+
+const content = el.nextElementSibling
+
+if(!content) return
+
+if(content.style.display === "block"){
+
+content.style.display = "none"
+el.innerHTML = el.innerHTML.replace("▼","▶")
+
+}else{
+
+content.style.display = "block"
+el.innerHTML = el.innerHTML.replace("▶","▼")
+
+}
+
+}
+
   
 </script>
 
