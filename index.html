@@ -911,32 +911,31 @@ document.getElementById("eurusdValue").innerHTML =
 
 /* FINANCE NEWS */
 
-/* FINANCE NEWS */
-
-if(data.financeNews && data.financeNews.length > 0){
+if(data.financeNews && data.financeNews.length){
 
 document.getElementById("financeNewsBlock").innerHTML =
 data.financeNews.slice(0,3).map(n=>`
 
 <div class="newsItem">
+
 <div style="font-weight:600">${n.title}</div>
 
-<a href="${n.url}" target="_blank" class="news-link">
+<a href="${n.url}" target="_self" class="news-link">
 weiterlesen →
 </a>
 
 <div class="newsSource">${n.source}</div>
+
 </div>
 
-`).join("");
+`).join("")
 
 }else{
 
 document.getElementById("financeNewsBlock").innerHTML =
-'<div style="opacity:.7">Keine aktuellen Finanznews.</div>';
+'<div style="opacity:.7">Keine aktuellen Finanznews.</div>'
 
-}
-
+   }
 /* CRYPTO */
 
 document.getElementById("btcValue").innerHTML =
