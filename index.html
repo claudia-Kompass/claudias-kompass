@@ -1329,104 +1329,56 @@ index = 0
 /* =========================
    RECIPE
 ========================= */
-/* =========================
-   RECIPE MODULE
-========================= */
-
+let recipes = []
 let recipeIndex = 0
-let recipeList = []
 
-if(data.recipe){
+function loadRecipes(data){
 
-if(Array.isArray(data.recipe)){
-recipeList = data.recipe
-}else{
-recipeList = [data.recipe]
-}
+recipes = data.recipes || []
 
-}
+if(!recipes.length) return
 
-function renderRecipe(){
+const today = data.recipe
 
-if(!recipeList.length){
+recipeIndex = recipes.findIndex(r => r.title === today.title)
 
-document.getElementById("recipeBlock").innerHTML =
-'<div style="opacity:.7">Kein Rezept geladen</div>'
+if(recipeIndex < 0) recipeIndex = 0
 
-return
-}
-
-const r = recipeList[recipeIndex]
-
-document.getElementById("recipeBlock").innerHTML = `
-
-<div style="opacity:.7;font-size:14px;margin-bottom:6px">
-Rezept ${recipeIndex+1} / ${recipeList.length}
-</div>
-
-<div class="newsItem">
-
-${r.image ? `<img src="${r.image}" style="width:100%;border-radius:10px;margin-bottom:10px">` : ""}
-
-<div style="font-weight:600;font-size:18px">
-${r.title}
-</div>
-
-<div class="newsSource">
-${r.ingredients.join(" • ")}
-</div>
-
-<div class="newsSource">
-${r.short}
-</div>
-
-<div class="newsSource" style="margin-top:10px">
-<b>Vorbereitung</b><br>
-${r.prep}
-</div>
-
-<div class="newsSource">
-<b>Zubereitung</b><br>
-${r.cook}
-</div>
-
-<div class="newsSource" style="margin-top:10px">
-🔥 ${r.program} • ${r.temp}<br>
-⏱ ${r.time}
-</div>
-
-<div class="newsSource">
-🔁 ${r.shake}
-</div>
-
-<div class="newsSource">
-🍽 ${r.portion} Portionen
-</div>
-
-<button class="uke-btn" onclick="nextRecipe()">
-▶ Next Recipe
-</button>
-
-</div>
-`
+showRecipe(recipes[recipeIndex])
 
 }
 
-window.nextRecipe = function(){
+function nextRecipe(){
 
-if(!recipeList.length) return
+if(!recipes.length) return
 
 recipeIndex++
 
-if(recipeIndex >= recipeList.length){
+if(recipeIndex >= recipes.length){
 recipeIndex = 0
 }
 
-renderRecipe()
+showRecipe(recipes[recipeIndex])
 
 }
 
-renderRecipe()
+function showRecipe(r){
+
+document.getElementById("recipeTitle").textContent = r.title
+
+document.getElementById("recipeIngredients").textContent =
+Array.isArray(r.ingredients) ? r.ingredients.join(" • ") : r.ingredients
+
+document.getElementById("recipePrep").textContent = r.prep
+document.getElementById("recipeCook").textContent = r.cook
+
+document.getElementById("recipeTemp").textContent = r.temp
+document.getElementById("recipeTime").textContent = r.time
+document.getElementById("recipeShake").textContent = r.shake
+document.getElementById("recipePortion").textContent = r.portion
+
+}
+
 
 
 
