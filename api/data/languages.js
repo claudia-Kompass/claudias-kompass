@@ -1,108 +1,309 @@
 module.exports = [
 
-/* ================= TRAVEL ================= */
+{
+en:"Travelling alone often changes how you see the world. Without familiar routines, you start paying attention to small details: the rhythm of a city, the tone of a conversation, or the smell of a street market.",
+es:"Viajar solo a menudo cambia la forma en que ves el mundo. Sin rutinas familiares, empiezas a prestar atención a pequeños detalles: el ritmo de una ciudad, el tono de una conversación o el olor de un mercado.",
+de:"Alleine zu reisen verändert oft den Blick auf die Welt. Ohne vertraute Routinen beginnt man, auf kleine Details zu achten: den Rhythmus einer Stadt, den Ton eines Gesprächs oder den Duft eines Marktes."
+},
 
-{en:"Could you tell me where the nearest bus stop is?",es:"¿Podría decirme dónde está la parada de autobús más cercana?",de:"Könnten Sie mir sagen, wo die nächste Bushaltestelle ist?"},
-{en:"How long does the train ride take?",es:"¿Cuánto dura el viaje en tren?",de:"Wie lange dauert die Zugfahrt?"},
-{en:"Is this the right platform for Madrid?",es:"¿Es este el andén correcto para Madrid?",de:"Ist das der richtige Bahnsteig für Madrid?"},
-{en:"I would like to buy a ticket to the city center.",es:"Me gustaría comprar un billete al centro.",de:"Ich möchte ein Ticket ins Stadtzentrum kaufen."},
-{en:"Is there a direct bus to the airport?",es:"¿Hay un autobús directo al aeropuerto?",de:"Gibt es einen direkten Bus zum Flughafen?"},
-{en:"Could you show me this place on the map?",es:"¿Podría mostrarme este lugar en el mapa?",de:"Könnten Sie mir diesen Ort auf der Karte zeigen?"},
-{en:"Is it far from here?",es:"¿Está lejos de aquí?",de:"Ist es weit von hier?"},
-{en:"How much does the ticket cost?",es:"¿Cuánto cuesta el billete?",de:"Wie viel kostet das Ticket?"},
-{en:"Does this train stop in Valencia?",es:"¿Este tren para en Valencia?",de:"Hält dieser Zug in Valencia?"},
-{en:"Where can I rent a bicycle?",es:"¿Dónde puedo alquilar una bicicleta?",de:"Wo kann ich ein Fahrrad mieten?"},
-{en:"Is there a tourist information nearby?",es:"¿Hay una oficina de turismo cerca?",de:"Gibt es hier in der Nähe eine Touristeninformation?"},
-{en:"I would like to check in for two nights.",es:"Me gustaría registrarme por dos noches.",de:"Ich würde gern für zwei Nächte einchecken."},
-{en:"Is breakfast included in the price?",es:"¿El desayuno está incluido en el precio?",de:"Ist das Frühstück im Preis enthalten?"},
-{en:"Can I leave my luggage here?",es:"¿Puedo dejar mi equipaje aquí?",de:"Kann ich mein Gepäck hier lassen?"},
-{en:"What time is check-out tomorrow?",es:"¿A qué hora es la salida mañana?",de:"Wann ist morgen der Check-out?"},
-{en:"Do you have a map of the city?",es:"¿Tiene un mapa de la ciudad?",de:"Haben Sie eine Stadtkarte?"},
-{en:"Which place would you recommend visiting?",es:"¿Qué lugar recomendaría visitar?",de:"Welchen Ort würden Sie zum Besichtigen empfehlen?"},
-{en:"Is the museum open today?",es:"¿El museo está abierto hoy?",de:"Ist das Museum heute geöffnet?"},
-{en:"How long does the tour take?",es:"¿Cuánto dura el tour?",de:"Wie lange dauert die Führung?"},
-{en:"Can we buy tickets online?",es:"¿Podemos comprar las entradas en línea?",de:"Kann man die Tickets online kaufen?"},
-{en:"Is the beach far from the hotel?",es:"¿La playa está lejos del hotel?",de:"Ist der Strand weit vom Hotel entfernt?"},
-{en:"Is there a good viewpoint nearby?",es:"¿Hay un buen mirador cerca?",de:"Gibt es hier einen schönen Aussichtspunkt?"},
-{en:"Where does this path lead to?",es:"¿A dónde lleva este camino?",de:"Wohin führt dieser Weg?"},
-{en:"How can I get back to the city center?",es:"¿Cómo puedo volver al centro?",de:"Wie komme ich zurück ins Stadtzentrum?"},
-{en:"Is this area safe at night?",es:"¿Es segura esta zona por la noche?",de:"Ist diese Gegend nachts sicher?"},
-{en:"What time does the last bus leave?",es:"¿A qué hora sale el último autobús?",de:"Wann fährt der letzte Bus?"},
-{en:"Can you recommend a good café?",es:"¿Puede recomendar un buen café?",de:"Können Sie ein gutes Café empfehlen?"},
-{en:"How long does the walk take?",es:"¿Cuánto dura la caminata?",de:"Wie lange dauert der Spaziergang?"},
-{en:"Is it possible to pay with card here?",es:"¿Se puede pagar con tarjeta aquí?",de:"Kann man hier mit Karte bezahlen?"},
-{en:"Where can I find a pharmacy?",es:"¿Dónde puedo encontrar una farmacia?",de:"Wo finde ich eine Apotheke?"},
+{
+en:"Learning languages is not about perfection. It is about communication. Even a simple sentence can create a connection between two people who would otherwise remain strangers.",
+es:"Aprender idiomas no se trata de perfección. Se trata de comunicación. Incluso una frase sencilla puede crear una conexión entre dos personas que de otro modo seguirían siendo desconocidas.",
+de:"Sprachen lernen bedeutet nicht Perfektion. Es geht um Kommunikation. Schon ein einfacher Satz kann eine Verbindung zwischen zwei Menschen schaffen."
+},
 
-/* ================= RESTAURANT ================= */
+{
+en:"Markets reveal the real life of a place. Between vegetables, spices and conversations you can understand how people live, cook and celebrate.",
+es:"Los mercados revelan la vida real de un lugar. Entre verduras, especias y conversaciones puedes entender cómo vive, cocina y celebra la gente.",
+de:"Märkte zeigen das echte Leben eines Ortes. Zwischen Gemüse, Gewürzen und Gesprächen erkennt man, wie Menschen leben, kochen und feiern."
+},
 
-{en:"Could we have a table for two please?",es:"¿Podríamos tener una mesa para dos por favor?",de:"Könnten wir einen Tisch für zwei bekommen?"},
-{en:"Do you have a menu in English?",es:"¿Tiene un menú en inglés?",de:"Haben Sie eine Speisekarte auf Englisch?"},
-{en:"What would you recommend today?",es:"¿Qué recomendaría hoy?",de:"Was würden Sie heute empfehlen?"},
-{en:"Is this dish vegetarian?",es:"¿Este plato es vegetariano?",de:"Ist dieses Gericht vegetarisch?"},
-{en:"Does this meal contain dairy?",es:"¿Este plato contiene lácteos?",de:"Enthält dieses Gericht Milchprodukte?"},
-{en:"Could we order another drink?",es:"¿Podemos pedir otra bebida?",de:"Könnten wir noch ein Getränk bestellen?"},
-{en:"Can we sit outside?",es:"¿Podemos sentarnos afuera?",de:"Können wir draußen sitzen?"},
-{en:"Could we see the dessert menu?",es:"¿Podemos ver la carta de postres?",de:"Könnten wir die Dessertkarte sehen?"},
-{en:"The food tastes really good.",es:"La comida está muy rica.",de:"Das Essen schmeckt wirklich gut."},
-{en:"Could we have the bill please?",es:"¿Nos trae la cuenta por favor?",de:"Könnten wir bitte die Rechnung bekommen?"},
-{en:"Can we pay separately?",es:"¿Podemos pagar por separado?",de:"Können wir getrennt bezahlen?"},
-{en:"Is service included?",es:"¿El servicio está incluido?",de:"Ist der Service inbegriffen?"},
-{en:"Could you recommend a local dish?",es:"¿Puede recomendar un plato local?",de:"Könnten Sie ein lokales Gericht empfehlen?"},
-{en:"This looks delicious.",es:"Esto se ve delicioso.",de:"Das sieht lecker aus."},
-{en:"I would like something light.",es:"Me gustaría algo ligero.",de:"Ich hätte gern etwas Leichtes."},
-{en:"Do you have vegetarian options?",es:"¿Tiene opciones vegetarianas?",de:"Haben Sie vegetarische Optionen?"},
-{en:"What ingredients are in this dish?",es:"¿Qué ingredientes lleva este plato?",de:"Welche Zutaten sind in diesem Gericht?"},
-{en:"Can we order one more plate to share?",es:"¿Podemos pedir otro plato para compartir?",de:"Können wir noch einen Teller zum Teilen bestellen?"},
-{en:"Is the kitchen still open?",es:"¿La cocina sigue abierta?",de:"Ist die Küche noch geöffnet?"},
-{en:"Could we get some water please?",es:"¿Podemos tener agua por favor?",de:"Könnten wir bitte Wasser bekommen?"},
-{en:"Everything was excellent.",es:"Todo estuvo excelente.",de:"Alles war ausgezeichnet."},
-{en:"The service was very friendly.",es:"El servicio fue muy amable.",de:"Der Service war sehr freundlich."},
-{en:"Do you accept credit cards?",es:"¿Aceptan tarjetas de crédito?",de:"Akzeptieren Sie Kreditkarten?"},
-{en:"We really enjoyed the meal.",es:"Disfrutamos mucho la comida.",de:"Wir haben das Essen sehr genossen."},
-{en:"The atmosphere here is lovely.",es:"El ambiente aquí es muy agradable.",de:"Die Atmosphäre hier ist sehr schön."},
-{en:"Could we get some bread?",es:"¿Podemos tener un poco de pan?",de:"Könnten wir etwas Brot bekommen?"},
-{en:"I would like to try something local.",es:"Me gustaría probar algo local.",de:"Ich würde gern etwas Lokales probieren."},
-{en:"Is the soup homemade?",es:"¿La sopa es casera?",de:"Ist die Suppe hausgemacht?"},
-{en:"This restaurant is very popular.",es:"Este restaurante es muy popular.",de:"Dieses Restaurant ist sehr beliebt."},
-{en:"The dessert was amazing.",es:"El postre fue increíble.",de:"Das Dessert war großartig."},
+{
+en:"Good conversations rarely begin with complicated questions. Often they start with curiosity and a simple interest in another person's story.",
+es:"Las buenas conversaciones rara vez comienzan con preguntas complicadas. A menudo empiezan con curiosidad y un interés sincero por la historia de otra persona.",
+de:"Gute Gespräche beginnen selten mit komplizierten Fragen. Meist starten sie mit Neugier und echtem Interesse an der Geschichte eines anderen Menschen."
+},
 
-/* ================= SMALLTALK ================= */
+{
+en:"Cooking connects cultures. A recipe can travel across borders and generations, carrying memories, traditions and stories.",
+es:"Cocinar conecta culturas. Una receta puede viajar a través de fronteras y generaciones, llevando recuerdos, tradiciones e historias.",
+de:"Kochen verbindet Kulturen. Ein Rezept kann über Grenzen und Generationen hinweg reisen und Erinnerungen und Traditionen tragen."
+},
 
-{en:"How long have you been living here?",es:"¿Cuánto tiempo llevas viviendo aquí?",de:"Wie lange wohnst du schon hier?"},
-{en:"What do you usually do in your free time?",es:"¿Qué sueles hacer en tu tiempo libre?",de:"Was machst du normalerweise in deiner Freizeit?"},
-{en:"Do you travel often?",es:"¿Viajas a menudo?",de:"Reist du oft?"},
-{en:"This city has a great atmosphere.",es:"Esta ciudad tiene un gran ambiente.",de:"Diese Stadt hat eine tolle Atmosphäre."},
-{en:"The weather is perfect today.",es:"El clima está perfecto hoy.",de:"Das Wetter ist heute perfekt."},
-{en:"Have you tried the local food?",es:"¿Has probado la comida local?",de:"Hast du das lokale Essen probiert?"},
-{en:"What places would you recommend?",es:"¿Qué lugares recomendarías?",de:"Welche Orte würdest du empfehlen?"},
-{en:"It's always nice to meet new people.",es:"Siempre es agradable conocer gente nueva.",de:"Es ist immer schön, neue Menschen kennenzulernen."},
-{en:"I really enjoy traveling.",es:"Realmente disfruto viajar.",de:"Ich reise wirklich gern."},
-{en:"This music sounds great.",es:"Esta música suena genial.",de:"Diese Musik klingt großartig."},
+{
+en:"Every language has words that cannot be translated easily. These words often reveal how a culture understands emotions and relationships.",
+es:"Cada idioma tiene palabras que no se pueden traducir fácilmente. Estas palabras suelen revelar cómo una cultura entiende las emociones y las relaciones.",
+de:"Jede Sprache hat Wörter, die sich nur schwer übersetzen lassen. Sie zeigen oft, wie eine Kultur Gefühle und Beziehungen versteht."
+},
 
-/* ================= LEARNING ================= */
+{
+en:"Travel is less about distance and more about perspective. Sometimes a short trip can change the way you think about your everyday life.",
+es:"Viajar tiene menos que ver con la distancia y más con la perspectiva. A veces un viaje corto puede cambiar la forma en que ves tu vida cotidiana.",
+de:"Reisen hat weniger mit Entfernung zu tun als mit Perspektive. Manchmal kann schon ein kurzer Trip den Blick auf den Alltag verändern."
+},
 
-{en:"I'm trying to improve my Spanish every day.",es:"Intento mejorar mi español cada día.",de:"Ich versuche jeden Tag mein Spanisch zu verbessern."},
-{en:"Learning languages takes time and patience.",es:"Aprender idiomas requiere tiempo y paciencia.",de:"Sprachen lernen braucht Zeit und Geduld."},
-{en:"Listening to podcasts helps a lot.",es:"Escuchar podcasts ayuda mucho.",de:"Podcasts zu hören hilft sehr."},
-{en:"Sometimes I understand everything.",es:"A veces entiendo todo.",de:"Manchmal verstehe ich alles."},
-{en:"And sometimes nothing at all.",es:"Y a veces nada en absoluto.",de:"Und manchmal gar nichts."},
-{en:"Practice makes a big difference.",es:"La práctica marca una gran diferencia.",de:"Übung macht einen großen Unterschied."},
-{en:"Mistakes are part of learning.",es:"Los errores son parte del aprendizaje.",de:"Fehler gehören zum Lernen dazu."},
-{en:"I enjoy learning new words.",es:"Me gusta aprender palabras nuevas.",de:"Ich lerne gern neue Wörter."},
-{en:"Understanding conversations is the hardest part.",es:"Entender conversaciones es lo más difícil.",de:"Gespräche zu verstehen ist am schwierigsten."},
-{en:"But it gets easier over time.",es:"Pero se vuelve más fácil con el tiempo.",de:"Aber mit der Zeit wird es leichter."},
+{
+en:"Music is a universal language. Even without understanding the lyrics, people can feel the rhythm and emotion of a song.",
+es:"La música es un lenguaje universal. Incluso sin entender la letra, las personas pueden sentir el ritmo y la emoción de una canción.",
+de:"Musik ist eine universelle Sprache. Auch ohne den Text zu verstehen, kann man Rhythmus und Emotion eines Liedes fühlen."
+},
 
-/* ================= MOTIVATION ================= */
+{
+en:"Learning something new every day keeps the mind flexible. Small steps build long-term knowledge.",
+es:"Aprender algo nuevo cada día mantiene la mente flexible. Los pequeños pasos construyen conocimiento a largo plazo.",
+de:"Jeden Tag etwas Neues zu lernen hält den Geist flexibel. Kleine Schritte bauen langfristiges Wissen auf."
+},
 
-{en:"Every day is a new opportunity.",es:"Cada día es una nueva oportunidad.",de:"Jeder Tag ist eine neue Chance."},
-{en:"Small steps lead to big progress.",es:"Los pequeños pasos llevan a grandes progresos.",de:"Kleine Schritte führen zu großen Fortschritten."},
-{en:"Stay curious and keep learning.",es:"Mantente curioso y sigue aprendiendo.",de:"Bleib neugierig und lerne weiter."},
-{en:"Trying new things keeps life interesting.",es:"Probar cosas nuevas hace la vida interesante.",de:"Neue Dinge auszuprobieren hält das Leben spannend."},
-{en:"Confidence grows with practice.",es:"La confianza crece con la práctica.",de:"Selbstvertrauen wächst mit Übung."},
-{en:"Travel helps us see the world differently.",es:"Viajar nos ayuda a ver el mundo de otra manera.",de:"Reisen hilft uns, die Welt anders zu sehen."},
-{en:"Learning never really stops.",es:"Aprender nunca termina realmente.",de:"Lernen hört eigentlich nie auf."},
-{en:"Every experience teaches us something.",es:"Cada experiencia nos enseña algo.",de:"Jede Erfahrung lehrt uns etwas."},
-{en:"Stay open to new ideas.",es:"Mantente abierto a nuevas ideas.",de:"Bleib offen für neue Ideen."},
-{en:"Enjoy the journey of learning.",es:"Disfruta el camino del aprendizaje.",de:"Genieße den Weg des Lernens."}
+{
+en:"Cities have their own personalities. Some are energetic and loud, others calm and reflective.",
+es:"Las ciudades tienen su propia personalidad. Algunas son enérgicas y ruidosas, otras tranquilas y reflexivas.",
+de:"Städte haben ihre eigene Persönlichkeit. Manche sind lebendig und laut, andere ruhig und nachdenklich."
+},
+
+{
+en:"Language learning requires patience. Progress often appears slowly, but consistent practice always brings results.",
+es:"Aprender un idioma requiere paciencia. El progreso suele aparecer lentamente, pero la práctica constante siempre trae resultados.",
+de:"Eine Sprache zu lernen braucht Geduld. Fortschritt kommt oft langsam, aber kontinuierliches Üben führt immer zu Ergebnissen."
+},
+
+{
+en:"Travel memories are rarely about monuments. They are about moments: a conversation, a meal or a sunset.",
+es:"Los recuerdos de viaje rara vez son sobre monumentos. Son sobre momentos: una conversación, una comida o una puesta de sol.",
+de:"Reiseerinnerungen handeln selten von Sehenswürdigkeiten. Es sind Momente: ein Gespräch, ein Essen oder ein Sonnenuntergang."
+},
+
+{
+en:"Curiosity is one of the most powerful learning tools. It motivates us to explore, ask questions and discover new ideas.",
+es:"La curiosidad es una de las herramientas de aprendizaje más poderosas. Nos motiva a explorar, preguntar y descubrir nuevas ideas.",
+de:"Neugier ist eines der stärksten Lernwerkzeuge. Sie motiviert uns zu entdecken, zu fragen und neue Ideen zu finden."
+},
+
+{
+en:"Good language learners listen carefully. Understanding often begins long before speaking.",
+es:"Los buenos estudiantes de idiomas escuchan con atención. Comprender suele comenzar mucho antes de hablar.",
+de:"Gute Sprachlernende hören aufmerksam zu. Verstehen beginnt oft lange bevor man selbst spricht."
+},
+
+{
+en:"Food traditions tell stories about history, climate and culture.",
+es:"Las tradiciones culinarias cuentan historias sobre la historia, el clima y la cultura.",
+de:"Esskulturen erzählen Geschichten über Geschichte, Klima und Kultur."
+},
+
+{
+en:"People remember kindness more than perfect grammar.",
+es:"La gente recuerda la amabilidad más que la gramática perfecta.",
+de:"Menschen erinnern sich eher an Freundlichkeit als an perfekte Grammatik."
+},
+
+{
+en:"Exploring new places trains the mind to adapt quickly.",
+es:"Explorar nuevos lugares entrena la mente para adaptarse rápidamente.",
+de:"Neue Orte zu entdecken trainiert den Geist, sich schnell anzupassen."
+},
+
+{
+en:"Reading in another language opens access to different ways of thinking.",
+es:"Leer en otro idioma abre el acceso a diferentes formas de pensar.",
+de:"Lesen in einer anderen Sprache eröffnet neue Denkweisen."
+},
+
+{
+en:"Simple routines help maintain learning momentum.",
+es:"Las rutinas simples ayudan a mantener el impulso de aprendizaje.",
+de:"Einfache Routinen helfen, den Lernfluss zu erhalten."
+},
+
+{
+en:"A short daily practice can be more effective than long irregular sessions.",
+es:"Una práctica corta diaria puede ser más efectiva que sesiones largas e irregulares.",
+de:"Kurzes tägliches Üben kann effektiver sein als lange unregelmäßige Einheiten."
+},
+
+{
+en:"Travel teaches flexibility and problem-solving skills.",
+es:"Viajar enseña flexibilidad y habilidades para resolver problemas.",
+de:"Reisen lehrt Flexibilität und Problemlösungsfähigkeit."
+},
+
+{
+en:"Cultural differences often appear first in everyday habits.",
+es:"Las diferencias culturales a menudo aparecen primero en los hábitos cotidianos.",
+de:"Kulturelle Unterschiede zeigen sich oft zuerst in Alltagsgewohnheiten."
+},
+
+{
+en:"Listening to native speakers helps develop natural rhythm and pronunciation.",
+es:"Escuchar a hablantes nativos ayuda a desarrollar ritmo y pronunciación naturales.",
+de:"Muttersprachlern zuzuhören hilft, Rhythmus und Aussprache zu entwickeln."
+},
+
+{
+en:"Many people underestimate how much they can learn in a year.",
+es:"Muchas personas subestiman cuánto pueden aprender en un año.",
+de:"Viele unterschätzen, wie viel man in einem Jahr lernen kann."
+},
+
+{
+en:"Language connects people who might never meet otherwise.",
+es:"El idioma conecta personas que de otro modo nunca se encontrarían.",
+de:"Sprache verbindet Menschen, die sich sonst nie begegnen würden."
+},
+
+{
+en:"Good travel planning leaves space for spontaneous discoveries.",
+es:"Una buena planificación de viajes deja espacio para descubrimientos espontáneos.",
+de:"Gute Reiseplanung lässt Raum für spontane Entdeckungen."
+},
+
+{
+en:"Local markets are perfect places to observe daily culture.",
+es:"Los mercados locales son lugares perfectos para observar la cultura cotidiana.",
+de:"Lokale Märkte sind ideale Orte, um Alltagskultur zu beobachten."
+},
+
+{
+en:"Small conversations improve language confidence.",
+es:"Las conversaciones pequeñas mejoran la confianza en el idioma.",
+de:"Kurze Gespräche stärken das Sprachvertrauen."
+},
+
+{
+en:"Travel experiences often become the best stories later.",
+es:"Las experiencias de viaje a menudo se convierten en las mejores historias después.",
+de:"Reiseerlebnisse werden später oft zu den besten Geschichten."
+},
+
+{
+en:"Every language has its own rhythm and melody.",
+es:"Cada idioma tiene su propio ritmo y melodía.",
+de:"Jede Sprache hat ihren eigenen Rhythmus und Klang."
+},
+
+{
+en:"Curiosity turns everyday situations into learning opportunities.",
+es:"La curiosidad convierte situaciones cotidianas en oportunidades de aprendizaje.",
+de:"Neugier verwandelt Alltagssituationen in Lernmöglichkeiten."
+},
+
+{
+en:"Reading newspapers in another language improves vocabulary quickly.",
+es:"Leer periódicos en otro idioma mejora el vocabulario rápidamente.",
+de:"Zeitungen in einer Fremdsprache zu lesen erweitert den Wortschatz schnell."
+},
+
+{
+en:"Travel broadens the mind by exposing us to new perspectives.",
+es:"Viajar amplía la mente al exponernos a nuevas perspectivas.",
+de:"Reisen erweitert den Horizont durch neue Perspektiven."
+},
+
+{
+en:"Language learning is a long journey, not a short race.",
+es:"Aprender idiomas es un viaje largo, no una carrera corta.",
+de:"Sprachenlernen ist eine lange Reise, kein kurzer Sprint."
+},
+
+{
+en:"Mistakes are a natural part of learning.",
+es:"Los errores son una parte natural del aprendizaje.",
+de:"Fehler sind ein natürlicher Teil des Lernens."
+},
+
+{
+en:"Curiosity keeps knowledge alive.",
+es:"La curiosidad mantiene vivo el conocimiento.",
+de:"Neugier hält Wissen lebendig."
+},
+
+{
+en:"Understanding culture helps understand language.",
+es:"Entender la cultura ayuda a entender el idioma.",
+de:"Kultur zu verstehen hilft, Sprache zu verstehen."
+},
+
+{
+en:"New experiences expand personal horizons.",
+es:"Las nuevas experiencias amplían los horizontes personales.",
+de:"Neue Erfahrungen erweitern den persönlichen Horizont."
+},
+
+{
+en:"Consistent learning habits create long-term success.",
+es:"Los hábitos de aprendizaje constantes crean éxito a largo plazo.",
+de:"Konstante Lerngewohnheiten schaffen langfristigen Erfolg."
+},
+
+{
+en:"Travel encourages openness and tolerance.",
+es:"Viajar fomenta la apertura y la tolerancia.",
+de:"Reisen fördert Offenheit und Toleranz."
+},
+
+{
+en:"Listening carefully improves understanding more than speaking quickly.",
+es:"Escuchar con atención mejora la comprensión más que hablar rápidamente.",
+de:"Aufmerksames Zuhören verbessert das Verständnis mehr als schnelles Sprechen."
+},
+
+{
+en:"Languages reveal how people structure their thoughts.",
+es:"Los idiomas revelan cómo las personas estructuran sus pensamientos.",
+de:"Sprachen zeigen, wie Menschen ihre Gedanken strukturieren."
+},
+
+{
+en:"Learning new words changes how we describe reality.",
+es:"Aprender nuevas palabras cambia cómo describimos la realidad.",
+de:"Neue Wörter zu lernen verändert, wie wir Realität beschreiben."
+},
+
+{
+en:"Travel often teaches patience and adaptability.",
+es:"Viajar a menudo enseña paciencia y capacidad de adaptación.",
+de:"Reisen lehrt oft Geduld und Anpassungsfähigkeit."
+},
+
+{
+en:"Curiosity and discipline together create progress.",
+es:"La curiosidad y la disciplina juntas crean progreso.",
+de:"Neugier und Disziplin zusammen schaffen Fortschritt."
+},
+
+{
+en:"Learning languages helps us understand global perspectives.",
+es:"Aprender idiomas nos ayuda a entender perspectivas globales.",
+de:"Sprachen zu lernen hilft, globale Perspektiven zu verstehen."
+},
+
+{
+en:"Reading different cultures expands empathy.",
+es:"Leer sobre diferentes culturas amplía la empatía.",
+de:"Über andere Kulturen zu lesen erweitert Empathie."
+},
+
+{
+en:"Daily practice turns knowledge into skill.",
+es:"La práctica diaria convierte el conocimiento en habilidad.",
+de:"Tägliches Üben verwandelt Wissen in Fähigkeit."
+},
+
+{
+en:"Travel memories stay longer than travel plans.",
+es:"Los recuerdos de viaje duran más que los planes de viaje.",
+de:"Reiseerinnerungen bleiben länger als Reisepläne."
+},
+
+{
+en:"Understanding people begins with listening.",
+es:"Entender a las personas comienza escuchando.",
+de:"Menschen zu verstehen beginnt mit Zuhören."
+},
+
+{
+en:"Languages open doors to new friendships.",
+es:"Los idiomas abren puertas a nuevas amistades.",
+de:"Sprachen öffnen Türen zu neuen Freundschaften."
+}
 
 ]
