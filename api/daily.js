@@ -981,6 +981,16 @@ url:"https://www.fraenkisches-seenland.de"
 }
 
 /* ======================
+RECIPE ROTATION
+====================== */
+
+const dayIndex = Math.floor(Date.now() / 86400000)
+
+const seed = 23
+
+const recipe = recipes[(dayIndex * seed) % recipes.length]
+   
+/* ======================
 RECIPE LIST
 ====================== */
 
