@@ -1329,17 +1329,32 @@ index = 0
 /* =========================
    RECIPE
 ========================= */
+/* =========================
+   RECIPE MODULE
+========================= */
 
 let recipeIndex = 0
-let recipeList = Array.isArray(data.recipe) ? data.recipe : [data.recipe]
+let recipeList = []
+
+if(data.recipe){
+
+recipeList = Array.isArray(data.recipe)
+? data.recipe
+: [data.recipe]
+
+}
 
 function renderRecipe(){
 
-if(!recipeList || !recipeList.length) return
+if(!recipeList.length) return
 
 const r = recipeList[recipeIndex]
 
 document.getElementById("recipeBlock").innerHTML = `
+
+<div style="opacity:.7;font-size:14px;margin-bottom:6px">
+Rezept ${recipeIndex+1} / ${recipeList.length}
+</div>
 
 <div class="newsItem">
 
@@ -1347,11 +1362,11 @@ document.getElementById("recipeBlock").innerHTML = `
 ${r.title}
 </div>
 
-<div class="newsSource" style="margin-top:6px">
+<div class="newsSource">
 ${r.ingredients.join(" • ")}
 </div>
 
-<div class="newsSource" style="margin-top:6px">
+<div class="newsSource">
 ${r.short}
 </div>
 
@@ -1360,7 +1375,7 @@ ${r.short}
 ${r.prep}
 </div>
 
-<div class="newsSource" style="margin-top:8px">
+<div class="newsSource">
 <b>Zubereitung</b><br>
 ${r.cook}
 </div>
@@ -1384,9 +1399,12 @@ ${r.cook}
 
 </div>
 `
+
 }
 
-window.nextRecipe=function(){
+window.nextRecipe = function(){
+
+if(!recipeList.length) return
 
 recipeIndex++
 
@@ -1400,20 +1418,6 @@ renderRecipe()
 
 renderRecipe()
 
-/* QUOTE */
-
-if(data.quote){
-
-document.getElementById("quoteBlock").innerHTML=`
-
-<div class="newsItem">
-"${data.quote.text}"
-<div class="newsSource">${data.quote.author}</div>
-</div>
-
-`;
-
-}
 
 
 
