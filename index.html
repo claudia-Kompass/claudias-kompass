@@ -1330,23 +1330,12 @@ index = 0
    RECIPE
 ========================= */
 
-/* =========================
-   RECIPE
-========================= */
-
 let recipeIndex = 0
-let recipeList = []
-recipeList = data.recipe || []
-   
-if(Array.isArray(data.recipe)){
-recipeList = data.recipe
-}else{
-recipeList = [data.recipe]
-}
+let recipeList = Array.isArray(data.recipe) ? data.recipe : [data.recipe]
 
 function renderRecipe(){
 
-if(!recipeList.length) return
+if(!recipeList || !recipeList.length) return
 
 const r = recipeList[recipeIndex]
 
