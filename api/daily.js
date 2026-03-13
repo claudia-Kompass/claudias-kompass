@@ -541,10 +541,28 @@ value:"1.08",
 date:marketDateString
 }
 }
-let financeNews
+   
+
+let financeNews = []
 
 try{
 
+const financeRes = await fetch(
+process.env.VERCEL_URL
+? "https://" + process.env.VERCEL_URL + "/api/finance-news"
+: "http://localhost:3000/api/finance-news"
+)
+
+const financeData = await financeRes.json()
+
+financeNews = financeData.financeNews || []
+
+}catch(e){
+
+console.log("Finance news load failed")
+
+}
+   
 const financeRes = await fetch(
 process.env.VERCEL_URL
 ? "https://" + process.env.VERCEL_URL + "/api/finance-news"
@@ -1047,7 +1065,7 @@ festivals:danceFestivals
    
 markets,
 crypto:{bitcoin,nexo},
-
+financeNews
 weather,
 travel,
 recipe,
