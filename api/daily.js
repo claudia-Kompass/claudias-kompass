@@ -1,7 +1,3 @@
-/* ==============
-
-Stable core V34
-================== */
 
 const ukuleleSongs = require("./data/ukulele")
 const quotes = require("./data/quotes")
@@ -31,7 +27,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="34."+Math.floor(Date.now()/86400000)
+const version="V35."+Math.floor(Date.now()/86400000)
 const build=(process.env.VERCEL_GIT_COMMIT_SHA||"local").slice(0,7)
 const fullVersion=version+"."+build
 
