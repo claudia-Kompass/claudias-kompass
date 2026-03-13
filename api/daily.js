@@ -1049,7 +1049,7 @@ festivals:danceFestivals
    
 markets,
 crypto:{bitcoin,nexo},
-financeNews
+financeNews,
 weather,
 travel,
 recipe,
