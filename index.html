@@ -1330,9 +1330,24 @@ index = 0
    RECIPE
 ========================= */
 
-if(data.recipe){
+/* =========================
+   RECIPE
+========================= */
 
-const r = data.recipe
+let recipeIndex = 0
+let recipeList = []
+
+if(Array.isArray(data.recipe)){
+recipeList = data.recipe
+}else{
+recipeList = [data.recipe]
+}
+
+function renderRecipe(){
+
+if(!recipeList.length) return
+
+const r = recipeList[recipeIndex]
 
 document.getElementById("recipeBlock").innerHTML = `
 
@@ -1361,10 +1376,8 @@ ${r.cook}
 </div>
 
 <div class="newsSource" style="margin-top:10px">
-
-🔥 ${r.program} • ${r.temp}  
+🔥 ${r.program} • ${r.temp}<br>
 ⏱ ${r.time}
-
 </div>
 
 <div class="newsSource">
@@ -1375,11 +1388,27 @@ ${r.cook}
 🍽 ${r.portion} Portionen
 </div>
 
-</div>
+<button class="uke-btn" onclick="nextRecipe()">
+▶ Next Recipe
+</button>
 
+</div>
 `
+}
+
+window.nextRecipe=function(){
+
+recipeIndex++
+
+if(recipeIndex >= recipeList.length){
+recipeIndex = 0
+}
+
+renderRecipe()
 
 }
+
+renderRecipe()
 
 /* QUOTE */
 
