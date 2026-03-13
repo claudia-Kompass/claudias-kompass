@@ -981,13 +981,10 @@ url:"https://www.fraenkisches-seenland.de"
 }
 
 /* ======================
-RECIPE ROTATION
+RECIPE LIST
 ====================== */
 
-const dayIndex = Math.floor(Date.now()/86400000)
-const seed = 23
-
-const recipe = recipes[(dayIndex * seed) % recipes.length]
+const recipe = recipes
 
 /* =======================================================
 LANGUAGE ROTATION
