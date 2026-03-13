@@ -911,10 +911,12 @@ document.getElementById("eurusdValue").innerHTML =
 
 /* FINANCE NEWS */
 
-if(data.financeNews && data.financeNews.length){
+/* FINANCE NEWS */
+
+if(data.financeNews && data.financeNews.length > 0){
 
 document.getElementById("financeNewsBlock").innerHTML =
-data.financeNews.map(n=>`
+data.financeNews.slice(0,3).map(n=>`
 
 <div class="newsItem">
 <div style="font-weight:600">${n.title}</div>
@@ -926,12 +928,12 @@ weiterlesen →
 <div class="newsSource">${n.source}</div>
 </div>
 
-`).join("")
+`).join("");
 
 }else{
 
 document.getElementById("financeNewsBlock").innerHTML =
-'<div style="opacity:.7">Heute keine Finanznews gefunden.</div>'
+'<div style="opacity:.7">Keine aktuellen Finanznews.</div>';
 
 }
 
