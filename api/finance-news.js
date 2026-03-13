@@ -1,62 +1,85 @@
-export default async function handler(req,res){
+module.exports = async function handler(req,res){
+
+res.setHeader("Cache-Control","s-maxage=600, stale-while-revalidate=1200")
+
+async function fetchRSS(url){
+try{
+const r = await fetch(url)
+if(!r.ok) return ""
+return await r.text()
+}catch{
+return ""
+}
+}
+
+function parse(xml,source){
+
+if(!xml) return []
+
+const items=[]
+const matches = xml.match(/<item>[\s\S]*?<\/item>/g) || []
+
+matches.forEach(item=>{
+
+const t=item.match(/<title>(.*?)<\/title>/)
+const l=item.match(/<link>(.*?)<\/link>/)
+
+if(t && l){
+
+items.push({
+title:t[1].replace(/<!\[CDATA\[(.*?)\]\]>/,"$1"),
+url:l[1],
+source
+})
+
+}
+
+})
+
+return items
+}
 
 try{
 
-const feeds = [
+const feeds = await Promise.all([
 
-{
-url:"https://www.n-tv.de/rss/boerse.xml",
-source:"n-tv Börse"
-},
+fetchRSS("https://www.tagesschau.de/wirtschaft/index~rss2.xml"),
+fetchRSS("https://www.reuters.com/markets/rss"),
+fetchRSS("https://www.coindesk.com/arc/outboundfeeds/rss/"),
+fetchRSS("https://www.n-tv.de/rss")
 
-{
-url:"https://www.coindesk.com/arc/outboundfeeds/rss/",
-source:"CoinDesk"
-}
+])
+
+let news = [
+
+...parse(feeds[0],"Tagesschau Wirtschaft"),
+...parse(feeds[1],"Reuters Markets"),
+...parse(feeds[2],"CoinDesk"),
+...parse(feeds[3],"n-tv Börse")
 
 ]
 
-let news=[]
+/* DUPLIKATE ENTFERNEN */
 
-for(const feed of feeds){
+const seen = new Set()
 
-try{
-
-const r = await fetch(feed.url)
-const xml = await r.text()
-
-const items = [...xml.matchAll(/<item>(.*?)<\/item>/gs)]
-
-items.slice(0,3).forEach(i=>{
-
-const block = i[1]
-
-const title = block.match(/<title>(.*?)<\/title>/)?.[1] || ""
-const link  = block.match(/<link>(.*?)<\/link>/)?.[1] || ""
-
-news.push({
-title:title.replace(/<!\[CDATA\[|\]\]>/g,""),
-url:link,
-source:feed.source
+news = news.filter(n=>{
+if(seen.has(n.title)) return false
+seen.add(n.title)
+return true
 })
 
-})
+/* MAX 3 MELDUNGEN */
 
-}catch(e){
-console.log("feed error",feed.url)
-}
-
-}
-
-news = news.slice(0,6)
+news = news.slice(0,3)
 
 res.status(200).json({
 financeNews:news
 })
 
-}catch(err){
+}catch(e){
 
-res.status(500).json({
+res.status(200).json({
 financeNews:[]
 })
 
