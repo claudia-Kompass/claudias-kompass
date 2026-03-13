@@ -1336,7 +1336,8 @@ index = 0
 
 let recipeIndex = 0
 let recipeList = []
-
+recipeList = data.recipe || []
+   
 if(Array.isArray(data.recipe)){
 recipeList = data.recipe
 }else{
