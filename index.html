@@ -1361,6 +1361,11 @@ index = 0
    RECIPE
 ========================= */
 let recipes = []
+/* =========================
+   RECIPE
+========================= */
+
+let recipes = []
 let recipeIndex = 0
 
 function loadRecipes(data){
@@ -1391,6 +1396,8 @@ recipeIndex = 0
 
 showRecipe(recipes[recipeIndex])
 
+}
+
 function showRecipe(r){
 
 document.getElementById("recipeTitle").textContent = r.title
@@ -1411,6 +1418,8 @@ document.getElementById("recipeCounter").textContent =
 
 }
 
+loadRecipes(data)
+   
 /* WEATHER */
 
 document.getElementById("weatherNow").innerHTML =
