@@ -573,12 +573,43 @@ z-index:9999;
 <h2>🎸 Ukulele</h2>
 <div id="ukeBlock"></div>
 </div>
-   
+
    
 <div class="section">
 <h2>🍳 Airfryer Rezept</h2>
-<div id="recipeBlock"></div>
+
+<div id="recipeBlock">
+
+<div id="recipeCounter" style="opacity:.7;margin-bottom:8px"></div>
+
+<div style="font-weight:600;font-size:18px" id="recipeTitle"></div>
+
+<div class="newsSource" id="recipeIngredients"></div>
+
+<br>
+
+<b>Vorbereitung</b>
+<div id="recipePrep"></div>
+
+<b>Zubereitung</b>
+<div id="recipeCook"></div>
+
+<br>
+
+🔥 <span id="recipeTemp"></span><br>
+⏱ <span id="recipeTime"></span><br>
+🔄 <span id="recipeShake"></span><br>
+🍽 <span id="recipePortion"></span> Portionen
+
+<br>
+
+<button onclick="nextRecipe()">▶ Next Recipe</button>
+
 </div>
+
+</div>
+
+   
 
 
 <div class="section">
