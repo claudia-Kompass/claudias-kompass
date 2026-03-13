@@ -1220,7 +1220,6 @@ document.getElementById("travelBlock").innerHTML=`
 }
 
 
-
 /* LANGUAGE */
 
 let langIndex = 0
@@ -1234,7 +1233,7 @@ const l = langTexts[langIndex]
 
 document.getElementById("languageBlock").innerHTML = `
 
-<div class="languageCard">
+<div class="languageCard" onclick="toggleLang(this)">
 
 <div class="langLine">
 <span>🇬🇧 ${l.en}</span>
