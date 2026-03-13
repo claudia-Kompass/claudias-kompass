@@ -541,7 +541,7 @@ value:"1.08",
 date:marketDateString
 }
 }
-let financeNews = []
+let financeNews
 
 try{
 
