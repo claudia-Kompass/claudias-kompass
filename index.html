@@ -911,7 +911,7 @@ document.getElementById("eurusdValue").innerHTML =
 
 /* FINANCE NEWS */
 
-if(data.financeNews){
+if(data.financeNews && data.financeNews.length){
 
 document.getElementById("financeNewsBlock").innerHTML =
 data.financeNews.map(n=>`
@@ -927,6 +927,11 @@ weiterlesen →
 </div>
 
 `).join("")
+
+}else{
+
+document.getElementById("financeNewsBlock").innerHTML =
+'<div style="opacity:.7">Heute keine Finanznews gefunden.</div>'
 
 }
 
