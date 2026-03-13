@@ -1003,112 +1003,81 @@ data.regional.map(r=>`
    
 
 /* EVENTS */
+/* EVENTS */
 
-let html = ""
+if(data.events){
+
+let html=""
 
 /* HEUTE */
 
-if(data.events?.today?.length){
+html+=`
+<div class="dayHeader">
+▾ 🔥 Heute
+</div>
 
-html += `
-<div style="font-weight:600;margin-bottom:8px">
-📍 Heute in der Region
+<div class="dayEvents" style="display:block">
+${
+(data.events.today||[]).length
+? data.events.today.map(renderEventCard).join("")
+: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
+}
 </div>
 `
-
-html += data.events.today.map(e=>`
-
-<div class="newsItem">
-
-<div style="font-weight:600">${e.title}</div>
-
-<div class="newsSource">
-${e.city ?? ""} ${e.location ? " • "+e.location : ""}
-</div>
-
-<div class="newsSource">
-${e.time ?? ""}
-</div>
-
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
-</div>
-
-`).join("")
-
-}
-
 
 /* DIESE WOCHE */
 
-if(data.events?.week?.length){
+if(data.events.week?.length){
 
-html += `
-<div style="margin-top:18px;font-weight:600">
-🗓 Diese Woche
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Diese Woche
+</div>
+
+<div class="dayEvents">
+${data.events.week.map(renderEventCard).join("")}
 </div>
 `
 
-html += data.events.week.slice(0,4).map(e=>`
+}
 
-<div class="newsItem">
+/* DEMNÄCHST */
 
-<div style="font-weight:600">${e.title}</div>
+if(data.events.upcoming?.length){
 
-<div class="newsSource">
-${e.city ?? ""}
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Demnächst
 </div>
 
-<div class="newsSource">
-${formatDate(e.date)} ${e.time ?? ""}
+<div class="dayEvents">
+${data.events.upcoming.map(renderEventCard).join("")}
+</div>
+`
+
+}
+
+/* MESSEN */
+
+if(data.events.fairs?.length){
+
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Messen
 </div>
 
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-
-${e.url?`<a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
+<div class="dayEvents">
+${data.events.fairs.map(renderEventCard).join("")}
 </div>
+`
 
-`).join("")
+}
+
+document.getElementById("eventsBlock").innerHTML=html
 
 }
 
 
-/* WOCHENMÄRKTE */
-
-if(data.events?.marketsToday?.length){
-
-html += `
-<div style="margin-top:18px;font-weight:600">
-🧺 Wochenmärkte
-</div>
-`
-
-html += data.events.marketsToday.map(m=>`
-
-<div class="newsItem">
-
-<div style="font-weight:600">${m.title}</div>
-
-<div class="newsSource">
-${m.city} • ${m.location}
-</div>
-
-<div class="newsSource">
-${m.time}
-</div>
-
-<a href="${m.maps}" target="_blank" class="news-link">📍 Karte →</a>
-
-</div>
-
-`).join("")
-
-}
-
-document.getElementById("eventsBlock").innerHTML = html
   
 /* =========================
    TANZ ENGINE V4
