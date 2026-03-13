@@ -1047,6 +1047,25 @@ QUOTE
 const quoteSeed = 37
 const quote = quotes[(dayIndex * quoteSeed) % quotes.length]
 
+
+/* FINANCE NEWS */
+
+let financeNews = []
+
+try{
+
+const resFinance = await fetch(
+"https://claudias-kompass.vercel.app/api/finance-news"
+)
+
+const dataFinance = await resFinance.json()
+
+financeNews = dataFinance.financeNews || []
+
+}catch(e){
+financeNews = []
+}
+   
 /* =======================================================
 RESPONSE
 ======================================================= */
