@@ -996,7 +996,7 @@ LANGUAGE ROTATION
 const languageIndex =
 Math.floor(Date.now()/86400000) % languages.length
 
-const language = [languages[languageIndex]]
+const language = languages
 
 
 /*=======================================================
