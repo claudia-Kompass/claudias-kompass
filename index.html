@@ -744,6 +744,32 @@ ${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""
 
 }
 
+function renderEventCard(e){
+
+return`
+
+<div class="card">
+
+<strong>${e.title}</strong>
+
+<div style="opacity:.8">
+${e.city ?? ""} ${e.location ? " • "+e.location : ""}
+</div>
+
+<div style="opacity:.8">
+${formatDate(e.date)} ${e.time ?? ""}
+</div>
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`
+}
+
+   
 function buildDanceRadar(dance){
 
 const today = new Date().getDay()
