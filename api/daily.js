@@ -1002,23 +1002,6 @@ const language = [languages[languageIndex]]
 UKULELE
 ======================================================= */
 
-/* FINANCE NEWS */
-
-let financeNews = []
-
-try{
-
-const resFinance = await fetch(
-"https://claudias-kompass.vercel.app/api/finance-news"
-)
-
-const dataFinance = await resFinance.json()
-
-financeNews = dataFinance.financeNews || []
-
-}catch(e){
-financeNews = []
-}
    
    
 /* =======================================================
