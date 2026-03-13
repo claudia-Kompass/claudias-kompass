@@ -1338,15 +1338,23 @@ let recipeList = []
 
 if(data.recipe){
 
-recipeList = Array.isArray(data.recipe)
-? data.recipe
-: [data.recipe]
+if(Array.isArray(data.recipe)){
+recipeList = data.recipe
+}else{
+recipeList = [data.recipe]
+}
 
 }
 
 function renderRecipe(){
 
-if(!recipeList.length) return
+if(!recipeList.length){
+
+document.getElementById("recipeBlock").innerHTML =
+'<div style="opacity:.7">Kein Rezept geladen</div>'
+
+return
+}
 
 const r = recipeList[recipeIndex]
 
@@ -1357,6 +1365,8 @@ Rezept ${recipeIndex+1} / ${recipeList.length}
 </div>
 
 <div class="newsItem">
+
+${r.image ? `<img src="${r.image}" style="width:100%;border-radius:10px;margin-bottom:10px">` : ""}
 
 <div style="font-weight:600;font-size:18px">
 ${r.title}
