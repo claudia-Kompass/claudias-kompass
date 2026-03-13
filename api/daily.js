@@ -541,7 +541,7 @@ value:"1.08",
 date:marketDateString
 }
 }
-financeNews: financeData.financeNews
+financeNews: []
 
 /* =======================================================
 EVENT ENGINE
