@@ -1391,8 +1391,6 @@ recipeIndex = 0
 
 showRecipe(recipes[recipeIndex])
 
-}
-
 function showRecipe(r){
 
 document.getElementById("recipeTitle").textContent = r.title
@@ -1408,11 +1406,10 @@ document.getElementById("recipeTime").textContent = r.time
 document.getElementById("recipeShake").textContent = r.shake
 document.getElementById("recipePortion").textContent = r.portion
 
-}
+document.getElementById("recipeCounter").textContent =
+"Rezept " + (recipeIndex+1) + " / " + recipes.length
 
-<button onclick="nextRecipe()" class="next-btn">
-▶ Next Recipe
-</button>
+}
 
 /* WEATHER */
 
