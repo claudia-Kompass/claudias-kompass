@@ -1223,19 +1223,25 @@ document.getElementById("travelBlock").innerHTML=`
 
 /* LANGUAGE */
 
-if(data.language){
+let langIndex = 0
+let langTexts = data.language || []
 
-document.getElementById("languageBlock").innerHTML =
-data.language.map(l=>`
+function renderLanguage(){
+
+if(!langTexts.length) return
+
+const l = langTexts[langIndex]
+
+document.getElementById("languageBlock").innerHTML = `
 
 <div class="languageCard">
 
-<div class="langLine" onclick="toggleLang(this.parentElement)">
+<div class="langLine">
 <span>🇬🇧 ${l.en}</span>
 <span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
 </div>
 
-<div class="langLine" onclick="toggleLang(this.parentElement)">
+<div class="langLine">
 <span>🇪🇸 ${l.es}</span>
 <span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
 </div>
@@ -1244,11 +1250,25 @@ data.language.map(l=>`
 🇩🇪 ${l.de}
 </div>
 
-</div>
+<button class="uke-btn" onclick="nextLanguage()">▶ Next</button>
 
-`).join("");
+</div>
+`
+}
+
+window.nextLanguage=function(){
+
+langIndex++
+
+if(langIndex>=langTexts.length){
+langIndex=0
+}
+
+renderLanguage()
 
 }
+
+renderLanguage()
 
 
 /* =========================
