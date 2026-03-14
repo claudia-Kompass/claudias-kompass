@@ -1062,13 +1062,27 @@ const travelKeywords = [
 TRAVEL
 ======================================================= */
 
-const travel={
+const travel = travelItem ? {
 
-title:"Altmühlsee – Fränkisches Seenland",
-text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
-url:"https://www.fraenkisches-seenland.de"
+title:travelItem.title,
 
-}
+text:"Travel Inspiration – "+travelItem.source,
+
+url:travelItem.url,
+
+image:travelImage
+
+} : {
+
+title:"Reiseinspiration",
+
+text:"Heute keine Travel-Story gefunden.",
+
+url:"https://www.nationalgeographic.com/travel",
+
+image:"https://source.unsplash.com/900x500/?ocean"
+
+   }
 
 /* ======================
 RECIPE ENGINE
