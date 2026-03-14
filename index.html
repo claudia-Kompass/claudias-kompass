@@ -1259,7 +1259,7 @@ document.getElementById("danceWeek").innerHTML = html
 
 
 /* ==≈=========================
-      TAVEL
+      TRAVEL
 ====≈===========================*/
 
 if(data.travel){
@@ -1267,12 +1267,29 @@ if(data.travel){
 document.getElementById("travelBlock").innerHTML=`
 
 <div class="newsItem">
-<div style="font-weight:600">${data.travel.title}</div>
-<div class="newsSource">${data.travel.text}</div>
-<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
+
+<img src="${data.travel.image}"
+style="width:100%;border-radius:8px;margin-bottom:12px">
+
+<div style="font-weight:600;font-size:18px">
+${data.travel.title}
 </div>
 
-`;
+<div class="newsSource">
+${data.travel.text}
+</div>
+
+<a href="${data.travel.url}"
+target="_blank"
+class="news-link">
+
+weiter lesen →
+
+</a>
+
+</div>
+
+`
 
 }
 
