@@ -280,6 +280,48 @@ encodeURIComponent(travelItem.title.split(" ").slice(0,3).join(" "))
 travelImage =
 "https://source.unsplash.com/900x500/?"+query+",coast,island"
 
+
+/* ======================
+TRAVEL RADAR
+====================== */
+
+const radarCount = 5
+
+let radar = []
+
+if(filteredTravel.length >= radarCount){
+
+for(let i=0;i<radarCount;i++){
+
+const item =
+filteredTravel[Math.floor(Math.random()*filteredTravel.length)]
+
+radar.push(item)
+
+}
+
+}else{
+
+radar = travelArticles.slice(0,radarCount)
+
+}
+
+const travelRadar = radar.map(item=>{
+
+const query =
+encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
+
+return{
+
+title:item.title,
+source:item.source,
+url:item.url,
+image:"https://source.unsplash.com/900x500/?"+query+",travel"
+
+}
+
+})
+   
 } 
    
    
@@ -1169,6 +1211,7 @@ crypto:{bitcoin,nexo},
 financeNews,
 weather,
 travel,
+travelRadar,
 recipe: recipeToday,
 recipes: recipeList,
 language,
