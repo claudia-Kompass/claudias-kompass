@@ -970,6 +970,34 @@ danceFestivals.sort((a,b)=>(a.month||12)-(b.month||12))
 danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
 danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
+
+/* ======================
+TRAVEL FEEDS
+====================== */
+
+const travelFeeds = [
+
+{url:"https://www.nationalgeographic.com/travel/feed",source:"National Geographic"},
+{url:"https://www.lonelyplanet.com/news/rss.xml",source:"Lonely Planet"},
+{url:"https://www.travelandleisure.com/syndication/rss",source:"Travel + Leisure"},
+{url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"}
+
+]
+
+const travelKeywords = [
+
+"segel","sailing",
+"tauchen","diving",
+"schnorchel","snorkel",
+"insel","island",
+"küste","coast",
+"wandern","hiking",
+"camping",
+"kultur","culture",
+"stadt","city"
+
+]
+
    
 /* =======================================================
 TRAVEL
