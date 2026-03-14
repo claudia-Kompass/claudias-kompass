@@ -182,11 +182,13 @@ const t=a.title.toLowerCase()
 return keywords.some(k=>t.includes(k))
 })
 
+/* wenn Filter nichts findet → alle Artikel nutzen */
+
 if(filtered.length < 2){
-filtered = articles.slice(0,2)
+filtered = articles
 }
 
-/* DUPLIKATE ENTFERNEN */
+/* DUPLIKATE */
 
 const seen = new Set()
 
@@ -195,6 +197,10 @@ if(seen.has(a.title)) return false
 seen.add(a.title)
 return true
 })
+
+/* ZUFÄLLIG MISCHEN */
+
+filtered = filtered.sort(()=>0.5 - Math.random())
 
 /* MAX 2 ARTIKEL */
 
