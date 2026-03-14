@@ -1253,16 +1253,10 @@ document.getElementById("danceWeek").innerHTML = html
 
 
 
-
-
-  
-
-
 /* ==≈=========================
       TRAVEL
 ====≈===========================*/
-
-if(data.travelRadar){
+if(data.travelRadar && data.travelRadar.length){
 
 document.getElementById("travelBlock").innerHTML =
 data.travelRadar.map(t=>`
@@ -1288,7 +1282,13 @@ weiter lesen →
 
 `).join("")
 
+}else{
+
+document.getElementById("travelBlock").innerHTML =
+'<div style="opacity:.7">Heute keine Reiseideen gefunden.</div>'
+
 }
+
 
 
 /* LANGUAGE */
