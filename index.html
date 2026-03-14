@@ -853,6 +853,26 @@ document.getElementById("meta").innerHTML =
 
 let radar = []
 
+/* QUOTE */
+
+if(data.quote){
+
+document.getElementById("quoteBlock").innerHTML = `
+<div class="newsItem">
+
+<div style="font-size:18px;font-style:italic;margin-bottom:6px">
+“${data.quote.text}”
+</div>
+
+<div style="opacity:.75">
+— ${data.quote.author}
+</div>
+
+</div>
+`
+
+}
+   
 /* Wetter */
 
 if(data.weather){
