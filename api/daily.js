@@ -135,24 +135,25 @@ return items
 
 }
 
-/* ==============================
-TRAVEL ENGINE
-============================== */
+
+/* ===============================
+TRAVEL ENGINE (DE)
+=============================== */
+
 async function loadTravelRadar(){
 
-const feeds=[
+const feeds = [
 
 {url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
-{url:"https://www.lonelyplanet.com/news/rss.xml",source:"Lonely Planet"},
-{url:"https://www.travelandleisure.com/syndication/rss",source:"Travel + Leisure"},
-{url:"https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml",source:"NYTimes"}
+{url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
+{url:"https://www.travelbook.de/feed",source:"Travelbook"}
 
 ]
 
 const keywords=[
-"island","beach","coast","sailing",
-"diving","snorkel","hiking","camp",
-"travel","destination","city"
+"insel","strand","küste","segel",
+"tauchen","schnorchel","wandern",
+"camping","stadt","reise","kultur"
 ]
 
 let articles=[]
@@ -161,15 +162,14 @@ for(const feed of feeds){
 
 try{
 
-const r=await fetch(feed.url)
-
+const r = await fetch(feed.url)
 if(!r.ok) continue
 
-const xml=await r.text()
+const xml = await r.text()
 
-const parsed=parseRSS(xml,feed.source)
+const parsed = parseRSS(xml,feed.source)
 
-articles=articles.concat(parsed)
+articles = articles.concat(parsed)
 
 }catch(e){}
 
@@ -177,79 +177,51 @@ articles=articles.concat(parsed)
 
 /* FILTER */
 
-let filtered=articles.filter(a=>{
-
+let filtered = articles.filter(a=>{
 const t=a.title.toLowerCase()
-
 return keywords.some(k=>t.includes(k))
-
 })
 
-if(filtered.length<3){
-filtered=articles
+if(filtered.length < 2){
+filtered = articles
 }
 
-/* FALLBACK */
+/* DUPLIKATE ENTFERNEN */
 
-if(!filtered.length){
+const seen = new Set()
 
-filtered=[
+filtered = filtered.filter(a=>{
+if(seen.has(a.title)) return false
+seen.add(a.title)
+return true
+})
 
-{
-title:"Segelinseln Kroatien entdecken",
-url:"https://www.lonelyplanet.com/articles/sailing-croatia",
-source:"Lonely Planet"
-},
+/* MAX 2 ARTIKEL */
 
-{
-title:"Die schönsten Schnorchelspots im Mittelmeer",
-url:"https://www.travelandleisure.com/snorkeling-mediterranean",
-source:"Travel + Leisure"
-},
+filtered = filtered.slice(0,2)
 
-{
-title:"Top Wanderwege Europas",
-url:"https://www.geo.de/reisen/wandern-europa",
-source:"GEO Reisen"
-}
+/* BUILD */
 
-]
+const radar = filtered.map(item=>{
 
-}
+const query =
+encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
 
-/* BUILD RADAR */
-
-const radar=[]
-
-const count=Math.min(5,filtered.length)
-
-for(let i=0;i<count;i++){
-
-const item=filtered[Math.floor(Math.random()*filtered.length)]
-
-const query=encodeURIComponent(
-item.title.split(" ").slice(0,3).join(" ")
-)
-
-radar.push({
+return{
 
 title:item.title,
-
 url:item.url,
-
-source:item.source || "Travel",
-
-text:"Reiseinspiration",
-
+source:item.source || "Reise",
 image:`https://images.unsplash.com/900x500/?travel,${query}`
 
-})
-
 }
+
+})
 
 return radar
 
 }
+
 
    
 /* =======================================================
