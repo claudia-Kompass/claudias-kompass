@@ -1211,7 +1211,7 @@ crypto:{bitcoin,nexo},
 financeNews,
 weather,
 travel,
-travelRadar,
+
 recipe: recipeToday,
 recipes: recipeList,
 language,
