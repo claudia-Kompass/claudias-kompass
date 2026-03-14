@@ -287,7 +287,7 @@ stimmeRes,
 htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
-const travelRadar = await loadTravelRadar()
+travelRadar = await loadTravelRadar()
 
    
    
