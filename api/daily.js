@@ -138,21 +138,21 @@ return items
 /* ==============================
 TRAVEL ENGINE
 ============================== */
-
 async function loadTravelRadar(){
 
-const feeds = [
+const feeds=[
 
-{url:"https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml",source:"NYTimes"},
+{url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
 {url:"https://www.lonelyplanet.com/news/rss.xml",source:"Lonely Planet"},
 {url:"https://www.travelandleisure.com/syndication/rss",source:"Travel + Leisure"},
-{url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"}
+{url:"https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml",source:"NYTimes"}
 
 ]
 
 const keywords=[
-"sailing","diving","snorkel","island",
-"coast","hiking","camp","culture","city"
+"island","beach","coast","sailing",
+"diving","snorkel","hiking","camp",
+"travel","destination","city"
 ]
 
 let articles=[]
@@ -185,32 +185,30 @@ return keywords.some(k=>t.includes(k))
 
 })
 
-/* FALLBACK */
-
 if(filtered.length<3){
 filtered=articles
 }
 
-/* HARD FALLBACK */
+/* FALLBACK */
 
 if(!filtered.length){
 
 filtered=[
 
 {
-title:"Sailing islands of Croatia",
+title:"Segelinseln Kroatien entdecken",
 url:"https://www.lonelyplanet.com/articles/sailing-croatia",
 source:"Lonely Planet"
 },
 
 {
-title:"Best snorkeling beaches Mediterranean",
+title:"Die schönsten Schnorchelspots im Mittelmeer",
 url:"https://www.travelandleisure.com/snorkeling-mediterranean",
 source:"Travel + Leisure"
 },
 
 {
-title:"Europe's most beautiful hiking trails",
+title:"Top Wanderwege Europas",
 url:"https://www.geo.de/reisen/wandern-europa",
 source:"GEO Reisen"
 }
@@ -229,15 +227,21 @@ for(let i=0;i<count;i++){
 
 const item=filtered[Math.floor(Math.random()*filtered.length)]
 
-const query=
-encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
+const query=encodeURIComponent(
+item.title.split(" ").slice(0,3).join(" ")
+)
 
 radar.push({
 
 title:item.title,
+
 url:item.url,
-text:"Travel Inspiration – "+item.source,
-image:"https://source.unsplash.com/900x500/?"+query+",travel"
+
+source:item.source || "Travel",
+
+text:"Reiseinspiration",
+
+image:`https://images.unsplash.com/900x500/?travel,${query}`
 
 })
 
