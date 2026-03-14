@@ -1070,7 +1070,22 @@ ${
 }
 </div>
 `
+/* WOCHENMÄRKTE */
 
+if(data.events.marketsToday?.length){
+
+html += `
+<div class="dayHeader">
+▾ 🧺 Wochenmarkt
+</div>
+
+<div class="dayEvents" style="display:block">
+${data.events.marketsToday.map(renderEventCard).join("")}
+</div>
+`
+
+}
+   
 /* DIESE WOCHE */
 
 if(data.events.week?.length){
