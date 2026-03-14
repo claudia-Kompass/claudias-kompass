@@ -142,13 +142,15 @@ TRAVEL ENGINE (DE)
 
 async function loadTravelRadar(){
 
+/* ======================
+   RSS REISE ARTIKEL
+====================== */
+
 const feeds = [
 
 {url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
 {url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
-{url:"https://www.travelbook.de/feed",source:"Travelbook"},
-{url:"https://www.welt.de/reise/?service=Rss",source:"WELT Reise"},
-{url:"https://www.faz.net/rss/aktuell/reise/",source:"FAZ Reise"}
+{url:"https://www.travelbook.de/feed",source:"Travelbook"}
 
 ]
 
@@ -158,12 +160,10 @@ for(const feed of feeds){
 
 try{
 
-const r = await fetch(feed.url,{headers:{'User-Agent':'Mozilla/5.0'}})
-
+const r = await fetch(feed.url)
 if(!r.ok) continue
 
 const xml = await r.text()
-
 const parsed = parseRSS(xml,feed.source)
 
 articles = articles.concat(parsed)
@@ -172,88 +172,104 @@ articles = articles.concat(parsed)
 
 }
 
-/* DUPLIKATE */
+/* Filter */
 
-const seen=new Set()
+const keywords=[
+"insel","strand","meer","küste",
+"wandern","segel","tauchen",
+"schnorchel","camping",
+"roadtrip","nationalpark"
+]
 
 articles = articles.filter(a=>{
-if(seen.has(a.title)) return false
-seen.add(a.title)
-return true
+const t=a.title.toLowerCase()
+return keywords.some(k=>t.includes(k))
 })
 
-/* =========================
-   FALL 1 – NEWS ARTIKEL
-========================= */
+/* zufälliger Artikel */
 
-if(articles.length){
+let article = articles[Math.floor(Math.random()*articles.length)]
 
-articles = articles.sort(()=>0.5-Math.random()).slice(0,2)
-
-return articles.map(item=>{
+if(!article){
+article = articles[0]
+}
 
 const query =
-encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
+encodeURIComponent(article.title.split(" ").slice(0,2).join(" "))
 
-return{
 
-title:item.title,
-url:item.url,
-source:item.source,
+/* ======================
+DESTINATION IMPULSE
+====================== */
+
+const destinations=[
+
+"Segeln Sardinien",
+"Tauchen Rotes Meer",
+"Wandern Dolomiten",
+"Roadtrip Norwegen",
+"Camping Bretagne",
+"Schnorcheln Kroatien",
+"Vanlife Portugal",
+"Inselhopping Griechenland",
+"Nationalparks Kanada",
+"Städtereise Valencia"
+
+]
+
+const dest =
+destinations[Math.floor(Math.random()*destinations.length)]
+
+
+/* ======================
+OUTDOOR IMPULSE
+====================== */
+
+const outdoors=[
+
+"Traumhafte Küstenwanderungen Europa",
+"Die schönsten Segelreviere im Mittelmeer",
+"Campingplätze direkt am Meer",
+"Geheime Schnorchelspots im Mittelmeer",
+"Die besten Roadtrips Europas",
+"Nationalparks für Outdoorfans"
+
+]
+
+const outdoor =
+outdoors[Math.floor(Math.random()*outdoors.length)]
+
+
+/* ======================
+BUILD RESULT
+====================== */
+
+return [
+
+{
+title:article.title,
+url:article.url,
+source:article.source,
 image:`https://images.unsplash.com/900x500/?travel,${query}`
-
-}
-
-})
-
-}
-
-/* =========================
-   FALL 2 – REISEMAGAZINE
-========================= */
-
-const inspiration = [
-
-{
-title:"Beste Reisezeit – Inspiration vom ADAC",
-url:"https://www.adac.de/reise/",
-source:"ADAC Reisen",
-query:"roadtrip europe"
 },
 
 {
-title:"Neue Reiseideen von DERTOUR",
-url:"https://www.dertour.de/reisemagazin",
-source:"DERTOUR Magazin",
-query:"beach destination"
+title:dest,
+url:"https://www.google.com/search?q="+encodeURIComponent(dest),
+source:"Inspiration",
+image:`https://images.unsplash.com/900x500/?${encodeURIComponent(dest)}`
 },
 
 {
-title:"Top Reiseziele des Jahres",
-url:"https://www.lonelyplanet.com",
-source:"Lonely Planet",
-query:"travel destination"
+title:outdoor,
+url:"https://www.google.com/search?q="+encodeURIComponent(outdoor),
+source:"Outdoor",
+image:`https://images.unsplash.com/900x500/?${encodeURIComponent(outdoor)}`
 }
 
 ]
 
-return inspiration
-.sort(()=>0.5-Math.random())
-.slice(0,2)
-.map(i=>({
-
-title:i.title,
-url:i.url,
-source:i.source,
-image:`https://images.unsplash.com/900x500/?${i.query}`
-
-}))
-
 }
-
-
-
-
 
 
    
