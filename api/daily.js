@@ -160,19 +160,18 @@ let articles=[]
 
 for(const feed of feeds){
 
-/* =======================================================
-TRAVEL
-======================================================= */
-
 try{
 
-travelRadar = await loadTravelRadar()
+const r = await fetch(feed.url)
+if(!r.ok) continue
 
-}catch(e){
+const xml = await r.text()
 
-console.log("Travel radar failed")
+const parsed = parseRSS(xml,feed.source)
 
-travelRadar = []
+articles = articles.concat(parsed)
+
+}catch(e){}
 
 }
 
@@ -213,7 +212,7 @@ return {
 title:item.title,
 url:item.url,
 source:item.source || "Reise",
-image: `https://images.unsplash.com/900x500/?travel,${query}`
+image:`https://source.unsplash.com/900x500/?travel,${query}`
 
 }
 
@@ -222,6 +221,8 @@ image: `https://images.unsplash.com/900x500/?travel,${query}`
 return radar
 
 }
+
+
 
 
    
