@@ -142,78 +142,14 @@ TRAVEL ENGINE (DE)
 
 async function loadTravelRadar(){
 
-const activities=[
-"Segeln",
-"Tauchen",
-"Schnorcheln",
-"Wandern",
-"Camping",
-"Vanlife",
-"Städtereise",
-"Kultur",
-"Salsa",
-"Natur"
-]
-
-const places=[
-"Azoren",
-"Madeira",
-"Sardinien",
-"Kroatien",
-"Griechische Inseln",
-"Norwegen Fjorde",
-"Kanada Nationalparks",
-"Bretagne",
-"Altmühlsee",
-"Schwarzwald",
-"Valencia",
-"Barcelona",
-"Lissabon",
-"Havanna",
-"Kapverden",
-"Rotes Meer",
-"Island",
-"Schottland",
-"Patagonien",
-"Bali"
-]
-
-/* Kombination erzeugen */
-
-const dayIndex=Math.floor(Date.now()/86400000)
-
-const a = activities[dayIndex % activities.length]
-
-const p = places[(dayIndex*7) % places.length]
-
-const title = a+" – "+p
-
-const query = encodeURIComponent(a+" "+p)
-
-/* kurzer Text */
-
-const descriptions=[
-"Perfekt für eine aktive Reise mit Natur, Wasser und neuen Eindrücken.",
-"Eine Kombination aus Landschaft, Kultur und Abenteuer.",
-"Ein Reiseziel für Entdecker – ideal für Outdoor und lokale Kultur.",
-"Ein Ort für Bewegung, Meer, Berge und inspirierende Begegnungen."
-]
-
-const desc = descriptions[dayIndex % descriptions.length]
+const dayIndex = Math.floor(Date.now()/86400000)
 
 return [
-
-{
-title:title,
-text:desc,
-url:"https://www.google.com/search?q="+query,
-source:"Reiseimpuls",
-image:`https://images.unsplash.com/900x500/?${query}`
-}
-
+travelDB[ dayIndex % travelDB.length ]
 ]
 
 }
+
 
    
 /* =======================================================
