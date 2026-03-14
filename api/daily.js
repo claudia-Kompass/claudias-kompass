@@ -160,18 +160,19 @@ let articles=[]
 
 for(const feed of feeds){
 
+/* =======================================================
+TRAVEL
+======================================================= */
+
 try{
 
-const r = await fetch(feed.url)
-if(!r.ok) continue
+travelRadar = await loadTravelRadar()
 
-const xml = await r.text()
+}catch(e){
 
-const parsed = parseRSS(xml,feed.source)
+console.log("Travel radar failed")
 
-articles = articles.concat(parsed)
-
-}catch(e){}
+travelRadar = []
 
 }
 
