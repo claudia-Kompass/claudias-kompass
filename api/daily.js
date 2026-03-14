@@ -255,8 +255,9 @@ const t = a.title.toLowerCase()
 return travelKeywords.some(k=>t.includes(k))
 
 })
+
 let travelRadar = []
-   
+let radar = []
 let travelItem = null
 
 if(filteredTravel.length){
