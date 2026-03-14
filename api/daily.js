@@ -141,7 +141,6 @@ TRAVEL ENGINE (DE)
 =============================== */
 
 async function loadTravelRadar(){
-async function loadTravelRadar(){
 
 const activities=[
 "Segeln",
