@@ -1075,28 +1075,6 @@ danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
 danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
 
-
-
-   
-/* =======================================================
-TRAVEL
-======================================================= */
-
-travelRadar = radar.map(item => {
-
-const query =
-encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
-
-return {
-
-title: item.title,
-text: "Travel Inspiration – " + item.source,
-url: item.url,
-image: "https://source.unsplash.com/900x500/?" + query + ",travel"
-
-}
-
-})
    
 /* ======================
 RECIPE ENGINE
@@ -1180,7 +1158,7 @@ markets,
 crypto:{bitcoin,nexo},
 financeNews,
 weather,
-travel,
+
 travelRadar,
 recipe: recipeToday,
 recipes: recipeList,
