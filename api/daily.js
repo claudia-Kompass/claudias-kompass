@@ -795,6 +795,10 @@ todayEvents = [
 ...marketsToday
 ]
 
+   const events = {
+today: todayEvents,
+week: week
+   }
 
 /* =======================================================
 DANCE ENGINE
