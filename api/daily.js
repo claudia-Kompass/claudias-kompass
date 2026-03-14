@@ -183,7 +183,7 @@ return keywords.some(k=>t.includes(k))
 })
 
 if(filtered.length < 2){
-filtered = articles
+filtered = articles.slice(0,2)
 }
 
 /* DUPLIKATE ENTFERNEN */
