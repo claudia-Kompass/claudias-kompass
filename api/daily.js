@@ -197,6 +197,31 @@ htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
 
+/* ======================
+TRAVEL ARTICLES
+====================== */
+
+let travelArticles = []
+
+for(const feed of travelFeeds){
+
+try{
+
+const res = await fetchTimeout(feed.url)
+
+if(!res) continue
+
+const xml = await res.text()
+
+const parsed = parseRSS(xml,feed.source)
+
+travelArticles = travelArticles.concat(parsed)
+
+}catch(e){}
+
+}
+
+   
 /* WEATHER */
 
 if(weatherRes && weatherRes.json){
