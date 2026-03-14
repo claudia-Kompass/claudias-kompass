@@ -170,16 +170,33 @@ articles = articles.concat(parsed)
 
 if(!articles.length){
 
+const ideas=[
+"Segeln Sardinien",
+"Wandern Dolomiten",
+"Tauchen Rotes Meer",
+"Schnorcheln Kroatien",
+"Roadtrip Norwegen",
+"Camping Bretagne",
+"Inselhopping Griechenland",
+"Segeln Azoren",
+"Wandern Madeira",
+"Vanlife Portugal"
+]
+
+const idea =
+ideas[Math.floor(Math.random()*ideas.length)]
+
 return [{
-title:"Segeln entlang der Küste Sardiniens",
-url:"https://www.google.com/search?q=segeln+sardinien",
-source:"Reiseidee",
-image:"https://images.unsplash.com/900x500/?sailing,sardinia"
+
+title:idea,
+url:"https://www.google.com/search?q="+encodeURIComponent(idea),
+source:"Reiseinspiration",
+image:`https://images.unsplash.com/900x500/?${encodeURIComponent(idea)}`
+
 }]
 
 }
-
-/* zufälligen Artikel wählen */
+   /* zufälligen Artikel wählen */
 
 const article =
 articles[Math.floor(Math.random()*articles.length)]
