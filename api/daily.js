@@ -1106,7 +1106,7 @@ danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 TRAVEL
 ======================================================= */
 
-const travel = travelItem ? {
+travelRadar = radar.map(item=>{
 
 title:travelItem.title,
 
@@ -1211,7 +1211,7 @@ crypto:{bitcoin,nexo},
 financeNews,
 weather,
 travel,
-
+travelRadar,
 recipe: recipeToday,
 recipes: recipeList,
 language,
