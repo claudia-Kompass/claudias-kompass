@@ -147,8 +147,8 @@ const feeds = [
 {url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
 {url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
 {url:"https://www.travelbook.de/feed",source:"Travelbook"},
-{url:"https://www.theguardian.com/travel/rss",source:"Guardian"},
-{url:"https://feeds.bbci.co.uk/news/world/rss.xml",source:"BBC"}
+{url:"https://www.welt.de/reise/?service=Rss",source:"WELT Reise"},
+{url:"https://www.faz.net/rss/aktuell/reise/",source:"FAZ Reise"}
 
 ]
 
