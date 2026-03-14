@@ -135,7 +135,119 @@ return items
 
 }
 
+/* ==============================
+TRAVEL ENGINE
+============================== */
 
+async function loadTravelRadar(){
+
+const feeds = [
+
+{url:"https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml",source:"NYTimes"},
+{url:"https://www.lonelyplanet.com/news/rss.xml",source:"Lonely Planet"},
+{url:"https://www.travelandleisure.com/syndication/rss",source:"Travel + Leisure"},
+{url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"}
+
+]
+
+const keywords=[
+"sailing","diving","snorkel","island",
+"coast","hiking","camp","culture","city"
+]
+
+let articles=[]
+
+for(const feed of feeds){
+
+try{
+
+const r=await fetch(feed.url)
+
+if(!r.ok) continue
+
+const xml=await r.text()
+
+const parsed=parseRSS(xml,feed.source)
+
+articles=articles.concat(parsed)
+
+}catch(e){}
+
+}
+
+/* FILTER */
+
+let filtered=articles.filter(a=>{
+
+const t=a.title.toLowerCase()
+
+return keywords.some(k=>t.includes(k))
+
+})
+
+/* FALLBACK */
+
+if(filtered.length<3){
+filtered=articles
+}
+
+/* HARD FALLBACK */
+
+if(!filtered.length){
+
+filtered=[
+
+{
+title:"Sailing islands of Croatia",
+url:"https://www.lonelyplanet.com/articles/sailing-croatia",
+source:"Lonely Planet"
+},
+
+{
+title:"Best snorkeling beaches Mediterranean",
+url:"https://www.travelandleisure.com/snorkeling-mediterranean",
+source:"Travel + Leisure"
+},
+
+{
+title:"Europe's most beautiful hiking trails",
+url:"https://www.geo.de/reisen/wandern-europa",
+source:"GEO Reisen"
+}
+
+]
+
+}
+
+/* BUILD RADAR */
+
+const radar=[]
+
+const count=Math.min(5,filtered.length)
+
+for(let i=0;i<count;i++){
+
+const item=filtered[Math.floor(Math.random()*filtered.length)]
+
+const query=
+encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
+
+radar.push({
+
+title:item.title,
+url:item.url,
+text:"Travel Inspiration – "+item.source,
+image:"https://source.unsplash.com/900x500/?"+query+",travel"
+
+})
+
+}
+
+return radar
+
+}
+
+   
 /* =======================================================
 DATA CONTAINER
 ======================================================= */
@@ -196,7 +308,7 @@ stimmeRes,
 htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
-   
+const travelRadar = await loadTravelRadar()
 
    
    
