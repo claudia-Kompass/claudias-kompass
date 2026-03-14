@@ -141,82 +141,80 @@ TRAVEL ENGINE (DE)
 =============================== */
 
 async function loadTravelRadar(){
+async function loadTravelRadar(){
 
-const feeds = [
-{url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
-{url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
-{url:"https://www.travelbook.de/feed",source:"Travelbook"}
+const activities=[
+"Segeln",
+"Tauchen",
+"Schnorcheln",
+"Wandern",
+"Camping",
+"Vanlife",
+"Städtereise",
+"Kultur",
+"Salsa",
+"Natur"
 ]
 
-let articles=[]
-
-for(const feed of feeds){
-
-try{
-
-const r = await fetch(feed.url)
-if(!r.ok) continue
-
-const xml = await r.text()
-const parsed = parseRSS(xml,feed.source)
-
-articles = articles.concat(parsed)
-
-}catch(e){}
-
-}
-
-/* FALLBACK wenn RSS nichts liefert */
-
-if(!articles.length){
-
-const ideas=[
-"Segeln Sardinien",
-"Wandern Dolomiten",
-"Tauchen Rotes Meer",
-"Schnorcheln Kroatien",
-"Roadtrip Norwegen",
-"Camping Bretagne",
-"Inselhopping Griechenland",
-"Segeln Azoren",
-"Wandern Madeira",
-"Vanlife Portugal"
+const places=[
+"Azoren",
+"Madeira",
+"Sardinien",
+"Kroatien",
+"Griechische Inseln",
+"Norwegen Fjorde",
+"Kanada Nationalparks",
+"Bretagne",
+"Altmühlsee",
+"Schwarzwald",
+"Valencia",
+"Barcelona",
+"Lissabon",
+"Havanna",
+"Kapverden",
+"Rotes Meer",
+"Island",
+"Schottland",
+"Patagonien",
+"Bali"
 ]
 
-const idea =
-ideas[Math.floor(Math.random()*ideas.length)]
+/* Kombination erzeugen */
 
-return [{
+const dayIndex=Math.floor(Date.now()/86400000)
 
-title:idea,
-url:"https://www.google.com/search?q="+encodeURIComponent(idea),
-source:"Reiseinspiration",
-image:`https://images.unsplash.com/900x500/?${encodeURIComponent(idea)}`
+const a = activities[dayIndex % activities.length]
 
-}]
+const p = places[(dayIndex*7) % places.length]
 
-}
-   /* zufälligen Artikel wählen */
+const title = a+" – "+p
 
-const article =
-articles[Math.floor(Math.random()*articles.length)]
+const query = encodeURIComponent(a+" "+p)
 
-const query =
-encodeURIComponent(article.title.split(" ").slice(0,2).join(" "))
+/* kurzer Text */
+
+const descriptions=[
+"Perfekt für eine aktive Reise mit Natur, Wasser und neuen Eindrücken.",
+"Eine Kombination aus Landschaft, Kultur und Abenteuer.",
+"Ein Reiseziel für Entdecker – ideal für Outdoor und lokale Kultur.",
+"Ein Ort für Bewegung, Meer, Berge und inspirierende Begegnungen."
+]
+
+const desc = descriptions[dayIndex % descriptions.length]
 
 return [
 
 {
-title:article.title,
-url:article.url,
-source:article.source,
-image:`https://images.unsplash.com/900x500/?travel,${query}`
+title:title,
+text:desc,
+url:"https://www.google.com/search?q="+query,
+source:"Reiseimpuls",
+image:`https://images.unsplash.com/900x500/?${query}`
 }
 
 ]
 
 }
-
 
    
 /* =======================================================
