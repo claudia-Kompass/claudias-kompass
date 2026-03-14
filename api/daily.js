@@ -221,6 +221,40 @@ travelArticles = travelArticles.concat(parsed)
 
 }
 
+const filteredTravel = travelArticles.filter(a=>{
+
+const t = a.title.toLowerCase()
+
+return travelKeywords.some(k=>t.includes(k))
+
+})
+
+let travelItem = null
+
+if(filteredTravel.length){
+
+travelItem =
+filteredTravel[Math.floor(Math.random()*filteredTravel.length)]
+
+}else if(travelArticles.length){
+
+travelItem =
+travelArticles[Math.floor(Math.random()*travelArticles.length)]
+
+}
+
+let travelImage = ""
+
+if(travelItem){
+
+const query =
+encodeURIComponent(travelItem.title.split(" ").slice(0,3).join(" "))
+
+travelImage =
+"https://source.unsplash.com/900x500/?"+query+",coast,island"
+
+} 
+   
    
 /* WEATHER */
 
