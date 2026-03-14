@@ -203,17 +203,17 @@ filtered = filtered.slice(0,2)
 
 /* BUILD */
 
-const radar = filtered.map(item=>{
+const radar = filtered.map(item => {
 
 const query =
 encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
 
-return{
+return {
 
 title:item.title,
 url:item.url,
 source:item.source || "Reise",
-image:`https://images.unsplash.com/900x500/?travel,${query}`
+image: `https://images.unsplash.com/900x500/?travel,${query}`
 
 }
 
