@@ -1152,11 +1152,11 @@ let html = ""
 /* HEUTE */
 
 html += `
-<div class="dayHeader">
-▾ 🔥 Heute
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ 🔥 Heute
 </div>
 
-<div class="dayEvents" style="display:block">
+<div class="dayEvents">
 ${
 todayEvents.length
 ? todayEvents.map(renderDanceCard).join("")
