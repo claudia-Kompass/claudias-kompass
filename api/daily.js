@@ -248,6 +248,10 @@ travelArticles = travelArticles.concat(parsed)
 
 }
 
+/* ======================
+FILTER
+====================== */
+
 const filteredTravel = travelArticles.filter(a=>{
 
 const t = a.title.toLowerCase()
@@ -256,75 +260,45 @@ return travelKeywords.some(k=>t.includes(k))
 
 })
 
-let travelRadar = []
-let radar = []
-let travelItem = null
-
-if(filteredTravel.length){
-
-travelItem =
-filteredTravel[Math.floor(Math.random()*filteredTravel.length)]
-
-}else if(travelArticles.length){
-
-travelItem =
-travelArticles[Math.floor(Math.random()*travelArticles.length)]
-
-}
-
-let travelImage = ""
-
-if(travelItem){
-
-const query =
-encodeURIComponent(travelItem.title.split(" ").slice(0,3).join(" "))
-
-travelImage =
-"https://source.unsplash.com/900x500/?"+query+",coast,island"
-
-
 /* ======================
 TRAVEL RADAR
 ====================== */
 
+let travelRadar = []
+
 const radarCount = 5
 
-let radar = []
+let radarSource = []
 
-if(filteredTravel.length >= radarCount){
+if(filteredTravel.length){
 
-for(let i=0;i<radarCount;i++){
-
-const item =
-filteredTravel[Math.floor(Math.random()*filteredTravel.length)]
-
-radar.push(item)
-
-}
+radarSource = filteredTravel
 
 }else{
 
-radar = travelArticles.slice(0,radarCount)
+radarSource = travelArticles
 
 }
 
-travelRadar = radar.map(item=>{
+for(let i=0;i<Math.min(radarCount, radarSource.length);i++){
+
+const item =
+radarSource[Math.floor(Math.random()*radarSource.length)]
 
 const query =
 encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
 
-return{
+travelRadar.push({
 
 title:item.title,
-source:item.source,
+text:"Travel Inspiration – "+item.source,
 url:item.url,
 image:"https://source.unsplash.com/900x500/?"+query+",travel"
 
+})
+
 }
 
-})
-   
-} 
    
    
 /* WEATHER */
