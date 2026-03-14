@@ -307,7 +307,7 @@ radar = travelArticles.slice(0,radarCount)
 
 }
 
-const travelRadar = radar.map(item=>{
+travelRadar = radar.map(item=>{
 
 const query =
 encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
@@ -1107,28 +1107,22 @@ danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 TRAVEL
 ======================================================= */
 
-travelRadar = radar.map(item=>{
+travelRadar = radar.map(item => {
 
-title:travelItem.title,
+const query =
+encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
 
-text:"Travel Inspiration – "+travelItem.source,
+return {
 
-url:travelItem.url,
+title: item.title,
+text: "Travel Inspiration – " + item.source,
+url: item.url,
+image: "https://source.unsplash.com/900x500/?" + query + ",travel"
 
-image:travelImage
+}
 
-} : {
-
-title:"Reiseinspiration",
-
-text:"Heute keine Travel-Story gefunden.",
-
-url:"https://www.nationalgeographic.com/travel",
-
-image:"https://source.unsplash.com/900x500/?ocean"
-
-   }
-
+})
+   
 /* ======================
 RECIPE ENGINE
 ====================== */
