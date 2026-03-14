@@ -142,16 +142,10 @@ TRAVEL ENGINE (DE)
 
 async function loadTravelRadar(){
 
-/* ======================
-   RSS REISE ARTIKEL
-====================== */
-
 const feeds = [
-
 {url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
 {url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
 {url:"https://www.travelbook.de/feed",source:"Travelbook"}
-
 ]
 
 let articles=[]
@@ -172,77 +166,26 @@ articles = articles.concat(parsed)
 
 }
 
-/* Filter */
+/* FALLBACK wenn RSS nichts liefert */
 
-const keywords=[
-"insel","strand","meer","küste",
-"wandern","segel","tauchen",
-"schnorchel","camping",
-"roadtrip","nationalpark"
-]
+if(!articles.length){
 
-articles = articles.filter(a=>{
-const t=a.title.toLowerCase()
-return keywords.some(k=>t.includes(k))
-})
+return [{
+title:"Segeln entlang der Küste Sardiniens",
+url:"https://www.google.com/search?q=segeln+sardinien",
+source:"Reiseidee",
+image:"https://images.unsplash.com/900x500/?sailing,sardinia"
+}]
 
-/* zufälliger Artikel */
-
-let article = articles[Math.floor(Math.random()*articles.length)]
-
-if(!article){
-article = articles[0]
 }
+
+/* zufälligen Artikel wählen */
+
+const article =
+articles[Math.floor(Math.random()*articles.length)]
 
 const query =
 encodeURIComponent(article.title.split(" ").slice(0,2).join(" "))
-
-
-/* ======================
-DESTINATION IMPULSE
-====================== */
-
-const destinations=[
-
-"Segeln Sardinien",
-"Tauchen Rotes Meer",
-"Wandern Dolomiten",
-"Roadtrip Norwegen",
-"Camping Bretagne",
-"Schnorcheln Kroatien",
-"Vanlife Portugal",
-"Inselhopping Griechenland",
-"Nationalparks Kanada",
-"Städtereise Valencia"
-
-]
-
-const dest =
-destinations[Math.floor(Math.random()*destinations.length)]
-
-
-/* ======================
-OUTDOOR IMPULSE
-====================== */
-
-const outdoors=[
-
-"Traumhafte Küstenwanderungen Europa",
-"Die schönsten Segelreviere im Mittelmeer",
-"Campingplätze direkt am Meer",
-"Geheime Schnorchelspots im Mittelmeer",
-"Die besten Roadtrips Europas",
-"Nationalparks für Outdoorfans"
-
-]
-
-const outdoor =
-outdoors[Math.floor(Math.random()*outdoors.length)]
-
-
-/* ======================
-BUILD RESULT
-====================== */
 
 return [
 
@@ -251,20 +194,6 @@ title:article.title,
 url:article.url,
 source:article.source,
 image:`https://images.unsplash.com/900x500/?travel,${query}`
-},
-
-{
-title:dest,
-url:"https://www.google.com/search?q="+encodeURIComponent(dest),
-source:"Inspiration",
-image:`https://images.unsplash.com/900x500/?${encodeURIComponent(dest)}`
-},
-
-{
-title:outdoor,
-url:"https://www.google.com/search?q="+encodeURIComponent(outdoor),
-source:"Outdoor",
-image:`https://images.unsplash.com/900x500/?${encodeURIComponent(outdoor)}`
 }
 
 ]
