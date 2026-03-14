@@ -146,14 +146,10 @@ const feeds = [
 
 {url:"https://www.geo.de/reisen/feed/rss.xml",source:"GEO Reisen"},
 {url:"https://www.reisereporter.de/rss",source:"Reisereporter"},
-{url:"https://www.travelbook.de/feed",source:"Travelbook"}
+{url:"https://www.travelbook.de/feed",source:"Travelbook"},
+{url:"https://www.theguardian.com/travel/rss",source:"Guardian"},
+{url:"https://feeds.bbci.co.uk/news/world/rss.xml",source:"BBC"}
 
-]
-
-const keywords=[
-"insel","strand","küste","segel",
-"tauchen","schnorchel","wandern",
-"camping","stadt","reise","kultur"
 ]
 
 let articles=[]
@@ -162,7 +158,8 @@ for(const feed of feeds){
 
 try{
 
-const r = await fetch(feed.url)
+const r = await fetch(feed.url,{headers:{'User-Agent':'Mozilla/5.0'}})
+
 if(!r.ok) continue
 
 const xml = await r.text()
@@ -175,58 +172,86 @@ articles = articles.concat(parsed)
 
 }
 
-/* FILTER */
-
-let filtered = articles.filter(a=>{
-const t=a.title.toLowerCase()
-return keywords.some(k=>t.includes(k))
-})
-
-/* wenn Filter nichts findet → alle Artikel nutzen */
-
-if(filtered.length < 2){
-filtered = articles
-}
-
 /* DUPLIKATE */
 
-const seen = new Set()
+const seen=new Set()
 
-filtered = filtered.filter(a=>{
+articles = articles.filter(a=>{
 if(seen.has(a.title)) return false
 seen.add(a.title)
 return true
 })
 
-/* ZUFÄLLIG MISCHEN */
+/* =========================
+   FALL 1 – NEWS ARTIKEL
+========================= */
 
-filtered = filtered.sort(()=>0.5 - Math.random())
+if(articles.length){
 
-/* MAX 2 ARTIKEL */
+articles = articles.sort(()=>0.5-Math.random()).slice(0,2)
 
-filtered = filtered.slice(0,2)
-
-/* BUILD */
-
-const radar = filtered.map(item => {
+return articles.map(item=>{
 
 const query =
 encodeURIComponent(item.title.split(" ").slice(0,3).join(" "))
 
-return {
+return{
 
 title:item.title,
 url:item.url,
-source:item.source || "Reise",
-image:`https://source.unsplash.com/900x500/?travel,${query}`
+source:item.source,
+image:`https://images.unsplash.com/900x500/?travel,${query}`
 
 }
 
 })
 
-return radar
+}
+
+/* =========================
+   FALL 2 – REISEMAGAZINE
+========================= */
+
+const inspiration = [
+
+{
+title:"Beste Reisezeit – Inspiration vom ADAC",
+url:"https://www.adac.de/reise/",
+source:"ADAC Reisen",
+query:"roadtrip europe"
+},
+
+{
+title:"Neue Reiseideen von DERTOUR",
+url:"https://www.dertour.de/reisemagazin",
+source:"DERTOUR Magazin",
+query:"beach destination"
+},
+
+{
+title:"Top Reiseziele des Jahres",
+url:"https://www.lonelyplanet.com",
+source:"Lonely Planet",
+query:"travel destination"
+}
+
+]
+
+return inspiration
+.sort(()=>0.5-Math.random())
+.slice(0,2)
+.map(i=>({
+
+title:i.title,
+url:i.url,
+source:i.source,
+image:`https://images.unsplash.com/900x500/?${i.query}`
+
+}))
 
 }
+
+
 
 
 
