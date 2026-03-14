@@ -4,7 +4,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
-
+const travelDB = require("./data/travel")
 
 
 let rssCache = null
