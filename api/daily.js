@@ -237,7 +237,8 @@ let news=[]
 let regional=[]
 let regionalBusiness=[]
 
-
+let travelRadar=[]   // <--- WICHTIG
+   
 /* =======================================================
 API FETCH
 ======================================================= */
