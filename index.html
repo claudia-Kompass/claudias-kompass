@@ -1262,34 +1262,31 @@ document.getElementById("danceWeek").innerHTML = html
       TRAVEL
 ====≈===========================*/
 
-if(data.travel){
+if(data.travelRadar){
 
-document.getElementById("travelBlock").innerHTML=`
+document.getElementById("travelBlock").innerHTML =
+data.travelRadar.map(t=>`
 
 <div class="newsItem">
 
-<img src="${data.travel.image}"
-style="width:100%;border-radius:8px;margin-bottom:12px">
+<img src="${t.image}"
+style="width:100%;border-radius:8px;margin-bottom:10px">
 
 <div style="font-weight:600;font-size:18px">
-${data.travel.title}
+${t.title}
 </div>
 
 <div class="newsSource">
-${data.travel.text}
+${t.source}
 </div>
 
-<a href="${data.travel.url}"
-target="_blank"
-class="news-link">
-
+<a href="${t.url}" target="_blank" class="news-link">
 weiter lesen →
-
 </a>
 
 </div>
 
-`
+`).join("")
 
 }
 
