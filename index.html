@@ -1224,26 +1224,23 @@ ${renderDanceCard(future[0])}
 /* FESTIVAL EUROPA */
 
 if(festivals.length){
-
-const nextFestival =
-festivals.sort((a,b)=>(a.month||12)-(b.month||12))[0]
+if(festival){
 
 html += `
 <div class="dayHeader" onclick="toggleDay(this)">
-▸ 🌍 Festival Europa
+▶ 🌍 Festival
 </div>
 
 <div class="dayEvents">
-${renderDanceCard(nextFestival)}
+${renderEvent(festival)}
 </div>
 `
 
 }
 
-document.getElementById("danceWeek").innerHTML = html
+document.getElementById("eventsBlock").innerHTML += html
 
 }
-
 /* =========================
    TRAVEL ENGINE (STABIL)
 ========================= */
