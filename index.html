@@ -1266,22 +1266,25 @@ renderTravel(travelList[0])
 
 function renderTravel(t){
 
-document.getElementById("travelBlock").innerHTML=`
+let block = document.getElementById("travelBlock")
+
+/* HTML nur einmal erzeugen */
+
+if(!document.getElementById("travelImage")){
+
+block.innerHTML = `
 
 <div class="newsItem">
 
-<img src="${t.image}"
+<img id="travelImage"
 style="width:100%;border-radius:8px;margin-bottom:10px">
 
-<div style="font-weight:600;font-size:18px">
-${t.title}
-</div>
+<div id="travelTitle"
+style="font-weight:600;font-size:18px"></div>
 
-<div class="newsSource">
-${t.text}
-</div>
+<div id="travelText" class="newsSource"></div>
 
-<a href="${t.url}" target="_blank" class="news-link">
+<a id="travelLink" target="_blank" class="news-link">
 weiter lesen →
 </a>
 
@@ -1295,15 +1298,13 @@ weiter lesen →
 
 }
 
-window.nextTravel=function(){
+/* Inhalte aktualisieren */
 
-travelIndex++
+document.getElementById("travelImage").src = t.image
+document.getElementById("travelTitle").textContent = t.title
+document.getElementById("travelText").textContent = t.text
+document.getElementById("travelLink").href = t.url
 
-if(travelIndex>=travelList.length){
-travelIndex=0
-}
-
-renderTravel(travelList[travelIndex])
 }
    
 
