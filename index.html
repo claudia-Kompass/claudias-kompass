@@ -941,8 +941,10 @@ else if(today < 6) radar.push("🧺 Markt Sa")
 
 }
 
-  
-/* NEWS */
+
+document.getElementById("dailyRadar").innerHTML = radar.join(" • ")
+   
+   /* NEWS */
 
 if(data.news){
 
