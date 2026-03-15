@@ -770,6 +770,10 @@ else if(eventDate>=todayStart && eventDate<=weekEnd){
 week.push(event)
 }
 
+else if(eventDate>weekEnd){
+upcoming.push(event)
+}
+
 })
 
    
