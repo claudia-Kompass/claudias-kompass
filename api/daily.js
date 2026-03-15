@@ -4,7 +4,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
-const travelDB = require("./data/travel")
+
 
 
 let rssCache = null
@@ -27,7 +27,7 @@ return res.status(403).json({error:"Forbidden"})
 const ua=req.headers["user-agent"]||""
 if(ua.length<5){return res.status(403).json({error:"Bot blocked"})}
 
-const version="37."+Math.floor(Date.now()/86400000)
+const version="V36."+Math.floor(Date.now()/86400000)
 const build=(process.env.VERCEL_GIT_COMMIT_SHA||"local").slice(0,7)
 const fullVersion=version+"."+build
 
@@ -136,22 +136,6 @@ return items
 }
 
 
-/* ===============================
-TRAVEL ENGINE (DE)
-=============================== */
-
-async function loadTravelRadar(){
-
-const dayIndex = Math.floor(Date.now()/86400000)
-
-return [
-travelDB[ dayIndex % travelDB.length ]
-]
-
-}
-
-
-   
 /* =======================================================
 DATA CONTAINER
 ======================================================= */
@@ -165,8 +149,7 @@ let news=[]
 let regional=[]
 let regionalBusiness=[]
 
-let travelRadar=[]   // <--- WICHTIG
-   
+
 /* =======================================================
 API FETCH
 ======================================================= */
@@ -213,10 +196,7 @@ stimmeRes,
 htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
-travelRadar = await loadTravelRadar()
 
-   
-   
 /* WEATHER */
 
 if(weatherRes && weatherRes.json){
@@ -990,8 +970,19 @@ danceFestivals.sort((a,b)=>(a.month||12)-(b.month||12))
 danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
 danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
-
    
+/* =======================================================
+TRAVEL
+======================================================= */
+
+const travel={
+
+title:"Altmühlsee – Fränkisches Seenland",
+text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
+url:"https://www.fraenkisches-seenland.de"
+
+}
+
 /* ======================
 RECIPE ENGINE
 ====================== */
@@ -1074,8 +1065,7 @@ markets,
 crypto:{bitcoin,nexo},
 financeNews,
 weather,
-
-travelRadar,
+travel,
 recipe: recipeToday,
 recipes: recipeList,
 language,
