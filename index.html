@@ -937,17 +937,25 @@ else if(today < 6) radar.push("🧺 Markt Sa")
 
 /* Reise */
 
-/* Reise */
+const travel = data.travelRadar?.[0]
 
-if(data.travelRadar && data.travelRadar.length){
+if(travel){
 
-const t = data.travelRadar[0]
+document.getElementById("travelBlock").innerHTML = `
+<div class="newsItem">
 
-radar.push("🌍 " + t.title)
+<div style="font-weight:600">${travel.title}</div>
 
-   }
-document.getElementById("dailyRadar").innerText =
-radar.join(" • ")
+<div style="opacity:0.8">${travel.text}</div>
+
+<a href="${travel.url}" target="_blank" class="news-link">
+weiter lesen →
+</a>
+
+</div>
+`
+
+}
 
 
   
