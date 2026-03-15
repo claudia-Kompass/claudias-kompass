@@ -4,7 +4,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
-
+const travelDB = require("./data/travel")
 
 
 let rssCache = null
@@ -970,17 +970,16 @@ danceFestivals.sort((a,b)=>(a.month||12)-(b.month||12))
 danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
 danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
 
-   
-/* =======================================================
-TRAVEL
-======================================================= */
 
-const travel={
-title:"Altmühlsee – Fränkisches Seenland",
-text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
-url:"https://www.fraenkisches-seenland.de",
-image:"https://source.unsplash.com/900x500/?altmuehlsee,lake"
-}
+/* =========================================
+   TRAVEL ENGINE
+========================================= */
+
+const day = Math.floor(Date.now()/86400000)
+
+const travel = travelDB[
+day % travelDB.length
+]
 
 /* ======================
 RECIPE ENGINE
