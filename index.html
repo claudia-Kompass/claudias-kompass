@@ -1248,8 +1248,9 @@ document.getElementById("danceWeek").innerHTML = html
 ====≈===========================*/
 if(data.travelRadar && data.travelRadar.length){
 
-document.getElementById("travelBlock").innerHTML =
-data.travelRadar.map(t=>`
+const t = data.travelRadar[0]
+
+document.getElementById("travelBlock").innerHTML = `
 
 <div class="newsItem">
 
@@ -1270,7 +1271,7 @@ weiter lesen →
 
 </div>
 
-`).join("")
+`
 
 }
 
