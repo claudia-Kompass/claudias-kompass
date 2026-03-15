@@ -1306,9 +1306,8 @@ weiter lesen →
 }
 
 /* Inhalte aktualisieren */
-
 document.getElementById("travelImage").src =
-t.image || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=60&"+encodeURIComponent(t.title)
+"https://source.unsplash.com/1200x700/?"+encodeURIComponent(t.title.replace(/ – .*/,""))+",landscape")
 document.getElementById("travelTitle").textContent = t.title || ""
 document.getElementById("travelText").textContent = t.text || ""
 document.getElementById("travelLink").href = t.url || "#"
