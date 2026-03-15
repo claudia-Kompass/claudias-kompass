@@ -1247,24 +1247,26 @@ document.getElementById("danceWeek").innerHTML = html
       TRAVEL
 ====≈===========================*/
 
-let travelList=[]
-let travelIndex=0
+let travelList = []
+let travelIndex = 0
 
 function loadTravel(data){
 
 if(!data.travelRadar) return
 
-travelList=data.travelRadar
+travelList = data.travelRadar
 
 if(!travelList.length) return
 
-travelIndex=0
+travelIndex = 0
 
 renderTravel(travelList[0])
 
 }
 
 function renderTravel(t){
+
+if(!t) return
 
 let block = document.getElementById("travelBlock")
 
@@ -1300,13 +1302,28 @@ weiter lesen →
 
 /* Inhalte aktualisieren */
 
-document.getElementById("travelImage").src = t.image
-document.getElementById("travelTitle").textContent = t.title
-document.getElementById("travelText").textContent = t.text
-document.getElementById("travelLink").href = t.url
+document.getElementById("travelImage").src = t.image || ""
+document.getElementById("travelTitle").textContent = t.title || ""
+document.getElementById("travelText").textContent = t.text || ""
+document.getElementById("travelLink").href = t.url || "#"
 
 }
-   
+
+/* NEXT BUTTON */
+
+window.nextTravel = function(){
+
+if(!travelList.length) return
+
+travelIndex++
+
+if(travelIndex >= travelList.length){
+travelIndex = 0
+}
+
+renderTravel(travelList[travelIndex])
+
+}
 
 /* LANGUAGE */
 
