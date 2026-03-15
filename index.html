@@ -854,6 +854,8 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerHTML =
 "<b>" + weekday + "</b> • " + date
 
+document.getElementById("dailyRadar").innerHTML = radar.join(" • ")
+   
 /* DAILY RADAR */
 
 let radar = []
