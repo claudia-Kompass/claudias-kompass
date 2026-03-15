@@ -1054,8 +1054,14 @@ regionalBusiness,
 
 events,
 dance:{
-today:danceToday,
-week:danceWeek,
+today:[
+...events.today,
+...danceToday
+],
+week:[
+...events.week,
+...danceWeek
+],
 festivals:danceFestivals
 },
    
