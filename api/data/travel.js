@@ -24,7 +24,7 @@ image:"https://images.unsplash.com/900x500/?azores,landscape"
 {
 title:"Segeln – Altmühlsee",
 text:"Kleines fränkisches Segelrevier mit viel Natur im Altmühltal.",
-url:"https://de.wikipedia.org/wiki/Altm%C3%BChlsee",
+url:"https://www.fraenkisches-seenland.de/freizeit/a-z/personenschifffahrt_auf_dem_al-32/
 image:"https://images.unsplash.com/900x500/?altmuhlsee,lake"
 }
 
