@@ -1246,52 +1246,54 @@ document.getElementById("danceWeek").innerHTML = html
 
 }
 
+/* =========================
+   TRAVEL ENGINE (STABIL)
+========================= */
 
-
-/* ==≈=========================
-      TRAVEL
-====≈===========================*/
-
-let travelList = []
-let travelIndex = 0
+let travelList = [];
+let travelIndex = 0;
 
 function loadTravel(data){
 
-if(!data.travelRadar) return
+if(!data.travelRadar) return;
 
-travelList = data.travelRadar
+travelList = data.travelRadar;
 
-if(!travelList.length) return
+if(!Array.isArray(travelList)) return;
 
-travelIndex = 0
+if(!travelList.length) return;
 
-renderTravel(travelList[0])
+travelIndex = 0;
+
+renderTravel();
 
 }
 
-function renderTravel(t){
+function renderTravel(){
 
-if(!t) return
+const t = travelList[travelIndex];
 
-let block = document.getElementById("travelBlock")
+if(!t) return;
 
-/* HTML nur einmal erzeugen */
-
-if(!document.getElementById("travelImage")){
+const block = document.getElementById("travelBlock");
 
 block.innerHTML = `
 
 <div class="newsItem">
 
-<img id="travelImage"
+<img 
+src="https://picsum.photos/1200/700?random=${travelIndex}" 
 style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:10px">
 
-<div id="travelTitle"
-style="font-weight:600;font-size:18px"></div>
+<div style="font-weight:600;font-size:18px">
+${t.title || ""}
+</div>
 
-<div id="travelText" class="newsSource"></div>
+<div class="newsSource">
+${t.text || ""}
+</div>
 
-<a id="travelLink" target="_blank" class="news-link">
+<a href="${t.url || "#"}" target="_blank" class="news-link">
 weiter lesen →
 </a>
 
@@ -1301,34 +1303,24 @@ weiter lesen →
 
 </div>
 
-`
+`;
 
 }
-
-/* Inhalte aktualisieren */
-document.getElementById("travelImage").src =
-"https://source.unsplash.com/1200x700/?"+encodeURIComponent(t.title.replace(/ – .*/,""))+",landscape")
-document.getElementById("travelTitle").textContent = t.title || ""
-document.getElementById("travelText").textContent = t.text || ""
-document.getElementById("travelLink").href = t.url || "#"
-
-}
-
-/* NEXT BUTTON */
 
 window.nextTravel = function(){
 
-if(!travelList.length) return
+if(!travelList.length) return;
 
-travelIndex++
+travelIndex++;
 
 if(travelIndex >= travelList.length){
-travelIndex = 0
+travelIndex = 0;
 }
 
-renderTravel(travelList[travelIndex])
+renderTravel();
 
-}
+};
+
 
 /* LANGUAGE */
 
