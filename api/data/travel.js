@@ -43,11 +43,12 @@ image:"https://upload.wikimedia.org/wikipedia/commons/c/cb/Vancouver_skyline_fro
 },
 
 {
+{
 title:"Patagonien – Chile & Argentinien",
 text:"Gletscher, Wind und endlose Landschaften am Ende der Welt.",
-url:"https://www.chile.travel",
-image:"https://upload.wikimedia.org/wikipedia/commons/7/7c/Torres_del_Paine.jpg"
-},
+url:"https://www.nationalgeographic.de/reise/patagonien",
+image:"https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+}
 
 {
 title:"Madeira – Portugal",
