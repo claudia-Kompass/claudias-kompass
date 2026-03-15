@@ -975,10 +975,10 @@ danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
    TRAVEL ENGINE
 ========================================= */
 
-const day = Math.floor(Date.now()/86400000)
+const travelDay = Math.floor(Date.now()/86400000)
 
 const travel = travelDB[
-day % travelDB.length
+travelDay % travelDB.length
 ]
 
 /* ======================
