@@ -979,7 +979,7 @@ const travel={
 title:"Altmühlsee – Fränkisches Seenland",
 text:"Radfahren, Segeln oder entspannter Spaziergang am Seeufer.",
 url:"https://www.fraenkisches-seenland.de",
-image:"https://images.unsplash.com/900x500/?altmuehlsee,lake"
+image:"https://source.unsplash.com/900x500/?altmuehlsee,lake"
 }
 
 /* ======================
