@@ -1277,6 +1277,66 @@ weiter lesen →
 
 }
 
+let travelList=[]
+let travelIndex=0
+
+function loadTravel(data){
+
+if(!data.travelRadar) return
+
+travelList=data.travelRadar
+
+if(!travelList.length) return
+
+travelIndex=0
+
+renderTravel(travelList[0])
+
+}
+
+function renderTravel(t){
+
+document.getElementById("travelBlock").innerHTML=`
+
+<div class="newsItem">
+
+<img src="${t.image}"
+style="width:100%;border-radius:8px;margin-bottom:10px">
+
+<div style="font-weight:600;font-size:18px">
+${t.title}
+</div>
+
+<div class="newsSource">
+${t.text}
+</div>
+
+<a href="${t.url}" target="_blank" class="news-link">
+weiter lesen →
+</a>
+
+<br>
+
+<button class="uke-btn" onclick="nextTravel()">▶ Next</button>
+
+</div>
+
+`
+
+}
+
+window.nextTravel=function(){
+
+travelIndex++
+
+if(travelIndex>=travelList.length){
+travelIndex=0
+}
+
+renderTravel(travelList[travelIndex])
+
+}
+   
 
 /* LANGUAGE */
 
