@@ -614,8 +614,6 @@ pointer-events:none;
 
 </div>
 
-   
-
 
 <div class="section">
 <h2>Wetter – Ilshofen</h2>
@@ -670,6 +668,8 @@ console.error("API Fehler",e)
 
 function render(data){
 
+/* DATE */
+
 const now = new Date()
 
 const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
@@ -678,11 +678,13 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerHTML =
 "<b>"+weekday+"</b> • "+date
 
+
 /* VERSION */
 
 if(data.version){
 document.getElementById("versionTag").innerText="v"+data.version
 }
+
 
 /* QUOTE */
 
@@ -703,6 +705,7 @@ document.getElementById("quoteBlock").innerHTML =
 </div>`
 
 }
+
 
 /* NEWS */
 
@@ -728,6 +731,7 @@ weiterlesen →
 
 }
 
+
 /* MARKETS */
 
 if(data.markets){
@@ -740,6 +744,7 @@ document.getElementById("eurusdValue").innerHTML =
 
 }
 
+
 /* CRYPTO */
 
 if(data.crypto){
@@ -751,6 +756,7 @@ document.getElementById("nexoValue").innerHTML =
 (data.crypto.nexo?.usd ?? "-")
 
 }
+
 
 /* FINANCE NEWS */
 
@@ -775,6 +781,7 @@ weiterlesen →
 
 }
 
+
 /* REGIONAL */
 
 if(data.regional){
@@ -797,6 +804,7 @@ weiterlesen →
 `).join("")
 
 }
+
 
 /* EVENTS */
 
@@ -864,25 +872,12 @@ ${data.events.fairs.map(e=>renderEvent(e)).join("")}
 
 document.getElementById("eventsBlock").innerHTML = eventsHTML
 
+
 /* TANZ */
 
 let danceHTML=""
 
 if(data.dance){
-
-if(data.dance.today?.length){
-
-danceHTML+=`
-
-<div class="dayHeader">💃 Heute</div>
-
-<div class="dayEvents" style="display:block">
-
-${data.dance.today.map(e=>renderDance(e)).join("")}
-
-</div>`
-
-}
 
 if(data.dance.week?.length){
 
@@ -902,6 +897,97 @@ ${data.dance.week.map(e=>renderDance(e)).join("")}
 
 document.getElementById("danceWeek").innerHTML = danceHTML
 
+
+/* TRAVEL */
+
+if(data.travelRadar?.length){
+
+const t = data.travelRadar[0]
+
+document.getElementById("travelBlock").innerHTML =
+
+`<div class="newsItem">
+
+<div style="font-weight:600;font-size:18px">
+${t.title}
+</div>
+
+<div class="newsSource">
+${t.text}
+</div>
+
+<a href="${t.url}" target="_blank" class="news-link">
+weiter lesen →
+</a>
+
+</div>`
+
+}
+
+
+/* LANGUAGE */
+
+if(data.language?.length){
+
+const l = data.language[0]
+
+document.getElementById("languageBlock").innerHTML =
+
+`<div class="languageCard">
+
+<div class="langLine">🇬🇧 ${l.en}</div>
+<div class="langLine">🇪🇸 ${l.es}</div>
+
+<div class="langNative" style="opacity:.8">
+🇩🇪 ${l.de}
+</div>
+
+</div>`
+
+}
+
+
+/* UKULELE */
+
+if(data.ukulele){
+
+const u = Array.isArray(data.ukulele) ? data.ukulele[0] : data.ukulele
+
+document.getElementById("ukeBlock").innerHTML =
+
+`<div class="ukulele-card">
+
+<div class="ukulele-title">
+${u.title}
+</div>
+
+<pre class="uke-tabblock">
+${u.tabs ?? ""}
+</pre>
+
+</div>`
+
+}
+
+
+/* RECIPE */
+
+if(data.recipe){
+
+const r = data.recipe
+
+document.getElementById("recipeTitle").textContent = r.title
+document.getElementById("recipeIngredients").textContent = r.ingredients
+document.getElementById("recipePrep").textContent = r.prep
+document.getElementById("recipeCook").textContent = r.cook
+document.getElementById("recipeTemp").textContent = r.temp
+document.getElementById("recipeTime").textContent = r.time
+document.getElementById("recipeShake").textContent = r.shake
+document.getElementById("recipePortion").textContent = r.portion
+
+}
+
+
 /* WEATHER */
 
 if(data.weather){
@@ -912,6 +998,7 @@ data.weather.temp+"°C"
 }
 
 }
+
 
 /* EVENT CARD */
 
@@ -935,6 +1022,7 @@ ${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`
 
 }
 
+
 /* DANCE CARD */
 
 function renderDance(e){
@@ -957,11 +1045,8 @@ ${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`
 
 }
 
+
 window.addEventListener("load",loadData)
-
-</script>
-
-
 
   
 </script>
