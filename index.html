@@ -1307,7 +1307,8 @@ weiter lesen →
 
 /* Inhalte aktualisieren */
 
-document.getElementById("travelImage").src = t.image || ""
+document.getElementById("travelImage").src =
+t.image || "https://source.unsplash.com/900x500/?travel,"+encodeURIComponent(t.title)
 document.getElementById("travelTitle").textContent = t.title || ""
 document.getElementById("travelText").textContent = t.text || ""
 document.getElementById("travelLink").href = t.url || "#"
