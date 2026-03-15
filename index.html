@@ -935,29 +935,6 @@ else if(today < 6) radar.push("🧺 Markt Sa")
 
 }
 
-/* Reise */
-
-const travel = data.travelRadar?.[0]
-
-if(travel){
-
-document.getElementById("travelBlock").innerHTML = `
-<div class="newsItem">
-
-<div style="font-weight:600">${travel.title}</div>
-
-<div style="opacity:0.8">${travel.text}</div>
-
-<a href="${travel.url}" target="_blank" class="news-link">
-weiter lesen →
-</a>
-
-</div>
-`
-
-}
-
-
   
 /* NEWS */
 
