@@ -651,199 +651,26 @@ pointer-events:none;
 
 <script>
 
-let ukeSongs = []
-let ukeIndex = 0
+<script>
 
-function weatherIcon(code){
-
-if(code===100) return "🌙";
-
-if(code===0) return "☀️";
-if(code<=2) return "🌤️";
-if(code===3) return "☁️";
-if(code<=65) return "🌧️";
-if(code<=75) return "❄️";
-return "⛈️";
-
-}
-
-function ampel(change){
-
-if(change>1) return '<span class="ampel green"></span>';
-if(change<-1) return '<span class="ampel red"></span>';
-return '<span class="ampel yellow"></span>';
-
-}
-
-function formatDate(date){
-
-if(!date) return "";
-
-const d=new Date(date);
-return d.toLocaleDateString("de-DE");
-
-}
-
-function flagFromCountry(country){
-
-const map = {
-Germany:"🇩🇪",
-France:"🇫🇷",
-Spain:"🇪🇸",
-Portugal:"🇵🇹",
-Italy:"🇮🇹",
-Poland:"🇵🇱",
-Croatia:"🇭🇷"
-}
-
-return map[country] || "🌍"
-
-}
-
-function weekdayFromNumber(n){
-
-const days = [
-"Sonntag",
-"Montag",
-"Dienstag",
-"Mittwoch",
-"Donnerstag",
-"Freitag",
-"Samstag"
-]
-
-return days[n] || ""
-
-}
-
-
-function renderDanceCard(e){
-let title = e.title
-
-if(e.style === "festival"){
-title = "🌍 " + title
-}
-
-return `
-
-<div class="card">
-
-<strong>${flagFromCountry(e.country)} ${title}</strong>
-
-${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
-
-${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
-
-${e.style}<br>
-
-${e.time ? e.time : ""}
-
-${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
-
-${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
-
-</div>
-
-`
-
-}
-
-function renderEventCard(e){
-
-return`
-
-<div class="card">
-
-<strong>${e.title}</strong>
-
-<div style="opacity:.8">
-${e.city ?? ""} ${e.location ? " • "+e.location : ""}
-</div>
-
-<div style="opacity:.8">
-${formatDate(e.date)} ${e.time ?? ""}
-</div>
-
-${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
-
-${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
-</div>
-
-`
-}
-
-   
-function buildDanceRadar(dance){
-
-const today = new Date().getDay()
-
-const radar = {
-today:null,
-next:null,
-festival:null
-}
-
-const all = [
-...(dance.today || []),
-...(dance.week || [])
-]
-
-/* HEUTE */
-
-if(dance.today && dance.today.length){
-
-radar.today = dance.today
-.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
-
-}
-
-/* NÄCHSTES EVENT */
-
-const future = all
-.filter(e => e.weekday >= today)
-.sort((a,b)=>a.weekday-b.weekday)
-
-if(future.length){
-radar.next = future[0]
-}
-
-/* FESTIVAL */
-
-if(dance.festivals && dance.festivals.length){
-
-radar.festival = dance.festivals
-.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
-
-}
-
-return radar
-
-}
-
-  
-  
 async function loadData(){
 
 try{
 
-const res=await fetch("/api/daily");
-const data=await res.json();
+const res = await fetch("/api/daily")
+const data = await res.json()
 
-render(data);
+render(data)
 
-}catch(err){
+}catch(e){
 
-console.error("LOAD ERROR",err);
-
-}
+console.error("API Fehler",e)
 
 }
 
-  
+}
+
 function render(data){
-
-document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
@@ -851,146 +678,47 @@ const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
 
 document.getElementById("meta").innerHTML =
-"<b>" + weekday + "</b> • " + date
+"<b>"+weekday+"</b> • "+date
 
+/* VERSION */
 
-/* DAILY RADAR */
-
-let radar = []
+if(data.version){
+document.getElementById("versionTag").innerText="v"+data.version
+}
 
 /* QUOTE */
 
 if(data.quote){
 
-document.getElementById("quoteBlock").innerHTML = `
-<div class="newsItem">
+document.getElementById("quoteBlock").innerHTML =
 
-<div style="font-size:18px;font-style:italic;margin-bottom:6px">
+`<div class="newsItem">
+
+<div style="font-size:18px;font-style:italic">
 “${data.quote.text}”
 </div>
 
-<div style="opacity:.75">
+<div style="opacity:.7">
 — ${data.quote.author}
 </div>
 
-</div>
-`
-
-}
-   
-/* Wetter */
-
-if(data.weather){
-radar.push("🌤 " + data.weather.temp + "°")
-}
-
-/* Tanz Radar */
-
-if(data.dance){
-
-const today = new Date().getDay()
-
-const allDanceEvents = [
-...(data.dance.today || []),
-...(data.dance.week || [])
-]
-
-const futureEvents = allDanceEvents
-.filter(e => e.weekday !== undefined && e.weekday >= today)
-.sort((a,b)=>a.weekday-b.weekday)
-
-if(futureEvents.length){
-
-const nextDance = futureEvents[0]
-
-const daysShort = ["So","Mo","Di","Mi","Do","Fr","Sa"]
-
-/* UX: wenn Event heute */
-
-if(nextDance.weekday === today){
-
-radar.push(
-"🔥 Heute " + nextDance.city
-)
-
-}else{
-
-radar.push(
-"💃 " + daysShort[nextDance.weekday] + " " + nextDance.city
-)
+</div>`
 
 }
 
-}
-
-        }
-
-/* Markt */
-
-if(data.events?.today?.length){
-radar.push("🧺 Markt")
-}else{
-
-/* nächster Markt (statisch aus deiner Engine) */
-
-const today = new Date().getDay()
-
-if(today < 3) radar.push("🧺 Markt Mi")
-else if(today < 6) radar.push("🧺 Markt Sa")
-
-}
-
-
-document.getElementById("dailyRadar").innerHTML = radar.join(" • ")
-   
-   /* NEWS */
+/* NEWS */
 
 if(data.news){
 
 document.getElementById("newsBlock").innerHTML =
+
 data.news.map(n=>`
 
 <div class="newsItem">
-<div style="font-weight:600">${n.title}</div>
-<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
-<div class="newsSource">${n.source}</div>
-</div>
-
-`).join("");
-
-}
-
-
-/* MARKETS */
-
-document.getElementById("daxValue").innerHTML =
-`
-<div class="marketBlock">
-<div>${data.markets?.dax?.value ?? "-"}</div>
-<div class="market-date">Stand ${data.markets?.dax?.date ?? ""}</div>
-</div>
-`;
-
-document.getElementById("eurusdValue").innerHTML =
-`
-<div class="marketBlock">
-<div>${data.markets?.eurusd?.value ?? "-"}</div>
-<div class="market-date">Stand ${data.markets?.eurusd?.date ?? ""}</div>
-</div>
-`;
-
-/* FINANCE NEWS */
-
-if(data.financeNews && data.financeNews.length){
-
-document.getElementById("financeNewsBlock").innerHTML =
-data.financeNews.slice(0,3).map(n=>`
-
-<div class="newsItem">
 
 <div style="font-weight:600">${n.title}</div>
 
-<a href="${n.url}" target="_self" class="news-link">
+<a href="${n.url}" target="_blank" class="news-link">
 weiterlesen →
 </a>
 
@@ -1000,25 +728,54 @@ weiterlesen →
 
 `).join("")
 
-}else{
+}
 
-document.getElementById("financeNewsBlock").innerHTML =
-'<div style="opacity:.7">Keine aktuellen Finanznews.</div>'
+/* MARKETS */
 
-   }
+if(data.markets){
+
+document.getElementById("daxValue").innerHTML =
+(data.markets.dax?.value ?? "-")
+
+document.getElementById("eurusdValue").innerHTML =
+(data.markets.eurusd?.value ?? "-")
+
+}
+
 /* CRYPTO */
 
+if(data.crypto){
+
 document.getElementById("btcValue").innerHTML =
-"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+
-" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+
-ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
-' <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="news-link">Info →</a>';
+(data.crypto.bitcoin?.usd ?? "-")
 
 document.getElementById("nexoValue").innerHTML =
-"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
-" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+
-ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
-' <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="news-link">Info →</a>';
+(data.crypto.nexo?.usd ?? "-")
+
+}
+
+/* FINANCE NEWS */
+
+if(data.financeNews){
+
+document.getElementById("financeNewsBlock").innerHTML =
+data.financeNews.slice(0,3).map(n=>`
+
+<div class="newsItem">
+
+<div style="font-weight:600">${n.title}</div>
+
+<a href="${n.url}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+
+<div class="newsSource">${n.source}</div>
+
+</div>
+
+`).join("")
+
+}
 
 /* REGIONAL */
 
@@ -1028,574 +785,151 @@ document.getElementById("regionalBlock").innerHTML =
 data.regional.map(r=>`
 
 <div class="newsItem">
+
 <div style="font-weight:600">${r.title}</div>
-<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
+
+<a href="${r.url}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+
 <div class="newsSource">${r.source}</div>
+
 </div>
 
-`).join("");
+`).join("")
 
 }
 
-
-   
-
 /* EVENTS */
-/* EVENTS */
+
+let eventsHTML=""
 
 if(data.events){
 
-let html=""
+if(data.events.today?.length){
 
-/* HEUTE */
+eventsHTML+=`
 
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🔥 Heute
-</div>
-
-<div class="dayEvents">
-${
-(data.events.today||[]).length
-? data.events.today.map(renderEventCard).join("")
-: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
-}
-</div>
-`
-/* WOCHENMÄRKTE */
-
-if(data.events.marketsToday?.length){
-
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🧺 Wochenmärkte
-</div>
+<div class="dayHeader">🔥 Heute</div>
 
 <div class="dayEvents" style="display:block">
-${data.events.marketsToday.map(renderEventCard).join("")}
-</div>
-`
+
+${data.events.today.map(e=>renderEvent(e)).join("")}
+
+</div>`
 
 }
-   
-/* DIESE WOCHE */
 
 if(data.events.week?.length){
 
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ ⭐ Diese Woche
-</div>
+eventsHTML+=`
 
-<div class="dayEvents">
-${data.events.week.map(renderEventCard).join("")}
-</div>
-`
+<div class="dayHeader">⭐ Diese Woche</div>
+
+<div class="dayEvents" style="display:block">
+
+${data.events.week.map(e=>renderEvent(e)).join("")}
+
+</div>`
 
 }
-
-/* DEMNÄCHST */
 
 if(data.events.upcoming?.length){
 
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 📅 Demnächst
-</div>
+eventsHTML+=`
 
-<div class="dayEvents">
-${data.events.upcoming.map(renderEventCard).join("")}
-</div>
-`
+<div class="dayHeader">📅 Demnächst</div>
+
+<div class="dayEvents" style="display:block">
+
+${data.events.upcoming.map(e=>renderEvent(e)).join("")}
+
+</div>`
 
 }
-
-/* MESSEN */
 
 if(data.events.fairs?.length){
 
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🏛️ Verbrauchermessen
-</div>
+eventsHTML+=`
 
-<div class="dayEvents">
-${data.events.fairs.map(renderEventCard).join("")}
-</div>
-`
+<div class="dayHeader">🏛 Verbrauchermessen</div>
 
-}
+<div class="dayEvents" style="display:block">
 
-document.getElementById("eventsBlock").innerHTML=html
+${data.events.fairs.map(e=>renderEvent(e)).join("")}
+
+</div>`
 
 }
 
+}
 
-  
-/* =========================
-   TANZ ENGINE V4
-========================= */
+document.getElementById("eventsBlock").innerHTML = eventsHTML
+
+/* TANZ */
+
+let danceHTML=""
 
 if(data.dance){
 
-const today = new Date().getDay()
+if(data.dance.today?.length){
 
-const todayEvents = data.dance.today || []
-const weekEvents  = data.dance.week || []
-const festivals   = data.dance.festivals || []
+danceHTML+=`
 
-let html = ""
+<div class="dayHeader">💃 Heute</div>
 
-/* HEUTE */
+<div class="dayEvents" style="display:block">
 
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🔥 Heute
-</div>
+${data.dance.today.map(e=>renderDance(e)).join("")}
 
-<div class="dayEvents">
-${
-todayEvents.length
-? todayEvents.map(renderDanceCard).join("")
-: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
-}
-</div>
-`
-
-/* WOCHE */
-
-if(weekEvents.length){
-
-const grouped = {}
-
-weekEvents.forEach(e=>{
-if(!grouped[e.weekday]) grouped[e.weekday]=[]
-grouped[e.weekday].push(e)
-})
-
-let weekBlock=""
-
-Object.keys(grouped)
-.sort((a,b)=>a-b)
-.forEach(day=>{
-
-weekBlock += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ ${weekdayFromNumber(day)}
-</div>
-
-<div class="dayEvents">
-${grouped[day].map(renderDanceCard).join("")}
-</div>
-`
-
-})
-
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ ⭐ Diese Woche
-</div>
-
-<div class="dayEvents">
-${weekBlock}
-</div>
-`
+</div>`
 
 }
 
-/* NÄCHSTES EVENT */
+if(data.dance.week?.length){
 
-const allEvents=[...todayEvents,...weekEvents]
+danceHTML+=`
 
-const future = allEvents
-.filter(e=>e.weekday>=today)
-.sort((a,b)=>a.weekday-b.weekday)
+<div class="dayHeader">💃 Diese Woche</div>
 
-if(future.length){
+<div class="dayEvents" style="display:block">
 
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 📅 Nächstes Event
-</div>
+${data.dance.week.map(e=>renderDance(e)).join("")}
 
-<div class="dayEvents">
-${renderDanceCard(future[0])}
-</div>
-`
+</div>`
 
 }
 
-/* FESTIVAL EUROPA */
-
-if(festivals.length){
-
-const nextFestival =
-festivals.sort((a,b)=>(a.month||12)-(b.month||12))[0]
-
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🌍 Festival Europa
-</div>
-
-<div class="dayEvents">
-${renderDanceCard(nextFestival)}
-</div>
-`
-
 }
 
-document.getElementById("eventsBlock").innerHTML += html
-   
-/* =========================
-   TRAVEL ENGINE (STABIL)
-========================= */
+document.getElementById("danceWeek").innerHTML = danceHTML
 
-let travelList = []
-let travelIndex = 0
-
-function loadTravel(data){
-
-if(!data.travelRadar) return
-
-travelList = data.travelRadar
-
-if(!travelList.length) return
-
-travelIndex = 0
-
-renderTravel()
-
-}
-
-function renderTravel(){
-
-const t = travelList[travelIndex]
-
-if(!t) return
-
-const block = document.getElementById("travelBlock")
-
-block.innerHTML = `
-
-<div class="newsItem">
-
-<img
-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80&sig=${travelIndex}"
-style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:10px">
-
-<div style="font-weight:600;font-size:18px">
-${t.title}
-</div>
-
-<div class="newsSource">
-${t.text}
-</div>
-
-<a href="${t.url}" target="_blank" class="news-link">
-weiter lesen →
-</a>
-
-<br>
-
-<button class="uke-btn" onclick="nextTravel()">▶ Next</button>
-
-</div>
-
-`
-
-}
-
-window.nextTravel = function(){
-
-travelIndex++
-
-if(travelIndex >= travelList.length){
-travelIndex = 0
-}
-
-renderTravel()
-
-}
-
-/* LANGUAGE */
-
-let langIndex = 0
-let langTexts = data.language || []
-
-function renderLanguage(){
-
-if(!langTexts.length) return
-
-const l = langTexts[langIndex]
-
-document.getElementById("languageBlock").innerHTML = `
-
-<div class="languageCard" onclick="toggleLang(this)">
-
-<div class="langLine">
-<span>🇬🇧 ${l.en}</span>
-<span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
-</div>
-
-<div class="langLine">
-<span>🇪🇸 ${l.es}</span>
-<span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
-</div>
-
-<div class="langNative">
-🇩🇪 ${l.de}
-</div>
-
-<button class="uke-btn" onclick="nextLanguage()">▶ Next</button>
-
-</div>
-`
-}
-
-window.nextLanguage=function(){
-
-langIndex++
-
-if(langIndex>=langTexts.length){
-langIndex=0
-}
-
-renderLanguage()
-
-}
-
-renderLanguage()
-   
-loadTravel(data)
-
-/* =========================
-   UKULELE MODULE
-========================= */
-
-console.log("UkeSongs geladen:", ukeSongs.length)
-  
-if(data.ukulele){
-
-if(Array.isArray(data.ukulele)){
-ukeSongs = data.ukulele
-}else{
-ukeSongs = [data.ukulele]
-}
-
-ukeIndex = 0
-
-console.log("Ukulele Songs:", ukeSongs.length)
-
-renderUkulele(ukeSongs[ukeIndex])
-
-}
-  
-/* Trainer */
-
-let ukeTrainerTimer = null
-
-window.startUkeTrainer = function(tempo){
-
-const steps = document.querySelectorAll(".uke-step")
-
-if(!steps.length) return
-
-if(ukeTrainerTimer){
-clearInterval(ukeTrainerTimer)
-}
-
-let index = 0
-const interval = 60000 / tempo
-
-ukeTrainerTimer = setInterval(()=>{
-
-steps.forEach(s=>s.classList.remove("active"))
-
-steps[index].classList.add("active")
-
-index++
-
-if(index >= steps.length){
-index = 0
-}
-
-}, interval)
-
-}
-
-/* =========================
-   RECIPE
-========================= */
-
-let recipes = []
-let recipeIndex = 0
-
-function loadRecipes(data){
-
-recipes = data.recipes || []
-
-if(!recipes.length) return
-
-const today = data.recipe
-
-recipeIndex = recipes.findIndex(r => r.title === today.title)
-
-if(recipeIndex < 0) recipeIndex = 0
-
-showRecipe(recipes[recipeIndex])
-
-}
-
-window.nextRecipe = function(){
-
-if(!recipes.length) return
-
-recipeIndex++
-
-if(recipeIndex >= recipes.length){
-recipeIndex = 0
-}
-
-showRecipe(recipes[recipeIndex])
-
-}
-
-function showRecipe(r){
-
-document.getElementById("recipeTitle").textContent = r.title
-
-document.getElementById("recipeIngredients").textContent =
-Array.isArray(r.ingredients) ? r.ingredients.join(" • ") : r.ingredients
-
-document.getElementById("recipePrep").textContent = r.prep
-document.getElementById("recipeCook").textContent = r.cook
-
-document.getElementById("recipeTemp").textContent = r.temp
-document.getElementById("recipeTime").textContent = r.time
-document.getElementById("recipeShake").textContent = r.shake
-document.getElementById("recipePortion").textContent = r.portion
-
-document.getElementById("recipeCounter").textContent =
-"Rezept " + (recipeIndex+1) + " / " + recipes.length
-
-}
-
-loadRecipes(data)
-   
 /* WEATHER */
 
+if(data.weather){
+
 document.getElementById("weatherNow").innerHTML =
-weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
-
-document.getElementById("mIcon").innerText =
-weatherIcon(data.weather.trend.morning.code);
-
-document.getElementById("morningTemp").innerText =
-data.weather.trend.morning.temp+"°C";
-
-document.getElementById("aIcon").innerText =
-weatherIcon(data.weather.trend.afternoon.code);
-
-document.getElementById("afternoonTemp").innerText =
-data.weather.trend.afternoon.temp+"°C";
-
-document.getElementById("eIcon").innerText =
-weatherIcon(data.weather.trend.evening.code);
-
-document.getElementById("eveningTemp").innerText =
-data.weather.trend.evening.temp+"°C";
+data.weather.temp+"°C"
 
 }
 
-function toggleLang(card){
-card.classList.toggle("open")
 }
 
-window.speak = function(e,lang,text){
-
-e.stopPropagation()
-
-const utterance = new SpeechSynthesisUtterance(text)
-utterance.lang = lang
-
-speechSynthesis.speak(utterance)
-
-}
-
-async function loadRadar(){
-
-const res = await fetch("/api/radar")
-const data = await res.json()
-
-if(!data.radar) return
-
-const today = new Date().getDay()
-
-let todayEvent = null
-let nextEvent = null
-let festival = null
-let others = []
-
-data.radar.forEach(e=>{
-
-if(e.weekday === today && !todayEvent){
-todayEvent = e
-return
-}
-
-if(e.month && !festival){
-festival = e
-return
-}
-
-if(!nextEvent){
-nextEvent = e
-return
-}
-
-others.push(e)
-
-})
-
-let html = ""
+/* EVENT CARD */
 
 function renderEvent(e){
 
-return `
+return`
 
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ ${e.city || ""} — ${e.title}
-</div>
+<div class="card">
 
-<div class="dayEvents">
+<strong>${e.title}</strong><br>
 
-<div style="opacity:.8;margin-top:6px">
+${e.city ?? ""}<br>
 
-${e.style ? e.style : ""}
+${e.date ?? ""} ${e.time ?? ""}
 
-${e.location ? " • " + e.location : ""}
-
-${e.month ? "<br>"+e.month : ""}
-
-</div>
-
-<div class="radarLine">
-
-${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.address)}" target="_blank" class="news-link">📍 Karte</a>` : ""}
-
-${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos</a>` : ""}
-
-<a href="#" onclick="addEvent(this);return false;" class="news-link"
-data-title="${e.title}"
-data-city="${e.city || ""}"
-data-style="${e.style || ""}"
-data-location="${e.location || ""}"
-data-address="${e.address || ""}"
-data-month="${e.month || ""}">
-➕ übernehmen
-</a>
-
-</div>
+${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
 
 </div>
 
@@ -1603,201 +937,33 @@ data-month="${e.month || ""}">
 
 }
 
-if(todayEvent){
+/* DANCE CARD */
 
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ 🔥 Heute
+function renderDance(e){
+
+return`
+
+<div class="card">
+
+<strong>${e.title}</strong><br>
+
+${e.city ?? ""}<br>
+
+${e.time ?? ""}
+
+${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
 </div>
 
-<div class="dayEvents">
-${renderEvent(todayEvent)}
-</div>
 `
 
 }
 
-if(nextEvent){
+window.addEventListener("load",loadData)
 
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ 📅 Nächstes Event
-</div>
-
-<div class="dayEvents">
-${renderEvent(nextEvent)}
-</div>
-`
-
-}
-
-if(festival){
-
-html += `
-<div class="dayHeader" onclick="toggleDay(this)">
-▶ 🌍 Festival
-</div>
-
-<div class="dayEvents">
-${renderEvent(festival)}
-</div>
-`
-
-}
-
-}
-async function addEvent(btn){
-
-const event = {
-
-title:btn.dataset.title,
-city:btn.dataset.city,
-style:btn.dataset.style,
-location:btn.dataset.location,
-address:btn.dataset.address,
-month:btn.dataset.month
-
-}
-
-await fetch("/api/approve-event",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(event)
-})
-
-alert("Event übernommen")
-
-}
-
-  
-window.addEventListener("load",loadData);
-window.addEventListener("load",loadRadar);
-  
-let compassClicks = 0;
-
-window.addEventListener("load", () => {
-
-const compass = document.getElementById("compass");
-const version = document.getElementById("versionTag");
-
-compass.addEventListener("click", () => {
-
-compassClicks++;
-
-if(compassClicks >= 3){
-
-version.style.opacity = "0.6";
-
-setTimeout(()=>{
-version.style.opacity = "0";
-compassClicks = 0;
-},5000);
-
-}
-
-});
-
-});
+</script>
 
 
-function renderUkulele(song){
-
-if(!song) return
-
-const tabs = song.tabs || ""
-const tempo = song.tempo || 80
-const strum = song.strum || ""
-const picking = song.picking || ""
-
-const firstLine = tabs.split("\n")[0] || ""
-const chords = firstLine.split(/\s+/).filter(c=>c)
-
-const tabLines = tabs.split("\n").slice(2).join("\n")
-
-document.getElementById("ukeBlock").innerHTML = `
-<div class="ukulele-card">
-
-<div class="ukulele-title">
-${song.title}
-</div>
-
-<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">
-${chords.join("   ")}
-</div>
-
-<div class="uke-tabblock">
-<pre>
-┌────────────────────────┐
-${tabLines}
-└────────────────────────┘
-</pre>
-</div>
-
-<div class="uke-meta">
-
-<div><b>Tempo</b> ${tempo} bpm</div>
-
-${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
-${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
-
-</div>
-
-<div class="uke-trainer">
-
-<div class="uke-label">Chord Trainer</div>
-
-<div class="uke-trainer-row">
-${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
-</div>
-
-<button class="uke-btn" onclick="startUkeTrainer(${tempo})">
-▶ Start Trainer
-</button>
-
-</div>
-
-<button class="uke-btn" onclick="nextSong()">
-▶ Next Song
-</button>
-
-</div>
-`
-}
-  window.nextSong = function(){
-
-if(!ukeSongs.length) return
-
-ukeIndex++
-
-if(ukeIndex >= ukeSongs.length){
-ukeIndex = 0
-}
-
-renderUkulele(ukeSongs[ukeIndex])
-
-}
-  
-function toggleDay(el){
-
-const content = el.nextElementSibling
-
-if(!content) return
-
-if(content.style.display === "block"){
-
-content.style.display = "none"
-el.innerHTML = el.innerHTML.replace("▼","▶")
-
-}else{
-
-content.style.display = "block"
-el.innerHTML = el.innerHTML.replace("▶","▼")
-
-}
-
-}
 
   
 </script>
