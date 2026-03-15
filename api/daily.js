@@ -731,6 +731,7 @@ const weekEnd=endOfWeek(now)
 
 let todayEvents=[]
 let week=[]
+let upcoming=[]
 
 const allEvents=[
 
