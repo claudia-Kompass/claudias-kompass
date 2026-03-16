@@ -477,18 +477,13 @@ pointer-events:none;
 z-index:9999;
 }
 
-.travel-collage{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:6px;
-margin-bottom:12px;
-}
-
-.travel-collage img{
+.travel-image{
 width:100%;
-height:130px;
+height:260px;
 object-fit:cover;
-border-radius:6px;
+border-radius:10px;
+margin-bottom:12px;
+box-shadow:0 8px 18px rgba(0,0,0,0.25);
 }
    
    
@@ -1292,10 +1287,7 @@ document.getElementById("travelBlock").innerHTML = `
 
 <div class="travel-collage">
 
-<img src="https://picsum.photos/600/400?travel,sea&random=${travelIndex+1}">
-<img src="https://picsum.photos/600/400?travel,mountain&random=${travelIndex+2}">
-<img src="https://picsum.photos/600/400?travel,city&random=${travelIndex+3}">
-<img src="https://picsum.photos/600/400?travel,beach&random=${travelIndex+4}">
+<img src="${t.image}" class="travel-image"> 
 
 </div>
 <div style="font-weight:600;font-size:18px">${t.title}</div>
