@@ -1,605 +1,846 @@
+
 <!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>GLOBAL SOUL</title>
 
-<html lang="de">  
-  
-<head>  
-  
-<meta charset="UTF-8">  
-<title>GLOBAL SOUL</title> <style>  
-  
-body{  
-background:linear-gradient(  
-180deg,  
-#071a2c 0%,  
-#0c2a42 55%,  
-#143a57 100%  
-);  
-  
-color:#e6edf3;  
-  
-font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;  
-  
-font-size:16px;  
-line-height:1.6;  
-}  
-  
-/* =========================  
-   LAYOUT  
-========================= */  
-  
-.container{  
-max-width:700px;  
-margin:0 auto;  
-padding:52px 24px;  
-}  
-  
-h1{  
-font-size:42px;  
-margin-bottom:6px;  
-}  
-  
-.subtitle{  
-margin-top:2px;  
-margin-bottom:6px;  
-opacity:.85;  
-}  
-  
-.meta{  
-font-size:16px;  
-font-weight:500;  
-opacity:.95;  
-letter-spacing:.4px;  
-line-height:1.5;  
-margin-top:14px;  
-padding-top:14px;  
-border-top:1px solid rgba(255,255,255,.15);  
-}  
-     
-header{  
-margin-bottom:14px;  
-}  
-     
-.tagline{  
-margin-bottom:18px;  
-font-style:italic;  
-opacity:.75;  
-}  
-  
-.date{  
-margin-top:8px;  
-font-size:18px;  
-font-weight:600;  
-}  
-  
-section{  
-margin-top:34px;  
-}  
-  
-     
-/* =========================  
-   RADAR  
-========================= */  
-  
-.dailyRadar{  
-margin:16px 0 28px 0;  
-  
-padding:10px 16px;  
-  
-background:rgba(255,255,255,0.04);  
-  
-border-left:2px solid #e6c27a;  
-  
-border-radius:6px;  
-  
-font-size:15px;  
-}  
-  
-/* =========================  
-   BUTTON  
-========================= */  
-  
-button{  
-margin-top:14px;  
-padding:8px 16px;  
-border:none;  
-background:#e6c27a;  
-color:#081626;  
-border-radius:6px;  
-cursor:pointer;  
-}  
-  
-/* =========================  
-   SECTIONS  
-========================= */  
-  
-.section h2{  
-color:#e6c27a;  
-font-size:28px;  
-font-weight:600;  
-  
-border-bottom:1px solid rgba(255,255,255,.18);  
-  
-padding-bottom:10px;  
-margin-top:44px;  
-margin-bottom:24px;  
-}  
-.section{  
-margin-top:36px;  
-}  
-  
-   .section h2::after{  
-content:"";  
-display:block;  
-height:1px;  
-  
-background:linear-gradient(  
-to right,  
-rgba(230,194,122,.5),  
-rgba(230,194,122,0)  
-);  
-  
-margin-top:6px;  
-   }  
-.news-link{  
-color:#d6b36a;  
-text-decoration:none;  
-font-weight:500;  
-}  
-  
-.news-link:hover{  
-color:#f1d48a;  
-}  
-  
-.news-link:visited{  
-color:#d6b36a;  
-}  
-     
-/* =========================  
-   MARKETS  
-========================= */  
-  
-.line{  
-display:grid;  
-grid-template-columns: 1fr auto auto;  
-align-items:center;  
-gap:12px;  
-margin:12px 0;  
-}  
-  
-.info{  
-margin-left:6px;  
-}  
-  
-.marketBlock{  
-text-align:left;      /* statt right */  
-font-weight:600;  
-min-width:110px;      /* hält Wertspalte stabil */  
-}  
-  
-.market-date{  
-font-size:12px;  
-opacity:.65;  
-margin-top:2px;  
-}  
-     
-     
-/* =========================  
-   AMPEL  
-========================= */  
-  
-.ampel{  
-width:10px;  
-height:10px;  
-border-radius:50%;  
-display:inline-block;  
-margin-left:8px;  
-}  
-  
-.green{background:#2ecc71}  
-.red{background:#e74c3c}  
-.yellow{background:#f1c40f}  
-  
-/* =========================  
-   NEWS  
-========================= */  
-  
-.newsItem{  
-margin-bottom:22px;  
-}  
-  
-#recipeBlock .newsSource{  
-font-size:15px;  
-line-height:1.6;  
-margin-top:6px;  
-}  
-  
-#recipeBlock b{  
-color:#e6c27a;  
-font-weight:600;  
-}  
-     
-.news-link{  
-color:#e6c27a;  
-text-decoration:none;  
-font-weight:500;  
-}  
-  
-.news-link:hover{  
-text-decoration:underline;  
-}  
-  
-/* =========================  
-   WEATHER  
-========================= */  
-  
-.weatherNow{  
-font-size:26px;  
-margin-bottom:12px;  
-}  
-  
-.trendBlock{  
-display:flex;  
-gap:40px;  
-margin-top:10px;  
-}  
-  
-.trendItem{text-align:center}  
-  
- .weather{  
-margin-top:10px;  
-margin-bottom:20px;  
- }    
-  
-/* =========================  
-   COMPASS  
-========================= */  
-  
-.compass{  
-font-size:42px;  
-position:relative;  
-top:-6px;  
-margin-left:26px;  
-display:inline-block;  
-animation:spin 14s linear infinite;  
-}  
-  
-@keyframes spin{  
-0%{transform:rotate(0deg)}  
-100%{transform:rotate(360deg)}  
-}  
-  
-/* =========================  
-   LANGUAGE  
-========================= */  
-  
-.languageCard{  
-margin-bottom:18px;  
-padding:10px;  
-border-radius:6px;  
-background:rgba(255,255,255,.03);  
-cursor:pointer;  
-}  
-  
-.langLine{  
-font-size:18px;  
-margin-bottom:6px;  
-display:flex;  
-justify-content:space-between;  
-align-items:center;  
-}  
-  
-.langBtn{  
-cursor:pointer;  
-margin-left:8px;  
-}  
-  
-.langNative{  
-font-size:15px;  
-opacity:0;  
-max-height:0;  
-overflow:hidden;  
-transition:all .3s;  
-}  
-  
-.languageCard.open .langNative{  
-opacity:.85;  
-max-height:40px;  
-margin-top:6px;  
-}  
-  
-/* =========================  
-   UKULELE  
-========================= */  
-  
-.ukulele-card{  
-background:rgba(255,255,255,.04);  
-border-radius:12px;  
-padding:22px;  
-}  
-  
-.ukulele-title{  
-color:#e6c27a;  
-font-weight:600;  
-margin-bottom:14px;  
-font-size:18px;  
-}  
-  
-.uke-tabblock{  
-display:inline-block;  
-font-family:monospace;  
-font-size:15px;  
-line-height:1.7;  
-}  
-  
-.uke-meta{  
-margin-top:14px;  
-font-size:14px;  
-}  
-  
-.uke-meta b{  
-color:#e6c27a;  
-}  
-  
-.uke-trainer-row{  
-display:flex;  
-gap:10px;  
-flex-wrap:wrap;  
-margin-top:8px;  
-}  
-  
-.uke-step{  
-padding:6px 12px;  
-background:rgba(255,255,255,.08);  
-border-radius:6px;  
-font-weight:600;  
-}  
-  
-.uke-step.active{  
-background:#e6c27a;  
-color:#081626;  
-}  
-  
-.uke-btn{  
-margin-top:14px;  
-padding:6px 0;  
-background:none;  
-border:none;  
-color:#e6c27a;  
-font-size:15px;  
-cursor:pointer;  
-display:block;  
-text-align:left;  
-}  
-  
-.uke-btn:hover{  
-text-decoration:underline;  
-}  
-  
-.ukulele-title{  
-font-size:20px;  
-font-weight:600;  
-}  
-  
-.newsItem div:first-child{  
-font-size:17px;  
-}  
-     
-/* =========================  
-   DANCE  
-========================= */  
-  
-#danceWeek .card{  
-background:rgba(255,255,255,.05);  
-padding:12px;  
-margin:10px 0;  
-border-radius:10px;  
-}  
-  
-.dayHeader{  
-cursor:pointer;  
-font-weight:600;  
-margin-top:10px;  
-padding:6px 0;  
-}  
-  
-.dayHeader:hover{  
-color:#e6c27a;  
-}  
-  
-.dayEvents{  
-display:none;  
-margin-top:6px;  
-}  
-  
-#danceWeek .dayHeader{  
-display:flex;  
-align-items:center;  
-gap:6px;  
-  
-font-size:17px;  
-}  
-  
-#danceWeek .dayHeader{  
-padding:8px 0;  
-}  
-  
-#danceWeek{  
-padding-left:0;  
-margin-left:0;  
-}  
-     
-/* =========================  
-   FOOTER  
-========================= */  
-  
-.footer{  
-max-width:700px;  
-margin:50px auto 20px auto;  
-padding:0 24px;  
-  
-display:flex;  
-justify-content:space-between;  
-align-items:flex-start;  
-  
-font-size:14px;  
-opacity:.85;  
-}  
-  
-.footerLeft{  
-line-height:1.6;  
-}  
-  
-.footerRight{  
-max-width:280px;  
-line-height:1.6;  
-}  
-  
-.footer{  
-border-top:1px solid rgba(255,255,255,0.12);  
-padding-top:18px;  
-   }  
-     
-/* VERSION TAG */  
-  
-.version{  
-position:fixed;  
-top:10px;  
-right:14px;  
-font-size:11px;  
-opacity:0;  
-color:#e6edf3;  
-font-family:monospace;  
-background:rgba(0,0,0,.35);  
-padding:4px 6px;  
-border-radius:4px;  
-transition:opacity .25s;  
-pointer-events:none;  
-z-index:9999;  
-}  
-  
-  
- /* Travel */  
-     
-#travelImage{  
-pointer-events:none;  
-}  
-     
-     
-</style> 
-  
-</head>    
-<body> 
-  
-<div id="versionTag" class="version"></div>  <div class="container">  <h1>🌍 GLOBAL SOUL <span class="compass" id="compass">🧭</span></h1>  
-<div class="subtitle">Claudia’s Daily Compass</div>  
-<div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>  <div id="meta" class="meta" style="margin-top:10px"></div>  <div id="dailyRadar" class="dailyRadar"></div>  <div class="section">  
+<style>
 
-<h2>✨ Zitat des Tages</h2>  
-<div id="quoteBlock"></div>  
-</div>  
-<div class="section">  
-<h2>📰 Politik & Weltgeschehen</h2>  
-<div id="newsBlock"></div>  
-</div>  
-<div class="section">  
-<h2>📊 Überblick Finanzmärkte</h2> 
-<div class="line">  
-<div>DAX</div>  
-<div id="daxValue"></div>  
-</div>  <div class="line">  
-<div>EUR/USD</div>  
-<div id="eurusdValue"></div>  
-</div>  <div class="line">  
-<div>Bitcoin</div>  
-<div id="btcValue"></div>  
-</div>  <div class="line">  
-<div>Nexo</div>  
-<div id="nexoValue"></div>  
-</div>  <div class="section">  
-<h2>💹 Finanz News</h2>  
-<div id="financeNewsBlock"></div>  
-  </div>   
-</div> 
-<div class="section">  
-<h2>📍 Regional – Landkreis Schwäbisch Hall</h2>  
-<div id="regionalBlock"></div>  
-</div>  <div class="section">  
-<h2>🧭 Global Soul Radar</h2>  
-<div id="eventsBlock"></div>  
-</div>  <div class="section">  
-<h2>🌍 Reiseimpuls</h2>  
-<div id="travelBlock"></div>  
-</div>  <div class="section">  
-<h2>🗣 Sprachimpuls</h2>  
-<div id="languageBlock"></div>  
-</div>  <div class="section">  
-<h2>🎸 Ukulele</h2>  
-<div id="ukeBlock"></div>  
-</div>  
-<div class="section">  
+body{
+background:linear-gradient(
+180deg,
+#071a2c 0%,
+#0c2a42 55%,
+#143a57 100%
+);
+
+color:#e6edf3;
+
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+
+font-size:16px;
+line-height:1.6;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+max-width:700px;
+margin:0 auto;
+padding:52px 24px;
+}
+
+h1{
+font-size:42px;
+margin-bottom:6px;
+}
+
+.subtitle{
+margin-top:2px;
+margin-bottom:6px;
+opacity:.85;
+}
+
+.meta{
+font-size:16px;
+font-weight:500;
+opacity:.95;
+letter-spacing:.4px;
+line-height:1.5;
+margin-top:14px;
+padding-top:14px;
+border-top:1px solid rgba(255,255,255,.15);
+}
+   
+header{
+margin-bottom:14px;
+}
+   
+.tagline{
+margin-bottom:18px;
+font-style:italic;
+opacity:.75;
+}
+
+.date{
+margin-top:8px;
+font-size:18px;
+font-weight:600;
+}
+
+section{
+margin-top:34px;
+}
+
+   
+/* =========================
+   RADAR
+========================= */
+
+.dailyRadar{
+margin:16px 0 28px 0;
+
+padding:10px 16px;
+
+background:rgba(255,255,255,0.04);
+
+border-left:2px solid #e6c27a;
+
+border-radius:6px;
+
+font-size:15px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+margin-top:14px;
+padding:8px 16px;
+border:none;
+background:#e6c27a;
+color:#081626;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section h2{
+color:#e6c27a;
+font-size:28px;
+font-weight:600;
+
+border-bottom:1px solid rgba(255,255,255,.18);
+
+padding-bottom:10px;
+margin-top:44px;
+margin-bottom:24px;
+}
+.section{
+margin-top:36px;
+}
+
+   .section h2::after{
+content:"";
+display:block;
+height:1px;
+
+background:linear-gradient(
+to right,
+rgba(230,194,122,.5),
+rgba(230,194,122,0)
+);
+
+margin-top:6px;
+   }
+.news-link{
+color:#d6b36a;
+text-decoration:none;
+font-weight:500;
+}
+
+.news-link:hover{
+color:#f1d48a;
+}
+
+.news-link:visited{
+color:#d6b36a;
+}
+   
+/* =========================
+   MARKETS
+========================= */
+
+.line{
+display:grid;
+grid-template-columns: 1fr auto auto;
+align-items:center;
+gap:12px;
+margin:12px 0;
+}
+
+.info{
+margin-left:6px;
+}
+
+.marketBlock{
+text-align:left;      /* statt right */
+font-weight:600;
+min-width:110px;      /* hält Wertspalte stabil */
+}
+
+.market-date{
+font-size:12px;
+opacity:.65;
+margin-top:2px;
+}
+   
+   
+/* =========================
+   AMPEL
+========================= */
+
+.ampel{
+width:10px;
+height:10px;
+border-radius:50%;
+display:inline-block;
+margin-left:8px;
+}
+
+.green{background:#2ecc71}
+.red{background:#e74c3c}
+.yellow{background:#f1c40f}
+
+/* =========================
+   NEWS
+========================= */
+
+.newsItem{
+margin-bottom:22px;
+}
+
+#recipeBlock .newsSource{
+font-size:15px;
+line-height:1.6;
+margin-top:6px;
+}
+
+#recipeBlock b{
+color:#e6c27a;
+font-weight:600;
+}
+   
+.news-link{
+color:#e6c27a;
+text-decoration:none;
+font-weight:500;
+}
+
+.news-link:hover{
+text-decoration:underline;
+}
+
+/* =========================
+   WEATHER
+========================= */
+
+.weatherNow{
+font-size:26px;
+margin-bottom:12px;
+}
+
+.trendBlock{
+display:flex;
+gap:40px;
+margin-top:10px;
+}
+
+.trendItem{text-align:center}
+
+ .weather{
+margin-top:10px;
+margin-bottom:20px;
+ }  
+
+/* =========================
+   COMPASS
+========================= */
+
+.compass{
+font-size:42px;
+position:relative;
+top:-6px;
+margin-left:26px;
+display:inline-block;
+animation:spin 14s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
+/* =========================
+   LANGUAGE
+========================= */
+
+.languageCard{
+margin-bottom:18px;
+padding:10px;
+border-radius:6px;
+background:rgba(255,255,255,.03);
+cursor:pointer;
+}
+
+.langLine{
+font-size:18px;
+margin-bottom:6px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.langBtn{
+cursor:pointer;
+margin-left:8px;
+}
+
+.langNative{
+font-size:15px;
+opacity:0;
+max-height:0;
+overflow:hidden;
+transition:all .3s;
+}
+
+.languageCard.open .langNative{
+opacity:.85;
+max-height:40px;
+margin-top:6px;
+}
+
+/* =========================
+   UKULELE
+========================= */
+
+.ukulele-card{
+background:rgba(255,255,255,.04);
+border-radius:12px;
+padding:22px;
+}
+
+.ukulele-title{
+color:#e6c27a;
+font-weight:600;
+margin-bottom:14px;
+font-size:18px;
+}
+
+.uke-tabblock{
+display:inline-block;
+font-family:monospace;
+font-size:15px;
+line-height:1.7;
+}
+
+.uke-meta{
+margin-top:14px;
+font-size:14px;
+}
+
+.uke-meta b{
+color:#e6c27a;
+}
+
+.uke-trainer-row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:8px;
+}
+
+.uke-step{
+padding:6px 12px;
+background:rgba(255,255,255,.08);
+border-radius:6px;
+font-weight:600;
+}
+
+.uke-step.active{
+background:#e6c27a;
+color:#081626;
+}
+
+.uke-btn{
+margin-top:14px;
+padding:6px 0;
+background:none;
+border:none;
+color:#e6c27a;
+font-size:15px;
+cursor:pointer;
+display:block;
+text-align:left;
+}
+
+.uke-btn:hover{
+text-decoration:underline;
+}
+
+.ukulele-title{
+font-size:20px;
+font-weight:600;
+}
+
+.newsItem div:first-child{
+font-size:17px;
+}
+   
+/* =========================
+   DANCE
+========================= */
+
+#danceWeek .card{
+background:rgba(255,255,255,.05);
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+}
+
+.dayHeader{
+cursor:pointer;
+font-weight:600;
+margin-top:10px;
+padding:6px 0;
+}
+
+.dayHeader:hover{
+color:#e6c27a;
+}
+
+.dayEvents{
+display:none;
+margin-top:6px;
+}
+
+#danceWeek .dayHeader{
+display:flex;
+align-items:center;
+gap:6px;
+
+font-size:17px;
+}
+
+#danceWeek .dayHeader{
+padding:8px 0;
+}
+
+#danceWeek{
+padding-left:0;
+margin-left:0;
+}
+   
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+max-width:700px;
+margin:50px auto 20px auto;
+padding:0 24px;
+
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+
+font-size:14px;
+opacity:.85;
+}
+
+.footerLeft{
+line-height:1.6;
+}
+
+.footerRight{
+max-width:280px;
+line-height:1.6;
+}
+
+.footer{
+border-top:1px solid rgba(255,255,255,0.12);
+padding-top:18px;
+   }
+   
+/* VERSION TAG */
+
+.version{
+position:fixed;
+top:10px;
+right:14px;
+font-size:11px;
+opacity:0;
+color:#e6edf3;
+font-family:monospace;
+background:rgba(0,0,0,.35);
+padding:4px 6px;
+border-radius:4px;
+transition:opacity .25s;
+pointer-events:none;
+z-index:9999;
+}
+
+
+   
+   
+</style>
   
-<h2>🍳 Airfryer Rezept</h2> 
-<div id="recipeBlock"> 
+
+  
+</head>
+
+  
+<body>
+
+<div id="versionTag" class="version"></div>
+
+<div class="container">
+
+<h1>🌍 GLOBAL SOUL <span class="compass" id="compass">🧭</span></h1>
+<div class="subtitle">Claudia’s Daily Compass</div>
+<div class="subtitle"><i>Zwischen Heimat und Horizont.</i></div>
+
+<div id="meta" class="meta" style="margin-top:10px"></div>
+
+<div id="dailyRadar" class="dailyRadar"></div>
+
+<div class="section">
+<h2>✨ Zitat des Tages</h2>
+<div id="quoteBlock"></div>
+</div>
+   
+<div class="section">
+<h2>📰 Politik & Weltgeschehen</h2>
+<div id="newsBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>📊 Überblick Finanzmärkte</h2>
+
+<div class="line">
+<div>DAX</div>
+<div id="daxValue"></div>
+</div>
+
+<div class="line">
+<div>EUR/USD</div>
+<div id="eurusdValue"></div>
+</div>
+
+<div class="line">
+<div>Bitcoin</div>
+<div id="btcValue"></div>
+</div>
+
+<div class="line">
+<div>Nexo</div>
+<div id="nexoValue"></div>
+</div>
+
+<div class="section">
+<h2>💹 Finanz News</h2>
+<div id="financeNewsBlock"></div>
+  </div> 
+</div>
+
+
+<div class="section">
+<h2>📍 Regional – Landkreis Schwäbisch Hall</h2>
+<div id="regionalBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🏘 Events & Märkte</h2>
+<div id="eventsBlock"></div>
+</div>
+
+
+<h2 id="danceWeekTitle">💃 Tanz & Latin</h2>
+<div id="danceWeek"></div>
+</div>
+
+  
+<div class="section">
+<h2>🌍 Reiseimpuls</h2>
+<div id="travelBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🗣 Sprachimpuls</h2>
+<div id="languageBlock"></div>
+</div>
+
+
+<div class="section">
+<h2>🎸 Ukulele</h2>
+<div id="ukeBlock"></div>
+</div>
+
+   
+<div class="section">
+<h2>🍳 Airfryer Rezept</h2>
+
+<div id="recipeBlock">
+
 <div id="recipeCounter" style="opacity:.7;margin-bottom:8px"></div>
-<div style="font-weight:600;font-size:18px" id="recipeTitle"></div> 
-<div class="newsSource" id="recipeIngredients"></div> 
-<br> 
+
+<div style="font-weight:600;font-size:18px" id="recipeTitle"></div>
+
+<div class="newsSource" id="recipeIngredients"></div>
+
+<br>
+
 <b>Vorbereitung</b>
+<div id="recipePrep"></div>
 
-<div id="recipePrep"></div>  <b>Zubereitung</b>
+<b>Zubereitung</b>
+<div id="recipeCook"></div>
 
-<div id="recipeCook"></div> 
-<br>  🔥 <span id="recipeTemp"></span><br>
+<br>
+
+🔥 <span id="recipeTemp"></span><br>
 ⏱ <span id="recipeTime"></span><br>
 🔄 <span id="recipeShake"></span><br>
 🍽 <span id="recipePortion"></span> Portionen
 
-<br>  <button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
+<br>
+
+<button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
 
 </div>
+
 </div>
-<div class="section">  
-<h2>Wetter – Ilshofen</h2> 
-<div id="weatherNow" class="weatherNow"></div>  
-<div class="trendBlock">  
-<div class="trendItem">  
-<div id="mIcon"></div>  
-<div>09:00</div>  
-<div id="morningTemp"></div>  
-</div>  <div class="trendItem">  
-<div id="aIcon"></div>  
-<div>15:00</div>  
-<div id="afternoonTemp"></div>  
-</div>  <div class="trendItem">  
-<div id="eIcon"></div>  
-<div>21:00</div>  
-<div id="eveningTemp"></div>  
-</div>  
-</div>  </div> 
-</div>  
-  
+
+   
+
+
+<div class="section">
+<h2>Wetter – Ilshofen</h2>
+
+<div id="weatherNow" class="weatherNow"></div>
+
+<div class="trendBlock">
+
+<div class="trendItem">
+<div id="mIcon"></div>
+<div>09:00</div>
+<div id="morningTemp"></div>
+</div>
+
+<div class="trendItem">
+<div id="aIcon"></div>
+<div>15:00</div>
+<div id="afternoonTemp"></div>
+</div>
+
+<div class="trendItem">
+<div id="eIcon"></div>
+<div>21:00</div>
+<div id="eveningTemp"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
 
+let ukeSongs = []
+let ukeIndex = 0
+
+function weatherIcon(code){
+
+if(code===100) return "🌙";
+
+if(code===0) return "☀️";
+if(code<=2) return "🌤️";
+if(code===3) return "☁️";
+if(code<=65) return "🌧️";
+if(code<=75) return "❄️";
+return "⛈️";
+
+}
+
+function ampel(change){
+
+if(change>1) return '<span class="ampel green"></span>';
+if(change<-1) return '<span class="ampel red"></span>';
+return '<span class="ampel yellow"></span>';
+
+}
+
+function formatDate(date){
+
+if(!date) return "";
+
+const d=new Date(date);
+return d.toLocaleDateString("de-DE");
+
+}
+
+function flagFromCountry(country){
+
+const map = {
+Germany:"🇩🇪",
+France:"🇫🇷",
+Spain:"🇪🇸",
+Portugal:"🇵🇹",
+Italy:"🇮🇹",
+Poland:"🇵🇱",
+Croatia:"🇭🇷"
+}
+
+return map[country] || "🌍"
+
+}
+
+function weekdayFromNumber(n){
+
+const days = [
+"Sonntag",
+"Montag",
+"Dienstag",
+"Mittwoch",
+"Donnerstag",
+"Freitag",
+"Samstag"
+]
+
+return days[n] || ""
+
+}
+
+
+function renderDanceCard(e){
+let title = e.title
+
+if(e.style === "festival"){
+title = "🌍 " + title
+}
+
+return `
+
+<div class="card">
+
+<strong>${flagFromCountry(e.country)} ${title}</strong>
+
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
+
+${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
+
+${e.style}<br>
+
+${e.time ? e.time : ""}
+
+${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
+
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
+
+</div>
+
+`
+
+}
+
+function renderEventCard(e){
+
+return`
+
+<div class="card">
+
+<strong>${e.title}</strong>
+
+<div style="opacity:.8">
+${e.city ?? ""} ${e.location ? " • "+e.location : ""}
+</div>
+
+<div style="opacity:.8">
+${formatDate(e.date)} ${e.time ?? ""}
+</div>
+
+${e.maps?`<a href="${e.maps}" target="_blank" class="news-link">📍 Karte →</a>`:""}
+
+${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+
+</div>
+
+`
+}
+
+   
+function buildDanceRadar(dance){
+
+const today = new Date().getDay()
+
+const radar = {
+today:null,
+next:null,
+festival:null
+}
+
+const all = [
+...(dance.today || []),
+...(dance.week || [])
+]
+
+/* HEUTE */
+
+if(dance.today && dance.today.length){
+
+radar.today = dance.today
+.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+}
+
+/* NÄCHSTES EVENT */
+
+const future = all
+.filter(e => e.weekday >= today)
+.sort((a,b)=>a.weekday-b.weekday)
+
+if(future.length){
+radar.next = future[0]
+}
+
+/* FESTIVAL */
+
+if(dance.festivals && dance.festivals.length){
+
+radar.festival = dance.festivals
+.sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+}
+
+return radar
+
+}
+
+  
+  
 async function loadData(){
 
 try{
 
-const res = await fetch("/api/daily")
-const data = await res.json()
+const res=await fetch("/api/daily");
+const data=await res.json();
 
-render(data)
+render(data);
 
-}catch(e){
+}catch(err){
 
-console.error("API Fehler",e)
-
-}
+console.error("LOAD ERROR",err);
 
 }
 
+}
+
+  
 function render(data){
 
-/* DATE */
+document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
@@ -607,91 +848,144 @@ const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
 
 document.getElementById("meta").innerHTML =
-"<b>"+weekday+"</b> • "+date
+"<b>" + weekday + "</b> • " + date
 
+/* DAILY RADAR */
 
-/* VERSION */
-
-if(data.version){
-document.getElementById("versionTag").innerText="v"+data.version
-}
-
+let radar = []
 
 /* QUOTE */
 
 if(data.quote){
 
-document.getElementById("quoteBlock").innerHTML =
+document.getElementById("quoteBlock").innerHTML = `
+<div class="newsItem">
 
-`<div class="newsItem">
-
-<div style="font-size:18px;font-style:italic">
+<div style="font-size:18px;font-style:italic;margin-bottom:6px">
 “${data.quote.text}”
 </div>
 
-<div style="opacity:.7">
+<div style="opacity:.75">
 — ${data.quote.author}
 </div>
 
-</div>`
+</div>
+`
+
+}
+   
+/* Wetter */
+
+if(data.weather){
+radar.push("🌤 " + data.weather.temp + "°")
+}
+
+/* Tanz Radar */
+
+if(data.dance){
+
+const today = new Date().getDay()
+
+const allDanceEvents = [
+...(data.dance.today || []),
+...(data.dance.week || [])
+]
+
+const futureEvents = allDanceEvents
+.filter(e => e.weekday !== undefined && e.weekday >= today)
+.sort((a,b)=>a.weekday-b.weekday)
+
+if(futureEvents.length){
+
+const nextDance = futureEvents[0]
+
+const daysShort = ["So","Mo","Di","Mi","Do","Fr","Sa"]
+
+/* UX: wenn Event heute */
+
+if(nextDance.weekday === today){
+
+radar.push(
+"🔥 Heute " + nextDance.city
+)
+
+}else{
+
+radar.push(
+"💃 " + daysShort[nextDance.weekday] + " " + nextDance.city
+)
 
 }
 
+}
 
+        }
+
+/* Markt */
+
+if(data.events?.today?.length){
+radar.push("🧺 Markt")
+}else{
+
+/* nächster Markt (statisch aus deiner Engine) */
+
+const today = new Date().getDay()
+
+if(today < 3) radar.push("🧺 Markt Mi")
+else if(today < 6) radar.push("🧺 Markt Sa")
+
+}
+
+/* Reise */
+
+if(data.travel){
+radar.push("🌍 " + data.travel.title.split(" – ")[0])
+}
+
+document.getElementById("dailyRadar").innerText =
+radar.join(" • ")
+
+
+  
 /* NEWS */
 
 if(data.news){
 
 document.getElementById("newsBlock").innerHTML =
-
 data.news.map(n=>`
 
 <div class="newsItem">
-
 <div style="font-weight:600">${n.title}</div>
-
-<a href="${n.url}" target="_blank" class="news-link">
-weiterlesen →
-</a>
-
+<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
 <div class="newsSource">${n.source}</div>
-
 </div>
 
-`).join("")
+`).join("");
 
 }
 
 
 /* MARKETS */
 
-if(data.markets){
-
 document.getElementById("daxValue").innerHTML =
-(data.markets.dax?.value ?? "-")
+`
+<div class="marketBlock">
+<div>${data.markets?.dax?.value ?? "-"}</div>
+<div class="market-date">Stand ${data.markets?.dax?.date ?? ""}</div>
+</div>
+`;
 
 document.getElementById("eurusdValue").innerHTML =
-(data.markets.eurusd?.value ?? "-")
-
-}
-
-
-/* CRYPTO */
-
-if(data.crypto){
-
-document.getElementById("btcValue").innerHTML =
-(data.crypto.bitcoin?.usd ?? "-")
-
-document.getElementById("nexoValue").innerHTML =
-(data.crypto.nexo?.usd ?? "-")
-
-}
-
+`
+<div class="marketBlock">
+<div>${data.markets?.eurusd?.value ?? "-"}</div>
+<div class="market-date">Stand ${data.markets?.eurusd?.date ?? ""}</div>
+</div>
+`;
 
 /* FINANCE NEWS */
 
-if(data.financeNews){
+if(data.financeNews && data.financeNews.length){
 
 document.getElementById("financeNewsBlock").innerHTML =
 data.financeNews.slice(0,3).map(n=>`
@@ -700,7 +994,7 @@ data.financeNews.slice(0,3).map(n=>`
 
 <div style="font-weight:600">${n.title}</div>
 
-<a href="${n.url}" target="_blank" class="news-link">
+<a href="${n.url}" target="_self" class="news-link">
 weiterlesen →
 </a>
 
@@ -710,8 +1004,25 @@ weiterlesen →
 
 `).join("")
 
-}
+}else{
 
+document.getElementById("financeNewsBlock").innerHTML =
+'<div style="opacity:.7">Keine aktuellen Finanznews.</div>'
+
+   }
+/* CRYPTO */
+
+document.getElementById("btcValue").innerHTML =
+"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+
+" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+
+ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/de/coins/bitcoin" target="_blank" class="news-link">Info →</a>';
+
+document.getElementById("nexoValue").innerHTML =
+"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
+" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+
+ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
+' <a href="https://www.coingecko.com/de/coins/nexo" target="_blank" class="news-link">Info →</a>';
 
 /* REGIONAL */
 
@@ -721,231 +1032,531 @@ document.getElementById("regionalBlock").innerHTML =
 data.regional.map(r=>`
 
 <div class="newsItem">
-
 <div style="font-weight:600">${r.title}</div>
-
-<a href="${r.url}" target="_blank" class="news-link">
-weiterlesen →
-</a>
-
+<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
 <div class="newsSource">${r.source}</div>
-
 </div>
 
-`).join("")
+`).join("");
 
 }
 
 
-/* EVENTS */
+   
 
-let eventsHTML=""
+/* EVENTS */
+/* EVENTS */
 
 if(data.events){
 
-if(data.events.today?.length){
+let html=""
 
-eventsHTML+=`
+/* HEUTE */
 
-<div class="dayHeader">🔥 Heute</div>
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ 🔥 Heute
+</div>
+
+<div class="dayEvents">
+${
+(data.events.today||[]).length
+? data.events.today.map(renderEventCard).join("")
+: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
+}
+</div>
+`
+/* WOCHENMÄRKTE */
+
+if(data.events.marketsToday?.length){
+
+html += `
+<div class="dayHeader">
+▾ 🧺 Wochenmarkt
+</div>
 
 <div class="dayEvents" style="display:block">
-
-${data.events.today.map(e=>renderEvent(e)).join("")}
-
-</div>`
+${data.events.marketsToday.map(renderEventCard).join("")}
+</div>
+`
 
 }
+   
+/* DIESE WOCHE */
 
 if(data.events.week?.length){
 
-eventsHTML+=`
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Diese Woche
+</div>
 
-<div class="dayHeader">⭐ Diese Woche</div>
-
-<div class="dayEvents" style="display:block">
-
-${data.events.week.map(e=>renderEvent(e)).join("")}
-
-</div>`
+<div class="dayEvents">
+${data.events.week.map(renderEventCard).join("")}
+</div>
+`
 
 }
+
+/* DEMNÄCHST */
 
 if(data.events.upcoming?.length){
 
-eventsHTML+=`
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Demnächst
+</div>
 
-<div class="dayHeader">📅 Demnächst</div>
-
-<div class="dayEvents" style="display:block">
-
-${data.events.upcoming.map(e=>renderEvent(e)).join("")}
-
-</div>`
+<div class="dayEvents">
+${data.events.upcoming.map(renderEventCard).join("")}
+</div>
+`
 
 }
+
+/* MESSEN */
 
 if(data.events.fairs?.length){
 
-eventsHTML+=`
+html+=`
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ Messen
+</div>
 
-<div class="dayHeader">🏛 Verbrauchermessen</div>
-
-<div class="dayEvents" style="display:block">
-
-${data.events.fairs.map(e=>renderEvent(e)).join("")}
-
-</div>`
-
-}
+<div class="dayEvents">
+${data.events.fairs.map(renderEventCard).join("")}
+</div>
+`
 
 }
 
-document.getElementById("eventsBlock").innerHTML = eventsHTML
+document.getElementById("eventsBlock").innerHTML=html
+
+}
 
 
-/* TANZ */
-
-let danceHTML=""
+  
+/* =========================
+   TANZ ENGINE V4
+========================= */
 
 if(data.dance){
 
-if(data.dance.week?.length){
+const today = new Date().getDay()
 
-danceHTML+=`
+const todayEvents = data.dance.today || []
+const weekEvents  = data.dance.week || []
+const festivals   = data.dance.festivals || []
 
-<div class="dayHeader">💃 Diese Woche</div>
+let html = ""
 
-<div class="dayEvents" style="display:block">
+/* HEUTE */
 
-${data.dance.week.map(e=>renderDance(e)).join("")}
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ 🔥 Heute
+</div>
 
-</div>`
+<div class="dayEvents">
+${
+todayEvents.length
+? todayEvents.map(renderDanceCard).join("")
+: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
+}
+</div>
+`
+
+/* WOCHE */
+
+if(weekEvents.length){
+
+const grouped = {}
+
+weekEvents.forEach(e=>{
+if(!grouped[e.weekday]) grouped[e.weekday]=[]
+grouped[e.weekday].push(e)
+})
+
+let weekBlock=""
+
+Object.keys(grouped)
+.sort((a,b)=>a-b)
+.forEach(day=>{
+
+weekBlock += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ ${weekdayFromNumber(day)}
+</div>
+
+<div class="dayEvents">
+${grouped[day].map(renderDanceCard).join("")}
+</div>
+`
+
+})
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ ⭐ Diese Woche
+</div>
+
+<div class="dayEvents">
+${weekBlock}
+</div>
+`
 
 }
 
+/* NÄCHSTES EVENT */
+
+const allEvents=[...todayEvents,...weekEvents]
+
+const future = allEvents
+.filter(e=>e.weekday>=today)
+.sort((a,b)=>a.weekday-b.weekday)
+
+if(future.length){
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ 📅 Nächstes Event
+</div>
+
+<div class="dayEvents">
+${renderDanceCard(future[0])}
+</div>
+`
+
 }
 
-document.getElementById("danceWeek").innerHTML = danceHTML
+/* FESTIVAL EUROPA */
 
+if(festivals.length){
 
-/* TRAVEL */
+const nextFestival =
+festivals.sort((a,b)=>(a.month||12)-(b.month||12))[0]
 
-if(data.travelRadar?.length){
-
-const t = data.travelRadar[0]
-
-document.getElementById("travelBlock").innerHTML =
-
-`<div class="newsItem">
-
-<div style="font-weight:600;font-size:18px">
-${t.title}
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▸ 🌍 Festival Europa
 </div>
 
-<div class="newsSource">
-${t.text}
+<div class="dayEvents">
+${renderDanceCard(nextFestival)}
+</div>
+`
+
+}
+
+document.getElementById("danceWeek").innerHTML = html
+
+}
+
+
+
+
+
+  
+
+
+/* ==≈=========================
+      TAVEL
+====≈===========================*/
+
+if(data.travel){
+
+document.getElementById("travelBlock").innerHTML=`
+
+<div class="newsItem">
+<div style="font-weight:600">${data.travel.title}</div>
+<div class="newsSource">${data.travel.text}</div>
+<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
 </div>
 
-<a href="${t.url}" target="_blank" class="news-link">
-weiter lesen →
-</a>
-
-</div>`
+`;
 
 }
 
 
 /* LANGUAGE */
 
-if(data.language?.length){
+let langIndex = 0
+let langTexts = data.language || []
 
-const l = data.language[0]
+function renderLanguage(){
 
-document.getElementById("languageBlock").innerHTML =
+if(!langTexts.length) return
 
-`<div class="languageCard">
+const l = langTexts[langIndex]
 
-<div class="langLine">🇬🇧 ${l.en}</div>
-<div class="langLine">🇪🇸 ${l.es}</div>
+document.getElementById("languageBlock").innerHTML = `
 
-<div class="langNative" style="opacity:.8">
+<div class="languageCard" onclick="toggleLang(this)">
+
+<div class="langLine">
+<span>🇬🇧 ${l.en}</span>
+<span class="langBtn" onclick="speak(event,'en','${l.en}')">🔊</span>
+</div>
+
+<div class="langLine">
+<span>🇪🇸 ${l.es}</span>
+<span class="langBtn" onclick="speak(event,'es','${l.es}')">🔊</span>
+</div>
+
+<div class="langNative">
 🇩🇪 ${l.de}
 </div>
 
-</div>`
+<button class="uke-btn" onclick="nextLanguage()">▶ Next</button>
+
+</div>
+`
+}
+
+window.nextLanguage=function(){
+
+langIndex++
+
+if(langIndex>=langTexts.length){
+langIndex=0
+}
+
+renderLanguage()
 
 }
 
+renderLanguage()
+   
 
-/* UKULELE */
 
+/* =========================
+   UKULELE MODULE
+========================= */
+
+console.log("UkeSongs geladen:", ukeSongs.length)
+  
 if(data.ukulele){
 
-const u = Array.isArray(data.ukulele) ? data.ukulele[0] : data.ukulele
+if(Array.isArray(data.ukulele)){
+ukeSongs = data.ukulele
+}else{
+ukeSongs = [data.ukulele]
+}
 
-document.getElementById("ukeBlock").innerHTML =
+ukeIndex = 0
 
-`<div class="ukulele-card">
+console.log("Ukulele Songs:", ukeSongs.length)
 
-<div class="ukulele-title">
-${u.title}
-</div>
+renderUkulele(ukeSongs[ukeIndex])
 
-<pre class="uke-tabblock">
-${u.tabs ?? ""}
-</pre>
+}
+  
+/* Trainer */
 
-</div>`
+let ukeTrainerTimer = null
+
+window.startUkeTrainer = function(tempo){
+
+const steps = document.querySelectorAll(".uke-step")
+
+if(!steps.length) return
+
+if(ukeTrainerTimer){
+clearInterval(ukeTrainerTimer)
+}
+
+let index = 0
+const interval = 60000 / tempo
+
+ukeTrainerTimer = setInterval(()=>{
+
+steps.forEach(s=>s.classList.remove("active"))
+
+steps[index].classList.add("active")
+
+index++
+
+if(index >= steps.length){
+index = 0
+}
+
+}, interval)
 
 }
 
+/* =========================
+   RECIPE
+========================= */
 
-/* RECIPE */
+let recipes = []
+let recipeIndex = 0
 
-if(data.recipe){
+function loadRecipes(data){
 
-const r = data.recipe
+recipes = data.recipes || []
+
+if(!recipes.length) return
+
+const today = data.recipe
+
+recipeIndex = recipes.findIndex(r => r.title === today.title)
+
+if(recipeIndex < 0) recipeIndex = 0
+
+showRecipe(recipes[recipeIndex])
+
+}
+
+window.nextRecipe = function(){
+
+if(!recipes.length) return
+
+recipeIndex++
+
+if(recipeIndex >= recipes.length){
+recipeIndex = 0
+}
+
+showRecipe(recipes[recipeIndex])
+
+}
+
+function showRecipe(r){
 
 document.getElementById("recipeTitle").textContent = r.title
-document.getElementById("recipeIngredients").textContent = r.ingredients
+
+document.getElementById("recipeIngredients").textContent =
+Array.isArray(r.ingredients) ? r.ingredients.join(" • ") : r.ingredients
+
 document.getElementById("recipePrep").textContent = r.prep
 document.getElementById("recipeCook").textContent = r.cook
+
 document.getElementById("recipeTemp").textContent = r.temp
 document.getElementById("recipeTime").textContent = r.time
 document.getElementById("recipeShake").textContent = r.shake
 document.getElementById("recipePortion").textContent = r.portion
 
+document.getElementById("recipeCounter").textContent =
+"Rezept " + (recipeIndex+1) + " / " + recipes.length
+
 }
 
-
+loadRecipes(data)
+   
 /* WEATHER */
 
-if(data.weather){
-
 document.getElementById("weatherNow").innerHTML =
-data.weather.temp+"°C"
+weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
+
+document.getElementById("mIcon").innerText =
+weatherIcon(data.weather.trend.morning.code);
+
+document.getElementById("morningTemp").innerText =
+data.weather.trend.morning.temp+"°C";
+
+document.getElementById("aIcon").innerText =
+weatherIcon(data.weather.trend.afternoon.code);
+
+document.getElementById("afternoonTemp").innerText =
+data.weather.trend.afternoon.temp+"°C";
+
+document.getElementById("eIcon").innerText =
+weatherIcon(data.weather.trend.evening.code);
+
+document.getElementById("eveningTemp").innerText =
+data.weather.trend.evening.temp+"°C";
 
 }
 
+function toggleLang(card){
+card.classList.toggle("open")
 }
 
+window.speak = function(e,lang,text){
 
-/* EVENT CARD */
+e.stopPropagation()
+
+const utterance = new SpeechSynthesisUtterance(text)
+utterance.lang = lang
+
+speechSynthesis.speak(utterance)
+
+}
+
+async function loadRadar(){
+
+const res = await fetch("/api/radar")
+const data = await res.json()
+
+if(!data.radar) return
+
+const today = new Date().getDay()
+
+let todayEvent = null
+let nextEvent = null
+let festival = null
+let others = []
+
+data.radar.forEach(e=>{
+
+if(e.weekday === today && !todayEvent){
+todayEvent = e
+return
+}
+
+if(e.month && !festival){
+festival = e
+return
+}
+
+if(!nextEvent){
+nextEvent = e
+return
+}
+
+others.push(e)
+
+})
+
+let html = ""
 
 function renderEvent(e){
 
-return`
+return `
 
-<div class="card">
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ ${e.city || ""} — ${e.title}
+</div>
 
-<strong>${e.title}</strong><br>
+<div class="dayEvents">
 
-${e.city ?? ""}<br>
+<div style="opacity:.8;margin-top:6px">
 
-${e.date ?? ""} ${e.time ?? ""}
+${e.style ? e.style : ""}
 
-${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
+${e.location ? " • " + e.location : ""}
+
+${e.month ? "<br>"+e.month : ""}
+
+</div>
+
+<div class="radarLine">
+
+${e.address ? `<a href="https://maps.google.com/?q=${encodeURIComponent(e.address)}" target="_blank" class="news-link">📍 Karte</a>` : ""}
+
+${e.url ? `<a href="${e.url}" target="_blank" class="news-link">Infos</a>` : ""}
+
+<a href="#" onclick="addEvent(this);return false;" class="news-link"
+data-title="${e.title}"
+data-city="${e.city || ""}"
+data-style="${e.style || ""}"
+data-location="${e.location || ""}"
+data-address="${e.address || ""}"
+data-month="${e.month || ""}">
+➕ übernehmen
+</a>
+
+</div>
 
 </div>
 
@@ -953,46 +1564,221 @@ ${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`
 
 }
 
+if(todayEvent){
 
-/* DANCE CARD */
-
-function renderDance(e){
-
-return`
-
-<div class="card">
-
-<strong>${e.title}</strong><br>
-
-${e.city ?? ""}<br>
-
-${e.time ?? ""}
-
-${e.url?`<br><a href="${e.url}" target="_blank" class="news-link">Infos →</a>`:""}
-
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🔥 Heute
 </div>
 
+<div class="dayEvents">
+${renderEvent(todayEvent)}
+</div>
 `
 
 }
 
+if(nextEvent){
 
-window.addEventListener("load",loadData)
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 📅 Nächstes Event
+</div>
 
+<div class="dayEvents">
+${renderEvent(nextEvent)}
+</div>
+`
 
-</script>  
+}
+
+if(festival){
+
+html += `
+<div class="dayHeader" onclick="toggleDay(this)">
+▶ 🌍 Festival
+</div>
+
+<div class="dayEvents">
+${renderEvent(festival)}
+</div>
+`
+
+}
+
+}
+async function addEvent(btn){
+
+const event = {
+
+title:btn.dataset.title,
+city:btn.dataset.city,
+style:btn.dataset.style,
+location:btn.dataset.location,
+address:btn.dataset.address,
+month:btn.dataset.month
+
+}
+
+await fetch("/api/approve-event",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(event)
+})
+
+alert("Event übernommen")
+
+}
 
   
-<footer class="footer">  
-<div class="footer-left">  
-GLOBAL SOUL • Daily Compass<br>  
-© 2026 Claudia Förstner<br>  
-Built with curiosity 🌍  
-</div>  
-<div class="footer-right">  
-GLOBAL – mein Blick über Heimat und Horizont hinaus.<br>  
-SOUL – die Dinge, die das Leben lebendig machen.  
-</div>  
-</footer>  
-</body>  
+window.addEventListener("load",loadData);
+window.addEventListener("load",loadRadar);
+  
+let compassClicks = 0;
+
+window.addEventListener("load", () => {
+
+const compass = document.getElementById("compass");
+const version = document.getElementById("versionTag");
+
+compass.addEventListener("click", () => {
+
+compassClicks++;
+
+if(compassClicks >= 3){
+
+version.style.opacity = "0.6";
+
+setTimeout(()=>{
+version.style.opacity = "0";
+compassClicks = 0;
+},5000);
+
+}
+
+});
+
+});
+
+
+function renderUkulele(song){
+
+if(!song) return
+
+const tabs = song.tabs || ""
+const tempo = song.tempo || 80
+const strum = song.strum || ""
+const picking = song.picking || ""
+
+const firstLine = tabs.split("\n")[0] || ""
+const chords = firstLine.split(/\s+/).filter(c=>c)
+
+const tabLines = tabs.split("\n").slice(2).join("\n")
+
+document.getElementById("ukeBlock").innerHTML = `
+<div class="ukulele-card">
+
+<div class="ukulele-title">
+${song.title}
+</div>
+
+<div style="margin-top:10px;font-weight:600;font-size:18px;letter-spacing:3px">
+${chords.join("   ")}
+</div>
+
+<div class="uke-tabblock">
+<pre>
+┌────────────────────────┐
+${tabLines}
+└────────────────────────┘
+</pre>
+</div>
+
+<div class="uke-meta">
+
+<div><b>Tempo</b> ${tempo} bpm</div>
+
+${strum ? `<div><b>Strum</b> ${strum}</div>` : ""}
+${picking ? `<div><b>Fingerpicking</b> ${picking}</div>` : ""}
+
+</div>
+
+<div class="uke-trainer">
+
+<div class="uke-label">Chord Trainer</div>
+
+<div class="uke-trainer-row">
+${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
+</div>
+
+<button class="uke-btn" onclick="startUkeTrainer(${tempo})">
+▶ Start Trainer
+</button>
+
+</div>
+
+<button class="uke-btn" onclick="nextSong()">
+▶ Next Song
+</button>
+
+</div>
+`
+}
+  window.nextSong = function(){
+
+if(!ukeSongs.length) return
+
+ukeIndex++
+
+if(ukeIndex >= ukeSongs.length){
+ukeIndex = 0
+}
+
+renderUkulele(ukeSongs[ukeIndex])
+
+}
+  
+function toggleDay(el){
+
+const content = el.nextElementSibling
+
+if(!content) return
+
+if(content.style.display === "block"){
+
+content.style.display = "none"
+el.innerHTML = el.innerHTML.replace("▼","▶")
+
+}else{
+
+content.style.display = "block"
+el.innerHTML = el.innerHTML.replace("▶","▼")
+
+}
+
+}
+
+  
+</script>
+
+
+<footer class="footer">
+
+<div class="footer-left">
+GLOBAL SOUL • Daily Compass<br>
+© 2026 Claudia Förstner<br>
+Built with curiosity 🌍
+</div>
+
+<div class="footer-right">
+GLOBAL – mein Blick über Heimat und Horizont hinaus.<br>
+SOUL – die Dinge, die das Leben lebendig machen.
+</div>
+
+  
+</footer>
+
+</body>
 </html>
