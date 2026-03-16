@@ -1255,27 +1255,56 @@ document.getElementById("danceWeek").innerHTML = html
 
 
 
+/* =========================
+   TRAVEL
+========================= */
 
-  
+if(data.travelRadar?.length){
 
-
-/* ==≈=========================
-      TAVEL
-====≈===========================*/
-
-if(data.travel){
-
-document.getElementById("travelBlock").innerHTML=`
-
-<div class="newsItem">
-<div style="font-weight:600">${data.travel.title}</div>
-<div class="newsSource">${data.travel.text}</div>
-<a href="${data.travel.url}" target="_blank" class="news-link">mehr →</a>
-</div>
-
-`;
+travelList = data.travelRadar
+travelIndex = 0
+renderTravel()
 
 }
+
+function renderTravel(){
+
+const t = travelList[travelIndex]
+
+document.getElementById("travelBlock").innerHTML = `
+
+<div class="newsItem">
+
+<img src="https://source.unsplash.com/1200x700/?travel,landscape&sig=${travelIndex}"
+style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:10px">
+
+<div style="font-weight:600;font-size:18px">${t.title}</div>
+
+<div class="newsSource">${t.text}</div>
+
+<a href="${t.url}" target="_blank" class="news-link">weiterlesen →</a>
+
+<br>
+
+<button class="uke-btn" onclick="nextTravel()">▶ Next</button>
+
+</div>
+
+`
+
+}
+
+window.nextTravel=function(){
+
+travelIndex++
+
+if(travelIndex>=travelList.length){
+travelIndex=0
+}
+
+renderTravel()
+
+   }
 
 
 /* LANGUAGE */
