@@ -1306,11 +1306,15 @@ document.getElementById("travelBlock").innerHTML = `
 
 }
 
-window.nextTravel=function(){
+function nextTravel(){
 
-if(!travelList || !travelList.length) return
+if(!travelList || travelList.length===0) return
 
-travelIndex = (travelIndex + 1) % travelList.length
+travelIndex++
+
+if(travelIndex>=travelList.length){
+travelIndex=0
+}
 
 renderTravel()
 
