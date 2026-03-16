@@ -1278,7 +1278,7 @@ document.getElementById("travelBlock").innerHTML = `
 
 <div class="newsItem">
 
-<img src="${t.image}"
+<img src="${t.image || 'https://picsum.photos/1200/700'}">
 style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:10px">
 
 <div style="font-weight:600;font-size:18px">${t.title}</div>
