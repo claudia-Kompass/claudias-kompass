@@ -1287,7 +1287,7 @@ document.getElementById("travelBlock").innerHTML = `
 
 <div class="travel-collage">
 
-<img src="${t.image}" class="travel-image"> 
+<img src="${t.image || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}" class="travel-image">
 
 </div>
 <div style="font-weight:600;font-size:18px">${t.title}</div>
@@ -1306,7 +1306,7 @@ document.getElementById("travelBlock").innerHTML = `
 
 }
 
-function nextTravel(){
+window.nextTravel = function(){
 
 if(!travelList || travelList.length===0) return
 
