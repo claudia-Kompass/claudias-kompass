@@ -938,8 +938,8 @@ else if(today < 6) radar.push("🧺 Markt Sa")
 
 /* Reise */
 
-if(data.travel){
-radar.push("🌍 " + data.travel.title.split(" – ")[0])
+if(data.travelRadar?.length){
+radar.push("🌍 " + data.travelRadar[0].title.split(" – ")[0])
 }
 
 document.getElementById("dailyRadar").innerText =
