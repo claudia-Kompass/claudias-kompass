@@ -477,7 +477,19 @@ pointer-events:none;
 z-index:9999;
 }
 
+.travel-collage{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:6px;
+margin-bottom:12px;
+}
 
+.travel-collage img{
+width:100%;
+height:130px;
+object-fit:cover;
+border-radius:6px;
+}
    
    
 </style>
@@ -1278,8 +1290,14 @@ document.getElementById("travelBlock").innerHTML = `
 
 <div class="newsItem">
 
-<img src="${t.image || 'https://picsum.photos/1200/700'}" style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:10px">
+<div class="travel-collage">
 
+<img src="https://picsum.photos/600/400?travel,sea&random=${travelIndex+1}">
+<img src="https://picsum.photos/600/400?travel,mountain&random=${travelIndex+2}">
+<img src="https://picsum.photos/600/400?travel,city&random=${travelIndex+3}">
+<img src="https://picsum.photos/600/400?travel,beach&random=${travelIndex+4}">
+
+</div>
 <div style="font-weight:600;font-size:18px">${t.title}</div>
 
 <div class="newsSource">${t.text}</div>
@@ -1298,16 +1316,13 @@ document.getElementById("travelBlock").innerHTML = `
 
 window.nextTravel=function(){
 
-travelIndex++
+if(!travelList || !travelList.length) return
 
-if(travelIndex>=travelList.length){
-travelIndex=0
-}
+travelIndex = (travelIndex + 1) % travelList.length
 
 renderTravel()
 
-   }
-
+}
 
 /* LANGUAGE */
 
