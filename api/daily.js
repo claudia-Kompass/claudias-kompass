@@ -583,6 +583,18 @@ gold.regularMarketChangePercent || 0
 
 }
 
+if(oil){
+
+const oilUsd = oil.regularMarketPrice
+const eurRate = eurusd ? eurusd.regularMarketPrice : 1
+
+markets.oil.usd = oilUsd.toFixed(0)
+
+markets.oil.eur = (oilUsd / eurRate).toFixed(0)
+
+markets.oil.change =
+oil.regularMarketChangePercent || 0
+
 }
    
 
