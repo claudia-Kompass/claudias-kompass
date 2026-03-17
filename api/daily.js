@@ -545,61 +545,44 @@ oil:{usd:"-",eur:"-",change:0}
 
 if(marketRes){
 
-try{
+const data = await marketRes.json()
 
-const d = await marketRes.json()
-const q = d.quoteResponse.result
-
-const dax = q.find(x=>x.symbol==="^GDAXI" || x.symbol==="GDAXI")
-const eurusd = q.find(x=>x.symbol==="EURUSD=X")
-const gold = q.find(x=>x.symbol==="GC=F")
-const oil = q.find(x=>x.symbol==="CL=F")
+const dax = data.find(x=>x.symbol==="DAX")
+const eurusd = data.find(x=>x.symbol==="EURUSD")
+const gold = data.find(x=>x.symbol==="GC.F")
+const oil = data.find(x=>x.symbol==="CL.F")
 
 if(dax){
-const daxPrice =
-dax.regularMarketPrice ||
-dax.postMarketPrice ||
-dax.preMarketPrice
-
 markets.dax.value =
-Math.round(daxPrice).toLocaleString("de-DE")
+Number(dax.close).toLocaleString("de-DE")
 }
 
 if(eurusd){
-const eurusdPrice =
-eurusd.regularMarketPrice ||
-eurusd.postMarketPrice ||
-eurusd.preMarketPrice
-
 markets.eurusd.value =
-eurusdPrice.toFixed(2)
+Number(eurusd.close).toFixed(2)
 }
 
 if(gold){
-   
-const goldUsd =
-gold.regularMarketPrice ||
-gold.postMarketPrice ||
-gold.preMarketPrice
+
+const usd = Number(gold.close)
+const eur = eurusd ? usd / Number(eurusd.close) : usd
+
+markets.gold.usd = usd.toFixed(0)
+markets.gold.eur = eur.toFixed(0)
 
 }
 
 if(oil){
 
-const oilUsd =
-oil.regularMarketPrice ||
-oil.postMarketPrice ||
-oil.preMarketPrice
+const usd = Number(oil.close)
+const eur = eurusd ? usd / Number(eurusd.close) : usd
 
-const eurRate = eurusd ? eurusd.regularMarketPrice : 1
+markets.oil.usd = usd.toFixed(0)
+markets.oil.eur = eur.toFixed(0)
 
-markets.oil.usd = oilUsd.toFixed(0)
+}
 
-markets.oil.eur = (oilUsd / eurRate).toFixed(0)
-
-markets.oil.change =
-oil.regularMarketChangePercent || 0
-
+}
 }
    
 }catch(e){
