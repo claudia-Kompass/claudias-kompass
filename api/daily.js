@@ -596,7 +596,14 @@ markets.oil.change =
 oil.regularMarketChangePercent || 0
 
 }
-   
+
+}catch(e){
+
+console.log("Market API failed")
+
+}
+
+}
 
 /* =======================================================
 EVENT ENGINE
