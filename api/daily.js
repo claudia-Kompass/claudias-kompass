@@ -538,11 +538,11 @@ marketDate.toLocaleDateString("de-DE")
 MARKETS
 ======================================================= */
 
-let markets={
-dax:{value:"-",change:0},
-eurusd:{value:"-",change:0},
-gold:{usd:"-",eur:"-",change:0},
-oil:{usd:"-",eur:"-",change:0}
+let markets = {
+  dax: { value:"-", trend:"neutral", link:"https://www.finanzen.net/index/dax" },
+  eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
+  gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
+  oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
 }
 
 try{
