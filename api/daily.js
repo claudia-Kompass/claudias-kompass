@@ -550,7 +550,7 @@ try{
 const d = await marketRes.json()
 const q = d.quoteResponse.result
 
-const dax = q.find(x=>x.symbol==="^GDAXI")
+const dax = q.find(x=>x.symbol==="^GDAXI" || x.symbol==="GDAXI")
 const eurusd = q.find(x=>x.symbol==="EURUSD=X")
 const gold = q.find(x=>x.symbol==="GC=F")
 const oil = q.find(x=>x.symbol==="CL=F")
