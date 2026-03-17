@@ -538,6 +538,12 @@ marketDate.toLocaleDateString("de-DE")
 MARKETS
 ======================================================= */
 
+let markets = {
+  dax: { value:"-", trend:"neutral", link:"https://www.finanzen.net/index/dax" },
+  eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
+  gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
+  oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
+}
 function trendColor(change){
 
   if(change > 0) return "green"
@@ -545,13 +551,52 @@ function trendColor(change){
   return "yellow"
 
 }
-let markets = {
-  dax: { value:"-", trend:"neutral", link:"https://www.finanzen.net/index/dax" },
-  eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
-  gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
-  oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
-}
 
+ if(dax && dax.close){
+
+  markets.dax.value =
+  Number(dax.close).toLocaleString("de-DE")
+
+  markets.dax.trend =
+  trendColor(Number(dax.change || 0))
+
+ }
+
+if(eurusd && eurusd.close){
+
+  markets.eurusd.value =
+  Number(eurusd.close).toFixed(2)
+
+  markets.eurusd.trend =
+  trendColor(Number(eurusd.change || 0))
+
+   }
+
+if(gold && gold.close){
+
+  const usd = Number(gold.close)
+  const eurRate = eurusd && eurusd.close ? Number(eurusd.close) : 1
+
+  markets.gold.usd = usd.toFixed(0)
+  markets.gold.eur = (usd / eurRate).toFixed(0)
+
+  markets.gold.trend =
+  trendColor(Number(gold.change || 0))
+
+   }
+
+if(oil && oil.close){
+
+  const usd = Number(oil.close)
+  const eurRate = eurusd && eurusd.close ? Number(eurusd.close) : 1
+
+  markets.oil.usd = usd.toFixed(0)
+  markets.oil.eur = (usd / eurRate).toFixed(0)
+
+  markets.oil.trend =
+  trendColor(Number(oil.change || 0))
+
+   }
 try{
 
 if(marketRes){
