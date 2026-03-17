@@ -593,11 +593,7 @@ markets.oil.eur = (usd / eurRate).toFixed(0)
 
 }
 
-}catch(e){
 
-console.log("Market API failed",e)
-
-}
 
 
 /* =======================================================
