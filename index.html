@@ -739,15 +739,13 @@ link:"https://www.finanzen.net/rohstoffe/oelpreis"
 },
 
 {
-{
 name:"Bitcoin",
-value:"$"+data.crypto?.bitcoin?.usd.toLocaleString("de-DE"),
-sub:"€"+data.crypto?.bitcoin?.eur.toLocaleString("de-DE"),
+value:"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE"),
+sub:"€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE"),
 trend:data.crypto?.bitcoin?.usd_24h_change,
 link:"https://coinmarketcap.com/currencies/bitcoin/"
 },
 
-{
 {
 name:"Nexo",
 value:"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2),
@@ -755,6 +753,7 @@ sub:"€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3),
 trend:data.crypto?.nexo?.usd_24h_change,
 link:"https://coinmarketcap.com/currencies/nexo/"
 }
+
 
 ]
 
