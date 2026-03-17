@@ -594,7 +594,7 @@ markets.oil.eur = (usd / eurRate).toFixed(0)
 
 
 }
-
+}
 
 
 
