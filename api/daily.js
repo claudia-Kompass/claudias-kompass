@@ -547,10 +547,10 @@ if(marketRes){
 
 const data = await marketRes.json()
 
-const dax = data.find(x=>x.symbol==="DAX")
-const eurusd = data.find(x=>x.symbol==="EURUSD")
-const gold = data.find(x=>x.symbol==="GC.F")
-const oil = data.find(x=>x.symbol==="CL.F")
+const dax = data.find(x => x.symbol.toUpperCase() === "DAX")
+const eurusd = data.find(x => x.symbol.toUpperCase() === "EURUSD")
+const gold = data.find(x => x.symbol.toUpperCase() === "GC.F")
+const oil = data.find(x => x.symbol.toUpperCase() === "CL.F")
 
 if(dax){
 markets.dax.value =
