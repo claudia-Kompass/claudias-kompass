@@ -590,7 +590,6 @@ const eurRate = eurusd && eurusd.close ? Number(eurusd.close) : 1
 markets.oil.usd = usd.toFixed(0)
 markets.oil.eur = (usd / eurRate).toFixed(0)
 
-}
 
 }
 
