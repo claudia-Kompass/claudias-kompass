@@ -543,48 +543,60 @@ gold:{usd:"-",eur:"-",change:0},
 oil:{usd:"-",eur:"-",change:0}
 }
 
+try{
+
 if(marketRes){
 
 const data = await marketRes.json()
 
-const dax = data.find(x => x.symbol.toUpperCase() === "DAX")
-const eurusd = data.find(x => x.symbol.toUpperCase() === "EURUSD")
-const gold = data.find(x => x.symbol.toUpperCase() === "GC.F")
-const oil = data.find(x => x.symbol.toUpperCase() === "CL.F")
+const dax = data.find(x => x.symbol && x.symbol.toUpperCase().includes("DAX"))
+const eurusd = data.find(x => x.symbol && x.symbol.toUpperCase().includes("EURUSD"))
+const gold = data.find(x => x.symbol && x.symbol.toUpperCase().includes("GC"))
+const oil = data.find(x => x.symbol && x.symbol.toUpperCase().includes("CL"))
 
-if(dax){
+/* DAX */
+
+if(dax && dax.close){
 markets.dax.value =
 Number(dax.close).toLocaleString("de-DE")
 }
 
-if(eurusd){
+/* EUR USD */
+
+if(eurusd && eurusd.close){
 markets.eurusd.value =
 Number(eurusd.close).toFixed(2)
 }
 
-if(gold){
+/* GOLD */
+
+if(gold && gold.close){
 
 const usd = Number(gold.close)
-const eur = eurusd ? usd / Number(eurusd.close) : usd
+const eurRate = eurusd && eurusd.close ? Number(eurusd.close) : 1
 
 markets.gold.usd = usd.toFixed(0)
-markets.gold.eur = eur.toFixed(0)
+markets.gold.eur = (usd / eurRate).toFixed(0)
 
 }
 
-if(oil){
+/* OIL */
+
+if(oil && oil.close){
 
 const usd = Number(oil.close)
-const eur = eurusd ? usd / Number(eurusd.close) : usd
+const eurRate = eurusd && eurusd.close ? Number(eurusd.close) : 1
 
 markets.oil.usd = usd.toFixed(0)
-markets.oil.eur = eur.toFixed(0)
+markets.oil.eur = (usd / eurRate).toFixed(0)
 
 }
-   
+
+}
+
 }catch(e){
 
-console.log("Market API failed")
+console.log("Market API failed",e)
 
 }
 
