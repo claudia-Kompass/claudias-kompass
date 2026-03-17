@@ -581,8 +581,6 @@ markets.oil.usd = usd.toFixed(0)
 markets.oil.eur = eur.toFixed(0)
 
 }
-
-}
    
 }catch(e){
 
