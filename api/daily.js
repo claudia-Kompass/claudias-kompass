@@ -582,8 +582,9 @@ markets.gold.change =
 gold.regularMarketChangePercent || 0
 
 }
-   
 
+}
+   
 
 /* =======================================================
 EVENT ENGINE
