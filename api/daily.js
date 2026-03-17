@@ -582,6 +582,8 @@ gold.regularMarketPrice ||
 gold.postMarketPrice ||
 gold.preMarketPrice
 
+}
+
 if(oil){
 
 const oilUsd =
@@ -589,8 +591,17 @@ oil.regularMarketPrice ||
 oil.postMarketPrice ||
 oil.preMarketPrice
 
-}
+const eurRate = eurusd ? eurusd.regularMarketPrice : 1
 
+markets.oil.usd = oilUsd.toFixed(0)
+
+markets.oil.eur = (oilUsd / eurRate).toFixed(0)
+
+markets.oil.change =
+oil.regularMarketChangePercent || 0
+
+}
+   
 }catch(e){
 
 console.log("Market API failed")
