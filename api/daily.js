@@ -572,7 +572,7 @@ eurusd.regularMarketChangePercent || 0
 if(gold){
 
 const goldUsd = gold.regularMarketPrice
-const eurRate = eurusd?.regularMarketPrice || 1
+const eurRate = eurusd ? eurusd.regularMarketPrice : 1
 
 markets.gold.usd = goldUsd.toFixed(0)
 
