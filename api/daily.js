@@ -582,7 +582,6 @@ markets.gold.change =
 gold.regularMarketChangePercent || 0
 
 }
-}
    
 
 
