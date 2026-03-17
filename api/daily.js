@@ -590,7 +590,6 @@ console.log("Market API failed")
 
 }
 
-}
 
 /* =======================================================
 EVENT ENGINE
