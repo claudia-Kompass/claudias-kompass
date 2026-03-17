@@ -540,7 +540,7 @@ let markets={
 dax:{value:"-",change:0},
 eurusd:{value:"-",change:0},
 gold:{usd:"-",eur:"-",change:0},
-oil:{usd:"-",change:0}
+oil:{usd:"-",eur:"-",change:0}
 }
 
 if(marketRes){
