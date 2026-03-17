@@ -583,7 +583,6 @@ markets.oil.eur = eur.toFixed(0)
 }
 
 }
-}
    
 }catch(e){
 
