@@ -535,15 +535,61 @@ marketDate.toLocaleDateString("de-DE")
 MARKETS
 ======================================================= */
 
-const markets={
-dax:{
-value:"18.742",
-date:marketDateString
-},
-eurusd:{
-value:"1.08",
-date:marketDateString
+let markets={
+dax:{value:"-",change:0},
+eurusd:{value:"-",change:0},
+gold:{usd:"-",eur:"-",change:0},
+oil:{usd:"-",change:0}
 }
+
+if(marketRes){
+
+try{
+
+const d = await marketRes.json()
+const q = d.quoteResponse.result
+
+const dax = q.find(x=>x.symbol==="^GDAXI")
+const eurusd = q.find(x=>x.symbol==="EURUSD=X")
+const gold = q.find(x=>x.symbol==="GC=F")
+const oil = q.find(x=>x.symbol==="CL=F")
+
+if(dax){
+markets.dax.value =
+Math.round(dax.regularMarketPrice).toLocaleString("de-DE")
+markets.dax.change =
+dax.regularMarketChangePercent || 0
+}
+
+if(eurusd){
+markets.eurusd.value =
+eurusd.regularMarketPrice.toFixed(2)
+markets.eurusd.change =
+eurusd.regularMarketChangePercent || 0
+}
+
+if(gold){
+markets.gold.usd =
+gold.regularMarketPrice.toFixed(0)
+
+markets.gold.change =
+gold.regularMarketChangePercent || 0
+}
+
+if(oil){
+markets.oil.usd =
+oil.regularMarketPrice.toFixed(0)
+
+markets.oil.change =
+oil.regularMarketChangePercent || 0
+}
+
+}catch(e){
+
+console.log("Market API failed")
+
+}
+
 }
    
 
