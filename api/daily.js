@@ -576,33 +576,18 @@ eurusdPrice.toFixed(2)
 }
 
 if(gold){
-
-const goldUsd = gold.regularMarketPrice
-const eurRate = eurusd ? eurusd.regularMarketPrice : 1
-
-markets.gold.usd = goldUsd.toFixed(0)
-
-markets.gold.eur = (goldUsd / eurRate).toFixed(0)
-
-markets.gold.change =
-gold.regularMarketChangePercent || 0
-
-}
-
-if(oil){
-
+   
 const goldUsd =
 gold.regularMarketPrice ||
 gold.postMarketPrice ||
 gold.preMarketPrice
-const eurRate = eurusd ? eurusd.regularMarketPrice : 1
 
-markets.oil.usd = oilUsd.toFixed(0)
+if(oil){
 
-markets.oil.eur = (oilUsd / eurRate).toFixed(0)
-
-markets.oil.change =
-oil.regularMarketChangePercent || 0
+const oilUsd =
+oil.regularMarketPrice ||
+oil.postMarketPrice ||
+oil.preMarketPrice
 
 }
 
