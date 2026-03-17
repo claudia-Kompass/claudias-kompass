@@ -570,27 +570,18 @@ eurusd.regularMarketChangePercent || 0
 }
 
 if(gold){
-markets.gold.usd =
-gold.regularMarketPrice.toFixed(0)
+
+const goldUsd = gold.regularMarketPrice
+const eurRate = eurusd?.regularMarketPrice || 1
+
+markets.gold.usd = goldUsd.toFixed(0)
+
+markets.gold.eur = (goldUsd / eurRate).toFixed(0)
 
 markets.gold.change =
 gold.regularMarketChangePercent || 0
-}
-
-if(oil){
-markets.oil.usd =
-oil.regularMarketPrice.toFixed(0)
-
-markets.oil.change =
-oil.regularMarketChangePercent || 0
-}
-
-}catch(e){
-
-console.log("Market API failed")
 
 }
-
 }
    
 
