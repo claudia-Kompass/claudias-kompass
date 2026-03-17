@@ -750,8 +750,8 @@ link:"https://coinmarketcap.com/currencies/bitcoin/"
 {
 {
 name:"Nexo",
-value:"$"+data.crypto?.nexo?.usd.toFixed(2),
-sub:"€"+data.crypto?.nexo?.eur.toFixed(3),
+value:"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2),
+sub:"€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3),
 trend:data.crypto?.nexo?.usd_24h_change,
 link:"https://coinmarketcap.com/currencies/nexo/"
 }
