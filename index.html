@@ -1283,24 +1283,32 @@ const t = travelList[travelIndex]
 
 document.getElementById("travelBlock").innerHTML = `
 
-<
+<div class="newsItem">
+
+<img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+class="travel-image">
+
+<div style="font-weight:600;font-size:18px">
+${t?.title || "Santorini – Griechenland"}
+</div>
+
+<div class="newsSource">
+${t?.text || "Weiße Häuser über dem Ägäischen Meer."}
+</div>
+
+<a href="${t?.url || '#'}" target="_blank" class="news-link">
+weiterlesen →
+</a>
+
+<br>
+
+<button class="uke-btn" onclick="nextTravel()">
+▶ Next
+</button>
+
+</div>
 
 `
-
-}
-
-window.nextTravel = function(){
-
-if(!travelList || travelList.length===0) return
-
-travelIndex++
-
-if(travelIndex>=travelList.length){
-travelIndex=0
-}
-
-renderTravel()
-
 }
 
 /* LANGUAGE */
