@@ -538,6 +538,13 @@ marketDate.toLocaleDateString("de-DE")
 MARKETS
 ======================================================= */
 
+function trendColor(change){
+
+  if(change > 0) return "green"
+  if(change < 0) return "red"
+  return "yellow"
+
+}
 let markets = {
   dax: { value:"-", trend:"neutral", link:"https://www.finanzen.net/index/dax" },
   eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
