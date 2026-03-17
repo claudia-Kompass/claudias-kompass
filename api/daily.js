@@ -556,17 +556,23 @@ const gold = q.find(x=>x.symbol==="GC=F")
 const oil = q.find(x=>x.symbol==="CL=F")
 
 if(dax){
+const daxPrice =
+dax.regularMarketPrice ||
+dax.postMarketPrice ||
+dax.preMarketPrice
+
 markets.dax.value =
-Math.round(dax.regularMarketPrice).toLocaleString("de-DE")
-markets.dax.change =
-dax.regularMarketChangePercent || 0
+Math.round(daxPrice).toLocaleString("de-DE")
 }
 
 if(eurusd){
+const eurusdPrice =
+eurusd.regularMarketPrice ||
+eurusd.postMarketPrice ||
+eurusd.preMarketPrice
+
 markets.eurusd.value =
-eurusd.regularMarketPrice.toFixed(2)
-markets.eurusd.change =
-eurusd.regularMarketChangePercent || 0
+eurusdPrice.toFixed(2)
 }
 
 if(gold){
@@ -585,7 +591,10 @@ gold.regularMarketChangePercent || 0
 
 if(oil){
 
-const oilUsd = oil.regularMarketPrice
+const goldUsd =
+gold.regularMarketPrice ||
+gold.postMarketPrice ||
+gold.preMarketPrice
 const eurRate = eurusd ? eurusd.regularMarketPrice : 1
 
 markets.oil.usd = oilUsd.toFixed(0)
