@@ -722,6 +722,100 @@ return '<span class="ampel yellow"></span>';
 
 }
 
+function renderMarkets(data){
+
+let html = `<table class="marketTable">`
+
+const rows = [
+
+{
+name:"DAX",
+value:data.markets?.dax?.value,
+trend:data.markets?.dax?.change,
+link:"https://www.finanzen.net/index/dax"
+},
+
+{
+name:"EUR/USD",
+value:data.markets?.eurusd?.value,
+trend:data.markets?.eurusd?.change,
+link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
+},
+
+{
+name:"Gold",
+value:"$"+data.markets?.gold?.usd,
+sub:"€"+data.markets?.gold?.eur,
+trend:data.markets?.gold?.change,
+link:"https://www.finanzen.net/rohstoffe/goldpreis"
+},
+
+{
+name:"Öl",
+value:"$"+data.markets?.oil?.usd,
+trend:data.markets?.oil?.change,
+link:"https://www.finanzen.net/rohstoffe/oelpreis"
+},
+
+{
+name:"Bitcoin",
+value:"$"+data.crypto?.bitcoin?.usd.toLocaleString("de-DE"),
+sub:"€"+data.crypto?.bitcoin?.eur.toLocaleString("de-DE"),
+trend:data.crypto?.bitcoin?.usd_24h_change,
+link:"https://www.finanzen.net/kryptowaehrungen/bitcoin"
+},
+
+{
+name:"Nexo",
+value:"$"+data.crypto?.nexo?.usd.toFixed(2),
+sub:"€"+data.crypto?.nexo?.eur.toFixed(3),
+trend:data.crypto?.nexo?.usd_24h_change,
+link:"https://www.finanzen.net/kryptowaehrungen/nexo"
+}
+
+]
+
+rows.forEach(r=>{
+
+html += `
+
+<tr>
+
+<td class="marketName">
+${r.name}
+</td>
+
+<td class="marketValue">
+
+<div>${r.value ?? "-"}</div>
+
+${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
+
+</td>
+
+<td class="marketTrend">
+${ampel(r.trend ?? 0)}
+</td>
+
+<td class="marketLink">
+<a href="${r.link}" target="_blank" class="news-link">
+Info →
+</a>
+</td>
+
+</tr>
+
+`
+
+})
+
+html += `</table>`
+
+document.getElementById("marketsBlock").innerHTML = html
+
+}
+
+   
 function formatDate(date){
 
 if(!date) return "";
