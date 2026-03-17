@@ -12,6 +12,8 @@ let rssCacheTime = 0
 
 module.exports = async function handler(req,res){
 
+try{
+   
 res.setHeader("Cache-Control","s-maxage=300, stale-while-revalidate=600")
 res.setHeader("X-Content-Type-Options","nosniff")
 res.setHeader("X-Frame-Options","DENY")
