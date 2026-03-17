@@ -162,6 +162,8 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 
 fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=usd,eur&include_24hr_change=true"),
 
+fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI,EURUSD=X,GC=F,CL=F"),
+
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
