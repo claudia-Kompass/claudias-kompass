@@ -984,8 +984,6 @@ console.error("LOAD ERROR",err);
   
 function render(data){
    
-renderMarkets(data)
-   
 
 document.getElementById("versionTag").innerText = "v" + data.version;
 
@@ -1159,21 +1157,7 @@ document.getElementById("financeNewsBlock").innerHTML =
    }
 /* CRYPTO */
 
-document.getElementById("btcValue").innerHTML =
-"$"+(data.crypto?.bitcoin?.usd ?? 0).toLocaleString("de-DE")+
-" (€"+(data.crypto?.bitcoin?.eur ?? 0).toLocaleString("de-DE")+") "+
-ampel(data.crypto?.bitcoin?.usd_24h_change ?? 0)+
-id="btcfix1"
-id="btcfix1"
-<a href="https://coinmarketcap.com/currencies/bitcoin/" target="_blank" class="news-link">Info →</a>
-document.getElementById("nexoValue").innerHTML =
-"$"+(data.crypto?.nexo?.usd ?? 0).toFixed(2)+
-" (€"+(data.crypto?.nexo?.eur ?? 0).toFixed(3)+") "+
-ampel(data.crypto?.nexo?.usd_24h_change ?? 0)+
-id="btcfix2"
-id="btcfix2"
-<a href="https://coinmarketcap.com/currencies/nexo/" target="_blank" class="news-link">Info →</a>
-
+renderMarkets(data)
    
    /* REGIONAL */
 
