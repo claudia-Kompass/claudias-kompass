@@ -1093,22 +1093,6 @@ data.news.map(n=>`
 
 /* MARKETS */
 
-document.getElementById("daxValue").innerHTML =
-`
-<div class="marketBlock">
-<div>${data.markets?.dax?.value ?? "-"}</div>
-<div class="market-date">Stand ${data.markets?.dax?.date ?? ""}</div>
-</div>
-`;
-
-document.getElementById("eurusdValue").innerHTML =
-`
-<div class="marketBlock">
-<div>${data.markets?.eurusd?.value ?? "-"}</div>
-<div class="market-date">Stand ${data.markets?.eurusd?.date ?? ""}</div>
-</div>
-`;
-
 /* FINANCE NEWS */
 
 if(data.financeNews && data.financeNews.length){
