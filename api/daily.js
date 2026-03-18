@@ -552,8 +552,6 @@ function trendColor(change){
 
 }
 
-try{
-
 if(marketRes){
 
 const data = await marketRes.json()
@@ -603,11 +601,7 @@ markets.oil.eur = (usd / eurRate).toFixed(0)
 
 }
 
-}catch(e){
 
-console.log("Market API failed")
-
-}
 
 
 
