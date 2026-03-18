@@ -251,10 +251,14 @@ if(cryptoRes){
 
 const d=await cryptoRes.json()
 
-bitcoin=d.bitcoin||bitcoin
-nexo=d.nexo||nexo
-
+if(d.bitcoin){
+bitcoin=d.bitcoin
 }
+
+if(d.nexo){
+nexo=d.nexo
+}
+
 
 if(rssCache && Date.now() - rssCacheTime < 600000){
 
