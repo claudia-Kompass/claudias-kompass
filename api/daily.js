@@ -162,7 +162,7 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 
 fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold&vs_currencies=usd,eur&include_24hr_change=true"),
 
-fetchTimeout("https://api.exchangerate.host/latest?base=EUR&symbols=USD"),
+fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
    
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 
@@ -576,7 +576,11 @@ if(fxRes){
     if(fx && fx.rates && fx.rates.USD){
   markets.eurusd.value = Number(fx.rates.USD).toFixed(2)
 }else{
+  if(fx && fx.rates && fx.rates.USD){
+  markets.eurusd.value = fx.rates.USD.toFixed(2)
+}else{
   markets.eurusd.value = "-"
+}
 }
   }catch(e){
     console.log("FX failed")
