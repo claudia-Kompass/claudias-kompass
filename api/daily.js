@@ -258,8 +258,10 @@ bitcoin=d.bitcoin
 if(d.nexo){
 nexo=d.nexo
 }
-   
+
 }
+
+
 
 if(rssCache && Date.now() - rssCacheTime < 600000){
 
