@@ -547,44 +547,36 @@ function trendColor(change){
 /* CRYPTO */
 
 if(cryptoRes){
-
-const d=await cryptoRes.json()
-   
-if(d.bitcoin){
-bitcoin=d.bitcoin
-}
-
-if(d.nexo){
-nexo=d.nexo
-}
-   
-if(cryptoRes){
-
-  const d=await cryptoRes.json()
-
-  if(d.bitcoin){
-    bitcoin=d.bitcoin
-  }
-
-  if(d.nexo){
-    nexo=d.nexo
-  }
-
-} // ✅ DIESE KLAMMER FEHLT BEI DIR
-
-// JETZT ERST:
-if(fxRes){
   try{
-    const fx = await fxRes.json()
-    markets.eurusd.value = fx.rates?.USD?.toFixed(2) || "-"
-  }catch(e){}
+    const d = await cryptoRes.json()
+
+    if(d.bitcoin){
+      bitcoin = d.bitcoin
+    }
+
+    if(d.nexo){
+      nexo = d.nexo
+    }
+
+    if(d["pax-gold"]){
+      markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
+      markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
+    }
+
+  }catch(e){
+    console.log("Crypto failed")
+  }
 }
+
+/* FX */
 
 if(fxRes){
   try{
     const fx = await fxRes.json()
     markets.eurusd.value = fx.rates?.USD?.toFixed(2) || "-"
-  }catch(e){}
+  }catch(e){
+    console.log("FX failed")
+  }
 }
 
 /* =======================================================
