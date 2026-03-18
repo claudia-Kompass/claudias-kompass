@@ -611,8 +611,7 @@ if(result && result.regularMarketPrice){
 }else{
   markets.dax.value = "-"
   markets.dax.trend = "yellow"
-}
-      console.log("DAX KEINE DATEN", d)
+  console.log("DAX KEINE DATEN", d)
     }
 
   }catch(e){
