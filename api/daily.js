@@ -559,7 +559,11 @@ if(oil && oil.usd){
   markets.oil.usd = oil.usd.toFixed(2)
   markets.oil.eur = oil.eur?.toFixed(2) || "-"
   markets.oil.trend = trendColor(oil.usd_24h_change)
-}else{
+   }else{
+  markets.oil.usd = "-"
+  markets.oil.eur = "-"
+  markets.oil.trend = "yellow"
+}
   console.log("OIL KEINE DATEN", d)
 }
      
@@ -595,17 +599,19 @@ if(daxRes){
   try{
     const d = await daxRes.json()
 
-    const result = d?.quoteResponse?.result?.[0]
+    const result = d?.quoteResponse?.result?.[0] || null
 
-    if(result && result.regularMarketPrice){
+if(result && result.regularMarketPrice){
+  const price = result.regularMarketPrice
+  const change = result.regularMarketChange
 
-      const price = result.regularMarketPrice
-      const change = result.regularMarketChange
+  markets.dax.value = Math.round(price).toLocaleString("de-DE")
+  markets.dax.trend = trendColor(change)
 
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.trend = trendColor(change)
-
-    } else {
+}else{
+  markets.dax.value = "-"
+  markets.dax.trend = "yellow"
+}
       console.log("DAX KEINE DATEN", d)
     }
 
