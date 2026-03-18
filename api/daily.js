@@ -250,7 +250,13 @@ weather.trend.evening=findHour("21:00")
 if(cryptoRes){
 
 const d=await cryptoRes.json()
-
+   
+// GOLD über Pax Gold
+if(d["pax-gold"]){
+markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
+markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
+}
+   
 if(d.bitcoin){
 bitcoin=d.bitcoin
 }
