@@ -608,6 +608,23 @@ if(daxRes){
     console.log("DAX failed")
   }
 }
+
+/* OIL */
+if(oilRes){
+  try{
+    const d = await oilRes.json()
+    const oil = d["brent-crude-oil"]
+
+    if(oil){
+      markets.oil.usd = oil.usd?.toFixed(2) || "-"
+      markets.oil.eur = oil.eur?.toFixed(2) || "-"
+      markets.oil.trend = oil.usd_24h_change > 0 ? "green" : "red"
+    }
+  }catch(e){
+    console.log("Oil failed")
+  }
+}
+
    
 /* =======================================================
 EVENT ENGINE
