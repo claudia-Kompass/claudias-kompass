@@ -199,7 +199,9 @@ bbcRes,
 regionalRes,
 stzRes,
 stimmeRes,
-htRes
+htRes,
+daxRes   // 👈 NEU
+] = result
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
 
 
@@ -589,6 +591,22 @@ if(fxRes){
   }
 }
 
+/* DAX */
+if(daxRes){
+  try{
+    const d = await daxRes.json()
+    const price = d.quoteResponse?.result?.[0]?.regularMarketPrice
+    const change = d.quoteResponse?.result?.[0]?.regularMarketChange
+
+    if(price){
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.trend = change > 0 ? "green" : change < 0 ? "red" : "yellow"
+    }
+  }catch(e){
+    console.log("DAX failed")
+  }
+}
+   
 /* =======================================================
 EVENT ENGINE
 ======================================================= */
