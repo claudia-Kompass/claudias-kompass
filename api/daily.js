@@ -554,10 +554,17 @@ if(cryptoRes){
   markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
 }
 
-if(d["brent-crude-oil"]){
-  markets.oil.usd = d["brent-crude-oil"].usd?.toFixed(2) || "-"
-  markets.oil.eur = d["brent-crude-oil"].eur?.toFixed(2) || "-"
-  markets.oil.trend = trendColor(d["brent-crude-oil"].usd_24h_change)
+const oil = d["brent-crude-oil"] || null
+
+if(oil && oil.usd){
+
+  markets.oil.usd = oil.usd.toFixed(2)
+  markets.oil.eur = oil.eur?.toFixed(2) || "-"
+
+  markets.oil.trend = trendColor(oil.usd_24h_change)
+
+}else{
+  console.log("OIL KEINE DATEN", d)
 }
      
   }catch(e){
