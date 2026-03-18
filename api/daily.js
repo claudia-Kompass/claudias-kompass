@@ -573,7 +573,11 @@ if(cryptoRes){
 if(fxRes){
   try{
     const fx = await fxRes.json()
-    markets.eurusd.value = fx.rates?.USD?.toFixed(2) || "-"
+    if(fx && fx.rates && fx.rates.USD){
+  markets.eurusd.value = Number(fx.rates.USD).toFixed(2)
+}else{
+  markets.eurusd.value = "-"
+}
   }catch(e){
     console.log("FX failed")
   }
