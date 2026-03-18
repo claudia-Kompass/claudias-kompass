@@ -158,41 +158,35 @@ API FETCH
 
 const results = await Promise.allSettled([
 
-fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
+fetchTimeout("https://api.open-meteo.com/..."),
 
-fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold&vs_currencies=usd,eur&include_24hr_change=true"),
+fetchTimeout("https://api.coingecko.com/..."),
 
-fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
-   
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
-fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"),
-   
+fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"), // ✅ DAX
+
+fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"), // ✅ OIL
+
+// RSS bleibt wie es ist
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
-
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
-
 fetchTimeout("https://www.n-tv.de/rss"),
-
 fetchTimeout("https://www.reuters.com/world/rss"),
-
 fetchTimeout("https://feeds.bbci.co.uk/news/world/rss.xml"),
-
 fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml"),
-
 fetchTimeout("https://www.stuttgarter-zeitung.de/rss"),
-
 fetchTimeout("https://www.stimme.de/rss/"),
-
 fetchTimeout("https://www.swp.de/crailsheim/rss.xml")
 
 ])
-
    
 const [
 weatherRes,
 cryptoRes,
 fxRes,
+daxRes,     // ✅ NEU
+oilRes,     // ✅ NEU
 tagesschauRes,
 spiegelRes,
 ntvRes,
@@ -201,11 +195,8 @@ bbcRes,
 regionalRes,
 stzRes,
 stimmeRes,
-htRes,
-daxRes,  // 👈 NEU
-oilRes 
+htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
-
 
 /* WEATHER */
 
