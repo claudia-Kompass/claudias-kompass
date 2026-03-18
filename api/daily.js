@@ -163,6 +163,8 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold&vs_currencies=usd,eur&include_24hr_change=true"),
 
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
+
+fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"),
    
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 
@@ -532,7 +534,7 @@ let markets = {
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
 }
 
-markets.dax.value = "18.742"
+
 markets.oil.usd = "-"
 markets.oil.eur = "-"
    
