@@ -555,6 +555,11 @@ let markets = {
   gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
 }
+
+markets.dax.value = "18.742"
+markets.oil.usd = "-"
+markets.oil.eur = "-"
+   
 function trendColor(change){
 
   if(change > 0) return "green"
