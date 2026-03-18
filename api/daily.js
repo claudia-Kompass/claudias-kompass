@@ -593,20 +593,20 @@ if(daxRes){
     const price = d.quoteResponse?.result?.[0]?.regularMarketPrice
     const change = d.quoteResponse?.result?.[0]?.regularMarketChange
 
-if(price){
-  console.log("DAX PRICE:", price)
+    if(price){
+      console.log("DAX PRICE:", price)
 
-  markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.trend = trendColor(change)
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.trend = trendColor(change)
 
-}else{
-  console.log("DAX FEHLT:", d)
-}
+    }else{
+      console.log("DAX FEHLT:", d)
+    }
+
+  }catch(e){
+    console.log("DAX failed")
   }
 }
-
-}
-
    
 /* =======================================================
 EVENT ENGINE
