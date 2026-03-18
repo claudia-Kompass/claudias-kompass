@@ -588,23 +588,26 @@ if(fxRes){
 
 /* DAX */
 if(daxRes){
+if(daxRes){
   try{
     const d = await daxRes.json()
-    const price = d.quoteResponse?.result?.[0]?.regularMarketPrice
-    const change = d.quoteResponse?.result?.[0]?.regularMarketChange
 
-    if(price){
-      console.log("DAX PRICE:", price)
+    const result = d?.quoteResponse?.result?.[0]
+
+    if(result && result.regularMarketPrice){
+
+      const price = result.regularMarketPrice
+      const change = result.regularMarketChange
 
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
       markets.dax.trend = trendColor(change)
 
-    }else{
-      console.log("DAX FEHLT:", d)
+    } else {
+      console.log("DAX KEINE DATEN", d)
     }
 
   }catch(e){
-    console.log("DAX failed")
+    console.log("DAX failed", e)
   }
 }
    
