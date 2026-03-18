@@ -558,7 +558,27 @@ if(d.nexo){
 nexo=d.nexo
 }
    
+if(cryptoRes){
 
+  const d=await cryptoRes.json()
+
+  if(d.bitcoin){
+    bitcoin=d.bitcoin
+  }
+
+  if(d.nexo){
+    nexo=d.nexo
+  }
+
+} // ✅ DIESE KLAMMER FEHLT BEI DIR
+
+// JETZT ERST:
+if(fxRes){
+  try{
+    const fx = await fxRes.json()
+    markets.eurusd.value = fx.rates?.USD?.toFixed(2) || "-"
+  }catch(e){}
+}
 
 if(fxRes){
   try{
