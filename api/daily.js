@@ -158,17 +158,14 @@ API FETCH
 
 const results = await Promise.allSettled([
 
-fetchTimeout("https://api.open-meteo.com/..."),
+fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
 
-fetchTimeout("https://api.coingecko.com/..."),
+fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
 
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
-fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"), // ✅ DAX
+fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"),
 
-fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"), // ✅ OIL
-
-// RSS bleibt wie es ist
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
 fetchTimeout("https://www.n-tv.de/rss"),
@@ -185,8 +182,7 @@ const [
 weatherRes,
 cryptoRes,
 fxRes,
-daxRes,     // ✅ NEU
-oilRes,     // ✅ NEU
+daxRes,
 tagesschauRes,
 spiegelRes,
 ntvRes,
