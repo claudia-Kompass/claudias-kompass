@@ -553,11 +553,17 @@ if(cryptoRes){
     }
 
     if(d["pax-gold"]){
-       markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
-      markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
-      markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
-    }
+  markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
+  markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
+  markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
+}
 
+if(d["brent-crude-oil"]){
+  markets.oil.usd = d["brent-crude-oil"].usd?.toFixed(2) || "-"
+  markets.oil.eur = d["brent-crude-oil"].eur?.toFixed(2) || "-"
+  markets.oil.trend = trendColor(d["brent-crude-oil"].usd_24h_change)
+}
+     
   }catch(e){
     console.log("Crypto failed")
   }
