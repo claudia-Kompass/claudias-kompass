@@ -525,16 +525,12 @@ let markets = {
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" }
 }
 
-
-markets.oil.usd = "-"
-markets.oil.eur = "-"
    
 function trendColor(change){
-
+  if(typeof change !== "number") return "yellow"
   if(change > 0) return "green"
   if(change < 0) return "red"
   return "yellow"
-
 }
 
 /* CRYPTO */
@@ -598,6 +594,11 @@ if(daxRes){
     const change = d.quoteResponse?.result?.[0]?.regularMarketChange
 
     if(price){
+  console.log("DAX PRICE:", price)
+}else{
+  console.log("DAX FEHLT:", d)
+}
+       
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
       markets.dax.trend = trendColor(change)
     }
@@ -606,20 +607,6 @@ if(daxRes){
   }
 }
 
-/* OIL */
-if(oilRes){
-  try{
-    const d = await oilRes.json()
-    const oil = d["brent-crude-oil"]
-
-    if(oil){
-      markets.oil.usd = oil.usd?.toFixed(2) || "-"
-      markets.oil.eur = oil.eur?.toFixed(2) || "-"
-      markets.oil.trend = oil.usd_24h_change > 0 ? "green" : "red"
-    }
-  }catch(e){
-    console.log("Oil failed")
-  }
 }
 
    
