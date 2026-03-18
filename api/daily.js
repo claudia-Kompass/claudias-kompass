@@ -245,25 +245,7 @@ weather.trend.evening=findHour("21:00")
 }
 
 
-/* CRYPTO */
 
-if(cryptoRes){
-
-const d=await cryptoRes.json()
-   
-// GOLD über Pax Gold
-if(d["pax-gold"]){
-markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
-markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
-}
-   
-if(d.bitcoin){
-bitcoin=d.bitcoin
-}
-
-if(d.nexo){
-nexo=d.nexo
-}
 
 }
 
@@ -568,8 +550,33 @@ function trendColor(change){
 
 }
 
+/* CRYPTO */
+
+if(cryptoRes){
+
+const d=await cryptoRes.json()
+   
+if(d.bitcoin){
+bitcoin=d.bitcoin
+}
+
+if(d.nexo){
+nexo=d.nexo
+}
+   
+// GOLD über Pax Gold
+if(d["pax-gold"]){
+markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
+markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
+}
 
 
+if(fxRes){
+  try{
+    const fx = await fxRes.json()
+    markets.eurusd.value = fx.rates?.USD?.toFixed(2) || "-"
+  }catch(e){}
+}
 
 /* =======================================================
 EVENT ENGINE
