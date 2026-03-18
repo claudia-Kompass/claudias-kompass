@@ -245,12 +245,6 @@ weather.trend.evening=findHour("21:00")
 }
 
 
-
-
-}
-
-
-
 if(rssCache && Date.now() - rssCacheTime < 600000){
 
 news = rssCache.news
