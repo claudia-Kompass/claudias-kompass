@@ -568,51 +568,6 @@ function trendColor(change){
 
 }
 
-if(marketRes){
-
-const data = await marketRes.json()
-
-const dax = data.find(x => x.symbol?.toUpperCase().includes("DAX"))
-const eurusd = data.find(x => x.symbol?.toUpperCase().includes("EURUSD"))
-const gold = data.find(x => x.symbol?.toUpperCase().includes("GC"))
-const oil = data.find(x => x.symbol?.toUpperCase().includes("CL"))
-
-/* DAX */
-if(dax?.close){
-markets.dax.value =
-Number(dax.close).toLocaleString("de-DE")
-}
-
-/* EUR USD */
-if(eurusd?.close){
-markets.eurusd.value =
-Number(eurusd.close).toFixed(2)
-}
-
-/* GOLD */
-if(gold?.close && eurusd?.close){
-
-const usd = Number(gold.close)
-const eurRate = Number(eurusd.close)
-
-markets.gold.usd = usd.toFixed(0)
-markets.gold.eur = (usd / eurRate).toFixed(0)
-
-}
-
-/* OIL */
-if(oil?.close && eurusd?.close){
-
-const usd = Number(oil.close)
-const eurRate = Number(eurusd.close)
-
-markets.oil.usd = usd.toFixed(0)
-markets.oil.eur = (usd / eurRate).toFixed(0)
-
-}
-
-}
-
 
 
 
