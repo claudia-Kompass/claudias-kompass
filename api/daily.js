@@ -558,6 +558,7 @@ if(cryptoRes){
 
     if(d.bitcoin){
       bitcoin = d.bitcoin
+       bitcoin.trend = trendColor(bitcoin.usd_24h_change)
     }
 
     if(d.nexo){
@@ -565,6 +566,7 @@ if(cryptoRes){
     }
 
     if(d["pax-gold"]){
+       markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
       markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
       markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
     }
@@ -581,7 +583,9 @@ if(fxRes){
     const fx = await fxRes.json()
     if(fx && fx.rates && fx.rates.USD){
   markets.eurusd.value = Number(fx.rates.USD).toFixed(2)
+ markets.eurusd.trend = trendColor(fx.rates.USD - 1.08)    
 }else{
+       
   if(fx && fx.rates && fx.rates.USD){
   markets.eurusd.value = fx.rates.USD.toFixed(2)
 }else{
@@ -602,7 +606,7 @@ if(daxRes){
 
     if(price){
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.trend = change > 0 ? "green" : change < 0 ? "red" : "yellow"
+      markets.dax.trend = trendColor(change)
     }
   }catch(e){
     console.log("DAX failed")
