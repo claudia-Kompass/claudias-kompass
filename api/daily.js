@@ -553,16 +553,12 @@ if(cryptoRes){
   markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
   markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
 }
-
 const oil = d["brent-crude-oil"] || null
 
 if(oil && oil.usd){
-
   markets.oil.usd = oil.usd.toFixed(2)
   markets.oil.eur = oil.eur?.toFixed(2) || "-"
-
   markets.oil.trend = trendColor(oil.usd_24h_change)
-
 }else{
   console.log("OIL KEINE DATEN", d)
 }
@@ -594,7 +590,7 @@ if(fxRes){
 }
 
 /* DAX */
-if(daxRes){
+
 if(daxRes){
   try{
     const d = await daxRes.json()
