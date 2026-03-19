@@ -621,12 +621,12 @@ if(daxRes){
 
     const result = d?.quoteResponse?.result?.[0] || null
 
-if(result && result.regularMarketPrice){
+if(result?.regularMarketPrice){
   const price = result.regularMarketPrice
   const change = result.regularMarketChange
 
   markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.trend = trendColor(change)
+  markets.dax.trend = trendColor(change || 0)
 
 }else{
   markets.dax.value = "-"
