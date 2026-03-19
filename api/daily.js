@@ -574,8 +574,8 @@ if(d?.["pax-gold"]){
 
   markets.gold.eur = g.eur
     ? g.eur.toFixed(0)
-    : (g.usd && fxRes?.value
-        ? (g.usd * fxRes.value).toFixed(0)
+    (g.usd && fxRate)
+  ? (g.usd * fxRate).toFixed(0)
         : "-")
 
   markets.gold.trend = trendColor(g.usd_24h_change || 0)
@@ -594,7 +594,7 @@ if(result?.regularMarketPrice){
   markets.oil.usd = price.toFixed(2)
 
   markets.oil.eur = (price && fxRate)
-    ? (price * fxRate).toFixed(2)
+  ? (price * fxRate).toFixed(2))
     : "-"
 
   markets.oil.trend = trendColor(change)
