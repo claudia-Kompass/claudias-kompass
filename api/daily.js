@@ -524,6 +524,8 @@ let markets = {
   gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" },
 
+let fxRate = null
+   
 bitcoin: { usd:"-", eur:"-", trend:"neutral" },
 nexo: { usd:"-", eur:"-", trend:"neutral" },
 }
@@ -580,21 +582,19 @@ if(d?.["pax-gold"]){
 }
 
 // OIL
+
 const oil = oilRes ? await oilRes.json() : null
 
 const result = oil?.quoteResponse?.result?.[0]
 
 if(result?.regularMarketPrice){
-const price = result.regularMarketPrice
-const change = result.regularMarketChange || 0
-  const result = oil.quoteResponse.result[0]
-
   const price = result.regularMarketPrice
-  const change = result.regularMarketChange
+  const change = result.regularMarketChange || 0
 
-  markets.oil.usd = price ? price.toFixed(2) : "-"
-  markets.oil.eur = (price && fxRes?.value)
-    ? (price * fxRes.value).toFixed(2)
+  markets.oil.usd = price.toFixed(2)
+
+  markets.oil.eur = (price && fxRate)
+    ? (price * fxRate).toFixed(2)
     : "-"
 
   markets.oil.trend = trendColor(change)
@@ -604,22 +604,25 @@ const change = result.regularMarketChange || 0
   markets.oil.trend = "yellow"
 }
 
+   
 /* FX */
 
+let fxRate = null
+   
 if(fxRes){
   try{
     const fx = await fxRes.json()
+
     if(fx && fx.rates && fx.rates.USD){
-  markets.eurusd.value = Number(fx.rates.USD).toFixed(2)
- markets.eurusd.trend = trendColor(fx.rates.USD - 1.08)    
-}else{
-       
-  if(fx && fx.rates && fx.rates.USD){
-  markets.eurusd.value = fx.rates.USD.toFixed(2)
-}else{
-  markets.eurusd.value = "-"
-}
-}
+      fxRate = Number(fx.rates.USD)
+
+      markets.eurusd.value = fxRate.toFixed(2)
+      markets.eurusd.trend = trendColor(fxRate - 1.08)
+    } else {
+      markets.eurusd.value = "-"
+      markets.eurusd.trend = "yellow"
+    }
+
   }catch(e){
     console.log("FX failed")
   }
