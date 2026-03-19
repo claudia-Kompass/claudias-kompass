@@ -619,20 +619,18 @@ if(daxRes){
   try{
     const d = await daxRes.json()
 
-    const result = d?.quoteResponse?.result?.[0] || null
+    const result = d?.quoteResponse?.result?.[0]
 
 if(result?.regularMarketPrice){
   const price = result.regularMarketPrice
-  const change = result.regularMarketChange
+  const change = result.regularMarketChange || 0
 
   markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.trend = trendColor(change || 0)
-
-}else{
+  markets.dax.trend = trendColor(change)
+} else {
   markets.dax.value = "-"
   markets.dax.trend = "yellow"
-  console.log("DAX KEINE DATEN", d)
-    }
+}
 
   }catch(e){
     console.log("DAX failed", e)
