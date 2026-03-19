@@ -631,7 +631,7 @@ if(daxRes){
     }
 
   }catch(e){
-    console.log("DAX fallback failed")
+    console.log("DAX failed")
   }
 }
    
