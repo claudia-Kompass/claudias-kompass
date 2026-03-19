@@ -572,15 +572,16 @@ if(d?.nexo?.usd){
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
-markets.gold.eur = g.eur
-  ? g.eur.toFixed(0)
-  : (g.usd && fxRate)
-    ? (g.usd * fxRate).toFixed(0)
-    : "-"
+  markets.gold.usd = g.usd ? g.usd.toFixed(0) : "-"
+
+  markets.gold.eur = g.eur
+    ? g.eur.toFixed(0)
+    : (g.usd && fxRate)
+      ? (g.usd * fxRate).toFixed(0)
+      : "-"
 
   markets.gold.trend = trendColor(g.usd_24h_change || 0)
 }
-
 // OIL
    
 if(d?.["brent-crude-oil"]){
