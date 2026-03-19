@@ -588,11 +588,17 @@ if(d?.["brent-crude-oil"]){
   const o = d["brent-crude-oil"]
 
   markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
-  markets.oil.eur = o.eur
-    ? o.eur.toFixed(0)
-    : (o.usd && fxRate)
-      ? (o.usd * fxRate).toFixed(0)
-      : "-"
+  if(d?.["brent-crude-oil"]){
+  const o = d["brent-crude-oil"]
+
+  markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
+
+  markets.oil.eur = (o.usd && fxRate)
+    ? (o.usd * fxRate).toFixed(0)
+    : "-"
+
+  markets.oil.trend = trendColor(o.usd_24h_change || 0)
+}
 
   markets.oil.trend = trendColor(o.usd_24h_change || 0)
 }
