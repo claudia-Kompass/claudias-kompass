@@ -564,8 +564,7 @@ if(oil && oil.usd){
   markets.oil.trend = "yellow"
 }
   console.log("OIL KEINE DATEN", d)
-}
-     
+
   }catch(e){
     console.log("Crypto failed")
   }
