@@ -538,16 +538,16 @@ if(cryptoRes){
   try{
     const d = await cryptoRes.json()
 
-    if(d.bitcoin){
-  bitcoin = {
+   if(d.bitcoin){
+  markets.bitcoin = {
     usd: d.bitcoin.usd,
     eur: d.bitcoin.eur,
     trend: trendColor(d.bitcoin.usd_24h_change)
   }
-}
+   }
 
 if(d.nexo){
-  nexo = {
+  markets.nexo = {
     usd: d.nexo.usd,
     eur: d.nexo.eur,
     trend: trendColor(d.nexo.usd_24h_change)
