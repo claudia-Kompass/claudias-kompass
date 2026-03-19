@@ -523,8 +523,12 @@ let markets = {
   eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
   gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" },
+  bitcoin: { usd:"-", eur:"-", trend:"neutral" },
+  nexo: { usd:"-", eur:"-", trend:"neutral" }
+}
 
 let fxRate = null
+
    
 bitcoin: { usd:"-", eur:"-", trend:"neutral" },
 nexo: { usd:"-", eur:"-", trend:"neutral" },
@@ -570,19 +574,29 @@ if(d?.nexo?.usd){
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
-  markets.gold.usd = g.usd ? g.usd.toFixed(0) : "-"
-
-  markets.gold.eur = g.eur
-    ? g.eur.toFixed(0)
-    (g.usd && fxRate)
-  ? (g.usd * fxRate).toFixed(0)
-        : "-")
+markets.gold.eur = g.eur
+  ? g.eur.toFixed(0)
+  : (g.usd && fxRate)
+    ? (g.usd * fxRate).toFixed(0)
+    : "-"
 
   markets.gold.trend = trendColor(g.usd_24h_change || 0)
 }
 
 // OIL
+   
+if(d?.["brent-crude-oil"]){
+  const o = d["brent-crude-oil"]
 
+  markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
+  markets.oil.eur = o.eur
+    ? o.eur.toFixed(0)
+    : (o.usd && fxRate)
+      ? (o.usd * fxRate).toFixed(0)
+      : "-"
+
+  markets.oil.trend = trendColor(o.usd_24h_change || 0)
+}
 
 /* FX */
    
