@@ -712,7 +712,7 @@ const rows = [
 {
 name:"DAX",
 value:data.markets?.dax?.value,
-trend:data.markets?.dax?.change,
+trend:data.markets?.dax?.trend,
 link:"https://www.finanzen.net/index/dax"
 },
 
@@ -776,7 +776,7 @@ ${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
 </td>
 
 <td class="marketTrend">
-${ampel(r.trend ?? 0)}
+${ampel(r.trend)}
 </td>
 
 <td class="marketLink">
