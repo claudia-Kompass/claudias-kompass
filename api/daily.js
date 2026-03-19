@@ -537,8 +537,6 @@ function trendColor(change){
 
 /* CRYPTO */
 
-let d = {}
-
 if(cryptoRes && cryptoRes.json){
   try{
     d = await cryptoRes.json()
