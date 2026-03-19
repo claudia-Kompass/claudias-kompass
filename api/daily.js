@@ -182,6 +182,7 @@ weatherRes,
 cryptoRes,
 fxRes,
 daxRes,
+oilRes,
 tagesschauRes,
 spiegelRes,
 ntvRes,
@@ -1165,7 +1166,10 @@ festivals:danceFestivals
    
 markets,
 bitcoin: markets.bitcoin,
-  nexo: markets.nexo,
+nexo: markets.nexo,
+
+
+   
 financeNews,
 weather,
 travelRadar : [travel],
