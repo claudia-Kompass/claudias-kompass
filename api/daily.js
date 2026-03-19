@@ -544,6 +544,8 @@ function trendColor(change){
 
 /* CRYPTO */
 
+let d = null
+   
 if(cryptoRes && cryptoRes.json){
   try{
     d = await cryptoRes.json()
