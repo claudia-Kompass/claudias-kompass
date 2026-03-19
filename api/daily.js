@@ -539,13 +539,20 @@ if(cryptoRes){
     const d = await cryptoRes.json()
 
     if(d.bitcoin){
-      bitcoin = d.bitcoin
-       bitcoin.trend = trendColor(bitcoin.usd_24h_change)
-    }
+  bitcoin = {
+    usd: d.bitcoin.usd,
+    eur: d.bitcoin.eur,
+    trend: trendColor(d.bitcoin.usd_24h_change)
+  }
+}
 
-    if(d.nexo){
-      nexo = d.nexo
-    }
+if(d.nexo){
+  nexo = {
+    usd: d.nexo.usd,
+    eur: d.nexo.eur,
+    trend: trendColor(d.nexo.usd_24h_change)
+  }
+}
 
     if(d["pax-gold"]){
   markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
