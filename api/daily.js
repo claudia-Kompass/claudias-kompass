@@ -531,11 +531,6 @@ let markets = {
 let fxRate = null
 
    
-bitcoin: { usd:"-", eur:"-", trend:"neutral" },
-nexo: { usd:"-", eur:"-", trend:"neutral" },
-}
-
-   
 function trendColor(change){
   if(typeof change !== "number") return "yellow"
   if(change > 0) return "green"
