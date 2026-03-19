@@ -584,25 +584,23 @@ if(d?.["pax-gold"]){
   markets.gold.trend = trendColor(g.usd_24h_change || 0)
 }
 // OIL
+if(oilRes){
+  try{
+    const text = await oilRes.text()
+
+    const match = text.match(/([0-9]{2,3}\.[0-9]{2})/)
+
+    if(match){
+      markets.oil.usd = match[1]
+      markets.oil.eur = "-"
+      markets.oil.trend = "yellow"
+    }
+
+  }catch(e){
+    console.log("Oil fallback failed")
+  }
+}
    
-if(d?.["brent-crude-oil"]){
-  const o = d["brent-crude-oil"]
-
-  markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
-  if(d?.["brent-crude-oil"]){
-  const o = d["brent-crude-oil"]
-
-  markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
-
-  markets.oil.eur = (o.usd && fxRate)
-    ? (o.usd * fxRate).toFixed(0)
-    : "-"
-
-  markets.oil.trend = trendColor(o.usd_24h_change || 0)
-}
-
-  markets.oil.trend = trendColor(o.usd_24h_change || 0)
-}
 /* FX */
    
 if(fxRes){
