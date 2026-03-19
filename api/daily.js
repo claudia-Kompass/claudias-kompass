@@ -163,7 +163,7 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
-fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"),
+fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/index/dax"),
 fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=BZ=F"),
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
@@ -621,23 +621,17 @@ if(fxRes){
 
 if(daxRes){
   try{
-    const d = await daxRes.json()
+    const text = await daxRes.text()
 
-    const result = d?.quoteResponse?.result?.[0]
+    const match = text.match(/([0-9]{1,3}\.[0-9]{3})/)
 
-if(result?.regularMarketPrice){
-  const price = result.regularMarketPrice
-  const change = result.regularMarketChange || 0
-
-  markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.trend = trendColor(change)
-} else {
-  markets.dax.value = "-"
-  markets.dax.trend = "yellow"
-}
+    if(match){
+      markets.dax.value = match[1]
+      markets.dax.trend = "yellow"
+    }
 
   }catch(e){
-    console.log("DAX failed", e)
+    console.log("DAX fallback failed")
   }
 }
    
