@@ -565,18 +565,28 @@ if(d?.nexo?.usd){
 }
 
 // GOLD
-if(d?.["pax-gold"]?.usd){
-  markets.gold.eur = d["pax-gold"]?.eur
-  ? d["pax-gold"].eur.toFixed(0)
-  : (d["pax-gold"]?.usd && fxRes?.value
-      ? (d["pax-gold"].usd * fxRes.value).toFixed(0)
-      : "-")
+if(d?.["pax-gold"]){
+  const g = d["pax-gold"]
+
+  markets.gold.usd = g.usd ? g.usd.toFixed(0) : "-"
+
+  markets.gold.eur = g.eur
+    ? g.eur.toFixed(0)
+    : (g.usd && fxRes?.value
+        ? (g.usd * fxRes.value).toFixed(0)
+        : "-")
+
+  markets.gold.trend = trendColor(g.usd_24h_change || 0)
 }
 
 // OIL
 const oil = oilRes ? await oilRes.json() : null
 
-if(oil?.quoteResponse?.result?.[0]){
+const result = oil?.quoteResponse?.result?.[0]
+
+if(result?.regularMarketPrice){
+const price = result.regularMarketPrice
+const change = result.regularMarketChange || 0
   const result = oil.quoteResponse.result[0]
 
   const price = result.regularMarketPrice
