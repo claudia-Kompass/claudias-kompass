@@ -164,7 +164,7 @@ fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,b
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
 fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/index/dax"),
-fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=BZ=F"),
+fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/index/dax"),
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
 fetchTimeout("https://www.n-tv.de/rss"),
