@@ -695,10 +695,10 @@ return "⛈️";
 
 }
 
-function ampel(change){
+function ampel(trend){
 
-if(change>1) return '<span class="ampel green"></span>';
-if(change<-1) return '<span class="ampel red"></span>';
+if(trend==="green") return '<span class="ampel green"></span>';
+if(trend==="red") return '<span class="ampel red"></span>';
 return '<span class="ampel yellow"></span>';
 
 }
@@ -719,7 +719,7 @@ link:"https://www.finanzen.net/index/dax"
 {
 name:"EUR/USD",
 value:data.markets?.eurusd?.value,
-trend:data.markets?.eurusd?.change,
+trend:data.markets?.eurusd?.trend,
 link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
 },
 
@@ -727,14 +727,14 @@ link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
 name:"Gold",
 value:"$"+data.markets?.gold?.usd,
 sub:"€"+data.markets?.gold?.eur,
-trend:data.markets?.gold?.change,
+trend:data.markets?.gold?.trend,
 link:"https://www.finanzen.net/rohstoffe/goldpreis"
 },
 
 {
 name:"Öl",
 value:"$"+data.markets?.oil?.usd,
-trend:data.markets?.oil?.change,
+trend:data.markets?.oil?.trend,
 link:"https://www.finanzen.net/rohstoffe/oelpreis"
 },
 
