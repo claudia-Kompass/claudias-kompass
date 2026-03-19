@@ -173,7 +173,8 @@ fetchTimeout("https://feeds.bbci.co.uk/news/world/rss.xml"),
 fetchTimeout("https://www.tagesschau.de/inland/regional/badenwuerttemberg/index~rss2.xml"),
 fetchTimeout("https://www.stuttgarter-zeitung.de/rss"),
 fetchTimeout("https://www.stimme.de/rss/"),
-fetchTimeout("https://www.swp.de/crailsheim/rss.xml")
+fetchTimeout("https://www.swp.de/crailsheim/rss.xml"),
+fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/rohstoffe/oelpreis")
 
 ])
    
