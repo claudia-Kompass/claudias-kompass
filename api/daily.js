@@ -583,29 +583,7 @@ if(d?.["pax-gold"]){
 
 // OIL
 
-const oil = oilRes ? await oilRes.json() : null
 
-const result = oil?.quoteResponse?.result?.[0]
-
-if (result?.regularMarketPrice) {
-  const price = result.regularMarketPrice
-  const change = result.regularMarketChange || 0
-
-  markets.oil.usd = price.toFixed(2)
-
-  markets.oil.eur =
-    (price && fxRate)
-      ? (price * fxRate).toFixed(2)
-      : "-"
-
-  markets.oil.trend = trendColor(change)
-
-} else {
-  markets.oil.usd = "-"
-  markets.oil.eur = "-"
-  markets.oil.trend = "yellow"
-}
-   
 /* FX */
 
 let fxRate = null
