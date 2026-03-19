@@ -595,7 +595,6 @@ if(d?.["brent-crude-oil"]){
 
   markets.oil.trend = trendColor(o.usd_24h_change || 0)
 }
-
 /* FX */
    
 if(fxRes){
