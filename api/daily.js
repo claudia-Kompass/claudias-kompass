@@ -537,47 +537,52 @@ function trendColor(change){
 
 /* CRYPTO */
 
-if(cryptoRes){
-  try{
-    const d = await cryptoRes.json()
+let d = {}
 
-   if(d.bitcoin){
+if(cryptoRes && cryptoRes.json){
+  try{
+    d = await cryptoRes.json()
+  }catch(e){
+    console.log("crypto parse failed")
+  }
+}
+
+// BITCOIN
+if(d?.bitcoin?.usd){
   markets.bitcoin = {
     usd: d.bitcoin.usd,
-    eur: d.bitcoin.eur,
-    trend: trendColor(d.bitcoin.usd_24h_change)
+    eur: d.bitcoin.eur || "-",
+    trend: trendColor(d.bitcoin.usd_24h_change || 0)
   }
-   }
+}
 
-if(d.nexo){
+// NEXO
+if(d?.nexo?.usd){
   markets.nexo = {
     usd: d.nexo.usd,
-    eur: d.nexo.eur,
-    trend: trendColor(d.nexo.usd_24h_change)
+    eur: d.nexo.eur || "-",
+    trend: trendColor(d.nexo.usd_24h_change || 0)
   }
 }
 
-    if(d["pax-gold"]){
-  markets.gold.usd = d["pax-gold"].usd?.toFixed(0) || "-"
-  markets.gold.eur = d["pax-gold"].eur?.toFixed(0) || "-"
-  markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change)
+// GOLD
+if(d?.["pax-gold"]?.usd){
+  markets.gold.usd = d["pax-gold"].usd.toFixed(0)
+  markets.gold.eu = d["pax-gold"].eur?.toFixed(0) || "-"
+  markets.gold.trend = trendColor(d["pax-gold"].usd_24h_change || 0)
 }
-const oil = d["brent-crude-oil"] || null
 
-if(oil && oil.usd){
+// OIL
+const oil = d?.["brent-crude-oil"] || null
+
+if(oil?.usd){
   markets.oil.usd = oil.usd.toFixed(2)
   markets.oil.eur = oil.eur?.toFixed(2) || "-"
-  markets.oil.trend = trendColor(oil.usd_24h_change)
-   }else{
+  markets.oil.trend = trendColor(oil.usd_24h_change || 0)
+} else {
   markets.oil.usd = "-"
   markets.oil.eur = "-"
   markets.oil.trend = "yellow"
-}
-  console.log("OIL KEINE DATEN", d)
-
-  }catch(e){
-    console.log("Crypto failed")
-  }
 }
 
 /* FX */
