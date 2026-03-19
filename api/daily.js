@@ -1153,7 +1153,8 @@ festivals:danceFestivals
 },
    
 markets,
-crypto:{bitcoin,nexo},
+bitcoin: markets.bitcoin,
+  nexo: markets.nexo,
 financeNews,
 weather,
 travelRadar : [travel],
