@@ -585,8 +585,6 @@ if(d?.["pax-gold"]){
 
 
 /* FX */
-
-let fxRate = null
    
 if(fxRes){
   try{
