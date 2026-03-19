@@ -748,9 +748,9 @@ link:"https://coinmarketcap.com/currencies/bitcoin/"
 
 {
 name:"Nexo",
-value:"$"+(data.bitcoin?.usd ?? 0).toLocaleString("de-DE"),
-sub:"€"+(data.bitcoin?.eur ?? 0).toLocaleString("de-DE"),
-trend:data.bitcoin?.trend,
+value:"$"+(data.nexo?.usd ?? 0).toFixed(2),
+sub:"€"+(data.nexo?.eur ?? 0).toFixed(3),
+trend:data.nexo?.trend,
 link:"https://coinmarketcap.com/currencies/nexo/"
 }
 
