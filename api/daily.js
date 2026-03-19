@@ -164,7 +164,7 @@ fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,b
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
 fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EGDAXI"),
-
+fetchTimeout("https://query1.finance.yahoo.com/v7/finance/quote?symbols=BZ=F"),
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
 fetchTimeout("https://www.n-tv.de/rss"),
@@ -571,12 +571,20 @@ if(d?.["pax-gold"]?.usd){
 }
 
 // OIL
-const oil = d?.["brent-crude-oil"] || null
+const oil = oilRes ? await oilRes.json() : null
 
-if(oil?.usd){
-  markets.oil.usd = oil.usd.toFixed(2)
-  markets.oil.eur = oil.eur?.toFixed(2) || "-"
-  markets.oil.trend = trendColor(oil.usd_24h_change || 0)
+if(oil?.quoteResponse?.result?.[0]){
+  const result = oil.quoteResponse.result[0]
+
+  const price = result.regularMarketPrice
+  const change = result.regularMarketChange
+
+  markets.oil.usd = price ? price.toFixed(2) : "-"
+  markets.oil.eur = (price && fxRes?.value)
+    ? (price * fxRes.value).toFixed(2)
+    : "-"
+
+  markets.oil.trend = trendColor(change)
 } else {
   markets.oil.usd = "-"
   markets.oil.eur = "-"
