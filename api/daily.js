@@ -523,6 +523,7 @@ let markets = {
   eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
   gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
   oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" },
+
   bitcoin: { usd:"-", eur:"-", trend:"neutral" },
   nexo: { usd:"-", eur:"-", trend:"neutral" }
 }
