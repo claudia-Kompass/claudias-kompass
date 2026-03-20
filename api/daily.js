@@ -559,13 +559,9 @@ if(cryptoRes){
   try{
     const json = await cryptoRes.json()
 
-    // CoinGecko OK
     if(json && json.bitcoin && json.bitcoin.usd){
       d = json
-    }
-
-    // Fallback (stabil!)
-    else{
+    } else {
       console.log("fallback crypto used")
 
       const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
