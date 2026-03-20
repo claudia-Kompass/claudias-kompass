@@ -726,15 +726,10 @@ const rows = [
 name:"DAX",
 value: data.markets?.dax?.value ?? "—",
 sub:`
-Heute: ${
-typeof data.markets?.dax?.change === "number"
-  ? (data.markets.dax.change > 0 ? "+" : "") + data.markets.dax.change + "%"
-  : "-"
-}
-<br>
-<span style="font-family:monospace">
-${sparkline(data.markets?.dax?.spark)}
-</span>
+sub:`
+${data.markets?.dax?.value
+  ? "Stand: " + data.markets.dax.time
+  : "keine aktuellen Daten"}
 `,
 trend:data.markets?.dax?.trend,
 link:"https://www.tradingview.com/symbols/DEU40/"
