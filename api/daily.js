@@ -615,6 +615,9 @@ try{
       nexo.trend = "green"
     }
 
+markets.bitcoin = bitcoin
+markets.nexo = nexo
+     
   }
 
 }catch(e){
