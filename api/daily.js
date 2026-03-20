@@ -554,100 +554,135 @@ if(fxRes){
 }
 
 /* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
+/* ================= MARKETS CRYPTO FINAL STABLE ================= */
 
-/* ================= CRYPTO + GOLD + OIL (FINAL STABLE) ================= */
+let cryptoData = null
 
-let d = null
+// ---------- CoinGecko (Nexo + Gold + Oil) ----------
+try{
 
-if(cryptoRes){
-  try{
+  if(cryptoRes){
+
     const json = await cryptoRes.json()
 
-    // akzeptiere jede gültige Antwort
     if(json && typeof json === "object"){
-      d = json
-    } else {
-      d = null
+      cryptoData = json
     }
 
-  }catch(e){
-    console.log("crypto failed")
-    d = null
   }
+
+}catch(e){
+  console.log("coingecko failed")
+  cryptoData = null
 }
 
-/* ================= BITCOIN ================= */
 
-if(d && d.bitcoin && typeof d.bitcoin.usd === "number"){
+// ---------- BITCOIN (CoinCap – stabil) ----------
+try{
+
+  const res = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+  const json = await res.json()
+
+  if(json?.data?.priceUsd){
+
+    const price = Number(json.data.priceUsd)
+
+    markets.bitcoin = {
+      usd: Math.round(price).toLocaleString("de-DE"),
+      eur: fxRate
+        ? Math.round(price * fxRate).toLocaleString("de-DE")
+        : "-",
+      trend: trend(Number(json.data.changePercent24Hr || 0))
+    }
+
+  }else{
+
+    markets.bitcoin = {
+      usd: "-",
+      eur: "-",
+      trend: "yellow"
+    }
+
+  }
+
+}catch(e){
+
+  console.log("bitcoin failed")
 
   markets.bitcoin = {
-    usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
-    eur: d.bitcoin.eur
-      ? Math.round(d.bitcoin.eur).toLocaleString("de-DE")
-      : "-",
-    trend: trend(d.bitcoin.usd_24h_change ?? 0)
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
   }
-
-}else{
-
-  markets.bitcoin = null
 
 }
 
 
-
-/* ================= NEXO ================= */
-
-if(d && d.nexo && typeof d.nexo.usd === "number"){
+// ---------- NEXO ----------
+if(cryptoData?.nexo?.usd){
 
   markets.nexo = {
-    usd: d.nexo.usd.toFixed(2),
-    eur: d.nexo.eur ? d.nexo.eur.toFixed(3) : "-",
-    trend: trend(d.nexo.usd_24h_change ?? 0)
+    usd: Number(cryptoData.nexo.usd).toFixed(2),
+    eur: cryptoData.nexo.eur
+      ? Number(cryptoData.nexo.eur).toFixed(3)
+      : "-",
+    trend: trend(Number(cryptoData.nexo.usd_24h_change || 0))
   }
 
 }else{
 
-  markets.nexo = null
+  markets.nexo = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
 
-     }
+}
 
-/* ================= GOLD ================= */
 
-if(d?.["pax-gold"]){
+// ---------- GOLD ----------
+if(cryptoData?.["pax-gold"]?.usd){
 
-  const g = d["pax-gold"]
+  const g = cryptoData["pax-gold"]
 
   markets.gold = {
-    usd: (typeof g.usd === "number")
-      ? g.usd.toFixed(0)
-      : "-",
-    eur: (typeof g.eur === "number")
+    usd: g.usd.toFixed(0),
+    eur: g.eur
       ? g.eur.toFixed(0)
-      : (g.usd && fxRate)
-        ? (g.usd * fxRate).toFixed(0)
-        : "-",
+      : (fxRate ? (g.usd * fxRate).toFixed(0) : "-"),
     trend: trend(g.usd_24h_change ?? 0)
   }
 
+}else{
+
+  markets.gold = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
+
 }
 
-/* ================= OIL ================= */
 
-if(d?.["brent-crude-oil"]){
+// ---------- OIL ----------
+if(cryptoData?.["brent-crude-oil"]?.usd){
 
-  const o = d["brent-crude-oil"]
+  const o = cryptoData["brent-crude-oil"]
 
   markets.oil = {
-    usd: (typeof o.usd === "number")
-      ? o.usd.toFixed(0)
-      : "-",
-    eur: (typeof o.eur === "number")
+    usd: o.usd.toFixed(0),
+    eur: o.eur
       ? o.eur.toFixed(0)
-      : (o.usd && fxRate)
-        ? (o.usd * fxRate).toFixed(0)
-        : "-",
+      : (fxRate ? (o.usd * fxRate).toFixed(0) : "-"),
     trend: trend(o.usd_24h_change ?? 0)
+  }
+
+}else{
+
+  markets.oil = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
   }
 
 }
