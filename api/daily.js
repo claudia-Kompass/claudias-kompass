@@ -576,8 +576,8 @@ if(d?.bitcoin?.usd !== undefined){
 if(d?.nexo?.usd !== undefined){
   markets.nexo = {
   usd: d.nexo.usd ?? "-",
-  eur: d.neco.eur ?? "-",
-  trend: trend(d.neco.usd_24h_change ?? 0)
+  eur: d.nexo.eur ?? "-",
+  trend: trend(d.nexo.usd_24h_change ?? 0)
 }
 }
 
