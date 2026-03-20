@@ -588,11 +588,14 @@ if(oilRes){
     const text = await oilRes.text()
 
     const match = text.match(/([0-9]{2,3}[.,][0-9]{2})/)
-    if(match){
-      markets.oil.usd = match[1]
-      markets.oil.eur = "-"
-      markets.oil.trend = "yellow"
-    }
+
+if(match && match[1]){
+  markets.oil.usd = match[1].replace(",", ".")
+  markets.oil.eur = "-"
+  markets.oil.trend = "yellow"
+} else {
+  markets.oil.usd = "-"
+}
 
   }catch(e){
     console.log("Oil fallback failed")
@@ -626,12 +629,14 @@ if(daxRes){
   try{
     const text = await daxRes.text()
 
-    const match = text.match(/([0-9]{1,3}\.[0-9]{3})/)
+    const match = text.match(/([0-9]{2,5}[.,]?[0-9]{0,3})/)
 
-    if(match){
-      markets.dax.value = match[1]
-      markets.dax.trend = "yellow"
-    }
+if(match && match[1]){
+  markets.dax.value = match[1]
+  markets.dax.trend = "yellow"
+} else {
+  markets.dax.value = "-"
+}
 
   }catch(e){
     console.log("DAX failed")
