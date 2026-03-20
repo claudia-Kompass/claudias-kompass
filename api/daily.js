@@ -593,25 +593,7 @@ if(cryptoRes){
 }
 
 
-/* ================= BITCOIN ================= */
 
-if(d?.bitcoin && typeof d.bitcoin.usd === "number" && d.bitcoin.usd > 1000){
-  markets.bitcoin = {
-    usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
-    eur: d.bitcoin.eur
-      ? Math.round(d.bitcoin.eur).toLocaleString("de-DE")
-      : "-",
-    trend: trend(d.bitcoin.usd_24h_change ?? 0)
-  }
-} else {
-  console.log("bitcoin invalid:", d?.bitcoin)
-
-  markets.bitcoin = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-}
 
 
 /* ================= NEXO ================= */
