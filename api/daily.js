@@ -564,7 +564,7 @@ if(cryptoRes && cryptoRes.json){
 }
 
 /* BITCOIN */
-if(d?.bitcoin?.usd){
+if(d?.bitcoin?.usd !== undefined){
   markets.bitcoin = {
     usd: d.bitcoin.usd,
     eur: d.bitcoin.eur || "-",
@@ -573,7 +573,7 @@ if(d?.bitcoin?.usd){
 }
 
 /* NEXO */
-if(d?.nexo?.usd){
+if(d?.nexo?.usd !== undefined){
   markets.nexo = {
     usd: d.nexo.usd,
     eur: d.nexo.eur || "-",
