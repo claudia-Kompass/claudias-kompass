@@ -585,13 +585,11 @@ if(d?.nexo?.usd !== undefined){
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
-  markets.gold.usd = g.usd ? g.usd.toFixed(0) : "-"
-  markets.gold.eur = g.eur
-    ? g.eur.toFixed(0)
-    : (g.usd && fxRate)
-      ? (g.usd * fxRate).toFixed(0)
-      : "-"
-
+markets.gold.eur = (typeof g.eur === "number")
+  ? g.eur.toFixed(0)
+  : (g.usd && fxRate)
+    ? (g.usd * fxRate).toFixed(0)
+    : "-"
   markets.gold.trend = trend(g.usd_24h_change || 0)
 }
 
