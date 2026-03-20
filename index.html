@@ -699,7 +699,8 @@ function ampel(trend){
 
 if(trend==="green") return '<span class="ampel green"></span>';
 if(trend==="red") return '<span class="ampel red"></span>';
-return '<span class="ampel yellow"></span>';
+if(!trend || trend === "none") 
+  return '<span class="ampel grey"></span>';
 
 }
 
