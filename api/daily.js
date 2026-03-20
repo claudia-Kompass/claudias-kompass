@@ -554,7 +554,7 @@ try{
 
     if(json){
 
-      if(json.bitcoin?.usd){
+      if(json.bitcoin && json.bitcoin.usd != null){
         markets.bitcoin = {
           usd: Number(json.bitcoin.usd).toFixed(2),
           eur: json.bitcoin.eur
@@ -564,7 +564,7 @@ try{
         }
       }
 
-      if(json.nexo?.usd){
+      if(json.nexo && json.nexo.usd != null){
         markets.nexo = {
           usd: Number(json.nexo.usd).toFixed(3),
           eur: json.nexo.eur
@@ -594,6 +594,14 @@ try{
         }
       }
 
+if(!markets.oil.usd || markets.oil.usd === "-"){
+  markets.oil = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
+}
+       
     }
   }
 }catch(e){
