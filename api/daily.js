@@ -531,67 +531,7 @@ let markets = {
   nexo: { usd:"-", eur:"-", trend:"yellow" }
 }
 
-function trend(change){
-  if(typeof change !== "number") return "yellow"
-  if(change > 0) return "green"
-  if(change < 0) return "red"
-  return "yellow"
-}
-
-/* ================= FX ================= */
-
-if(fxRes){
-  try{
-    const fx = await fxRes.json()
-    if(fx?.rates?.USD !== undefined){
-      fxRate = Number(fx.rates.USD)
-      markets.eurusd.value = fxRate.toFixed(2)
-      markets.eurusd.trend = trend(fxRate - 1.08)
-    }
-  }catch(e){
-    console.log("FX failed")
-  }
-}
-
-/* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
-
-/* ================= CRYPTO FINAL SIMPLE ================= */
-
-let bitcoin = {
-  usd: null,
-  eur: null,
-  trend: "yellow"
-}
-
-let nexo = {
-  usd: null,
-  eur: null,
-  trend: "yellow"
-}
-
-   
-let cryptoData = null
-
-try{
-
-  if(cryptoRes){
-
-    const json = await cryptoRes.json()
-
-    if(json && typeof json === "object"){
-      cryptoData = json
-    }
-
-  }
-
-}catch(e){
-  console.log("crypto failed")
-  cryptoData = null
-}
-
-
-// ---------- BITCOIN (separat stabil) ----------
-// ---------- CRYPTO (FINAL STABIL) ----------
+/* ================= CRYPTO (CLEAN FINAL) ================= */
 
 try{
 
@@ -603,76 +543,49 @@ try{
     const btc = json.data.find(c => c.id === "bitcoin")
     const nex = json.data.find(c => c.id === "nexo")
 
+    // BITCOIN
     if(btc?.priceUsd){
-      bitcoin.usd = Number(btc.priceUsd).toFixed(2)
-      bitcoin.eur = (btc.priceUsd * (fxRate || 0.92)).toFixed(2)
-      bitcoin.trend = "yellow"
+      markets.bitcoin = {
+        usd: Number(btc.priceUsd).toFixed(0),
+        eur: fxRate
+          ? (btc.priceUsd * fxRate).toFixed(0)
+          : "-",
+        trend: "yellow"
+      }
+    }else{
+      markets.bitcoin = {
+        usd: "-",
+        eur: "-",
+        trend: "yellow"
+      }
     }
 
+    // NEXO
     if(nex?.priceUsd){
-      nexo.usd = Number(nex.priceUsd).toFixed(3)
-      nexo.eur = (nex.priceUsd * (fxRate || 0.92)).toFixed(3)
-      nexo.trend = "green"
+      markets.nexo = {
+        usd: Number(nex.priceUsd).toFixed(3),
+        eur: fxRate
+          ? (nex.priceUsd * fxRate).toFixed(3)
+          : "-",
+        trend: "green"
+      }
+    }else{
+      markets.nexo = {
+        usd: "-",
+        eur: "-",
+        trend: "yellow"
+      }
     }
 
-markets.bitcoin = bitcoin
-markets.nexo = nexo
-     
   }
 
 }catch(e){
   console.log("crypto failed", e)
-}
-}
 
-
-// ---------- GOLD ----------
-if(cryptoData?.["pax-gold"]?.usd){
-
-  const g = cryptoData["pax-gold"]
-
-  markets.gold = {
-    usd: g.usd.toFixed(0),
-    eur: g.eur
-      ? g.eur.toFixed(0)
-      : (fxRate ? (g.usd * fxRate).toFixed(0) : "-"),
-    trend: trend(g.usd_24h_change ?? 0)
-  }
-
-}else{
-
-  markets.gold = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-
+  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
+  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
 }
 
-
-// ---------- OIL ----------
-if(cryptoData?.["brent-crude-oil"]?.usd){
-
-  const o = cryptoData["brent-crude-oil"]
-
-  markets.oil = {
-    usd: o.usd.toFixed(0),
-    eur: o.eur
-      ? o.eur.toFixed(0)
-      : (fxRate ? (o.usd * fxRate).toFixed(0) : "-"),
-    trend: trend(o.usd_24h_change ?? 0)
-  }
-
-}else{
-
-  markets.oil = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-
-}
-        
 
 
 /* ================= DAX ================= */
