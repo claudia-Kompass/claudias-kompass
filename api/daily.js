@@ -577,18 +577,43 @@ try{
 }
 
 
-// ---------- BITCOIN ----------
-if(cryptoData?.bitcoin?.usd){
+// ---------- BITCOIN (separat stabil) ----------
+try{
 
-  markets.bitcoin = {
-    usd: Math.round(cryptoData.bitcoin.usd).toLocaleString("de-DE"),
-    eur: cryptoData.bitcoin.eur
-      ? Math.round(cryptoData.bitcoin.eur).toLocaleString("de-DE")
-      : "-",
-    trend: trend(cryptoData.bitcoin.usd_24h_change ?? 0)
+  const res = await fetchTimeout(
+    "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,EUR",
+    8000
+  )
+
+  if(res){
+
+    const json = await res.json()
+
+    if(json?.USD){
+
+      markets.bitcoin = {
+        usd: Math.round(json.USD).toLocaleString("de-DE"),
+        eur: json.EUR
+          ? Math.round(json.EUR).toLocaleString("de-DE")
+          : "-",
+        trend: "yellow" // CryptoCompare liefert hier keinen % Wert direkt
+      }
+
+    }else{
+
+      markets.bitcoin = {
+        usd: "-",
+        eur: "-",
+        trend: "yellow"
+      }
+
+    }
+
   }
 
-}else{
+}catch(e){
+
+  console.log("bitcoin fallback failed")
 
   markets.bitcoin = {
     usd: "-",
