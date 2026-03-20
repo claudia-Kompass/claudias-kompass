@@ -553,11 +553,21 @@ if(fxRes){
 
 let d = null
 
-if(cryptoRes && cryptoRes.json){
+if(cryptoRes){
   try{
-    d = await cryptoRes.json()
+    const json = await cryptoRes.json()
+
+    // VALIDIERUNG (entscheidend!)
+    if(json && json.bitcoin){
+      d = json
+    } else {
+      console.log("crypto empty")
+      d = null
+    }
+
   }catch(e){
     console.log("crypto failed")
+    d = null
   }
 }
 
