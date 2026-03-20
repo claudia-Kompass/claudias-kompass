@@ -552,6 +552,7 @@ if(fxRes){
 }
 
 /* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
+/* ================= CRYPTO + GOLD + OIL (STABLE FINAL) ================= */
 
 let d = null
 
@@ -559,23 +560,28 @@ if(cryptoRes){
   try{
     const json = await cryptoRes.json()
 
-    if(json && json.bitcoin && json.bitcoin.usd){
+    // ✅ sauber prüfen (nicht mehr auf truthy!)
+    if(json && typeof json === "object" && json.bitcoin && typeof json.bitcoin.usd === "number"){
       d = json
     } else {
+
       console.log("fallback crypto used")
 
-      const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
-      const altJson = await alt.json()
+      try{
+        const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+        const altJson = await alt.json()
 
-      if(altJson?.data?.priceUsd){
-        d = {
-          bitcoin: {
-            usd: Number(altJson.data.priceUsd),
-            eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
-            usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
+        if(altJson?.data?.priceUsd){
+          d = {
+            bitcoin: {
+              usd: Number(altJson.data.priceUsd),
+              eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
+              usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
+            }
           }
         }
-      } else {
+      }catch(e){
+        console.log("fallback crypto failed")
         d = null
       }
     }
@@ -586,8 +592,10 @@ if(cryptoRes){
   }
 }
 
-/* BITCOIN */
-if(d && d.bitcoin && typeof d.bitcoin.usd === "number" && d.bitcoin.usd > 0){
+
+/* ================= BITCOIN ================= */
+
+if(d?.bitcoin && typeof d.bitcoin.usd === "number"){
   markets.bitcoin = {
     usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
     eur: d.bitcoin.eur
@@ -596,62 +604,71 @@ if(d && d.bitcoin && typeof d.bitcoin.usd === "number" && d.bitcoin.usd > 0){
     trend: trend(d.bitcoin.usd_24h_change ?? 0)
   }
 } else {
-  markets.bitcoin = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
+  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
 }
 
-/* NEXO */
-if(d && d.nexo && typeof d.nexo.usd === "number" && d.nexo.usd > 0){
+
+/* ================= NEXO ================= */
+
+if(d?.nexo && typeof d.nexo.usd === "number"){
   markets.nexo = {
     usd: d.nexo.usd.toFixed(2),
     eur: d.nexo.eur ? d.nexo.eur.toFixed(3) : "-",
     trend: trend(d.nexo.usd_24h_change ?? 0)
   }
 } else {
-  markets.nexo = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
+  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
 }
 
-/* GOLD */
+
+/* ================= GOLD ================= */
+
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
   markets.gold = {
-    usd: (typeof g.usd === "number")
-      ? g.usd.toFixed(0)
-      : "-",
-    eur: (typeof g.eur === "number")
+    usd: typeof g.usd === "number" ? g.usd.toFixed(0) : "-",
+    eur: typeof g.eur === "number"
       ? g.eur.toFixed(0)
-      : (g.usd && fxRate)
-        ? (g.usd * fxRate).toFixed(0)
-        : "-",
+      : (g.usd && fxRate ? (g.usd * fxRate).toFixed(0) : "-"),
     trend: trend(g.usd_24h_change ?? 0)
   }
 }
 
-/* OIL */
+
+/* ================= OIL ================= */
+
 if(d?.["brent-crude-oil"]){
   const o = d["brent-crude-oil"]
 
   markets.oil = {
-    usd: (typeof o.usd === "number")
-      ? o.usd.toFixed(0)
-      : "-",
-    eur: (typeof o.eur === "number")
+    usd: typeof o.usd === "number" ? o.usd.toFixed(0) : "-",
+    eur: typeof o.eur === "number"
       ? o.eur.toFixed(0)
-      : (o.usd && fxRate)
-        ? (o.usd * fxRate).toFixed(0)
-        : "-",
+      : (o.usd && fxRate ? (o.usd * fxRate).toFixed(0) : "-"),
     trend: trend(o.usd_24h_change ?? 0)
   }
-}
+} else if(oilRes){
+  // ✅ Backup über deine zweite API
+  try{
+    const text = await oilRes.text()
 
+    const match = text.match(/([0-9]+\.[0-9]+)/)
+
+    if(match){
+      const price = Number(match[1])
+
+      markets.oil = {
+        usd: price.toFixed(0),
+        eur: fxRate ? (price * fxRate).toFixed(0) : "-",
+        trend: "yellow"
+      }
+    }
+
+  }catch(e){
+    console.log("oil fallback failed")
+  }
+}
 
 /* ================= DAX ================= */
 
