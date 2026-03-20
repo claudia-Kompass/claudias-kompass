@@ -667,7 +667,7 @@ if(fxRes){
   }
 }
 
-/* ================= CRYPTO + GOLD + OIL ================= */
+/* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
 
 let d = null
 
@@ -682,8 +682,12 @@ if(cryptoRes && cryptoRes.json){
 /* BITCOIN */
 if(d?.bitcoin){
   markets.bitcoin = {
-    usd: typeof d.bitcoin.usd === "number" ? d.bitcoin.usd : "-",
-    eur: typeof d.bitcoin.eur === "number" ? d.bitcoin.eur : "-",
+    usd: (typeof d.bitcoin.usd === "number")
+      ? d.bitcoin.usd.toLocaleString("de-DE")
+      : "-",
+    eur: (typeof d.bitcoin.eur === "number")
+      ? d.bitcoin.eur.toLocaleString("de-DE")
+      : "-",
     trend: trend(d.bitcoin.usd_24h_change ?? 0)
   }
 }
@@ -691,8 +695,12 @@ if(d?.bitcoin){
 /* NEXO */
 if(d?.nexo){
   markets.nexo = {
-    usd: typeof d.nexo.usd === "number" ? d.nexo.usd : "-",
-    eur: typeof d.nexo.eur === "number" ? d.nexo.eur : "-",
+    usd: (typeof d.nexo.usd === "number")
+      ? d.nexo.usd.toFixed(2)
+      : "-",
+    eur: (typeof d.nexo.eur === "number")
+      ? d.nexo.eur.toFixed(3)
+      : "-",
     trend: trend(d.nexo.usd_24h_change ?? 0)
   }
 }
@@ -701,35 +709,36 @@ if(d?.nexo){
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
-  markets.gold.usd = (typeof g.usd === "number")
-    ? g.usd.toFixed(0)
-    : "-"
-
-  markets.gold.eur = (typeof g.eur === "number")
-    ? g.eur.toFixed(0)
-    : (g.usd && fxRate)
-      ? (g.usd * fxRate).toFixed(0)
-      : "-"
-
-  markets.gold.trend = trend(g.usd_24h_change ?? 0)
+  markets.gold = {
+    usd: (typeof g.usd === "number")
+      ? g.usd.toFixed(0)
+      : "-",
+    eur: (typeof g.eur === "number")
+      ? g.eur.toFixed(0)
+      : (g.usd && fxRate)
+        ? (g.usd * fxRate).toFixed(0)
+        : "-",
+    trend: trend(g.usd_24h_change ?? 0)
+  }
 }
 
 /* OIL */
 if(d?.["brent-crude-oil"]){
   const o = d["brent-crude-oil"]
 
-  markets.oil.usd = (typeof o.usd === "number")
-    ? o.usd.toFixed(0)
-    : "-"
-
-  markets.oil.eur = (typeof o.eur === "number")
-    ? o.eur.toFixed(0)
-    : (o.usd && fxRate)
-      ? (o.usd * fxRate).toFixed(0)
-      : "-"
-
-  markets.oil.trend = trend(o.usd_24h_change ?? 0)
+  markets.oil = {
+    usd: (typeof o.usd === "number")
+      ? o.usd.toFixed(0)
+      : "-",
+    eur: (typeof o.eur === "number")
+      ? o.eur.toFixed(0)
+      : (o.usd && fxRate)
+        ? (o.usd * fxRate).toFixed(0)
+        : "-",
+    trend: trend(o.usd_24h_change ?? 0)
+  }
 }
+
 
 /* ================= DAX ================= */
 
