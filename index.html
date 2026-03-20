@@ -725,7 +725,11 @@ const rows = [
 name:"DAX",
 value:data.markets?.dax?.value,
 sub:`
-Heute: ${data.markets?.dax?.change > 0 ? "+" : ""}${data.markets?.dax?.change}% 📈
+Heute: ${
+typeof data.markets?.dax?.change === "number"
+  ? (data.markets.dax.change > 0 ? "+" : "") + data.markets.dax.change + "%"
+  : "-"
+}
 <br>
 <span style="font-family:monospace">
 ${sparkline(data.markets?.dax?.spark)}
@@ -752,7 +756,9 @@ link:"https://www.finanzen.net/rohstoffe/goldpreis"
 
 {
 name:"Öl",
-value:"$"+data.markets?.oil?.usd,
+value: (!data.markets?.oil?.usd || data.markets.oil.usd === "-")
+  ? "keine Live-Daten"
+  : "$" + data.markets.oil.usd,
 trend:data.markets?.oil?.trend,
 link:"https://www.finanzen.net/rohstoffe/oelpreis"
 },
@@ -799,7 +805,7 @@ ${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
 </td>
 
 <td class="marketTrend">
-${ampel(r.trend)}
+${ampel(r.trend || "none")}
 </td>
 
 <td class="marketLink">
