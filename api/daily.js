@@ -622,23 +622,21 @@ if(daxRes){
 
       let price = Number(parts[4])
 
-      if(!price || isNaN(price)){
-        price = 18700 + Math.random() * 200
-      }
+       if(price && !isNaN(price)){
+  markets.dax.value = Math.round(price).toLocaleString("de-DE")
+  markets.dax.change = null
+  markets.dax.trend = "yellow"
+  markets.dax.spark = null
+}else{
+  markets.dax.value = "-"
+  markets.dax.spark = null
+       }
 
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
       markets.dax.change = 0
       markets.dax.trend = "yellow"
 
-      markets.dax.spark = [
-        price * 0.99,
-        price * 1.01,
-        price * 1.00,
-        price * 1.02,
-        price * 1.01,
-        price * 1.03,
-        price
-      ]
+      
     }
 
   }catch(e){
