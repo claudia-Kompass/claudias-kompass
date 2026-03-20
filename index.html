@@ -699,14 +699,6 @@ function ampel(trend){
 
 if(trend==="green") return '<span class="ampel green"></span>';
 if(trend==="red") return '<span class="ampel red"></span>';
-if(!trend || trend === "none") 
-  return '<span class="ampel grey"></span>';
-
-}
-function ampel(trend){
-
-if(trend==="green") return '<span class="ampel green"></span>';
-if(trend==="red") return '<span class="ampel red"></span>';
 if(!trend || trend === "none") return '<span class="ampel grey"></span>';
 
 return '<span class="ampel yellow"></span>'; // ← DAS FEHLT
@@ -739,11 +731,6 @@ typeof data.markets?.dax?.change === "number"
   ? (data.markets.dax.change > 0 ? "+" : "") + data.markets.dax.change + "%"
   : "-"
 }
-<br>
-<span style="font-family:monospace">
-${sparkline(data.markets?.dax?.spark)}
-</span>
-`,
 <br>
 <span style="font-family:monospace">
 ${sparkline(data.markets?.dax?.spark)}
