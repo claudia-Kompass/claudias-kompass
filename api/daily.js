@@ -559,11 +559,29 @@ if(cryptoRes){
   try{
     const json = await cryptoRes.json()
 
-    if(json && json.bitcoin){
+    // CoinGecko OK
+    if(json && json.bitcoin && json.bitcoin.usd){
       d = json
-    } else {
-      console.log("crypto empty")
-      d = null
+    }
+
+    // Fallback (stabil!)
+    else{
+      console.log("fallback crypto used")
+
+      const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+      const altJson = await alt.json()
+
+      if(altJson?.data?.priceUsd){
+        d = {
+          bitcoin: {
+            usd: Number(altJson.data.priceUsd),
+            eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
+            usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
+          }
+        }
+      } else {
+        d = null
+      }
     }
 
   }catch(e){
