@@ -623,28 +623,6 @@ try{
 }
 
 
-// ---------- NEXO ----------
-if(cryptoData?.nexo?.usd){
-
-  markets.nexo = {
-    usd: Number(cryptoData.nexo.usd).toFixed(2),
-    eur: cryptoData.nexo.eur
-      ? Number(cryptoData.nexo.eur).toFixed(3)
-      : "-",
-    trend: trend(cryptoData.nexo.usd_24h_change ?? 0)
-  }
-
-}else{
-
-  markets.nexo = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-
-}
-
-
 // ---------- GOLD ----------
 if(cryptoData?.["pax-gold"]?.usd){
 
