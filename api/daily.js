@@ -515,133 +515,135 @@ marketDate.toLocaleDateString("de-DE")
 
    
 /* =======================================================
-MARKETS
+MARKETS CLEAN Final
 ======================================================= */
-
-let markets = {
-  dax: { value:"-", trend:"neutral", link:"https://www.finanzen.net/index/dax" },
-  eurusd: { value:"-", trend:"neutral", link:"https://www.finanzen.net/devisen/eur-usd" },
-  gold: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/goldpreis" },
-  oil: { usd:"-", eur:"-", trend:"neutral", link:"https://www.finanzen.net/rohstoffe/oelpreis" },
-
-  bitcoin: { usd:"-", eur:"-", trend:"neutral" },
-  nexo: { usd:"-", eur:"-", trend:"neutral" }
-}
 
 let fxRate = null
 
-   
-function trendColor(change){
+let markets = {
+  dax: { value:"-", change:0, trend:"yellow", spark:[] },
+  eurusd: { value:"-", trend:"yellow" },
+  gold: { usd:"-", eur:"-", trend:"yellow" },
+  oil: { usd:"-", eur:"-", trend:"yellow" },
+  bitcoin: { usd:"-", eur:"-", trend:"yellow" },
+  nexo: { usd:"-", eur:"-", trend:"yellow" }
+}
+
+function trend(change){
   if(typeof change !== "number") return "yellow"
   if(change > 0) return "green"
   if(change < 0) return "red"
   return "yellow"
 }
 
-/* CRYPTO */
+/* ================= FX ================= */
+
+if(fxRes){
+  try{
+    const fx = await fxRes.json()
+    if(fx?.rates?.USD){
+      fxRate = Number(fx.rates.USD)
+      markets.eurusd.value = fxRate.toFixed(2)
+      markets.eurusd.trend = trend(fxRate - 1.08)
+    }
+  }catch(e){
+    console.log("FX failed")
+  }
+}
+
+/* ================= CRYPTO + GOLD + OIL ================= */
 
 let d = null
-   
+
 if(cryptoRes && cryptoRes.json){
   try{
     d = await cryptoRes.json()
   }catch(e){
-    console.log("crypto parse failed")
+    console.log("crypto failed")
   }
 }
 
-// BITCOIN
+/* BITCOIN */
 if(d?.bitcoin?.usd){
   markets.bitcoin = {
     usd: d.bitcoin.usd,
     eur: d.bitcoin.eur || "-",
-    trend: trendColor(d.bitcoin.usd_24h_change || 0)
+    trend: trend(d.bitcoin.usd_24h_change || 0)
   }
 }
 
-// NEXO
+/* NEXO */
 if(d?.nexo?.usd){
   markets.nexo = {
     usd: d.nexo.usd,
     eur: d.nexo.eur || "-",
-    trend: trendColor(d.nexo.usd_24h_change || 0)
+    trend: trend(d.nexo.usd_24h_change || 0)
   }
 }
 
-// GOLD
+/* GOLD */
 if(d?.["pax-gold"]){
   const g = d["pax-gold"]
 
   markets.gold.usd = g.usd ? g.usd.toFixed(0) : "-"
-
   markets.gold.eur = g.eur
     ? g.eur.toFixed(0)
     : (g.usd && fxRate)
       ? (g.usd * fxRate).toFixed(0)
       : "-"
 
-  markets.gold.trend = trendColor(g.usd_24h_change || 0)
-}
-// OIL
-if(oilRes){
-  try{
-    const text = await oilRes.text()
-
-    const match = text.match(/([0-9]{2,3}[.,][0-9]{2})/)
-
-    if(match && match[1]){
-      markets.oil.usd = match[1].replace(",", ".")
-      markets.oil.eur = "-"
-      markets.oil.trend = "yellow"
-    } else {
-      markets.oil.usd = "-"
-    }
-
-  }catch(e){
-    markets.oil.usd = "-"
-  }
-}
-   
-/* FX */
-   
-if(fxRes){
-  try{
-    const fx = await fxRes.json()
-
-    if(fx && fx.rates && fx.rates.USD){
-      fxRate = Number(fx.rates.USD)
-
-      markets.eurusd.value = fxRate.toFixed(2)
-      markets.eurusd.trend = trendColor(fxRate - 1.08)
-    } else {
-      markets.eurusd.value = "-"
-      markets.eurusd.trend = "yellow"
-    }
-
-  }catch(e){
-    console.log("FX failed")
-  }
+  markets.gold.trend = trend(g.usd_24h_change || 0)
 }
 
-/* DAX */
+/* OIL */
+if(d?.["brent-crude-oil"]){
+  const o = d["brent-crude-oil"]
+
+  markets.oil.usd = o.usd ? o.usd.toFixed(0) : "-"
+  markets.oil.eur = o.eur
+    ? o.eur.toFixed(0)
+    : (o.usd && fxRate)
+      ? (o.usd * fxRate).toFixed(0)
+      : "-"
+
+  markets.oil.trend = trend(o.usd_24h_change || 0)
+}
+
+/* ================= DAX ================= */
 
 if(daxRes){
   try{
-    const text = await daxRes.text()
+    const d = await daxRes.json()
+    const r = d?.quoteResponse?.result?.[0]
 
-    const match = text.match(/([0-9]{2,3}\.[0-9]{3})/)
+    if(r?.regularMarketPrice){
 
-if(match && match[1]){
-  markets.dax.value = match[1]
-  markets.dax.trend = "yellow"
-} else {
-  markets.dax.value = "-"
-}
+      const price = r.regularMarketPrice
+      const change = r.regularMarketChangePercent || 0
+
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.change = Number(change.toFixed(2))
+      markets.dax.trend = trend(change)
+
+      const base = price - (price * change / 100)
+
+      markets.dax.spark = [
+        base,
+        base * 1.002,
+        base * 0.998,
+        base * 1.01,
+        base * 1.02,
+        base * 1.015,
+        price
+      ]
+    }
 
   }catch(e){
     console.log("DAX failed")
   }
 }
+
+    
    
 /* =======================================================
 EVENT ENGINE
