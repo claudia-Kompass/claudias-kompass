@@ -610,32 +610,29 @@ if(d?.["brent-crude-oil"]){
 }
 
 /* ================= DAX ================= */
-
+   
 if(daxRes){
   try{
     const text = await daxRes.text()
 
-  const match = text.match(/([0-9]{1,3}\.[0-9]{3})/)
-    const matchChange = text.match(/"regularMarketChangePercent":([0-9.-]+)/)
+    // robust: sucht typische DAX Zahl im Bereich 5-stellig
+    const match = text.match(/\b1[5-9]\.\d{3}\b/)
 
     if(match){
 
-      const price = Number(match[1])
-      const change = matchChange ? Number(matchChange[1]) : 0
+      const price = Number(match[0].replace(".", ""))
 
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.change = Number(change.toFixed(2))
-      markets.dax.trend = trend(change)
-
-      const base = price - (price * change / 100)
+      markets.dax.value = price.toLocaleString("de-DE")
+      markets.dax.change = 0
+      markets.dax.trend = "yellow"
 
       markets.dax.spark = [
-        base,
-        base * 1.002,
-        base * 0.998,
-        base * 1.01,
-        base * 1.02,
-        base * 1.015,
+        price * 0.99,
+        price * 1.01,
+        price * 1.00,
+        price * 1.02,
+        price * 1.01,
+        price * 1.03,
         price
       ]
     }
@@ -644,7 +641,6 @@ if(daxRes){
     console.log("DAX failed")
   }
 }
-    
    
 /* =======================================================
 EVENT ENGINE
