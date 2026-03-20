@@ -595,7 +595,7 @@ if(cryptoRes){
 
 /* ================= BITCOIN ================= */
 
-if(d?.bitcoin && typeof d.bitcoin.usd === "number"){
+if(d?.bitcoin && typeof d.bitcoin.usd === "number" && d.bitcoin.usd > 1000){
   markets.bitcoin = {
     usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
     eur: d.bitcoin.eur
@@ -604,7 +604,13 @@ if(d?.bitcoin && typeof d.bitcoin.usd === "number"){
     trend: trend(d.bitcoin.usd_24h_change ?? 0)
   }
 } else {
-  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
+  console.log("bitcoin invalid:", d?.bitcoin)
+
+  markets.bitcoin = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
 }
 
 
