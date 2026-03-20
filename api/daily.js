@@ -556,6 +556,8 @@ if(fxRes){
 /* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
 /* ================= CRYPTO + GOLD + OIL (STABLE FINAL) ================= */
 
+
+
 let d = null
 
 if(cryptoRes){
@@ -563,38 +565,31 @@ if(cryptoRes){
     const json = await cryptoRes.json()
 
     if(json?.bitcoin?.usd){
-  d = json
-} else {
-  console.log("fallback crypto used")
+      d = json
+    } else {
+      console.log("fallback crypto used")
 
-  const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
-  const altJson = await alt.json()
+      const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+      const altJson = await alt.json()
 
-  if(altJson?.data?.priceUsd){
-    d = {
-      bitcoin: {
-        usd: Number(altJson.data.priceUsd),
-        eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
-        usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
-      }
-    }
-  } else {
-    d = null
-  }
-    }
-        console.log("fallback crypto failed")
+      if(altJson?.data?.priceUsd){
+        d = {
+          bitcoin: {
+            usd: Number(altJson.data.priceUsd),
+            eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
+            usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
+          }
+        }
+      } else {
         d = null
       }
     }
 
-  }catch(e){
+  } catch(e){
     console.log("crypto failed")
     d = null
   }
 }
-
-
-
 
 
 /* ================= NEXO ================= */
