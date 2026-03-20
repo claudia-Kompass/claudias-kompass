@@ -709,7 +709,7 @@ if(daxRes){
     markets.dax.trend = "yellow"
     markets.dax.time = marketDateString
   }
-   
+ } // ← DIESE ZEILE MUSS REIN
    
 /* =======================================================
 EVENT ENGINE
