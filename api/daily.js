@@ -562,27 +562,26 @@ if(cryptoRes){
   try{
     const json = await cryptoRes.json()
 
-    // ✅ sauber prüfen (nicht mehr auf truthy!)
-    if(json && typeof json === "object" && json.bitcoin && typeof json.bitcoin.usd === "number"){
-      d = json
-    } else {
+    if(json?.bitcoin?.usd){
+  d = json
+} else {
+  console.log("fallback crypto used")
 
-      console.log("fallback crypto used")
+  const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+  const altJson = await alt.json()
 
-      try{
-        const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
-        const altJson = await alt.json()
-
-        if(altJson?.data?.priceUsd){
-          d = {
-            bitcoin: {
-              usd: Number(altJson.data.priceUsd),
-              eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
-              usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
-            }
-          }
-        }
-      }catch(e){
+  if(altJson?.data?.priceUsd){
+    d = {
+      bitcoin: {
+        usd: Number(altJson.data.priceUsd),
+        eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
+        usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
+      }
+    }
+  } else {
+    d = null
+  }
+    }
         console.log("fallback crypto failed")
         d = null
       }
