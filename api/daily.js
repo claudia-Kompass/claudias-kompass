@@ -512,7 +512,7 @@ marketDate.setDate(today.getDate()-1)
 
 const marketDateString =
 marketDate.toLocaleDateString("de-DE")
-}
+
    
 /* =======================================================
 MARKETS CLEAN FINAL (STABLE)
