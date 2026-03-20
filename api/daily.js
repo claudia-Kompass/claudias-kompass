@@ -578,7 +578,7 @@ if(cryptoRes){
 
 /* ================= BITCOIN ================= */
 
-if(d?.bitcoin?.usd){
+if(d && d.bitcoin && typeof d.bitcoin.usd === "number"){
 
   markets.bitcoin = {
     usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
@@ -600,7 +600,7 @@ if(d?.bitcoin?.usd){
 
 /* ================= NEXO ================= */
 
-if(d?.nexo?.usd){
+if(d && d.nexo && typeof d.nexo.usd === "number"){
 
   markets.nexo = {
     usd: Number(d.nexo.usd).toFixed(2),
