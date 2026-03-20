@@ -537,7 +537,7 @@ let fxRate = null
 try{
   if(fxRes){
     const fx = await fxRes.json()
-    if(fx?.rates?.USD){
+    if(fx && fx.rates && fx.rates.USD){
       fxRate = Number(fx.rates.USD)
       markets.eurusd.value = fxRate.toFixed(2)
     }
@@ -628,7 +628,10 @@ try{
 }catch(e){
   console.log("DAX failed")
 }
-
+if(!markets.dax.time){
+  markets.dax.value = "-"
+  markets.dax.time = marketDateString
+}
   
    
 /* =======================================================
