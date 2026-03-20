@@ -620,7 +620,7 @@ if(daxRes){
 
     if(lines.length > 1){
       const parts = lines[1].split(",")
-      price = Number(parts[6])
+      price = Number(parts[6] || parts[5] || 0)
     }
 
     const now = new Date()
