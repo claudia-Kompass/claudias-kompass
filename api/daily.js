@@ -631,13 +631,7 @@ if(daxRes){
   markets.dax.value = "-"
   markets.dax.spark = null
        }
-
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.change = 0
-      markets.dax.trend = "yellow"
-
       
-    }
 
   }catch(e){
     console.log("DAX failed")
