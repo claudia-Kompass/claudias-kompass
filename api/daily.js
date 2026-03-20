@@ -589,16 +589,16 @@ if(oilRes){
 
     const match = text.match(/([0-9]{2,3}[.,][0-9]{2})/)
 
-if(match && match[1]){
-  markets.oil.usd = match[1].replace(",", ".")
-  markets.oil.eur = "-"
-  markets.oil.trend = "yellow"
-} else {
-  markets.oil.usd = "-"
-}
+    if(match && match[1]){
+      markets.oil.usd = match[1].replace(",", ".")
+      markets.oil.eur = "-"
+      markets.oil.trend = "yellow"
+    } else {
+      markets.oil.usd = "-"
+    }
 
   }catch(e){
-    console.log("Oil fallback failed")
+    markets.oil.usd = "-"
   }
 }
    
