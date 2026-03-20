@@ -536,8 +536,14 @@ if(fxRes){
     console.log("FX failed")
   }
 }   
+
+   
+  /* =======================================================
+MARKETS FINAL (STABLE WORKING)
+======================================================= */
+
 let markets = {
-  dax: { value:"-", change:0, trend:"yellow", spark:null, time:null },
+  dax: { value:"-", trend:"yellow", time:null },
   eurusd: { value:"-", trend:"yellow" },
   gold: { usd:"-", eur:"-", trend:"yellow" },
   oil: { usd:"-", eur:"-", trend:"yellow" },
@@ -545,110 +551,98 @@ let markets = {
   nexo: { usd:"-", eur:"-", trend:"yellow" }
 }
 
-/* ================= CRYPTO (CLEAN FINAL) ================= */
+let fxRate = null
 
-/* ================= CRYPTO (FINAL FIXED) ================= */
+/* ================= FX ================= */
 
 try{
+  if(fxRes){
+    const fx = await fxRes.json()
+    if(fx?.rates?.USD){
+      fxRate = Number(fx.rates.USD)
+      markets.eurusd.value = fxRate.toFixed(2)
+    }
+  }
+}catch(e){
+  console.log("FX failed")
+}
 
+/* ================= CRYPTO ================= */
+
+try{
   if(cryptoRes){
-
     const json = await cryptoRes.json()
 
     if(json){
 
-      const btc = json.bitcoin
-      const nex = json.nexo
-
-      if(btc?.usd){
+      if(json.bitcoin?.usd){
         markets.bitcoin = {
-          usd: Number(btc.usd).toFixed(2),
-          eur: btc.eur
-            ? Number(btc.eur).toFixed(2)
-            : (btc.usd * (fxRate || 0.92)).toFixed(2),
+          usd: Number(json.bitcoin.usd).toFixed(2),
+          eur: json.bitcoin.eur
+            ? Number(json.bitcoin.eur).toFixed(2)
+            : (json.bitcoin.usd * (fxRate || 0.92)).toFixed(2),
           trend: "yellow"
         }
       }
 
-      if(nex?.usd){
+      if(json.nexo?.usd){
         markets.nexo = {
-          usd: Number(nex.usd).toFixed(3),
-          eur: nex.eur
-            ? Number(nex.eur).toFixed(3)
-            : (nex.usd * (fxRate || 0.92)).toFixed(3),
+          usd: Number(json.nexo.usd).toFixed(3),
+          eur: json.nexo.eur
+            ? Number(json.nexo.eur).toFixed(3)
+            : (json.nexo.usd * (fxRate || 0.92)).toFixed(3),
           trend: "green"
         }
       }
 
+      if(json["pax-gold"]?.usd){
+        markets.gold = {
+          usd: Number(json["pax-gold"].usd).toFixed(0),
+          eur: json["pax-gold"].eur
+            ? Number(json["pax-gold"].eur).toFixed(0)
+            : (json["pax-gold"].usd * (fxRate || 0.92)).toFixed(0),
+          trend: "yellow"
+        }
+      }
+
+      if(json["brent-crude-oil"]?.usd){
+        markets.oil = {
+          usd: Number(json["brent-crude-oil"].usd).toFixed(0),
+          eur: json["brent-crude-oil"].eur
+            ? Number(json["brent-crude-oil"].eur).toFixed(0)
+            : (json["brent-crude-oil"].usd * (fxRate || 0.92)).toFixed(0),
+          trend: "yellow"
+        }
+      }
+
     }
-
   }
-
 }catch(e){
-
-  console.log("crypto failed", e)
-
-  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
-  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
-
+  console.log("crypto failed")
 }
+
 /* ================= DAX ================= */
 
-if(daxRes){
-  try{
+try{
+  if(daxRes){
     const text = await daxRes.text()
     const lines = text.split("\n")
 
-    let price = null
-
     if(lines.length > 1){
       const parts = lines[1].split(",")
-      price = Number(parts[6]) || Number(parts[5]) || null
+      const price = Number(parts[6]) || Number(parts[5])
+
+      if(price && price > 1000){
+        markets.dax.value = Math.round(price).toLocaleString("de-DE")
+        markets.dax.time = new Date().toLocaleString("de-DE")
+      }
     }
-
-    const now = new Date()
-    const day = now.getDay()
-
-    let refDate = new Date(now)
-
-    if(day === 6) refDate.setDate(now.getDate() - 1)
-    if(day === 0) refDate.setDate(now.getDate() - 2)
-
-    const isValidPrice = !isNaN(price) && price > 1000
-
-    if(isValidPrice){
-
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.trend = "yellow"
-      markets.dax.spark = null
-
-      const dateStr = refDate.toLocaleDateString("de-DE", {
-        day:"2-digit",
-        month:"2-digit"
-      })
-
-      const timeStr = now.toLocaleTimeString("de-DE", {
-        hour:"2-digit",
-        minute:"2-digit"
-      })
-
-      markets.dax.time = `${dateStr} ${timeStr}`
-
-    }else{
-
-      markets.dax.value = "-"
-      markets.dax.trend = "yellow"
-      markets.dax.time = marketDateString
-
-    }
-
-  }catch(e){
-    console.log("DAX failed")
-    markets.dax.value = "-"
-    markets.dax.trend = "yellow"
-    markets.dax.time = marketDateString
   }
- } // ← DIESE ZEILE MUSS REIN
+}catch(e){
+  console.log("DAX failed")
+}
+
+  
    
 /* =======================================================
 EVENT ENGINE
