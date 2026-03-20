@@ -620,7 +620,7 @@ if(daxRes){
 
       const parts = lines[1].split(",")
 
-      let price = Number(parts[4])
+      let price = Number(parts[6])
 
        if(price && !isNaN(price)){
   markets.dax.value = Math.round(price).toLocaleString("de-DE")
