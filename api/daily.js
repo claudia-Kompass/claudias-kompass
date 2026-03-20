@@ -613,13 +613,15 @@ if(d?.["brent-crude-oil"]){
 
 if(daxRes){
   try{
-    const d = await daxRes.json()
-    const r = d?.quoteResponse?.result?.[0]
+    const text = await daxRes.text()
 
-    if(r?.regularMarketPrice){
+    const match = text.match(/"regularMarketPrice":([0-9.]+)/)
+    const matchChange = text.match(/"regularMarketChangePercent":([0-9.-]+)/)
 
-      const price = r.regularMarketPrice
-      const change = r.regularMarketChangePercent || 0
+    if(match){
+
+      const price = Number(match[1])
+      const change = matchChange ? Number(matchChange[1]) : 0
 
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
       markets.dax.change = Number(change.toFixed(2))
@@ -642,7 +644,6 @@ if(daxRes){
     console.log("DAX failed")
   }
 }
-
     
    
 /* =======================================================
