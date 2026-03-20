@@ -615,7 +615,7 @@ if(daxRes){
   try{
     const text = await daxRes.text()
 
-    const match = text.match(/"regularMarketPrice":([0-9.]+)/)
+  const match = text.match(/([0-9]{1,3}\.[0-9]{3})/)
     const matchChange = text.match(/"regularMarketChangePercent":([0-9.-]+)/)
 
     if(match){
