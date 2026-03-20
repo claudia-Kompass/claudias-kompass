@@ -587,8 +587,7 @@ if(oilRes){
   try{
     const text = await oilRes.text()
 
-    const match = text.match(/([0-9]{2,3}\.[0-9]{2})/)
-
+    const match = text.match(/([0-9]{2,3}[.,][0-9]{2})/)
     if(match){
       markets.oil.usd = match[1]
       markets.oil.eur = "-"
