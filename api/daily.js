@@ -616,26 +616,29 @@ if(daxRes){
     const text = await daxRes.text()
     const lines = text.split("\n")
 
+    let price = null
+
     if(lines.length > 1){
-
       const parts = lines[1].split(",")
+      price = Number(parts[6])
+    }
 
-      let price = Number(parts[6])
-
-       if(price && !isNaN(price)){
-  markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.change = null
-  markets.dax.trend = "yellow"
-  markets.dax.spark = null
-}else{
-  markets.dax.value = "-"
-  markets.dax.spark = null
-       }
-     
-    } 
+    if(!isNaN(price) && price > 1000){
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.change = null
+      markets.dax.trend = "yellow"
+      markets.dax.spark = null
+    }else{
+      markets.dax.value = "-"
+      markets.dax.trend = "yellow"
+      markets.dax.spark = null
+    }
 
   }catch(e){
     console.log("DAX failed")
+    markets.dax.value = "-"
+    markets.dax.trend = "yellow"
+    markets.dax.spark = null
   }
 }
    
