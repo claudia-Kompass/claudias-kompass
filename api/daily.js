@@ -638,25 +638,14 @@ if(d?.["pax-gold"]){
 
 /* ================= OIL ================= */
 
-if(d?.["brent-crude-oil"]){
-  const o = d["brent-crude-oil"]
-
-  markets.oil = {
-    usd: typeof o.usd === "number" ? o.usd.toFixed(0) : "-",
-    eur: typeof o.eur === "number"
-      ? o.eur.toFixed(0)
-      : (o.usd && fxRate ? (o.usd * fxRate).toFixed(0) : "-"),
-    trend: trend(o.usd_24h_change ?? 0)
-  }
-} else if(oilRes){
-  // ✅ Backup über deine zweite API
+if(oilRes){
   try{
     const text = await oilRes.text()
 
-    const match = text.match(/([0-9]+\.[0-9]+)/)
+    const match = text.match(/Brent[^0-9]*([0-9]+,[0-9]+)/)
 
     if(match){
-      const price = Number(match[1])
+      const price = Number(match[1].replace(",", "."))
 
       markets.oil = {
         usd: price.toFixed(0),
