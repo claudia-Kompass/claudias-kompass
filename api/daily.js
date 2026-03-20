@@ -580,29 +580,37 @@ try{
 
 
 // ---------- BITCOIN (CoinCap – stabil) ----------
+// ---------- BITCOIN (CryptoCompare – stabil) ----------
 try{
 
-  const res = await fetch("https://api.coincap.io/v2/assets/bitcoin")
-  const json = await res.json()
+  const res = await fetchTimeout(
+    "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR",
+    8000
+  )
 
-  if(json?.data?.priceUsd){
+  if(res){
 
-    const price = Number(json.data.priceUsd)
+    const json = await res.json()
+    const data = json?.RAW?.BTC
 
-    markets.bitcoin = {
-      usd: Math.round(price).toLocaleString("de-DE"),
-      eur: fxRate
-        ? Math.round(price * fxRate).toLocaleString("de-DE")
-        : "-",
-      trend: trend(Number(json.data.changePercent24Hr || 0))
-    }
+    if(data?.USD?.PRICE){
 
-  }else{
+      markets.bitcoin = {
+        usd: Math.round(data.USD.PRICE).toLocaleString("de-DE"),
+        eur: data.EUR?.PRICE
+          ? Math.round(data.EUR.PRICE).toLocaleString("de-DE")
+          : "-",
+        trend: trend(data.USD.CHANGEPCT24HOUR || 0)
+      }
 
-    markets.bitcoin = {
-      usd: "-",
-      eur: "-",
-      trend: "yellow"
+    }else{
+
+      markets.bitcoin = {
+        usd: "-",
+        eur: "-",
+        trend: "yellow"
+      }
+
     }
 
   }
