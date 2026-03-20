@@ -724,7 +724,7 @@ const rows = [
 
 {
 name:"DAX",
-value:data.markets?.dax?.value,
+value: data.markets?.dax?.value ?? "—",
 sub:`
 Heute: ${
 typeof data.markets?.dax?.change === "number"
