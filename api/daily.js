@@ -554,92 +554,110 @@ if(fxRes){
 }
 
 /* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
-/* ================= CRYPTO + GOLD + OIL (STABLE FINAL) ================= */
+/* ================= CRYPTO FINAL STABLE ================= */
+
+let d = {
+  bitcoin: null,
+  nexo: null
+}
+
+/* ================= BITCOIN (BINANCE – PRIMARY) ================= */
+
+try{
+  const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+  const json = await res.json()
+
+  if(json?.price){
+    const price = Number(json.price)
+
+    d.bitcoin = {
+      usd: price,
+      eur: fxRate ? price * fxRate : null,
+      usd_24h_change: 0
+    }
+  }
+
+}catch(e){
+  console.log("binance btc failed")
+}
 
 
+/* ================= NEXO (COINGECKO – SECONDARY) ================= */
 
-let d = null
+try{
+  const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=nexo&vs_currencies=usd,eur&include_24hr_change=true")
+  const json = await res.json()
 
-if(cryptoRes){
+  if(json?.nexo?.usd){
+    d.nexo = {
+      usd: Number(json.nexo.usd),
+      eur: Number(json.nexo.eur),
+      usd_24h_change: Number(json.nexo.usd_24h_change || 0)
+    }
+  }
+
+}catch(e){
+  console.log("nexo failed")
+}
+
+
+/* ================= FALLBACK BITCOIN (COINCAP) ================= */
+
+if(!d.bitcoin){
   try{
-    const json = await cryptoRes.json()
+    const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
+    const altJson = await alt.json()
 
-    if(json?.bitcoin?.usd){
-      d = json
-    } else {
-      console.log("fallback crypto used")
+    if(altJson?.data?.priceUsd){
+      const price = Number(altJson.data.priceUsd)
 
-      const alt = await fetch("https://api.coincap.io/v2/assets/bitcoin")
-      const altJson = await alt.json()
-
-      if(altJson?.data?.priceUsd){
-        d = {
-          bitcoin: {
-            usd: Number(altJson.data.priceUsd),
-            eur: Number(altJson.data.priceUsd) * (fxRate || 0.92),
-            usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
-          }
-        }
-      } else {
-        d = null
+      d.bitcoin = {
+        usd: price,
+        eur: fxRate ? price * fxRate : null,
+        usd_24h_change: Number(altJson.data.changePercent24Hr || 0)
       }
     }
 
-  } catch(e){
-    console.log("crypto failed")
-    d = null
+  }catch(e){
+    console.log("fallback btc failed")
   }
 }
 
 
-/* ================= NEXO ================= */
+/* ================= MARKETS ASSIGN ================= */
 
-if(d?.nexo && typeof d.nexo.usd === "number"){
+/* BITCOIN */
+
+if(d.bitcoin && d.bitcoin.usd > 0){
+  markets.bitcoin = {
+    usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
+    eur: d.bitcoin.eur
+      ? Math.round(d.bitcoin.eur).toLocaleString("de-DE")
+      : "-",
+    trend: trend(d.bitcoin.usd_24h_change ?? 0)
+  }
+}else{
+  markets.bitcoin = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
+}
+
+
+/* NEXO */
+
+if(d.nexo && d.nexo.usd > 0){
   markets.nexo = {
     usd: d.nexo.usd.toFixed(2),
     eur: d.nexo.eur ? d.nexo.eur.toFixed(3) : "-",
     trend: trend(d.nexo.usd_24h_change ?? 0)
   }
-} else {
-  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
-}
-
-
-/* ================= GOLD ================= */
-
-if(d?.["pax-gold"]){
-  const g = d["pax-gold"]
-
-  markets.gold = {
-    usd: typeof g.usd === "number" ? g.usd.toFixed(0) : "-",
-    eur: typeof g.eur === "number"
-      ? g.eur.toFixed(0)
-      : (g.usd && fxRate ? (g.usd * fxRate).toFixed(0) : "-"),
-    trend: trend(g.usd_24h_change ?? 0)
-  }
-}
-
-
-/* ================= OIL ================= */
-
-if(oilRes){
-  try{
-    const text = await oilRes.text()
-
-    const match = text.match(/Brent[^0-9]*([0-9]+,[0-9]+)/)
-
-    if(match){
-      const price = Number(match[1].replace(",", "."))
-
-      markets.oil = {
-        usd: price.toFixed(0),
-        eur: fxRate ? (price * fxRate).toFixed(0) : "-",
-        trend: "yellow"
-      }
-    }
-
-  }catch(e){
-    console.log("oil fallback failed")
+}else{
+  markets.nexo = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
   }
 }
 
