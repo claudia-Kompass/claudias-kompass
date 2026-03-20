@@ -543,48 +543,22 @@ try{
     const btc = json.data.find(c => c.id === "bitcoin")
     const nex = json.data.find(c => c.id === "nexo")
 
-    // BITCOIN
-    if(btc?.priceUsd){
-      markets.bitcoin = {
-        usd: Number(btc.priceUsd).toFixed(0),
-        eur: fxRate
-          ? (btc.priceUsd * fxRate).toFixed(0)
-          : "-",
-        trend: "yellow"
-      }
-    }else{
-      markets.bitcoin = {
-        usd: "-",
-        eur: "-",
-        trend: "yellow"
-      }
-    }
-
-    // NEXO
-    if(nex?.priceUsd){
-      markets.nexo = {
-        usd: Number(nex.priceUsd).toFixed(3),
-        eur: fxRate
-          ? (nex.priceUsd * fxRate).toFixed(3)
-          : "-",
-        trend: "green"
-      }
-    }else{
-      markets.nexo = {
-        usd: "-",
-        eur: "-",
-        trend: "yellow"
-      }
-    }
-
+if (btc?.priceUsd) {
+  markets.bitcoin = {
+    usd: Number(btc.priceUsd).toFixed(2),
+    eur: (btc.priceUsd * (fxRate || 0.92)).toFixed(2),
+    trend: "yellow"
   }
-
-}catch(e){
-  console.log("crypto failed", e)
-
-  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
-  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
 }
+
+if (nex?.priceUsd) {
+  markets.nexo = {
+    usd: Number(nex.priceUsd).toFixed(3),
+    eur: (nex.priceUsd * (fxRate || 0.92)).toFixed(3),
+    trend: "green"
+  }
+}
+   
 
 
 
