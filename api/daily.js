@@ -623,16 +623,48 @@ if(daxRes){
       price = Number(parts[6])
     }
 
-    if(!isNaN(price) && price > 1000){
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.change = null
-      markets.dax.trend = "yellow"
-      markets.dax.spark = null
-    }else{
-      markets.dax.value = "-"
-      markets.dax.trend = "yellow"
-      markets.dax.spark = null
-    }
+    const now = new Date()
+const day = now.getDay()
+
+let refDate = new Date(now)
+
+// Samstag → Freitag
+if(day === 6){
+  refDate.setDate(now.getDate() - 1)
+}
+
+// Sonntag → Freitag
+if(day === 0){
+  refDate.setDate(now.getDate() - 2)
+}
+
+const isValidPrice = price && !isNaN(price) && price > 1000
+
+if(isValidPrice){
+
+  markets.dax.value = Math.round(price).toLocaleString("de-DE")
+  markets.dax.change = null
+  markets.dax.trend = "yellow"
+  markets.dax.spark = null
+
+  const dateStr = refDate.toLocaleDateString("de-DE", {
+    day:"2-digit",
+    month:"2-digit"
+  })
+
+  const timeStr = now.toLocaleTimeString("de-DE", {
+    hour:"2-digit",
+    minute:"2-digit"
+  })
+
+  markets.dax.time = `${dateStr} ${timeStr}`
+
+}else{
+
+  markets.dax.value = null
+  markets.dax.trend = "none"
+  markets.dax.time = null
+}
 
   }catch(e){
     console.log("DAX failed")
