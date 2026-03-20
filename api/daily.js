@@ -564,28 +564,34 @@ if(cryptoRes && cryptoRes.json){
 }
 
 /* BITCOIN */
-if(d?.bitcoin){
+if(d?.bitcoin?.usd){
   markets.bitcoin = {
-    usd: (typeof d.bitcoin.usd === "number")
-      ? d.bitcoin.usd.toLocaleString("de-DE")
-      : "-",
-    eur: (typeof d.bitcoin.eur === "number")
-      ? d.bitcoin.eur.toLocaleString("de-DE")
+    usd: Math.round(d.bitcoin.usd).toLocaleString("de-DE"),
+    eur: d.bitcoin.eur
+      ? Math.round(d.bitcoin.eur).toLocaleString("de-DE")
       : "-",
     trend: trend(d.bitcoin.usd_24h_change ?? 0)
+  }
+} else {
+  markets.bitcoin = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
   }
 }
 
 /* NEXO */
-if(d?.nexo){
+if(d?.nexo?.usd){
   markets.nexo = {
-    usd: (typeof d.nexo.usd === "number")
-      ? d.nexo.usd.toFixed(2)
-      : "-",
-    eur: (typeof d.nexo.eur === "number")
-      ? d.nexo.eur.toFixed(3)
-      : "-",
+    usd: d.nexo.usd.toFixed(2),
+    eur: d.nexo.eur ? d.nexo.eur.toFixed(3) : "-",
     trend: trend(d.nexo.usd_24h_change ?? 0)
+  }
+} else {
+  markets.nexo = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
   }
 }
 
