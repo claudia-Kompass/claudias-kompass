@@ -555,12 +555,10 @@ if(fxRes){
 
 /* ================= CRYPTO + GOLD + OIL (FINAL CLEAN) ================= */
 
-/* ================= CRYPTO + GOLD + OIL (FINAL STABLE) ================= */
-/* ================= MARKETS CRYPTO FINAL STABLE ================= */
+/* ================= CRYPTO FINAL SIMPLE ================= */
 
 let cryptoData = null
 
-// ---------- CoinGecko (Nexo + Gold + Oil) ----------
 try{
 
   if(cryptoRes){
@@ -574,50 +572,23 @@ try{
   }
 
 }catch(e){
-  console.log("coingecko failed")
+  console.log("crypto failed")
   cryptoData = null
 }
 
 
-// ---------- BITCOIN (CoinCap – stabil) ----------
-// ---------- BITCOIN (CryptoCompare – stabil) ----------
-try{
+// ---------- BITCOIN ----------
+if(cryptoData?.bitcoin?.usd){
 
-  const res = await fetchTimeout(
-    "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD,EUR",
-    8000
-  )
-
-  if(res){
-
-    const json = await res.json()
-    const data = json?.RAW?.BTC
-
-    if(data?.USD?.PRICE){
-
-      markets.bitcoin = {
-        usd: Math.round(data.USD.PRICE).toLocaleString("de-DE"),
-        eur: data.EUR?.PRICE
-          ? Math.round(data.EUR.PRICE).toLocaleString("de-DE")
-          : "-",
-        trend: trend(data.USD.CHANGEPCT24HOUR || 0)
-      }
-
-    }else{
-
-      markets.bitcoin = {
-        usd: "-",
-        eur: "-",
-        trend: "yellow"
-      }
-
-    }
-
+  markets.bitcoin = {
+    usd: Math.round(cryptoData.bitcoin.usd).toLocaleString("de-DE"),
+    eur: cryptoData.bitcoin.eur
+      ? Math.round(cryptoData.bitcoin.eur).toLocaleString("de-DE")
+      : "-",
+    trend: trend(cryptoData.bitcoin.usd_24h_change ?? 0)
   }
 
-}catch(e){
-
-  console.log("bitcoin failed")
+}else{
 
   markets.bitcoin = {
     usd: "-",
@@ -636,7 +607,7 @@ if(cryptoData?.nexo?.usd){
     eur: cryptoData.nexo.eur
       ? Number(cryptoData.nexo.eur).toFixed(3)
       : "-",
-    trend: trend(Number(cryptoData.nexo.usd_24h_change || 0))
+    trend: trend(cryptoData.nexo.usd_24h_change ?? 0)
   }
 
 }else{
@@ -695,8 +666,10 @@ if(cryptoData?.["brent-crude-oil"]?.usd){
     trend: "yellow"
   }
 
-       }
-   
+}
+        
+
+
 /* ================= DAX ================= */
 
 if(daxRes){
