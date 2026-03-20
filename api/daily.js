@@ -586,7 +586,6 @@ if(cryptoRes){
   }
 }
 
-
 /* BITCOIN */
 if(d && d.bitcoin && typeof d.bitcoin.usd === "number" && d.bitcoin.usd > 0){
   markets.bitcoin = {
