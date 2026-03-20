@@ -560,6 +560,32 @@ if(cryptoRes){
   try{
     const json = await cryptoRes.json()
 
+    // CoinGecko Format
+    if(json.bitcoin){
+      d = json
+    }
+
+    // CoinCap Fallback Format
+    else if(json.data && json.data.priceUsd){
+      d = {
+        bitcoin: {
+          usd: Number(json.data.priceUsd),
+          eur: Number(json.data.priceUsd) * (fxRate || 0.92),
+          usd_24h_change: Number(json.data.changePercent24Hr || 0)
+        }
+      }
+    }
+
+    else{
+      d = null
+    }
+
+  }catch(e){
+    console.log("crypto failed")
+    d = null
+  }
+}
+
     // VALIDIERUNG (entscheidend!)
     if(json && json.bitcoin){
       d = json
