@@ -590,35 +590,27 @@ if(d && d.bitcoin && typeof d.bitcoin.usd === "number"){
 
 }else{
 
-  markets.bitcoin = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
+  markets.bitcoin = null
 
 }
+
+
 
 /* ================= NEXO ================= */
 
 if(d && d.nexo && typeof d.nexo.usd === "number"){
 
   markets.nexo = {
-    usd: Number(d.nexo.usd).toFixed(2),
-    eur: d.nexo.eur
-      ? Number(d.nexo.eur).toFixed(3)
-      : "-",
+    usd: d.nexo.usd.toFixed(2),
+    eur: d.nexo.eur ? d.nexo.eur.toFixed(3) : "-",
     trend: trend(d.nexo.usd_24h_change ?? 0)
   }
 
 }else{
 
-  markets.nexo = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
+  markets.nexo = null
 
-}
+     }
 
 /* ================= GOLD ================= */
 
