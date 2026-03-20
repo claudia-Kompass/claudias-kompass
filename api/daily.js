@@ -87,7 +87,7 @@ return base
 }
    
 
-async function fetchTimeout(url,ms=2500){
+async function fetchTimeout(url,ms=5000){
 
 try{
 
