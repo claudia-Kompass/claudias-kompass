@@ -557,6 +557,19 @@ if(fxRes){
 
 /* ================= CRYPTO FINAL SIMPLE ================= */
 
+let bitcoin = {
+  usd: null,
+  eur: null,
+  trend: "yellow"
+}
+
+let nexo = {
+  usd: null,
+  eur: null,
+  trend: "yellow"
+}
+
+   
 let cryptoData = null
 
 try{
