@@ -705,6 +705,17 @@ return '<span class="ampel yellow"></span>';
 
 function renderMarkets(data){
 
+function sparkline(arr){
+if(!arr || arr.length < 2) return ""
+const min = Math.min(...arr)
+const max = Math.max(...arr)
+const blocks = "▁▂▃▄▅▆▇"
+return arr.map(v=>{
+const i = Math.floor((v - min) / (max - min || 1) * 6)
+return blocks[i]
+}).join("")
+}
+   
 let html = `<table class="marketTable">`
 
 const rows = [
@@ -712,8 +723,15 @@ const rows = [
 {
 name:"DAX",
 value:data.markets?.dax?.value,
+sub:`
+Heute: ${data.markets?.dax?.change > 0 ? "+" : ""}${data.markets?.dax?.change}% 📈
+<br>
+<span style="font-family:monospace">
+${sparkline(data.markets?.dax?.spark)}
+</span>
+`,
 trend:data.markets?.dax?.trend,
-link:"https://www.finanzen.net/index/dax"
+link:"https://www.tradingview.com/symbols/DEU40/"
 },
 
 {
