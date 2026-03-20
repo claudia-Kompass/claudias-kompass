@@ -530,7 +530,8 @@ let markets = {
   nexo: { usd:"-", eur:"-", trend:"yellow" }
 }
 
-
+let fxRate = null
+   
 /* ================= FX ================= */
 
 try{
