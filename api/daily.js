@@ -515,27 +515,6 @@ marketDate.setDate(today.getDate()-1)
 const marketDateString =
 marketDate.toLocaleDateString("de-DE")
 
-   
-/* =======================================================
-MARKETS CLEAN FINAL (STABLE)
-======================================================= */
-
-let fxRate = null
-
-if(fxRes){
-  try{
-    const fx = await fxRes.json()
-
-    if(fx && fx.rates && fx.rates.USD){
-      fxRate = Number(fx.rates.USD)
-      markets.eurusd.value = fxRate.toFixed(2)
-      markets.eurusd.trend = "yellow"
-    }
-
-  }catch(e){
-    console.log("FX failed")
-  }
-}   
 
    
   /* =======================================================
@@ -551,7 +530,6 @@ let markets = {
   nexo: { usd:"-", eur:"-", trend:"yellow" }
 }
 
-let fxRate = null
 
 /* ================= FX ================= */
 
