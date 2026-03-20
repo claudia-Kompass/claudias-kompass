@@ -1200,11 +1200,7 @@ festivals:danceFestivals
 },
    
 markets,
-bitcoin: markets.bitcoin,
-nexo: markets.nexo,
 
-
-   
 financeNews,
 weather,
 travelRadar : [travel],
