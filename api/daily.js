@@ -593,6 +593,7 @@ try{
           trend: "yellow"
         }
       }
+       } // <-- schließt if(json)
 
 if(!markets.oil.usd || markets.oil.usd === "-"){
   markets.oil = {
