@@ -631,7 +631,8 @@ if(daxRes){
   markets.dax.value = "-"
   markets.dax.spark = null
        }
-      
+     
+    } 
 
   }catch(e){
     console.log("DAX failed")
