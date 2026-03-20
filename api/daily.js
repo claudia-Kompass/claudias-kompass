@@ -591,49 +591,35 @@ try{
 
 
 // ---------- BITCOIN (separat stabil) ----------
+// ---------- CRYPTO (FINAL STABIL) ----------
+
 try{
 
-  const res = await fetchTimeout(
-    "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,EUR",
-    8000
-  )
+  const res = await fetch("https://api.coincap.io/v2/assets?ids=bitcoin,nexo")
+  const json = await res.json()
 
-  if(res){
+  if(json?.data?.length){
 
-    const json = await res.json()
+    const btc = json.data.find(c => c.id === "bitcoin")
+    const nex = json.data.find(c => c.id === "nexo")
 
-    if(json?.USD){
+    if(btc?.priceUsd){
+      bitcoin.usd = Number(btc.priceUsd).toFixed(2)
+      bitcoin.eur = (btc.priceUsd * (fxRate || 0.92)).toFixed(2)
+      bitcoin.trend = "yellow"
+    }
 
-      markets.bitcoin = {
-        usd: Math.round(json.USD).toLocaleString("de-DE"),
-        eur: json.EUR
-          ? Math.round(json.EUR).toLocaleString("de-DE")
-          : "-",
-        trend: "yellow" // CryptoCompare liefert hier keinen % Wert direkt
-      }
-
-    }else{
-
-      markets.bitcoin = {
-        usd: "-",
-        eur: "-",
-        trend: "yellow"
-      }
-
+    if(nex?.priceUsd){
+      nexo.usd = Number(nex.priceUsd).toFixed(3)
+      nexo.eur = (nex.priceUsd * (fxRate || 0.92)).toFixed(3)
+      nexo.trend = "green"
     }
 
   }
 
 }catch(e){
-
-  console.log("bitcoin fallback failed")
-
-  markets.bitcoin = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-
+  console.log("crypto failed", e)
+}
 }
 
 
