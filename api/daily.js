@@ -522,6 +522,20 @@ MARKETS CLEAN FINAL (STABLE)
 
 let fxRate = null
 
+if(fxRes){
+  try{
+    const fx = await fxRes.json()
+
+    if(fx && fx.rates && fx.rates.USD){
+      fxRate = Number(fx.rates.USD)
+      markets.eurusd.value = fxRate.toFixed(2)
+      markets.eurusd.trend = "yellow"
+    }
+
+  }catch(e){
+    console.log("FX failed")
+  }
+}   
 let markets = {
   dax: { value:"-", change:0, trend:"yellow", spark:null, time:null },
   eurusd: { value:"-", trend:"yellow" },
