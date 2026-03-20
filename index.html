@@ -787,7 +787,11 @@ ${r.name}
 
 <td class="marketValue">
 
-<div>${r.value ?? "-"}</div>
+<div>
+${(!r.value || r.value === "NaN" || r.value === "-") 
+  ? "keine Live-Daten" 
+  : r.value}
+</div>
 
 ${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
 
