@@ -533,35 +533,44 @@ let markets = {
 
 /* ================= CRYPTO (CLEAN FINAL) ================= */
 
+/* ================= CRYPTO (STABLE FINAL) ================= */
+
 try{
 
   const res = await fetch("https://api.coincap.io/v2/assets?ids=bitcoin,nexo")
   const json = await res.json()
 
-  if(json?.data?.length){
+  if(json && Array.isArray(json.data)){
 
     const btc = json.data.find(c => c.id === "bitcoin")
     const nex = json.data.find(c => c.id === "nexo")
 
-if (btc?.priceUsd) {
-  markets.bitcoin = {
-    usd: Number(btc.priceUsd).toFixed(2),
-    eur: (btc.priceUsd * (fxRate || 0.92)).toFixed(2),
-    trend: "yellow"
+    if(btc && btc.priceUsd){
+      markets.bitcoin = {
+        usd: Number(btc.priceUsd).toFixed(2),
+        eur: (btc.priceUsd * (fxRate || 0.92)).toFixed(2),
+        trend: "yellow"
+      }
+    }
+
+    if(nex && nex.priceUsd){
+      markets.nexo = {
+        usd: Number(nex.priceUsd).toFixed(3),
+        eur: (nex.priceUsd * (fxRate || 0.92)).toFixed(3),
+        trend: "green"
+      }
+    }
+
   }
+
+}catch(e){
+
+  console.log("crypto failed", e)
+
+  markets.bitcoin = { usd:"-", eur:"-", trend:"yellow" }
+  markets.nexo = { usd:"-", eur:"-", trend:"yellow" }
+
 }
-
-if (nex?.priceUsd) {
-  markets.nexo = {
-    usd: Number(nex.priceUsd).toFixed(3),
-    eur: (nex.priceUsd * (fxRate || 0.92)).toFixed(3),
-    trend: "green"
-  }
-}
-   
-
-
-
 /* ================= DAX ================= */
 
 if(daxRes){
