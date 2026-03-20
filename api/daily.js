@@ -630,47 +630,164 @@ let refDate = new Date(now)
 if(day === 6){
   refDate.setDate(now.getDate() - 1)
 }
+/* =======================================================
+MARKETS CLEAN FINAL (STABLE)
+======================================================= */
 
-// Sonntag → Freitag
-if(day === 0){
-  refDate.setDate(now.getDate() - 2)
+let fxRate = null
+
+let markets = {
+  dax: { value:"-", change:0, trend:"yellow", spark:null, time:null },
+  eurusd: { value:"-", trend:"yellow" },
+  gold: { usd:"-", eur:"-", trend:"yellow" },
+  oil: { usd:"-", eur:"-", trend:"yellow" },
+  bitcoin: { usd:"-", eur:"-", trend:"yellow" },
+  nexo: { usd:"-", eur:"-", trend:"yellow" }
 }
 
-const isValidPrice = !isNaN(price) && price > 1000
-
-if(isValidPrice){
-
-  markets.dax.value = Math.round(price).toLocaleString("de-DE")
-  markets.dax.change = null
-  markets.dax.trend = "yellow"
-  markets.dax.spark = null
-
-  const dateStr = refDate.toLocaleDateString("de-DE", {
-    day:"2-digit",
-    month:"2-digit"
-  })
-
-  const timeStr = now.toLocaleTimeString("de-DE", {
-    hour:"2-digit",
-    minute:"2-digit"
-  })
-
-  markets.dax.time = `${dateStr} ${timeStr}`
-
-}else{
-
-  markets.dax.value = null
-  markets.dax.trend = "none"
-  markets.dax.time = null
+function trend(change){
+  if(typeof change !== "number") return "yellow"
+  if(change > 0) return "green"
+  if(change < 0) return "red"
+  return "yellow"
 }
+
+/* ================= FX ================= */
+
+if(fxRes){
+  try{
+    const fx = await fxRes.json()
+    if(fx?.rates?.USD !== undefined){
+      fxRate = Number(fx.rates.USD)
+      markets.eurusd.value = fxRate.toFixed(2)
+      markets.eurusd.trend = trend(fxRate - 1.08)
+    }
+  }catch(e){
+    console.log("FX failed")
+  }
+}
+
+/* ================= CRYPTO + GOLD + OIL ================= */
+
+let d = null
+
+if(cryptoRes && cryptoRes.json){
+  try{
+    d = await cryptoRes.json()
+  }catch(e){
+    console.log("crypto failed")
+  }
+}
+
+/* BITCOIN */
+if(d?.bitcoin){
+  markets.bitcoin = {
+    usd: typeof d.bitcoin.usd === "number" ? d.bitcoin.usd : "-",
+    eur: typeof d.bitcoin.eur === "number" ? d.bitcoin.eur : "-",
+    trend: trend(d.bitcoin.usd_24h_change ?? 0)
+  }
+}
+
+/* NEXO */
+if(d?.nexo){
+  markets.nexo = {
+    usd: typeof d.nexo.usd === "number" ? d.nexo.usd : "-",
+    eur: typeof d.nexo.eur === "number" ? d.nexo.eur : "-",
+    trend: trend(d.nexo.usd_24h_change ?? 0)
+  }
+}
+
+/* GOLD */
+if(d?.["pax-gold"]){
+  const g = d["pax-gold"]
+
+  markets.gold.usd = (typeof g.usd === "number")
+    ? g.usd.toFixed(0)
+    : "-"
+
+  markets.gold.eur = (typeof g.eur === "number")
+    ? g.eur.toFixed(0)
+    : (g.usd && fxRate)
+      ? (g.usd * fxRate).toFixed(0)
+      : "-"
+
+  markets.gold.trend = trend(g.usd_24h_change ?? 0)
+}
+
+/* OIL */
+if(d?.["brent-crude-oil"]){
+  const o = d["brent-crude-oil"]
+
+  markets.oil.usd = (typeof o.usd === "number")
+    ? o.usd.toFixed(0)
+    : "-"
+
+  markets.oil.eur = (typeof o.eur === "number")
+    ? o.eur.toFixed(0)
+    : (o.usd && fxRate)
+      ? (o.usd * fxRate).toFixed(0)
+      : "-"
+
+  markets.oil.trend = trend(o.usd_24h_change ?? 0)
+}
+
+/* ================= DAX ================= */
+
+if(daxRes){
+  try{
+    const text = await daxRes.text()
+    const lines = text.split("\n")
+
+    let price = null
+
+    if(lines.length > 1){
+      const parts = lines[1].split(",")
+      price = Number(parts[6]) || Number(parts[5]) || null
+    }
+
+    const now = new Date()
+    const day = now.getDay()
+
+    let refDate = new Date(now)
+
+    if(day === 6) refDate.setDate(now.getDate() - 1)
+    if(day === 0) refDate.setDate(now.getDate() - 2)
+
+    const isValidPrice = !isNaN(price) && price > 1000
+
+    if(isValidPrice){
+
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.trend = "yellow"
+      markets.dax.spark = null
+
+      const dateStr = refDate.toLocaleDateString("de-DE", {
+        day:"2-digit",
+        month:"2-digit"
+      })
+
+      const timeStr = now.toLocaleTimeString("de-DE", {
+        hour:"2-digit",
+        minute:"2-digit"
+      })
+
+      markets.dax.time = `${dateStr} ${timeStr}`
+
+    }else{
+
+      markets.dax.value = "-"
+      markets.dax.trend = "yellow"
+      markets.dax.time = marketDateString
+
+    }
 
   }catch(e){
     console.log("DAX failed")
     markets.dax.value = "-"
     markets.dax.trend = "yellow"
-    markets.dax.spark = null
+    markets.dax.time = marketDateString
   }
-}
+   }
    
 /* =======================================================
 EVENT ENGINE
