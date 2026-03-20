@@ -193,7 +193,9 @@ stzRes,
 stimmeRes,
 htRes
 ] = results.map(r => r.status==="fulfilled" ? r.value : null)
-
+   
+console.log("cryptoRes:", cryptoRes ? "OK" : "NULL")
+   
 /* WEATHER */
 
 if(weatherRes && weatherRes.json){
