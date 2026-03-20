@@ -160,7 +160,7 @@ const results = await Promise.allSettled([
 
 fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.92&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode"),
 
-fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
+fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true&precision=full"),
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
 fetchTimeout("https://stooq.com/q/l/?s=dax&i=d"),
