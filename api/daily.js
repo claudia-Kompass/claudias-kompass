@@ -638,7 +638,7 @@ if(day === 0){
   refDate.setDate(now.getDate() - 2)
 }
 
-const isValidPrice = price && !isNaN(price) && price > 1000
+const isValidPrice = !isNaN(price) && price > 1000
 
 if(isValidPrice){
 
