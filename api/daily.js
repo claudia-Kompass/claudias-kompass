@@ -629,7 +629,7 @@ if(daxRes){
   try{
     const text = await daxRes.text()
 
-    const match = text.match(/([0-9]{2}\.[0-9]{3})/)
+    const match = text.match(/([0-9]{2,3}\.[0-9]{3})/)
 
 if(match && match[1]){
   markets.dax.value = match[1]
