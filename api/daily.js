@@ -566,19 +566,19 @@ if(cryptoRes && cryptoRes.json){
 /* BITCOIN */
 if(d?.bitcoin?.usd !== undefined){
   markets.bitcoin = {
-    usd: d.bitcoin.usd,
-    eur: d.bitcoin.eur || "-",
-    trend: trend(d.bitcoin.usd_24h_change || 0)
-  }
+  usd: d.bitcoin.usd ?? "-",
+  eur: d.bitcoin.eur ?? "-",
+  trend: trend(d.bitcoin.usd_24h_change ?? 0)
+}
 }
 
 /* NEXO */
 if(d?.nexo?.usd !== undefined){
   markets.nexo = {
-    usd: d.nexo.usd,
-    eur: d.nexo.eur || "-",
-    trend: trend(d.nexo.usd_24h_change || 0)
-  }
+  usd: d.nexo.usd ?? "-",
+  eur: d.neco.eur ?? "-",
+  trend: trend(d.neco.usd_24h_change ?? 0)
+}
 }
 
 /* GOLD */
