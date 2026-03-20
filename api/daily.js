@@ -163,7 +163,7 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
 
-fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/index/dax"),
+fetchTimeout("https://stooq.com/q/l/?s=dax&i=d"),
 fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/rohstoffe/oelpreis"),
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
@@ -615,26 +615,30 @@ if(daxRes){
   try{
     const text = await daxRes.text()
 
-    // robust: sucht typische DAX Zahl im Bereich 5-stellig
-    const match = text.match(/\b1[5-9]\.\d{3}\b/)
+    const lines = text.split("\n")
 
-    if(match){
+    if(lines.length > 1){
 
-      const price = Number(match[0].replace(".", ""))
+      const parts = lines[1].split(",")
 
-      markets.dax.value = price.toLocaleString("de-DE")
-      markets.dax.change = 0
-      markets.dax.trend = "yellow"
+      const price = Number(parts[4])
 
-      markets.dax.spark = [
-        price * 0.99,
-        price * 1.01,
-        price * 1.00,
-        price * 1.02,
-        price * 1.01,
-        price * 1.03,
-        price
-      ]
+      if(price){
+
+        markets.dax.value = Math.round(price).toLocaleString("de-DE")
+        markets.dax.change = 0
+        markets.dax.trend = "yellow"
+
+        markets.dax.spark = [
+          price * 0.99,
+          price * 1.01,
+          price * 1.00,
+          price * 1.02,
+          price * 1.01,
+          price * 1.03,
+          price
+        ]
+      }
     }
 
   }catch(e){
