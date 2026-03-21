@@ -590,23 +590,28 @@ try {
   console.log("crypto failed")
 }
 
-/* ================= BTC FALLBACK (EINMAL!) ================= */
+/* ================= BTC (PRIMARY BINANCE) ================= */
 
-if (!btcPrice) {
-  try {
-    const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
-    if (res) {
-      const data = await res.json()
-      if (data?.price) {
-        const price = Number(data.price)
-        markets.bitcoin = {
-          usd: price.toFixed(2),
-          eur: (price * fxRate).toFixed(2),
-          trend: "yellow"
-        }
+try {
+  const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+
+  if (res) {
+    const data = await res.json()
+
+    if (data?.price) {
+      const price = Number(data.price)
+
+      markets.bitcoin = {
+        usd: price.toFixed(2),
+        eur: (price * fxRate).toFixed(2),
+        trend: "yellow"
       }
+
+      btcPrice = price
     }
-  } catch (e) {}
+  }
+} catch (e) {
+  console.log("BTC Binance failed")
 }
 
 /* ================= DAX ================= */
