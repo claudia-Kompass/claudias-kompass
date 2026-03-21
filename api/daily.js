@@ -649,34 +649,37 @@ if (!btcSet) {
 try {
   if (daxRes) {
     const text = await daxRes.text()
-    const lines = text.split("\n")
 
-    let price = null
+    if (!text || text.includes("No data")) {
+      console.log("❌ DAX NO DATA")
+    } else {
+      const lines = text.trim().split("\n")
 
-    for (let i = 1; i < lines.length; i++) { // skip header
-      const parts = lines[i].split(",")
+      // letzte gültige Datenzeile (nicht Header)
+      const lastLine = lines[lines.length - 1] === ""
+        ? lines[lines.length - 2]
+        : lines[lines.length - 1]
+
+      const parts = lastLine.split(",")
 
       if (parts.length >= 5) {
         const close = parseFloat(parts[4])
+        const date = parts[0]
 
         if (!isNaN(close)) {
-          price = close
-          break
+          markets.dax.value = Math.round(close).toLocaleString("de-DE")
+          markets.dax.time = date
+        } else {
+          console.log("❌ DAX INVALID CLOSE")
         }
+      } else {
+        console.log("❌ DAX BAD FORMAT")
       }
-    }
-
-    if (price) {
-      markets.dax.value = Math.round(price).toLocaleString("de-DE")
-      markets.dax.time = marketDateString
-    } else {
-      console.log("❌ DAX NOT PARSED")
     }
   }
 } catch (e) {
   console.log("❌ DAX FAILED", e)
-}
-
+   }
 
 /* ===================== OIL FINAL ===================== */
 let oilData = null
