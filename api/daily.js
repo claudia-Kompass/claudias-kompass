@@ -620,9 +620,10 @@ try {
 
     if (lines.length > 1) {
       const parts = lines[1].split(",")
-      const price = Number(parts[6]) || Number(parts[5])
 
-      if (price && price > 1000) {
+      const price = parseFloat(parts[6])
+
+      if (!isNaN(price) && price > 1000) {
         markets.dax.value = Math.round(price).toLocaleString("de-DE")
         markets.dax.time = new Date().toLocaleString("de-DE")
       }
@@ -630,13 +631,6 @@ try {
   }
 } catch (e) {
   console.log("DAX failed")
-}
-
-/* ================= DAX FALLBACK ================= */
-
-if (!markets.dax.time) {
-  markets.dax.value = "-"
-  markets.dax.time = marketDateString
 }
 
 /* ================= OIL FALLBACK ================= */
