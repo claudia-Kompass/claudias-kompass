@@ -549,9 +549,10 @@ try{
 /* ================= CRYPTO ================= */
 
 try{
+   console.log("cryptoRes exists:", !!cryptoRes)
   if(cryptoRes){
     const json = await cryptoRes.json()
-
+console.log("CRYPTO JSON:", JSON.stringify(json))
     if(json){
 
       if(json.bitcoin && json.bitcoin.usd != null){
