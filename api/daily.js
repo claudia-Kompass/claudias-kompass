@@ -567,10 +567,6 @@ try {
 
   if (json && typeof json === "object") {
 
-    const json = await cryptoRes.json().catch(() => null)
-
-    if (json) {
-
       // BITCOIN
       if (json.bitcoin && json.bitcoin.usd != null) {
         markets.bitcoin = {
