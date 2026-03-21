@@ -719,7 +719,7 @@ if (!markets.oil.usd || markets.oil.usd === "-") {
 
 if (!markets.dax.value || markets.dax.value === "-") {
   markets.dax.value = "18.000"
-  markets.dax.time = new Date().toLocaleString("de-DE")
+  markets.dax.time = marketDateString
   console.log("⚠️ DAX FALLBACK USED")
 }
 
