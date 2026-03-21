@@ -552,7 +552,20 @@ try {
 /* ================= CRYPTO + GOLD + OIL ================= */
 
 try {
-  if (cryptoRes && cryptoRes.json) {
+
+  let json = null
+
+  try {
+    if (cryptoRes) {
+      json = await cryptoRes.json()
+    }
+  } catch (e) {
+    console.log("crypto json parse failed")
+  }
+
+  console.log("crypto json:", json)
+
+  if (json && typeof json === "object") {
 
     const json = await cryptoRes.json().catch(() => null)
 
@@ -614,7 +627,7 @@ try {
       
 /* ================= BTC FALLBACK ================= */
 
-if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
+if (!markets.bitcoin || !markets.bitcoin.usd || markets.bitcoin.usd === "-") {
 
   try {
     const fallback = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
