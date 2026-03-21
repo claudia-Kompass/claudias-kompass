@@ -664,7 +664,7 @@ try {
       const parts = lastLine.split(",")
 
       if (parts.length >= 5) {
-        const close = parseFloat(parts[7])
+        if (parts.length >= 5 && parts[4])
         const date = parts[0]
 
         if (!isNaN(close)) {
