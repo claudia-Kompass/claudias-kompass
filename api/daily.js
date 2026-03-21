@@ -591,7 +591,9 @@ try {
         }
       }
 
-      // GOLD
+console.log("BTC after crypto:", markets.bitcoin)
+    
+          // GOLD
       if (json["pax-gold"] && json["pax-gold"].usd != null) {
         markets.gold = {
           usd: safeNumber(json["pax-gold"].usd, 0),
@@ -622,7 +624,7 @@ try {
       
 // FALLBACK: Binance (Bitcoin IMMER anzeigen)
 
-if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
+if (!markets.bitcoin || markets.bitcoin.usd === "-" || markets.bitcoin.usd === undefined) {
   try {
     const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
     const data = await res.json()
