@@ -702,9 +702,17 @@ if (!markets.oil.usd || markets.oil.usd === "-") {
 }
 
 // ================= HARD BTC FALLBACK =================
+// ================= BTC HARD FALLBACK =================
 try {
 
-  if (!markets.bitcoin.usd || markets.bitcoin.usd === "-" || markets.bitcoin.usd === "loading") {
+  const hasBTC =
+    markets.bitcoin &&
+    markets.bitcoin.usd &&
+    markets.bitcoin.usd !== "-"
+
+  if (!hasBTC) {
+
+    console.log("BTC fallback triggered")
 
     const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
 
@@ -721,15 +729,20 @@ try {
           trend: "yellow"
         }
 
-        console.log("BTC HARD fallback used")
+        console.log("BTC fallback SUCCESS")
 
+      } else {
+        console.log("BTC fallback NO DATA")
       }
+
+    } else {
+      console.log("BTC fallback NO RESPONSE")
     }
 
   }
 
-} catch(e){
-  console.log("BTC HARD fallback failed")
+} catch (e) {
+  console.log("BTC fallback ERROR")
 }
 /* =======================================================
 EVENT ENGINE
