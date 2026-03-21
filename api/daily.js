@@ -653,17 +653,18 @@ try {
 
     let price = null
 
-    for (let line of lines) {
-      const parts = line.split(",")
-      for (let p of parts) {
-        const num = parseFloat(p.replace(",", "."))
-        if (!isNaN(num) && num > 1000) {
-          price = num
-          break
-        }
-      }
-      if (price) break
+for (let line of lines) {
+  const parts = line.split(",")
+
+  if (parts.length >= 5) {
+    const close = parseFloat(parts[4].replace(",", "."))
+
+    if (!isNaN(close) && close > 10000 && close < 30000) {
+      price = close
+      break
     }
+  }
+}
 
     if (price) {
       markets.dax.value = Math.round(price).toLocaleString("de-DE")
