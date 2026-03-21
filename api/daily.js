@@ -663,9 +663,8 @@ try {
 
       const parts = lastLine.split(",")
 
-      if (parts.length >= 5) {
-        if (parts.length >= 5 && parts[4])
-        const date = parts[0]
+      if (parts.length >= 5 && parts[4])
+         const date = parts[0]
 
         if (!isNaN(close)) {
           markets.dax.value = Math.round(close).toLocaleString("de-DE")
