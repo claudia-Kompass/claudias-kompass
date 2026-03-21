@@ -565,7 +565,7 @@ try {
 
   console.log("crypto json:", json)
 
-  if (json && typeof json === "object") {
+ if (json) {
 
       // BITCOIN
       if (json.bitcoin && json.bitcoin.usd != null) {
@@ -621,7 +621,8 @@ try {
 }
       
 // FALLBACK: Binance (Bitcoin IMMER anzeigen)
-if (!markets.bitcoin || !markets.bitcoin.usd || markets.bitcoin.usd === "-") {
+
+if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
   try {
     const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
     const data = await res.json()
