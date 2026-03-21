@@ -507,29 +507,6 @@ if (day === 6) marketDate.setDate(today.getDate() - 1)
 
 const marketDateString = marketDate.toLocaleDateString("de-DE")
 
-
-/* =========================================
-   MARKETS CORE
-========================================= */
-
-function safeNumber(v, digits = 2, fallback = "-") {
-  if (v == null || isNaN(v)) return fallback
-  return Number(v).toFixed(digits)
-}
-
-let markets = {
-  dax: { value: "-", trend: "yellow", time: marketDateString },
-  eurusd: { value: "-", trend: "yellow" },
-  gold: { usd: "-", eur: "-", trend: "yellow" },
-  oil: { usd: "-", eur: "-", trend: "yellow" },
-  bitcoin: { usd: "-", eur: "-", trend: "yellow" },
-  nexo: { usd: "-", eur: "-", trend: "yellow" }
-}
-
-let fxRate = 0.92
-
-
-/* ================= FX ================= */
 /* =======================================================
 MARKETS (CLEAN FINAL)
 ======================================================= */
