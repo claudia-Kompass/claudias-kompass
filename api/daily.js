@@ -654,17 +654,16 @@ try {
       console.log("❌ DAX NO DATA")
     } else {
       const lines = text.trim().split("\n")
-       console.log("DAX LINE:", lastLine)
 
-      // letzte gültige Datenzeile (nicht Header)
       const lastLine = lines[lines.length - 1] === ""
         ? lines[lines.length - 2]
         : lines[lines.length - 1]
 
       const parts = lastLine.split(",")
 
-      if (parts.length >= 5 && parts[4])
-         const date = parts[0]
+      if (parts.length >= 5 && parts[4]) {
+        const close = parseFloat(parts[4])
+        const date = parts[0]
 
         if (!isNaN(close)) {
           markets.dax.value = Math.round(close).toLocaleString("de-DE")
@@ -679,7 +678,7 @@ try {
   }
 } catch (e) {
   console.log("❌ DAX FAILED", e)
-   }
+}
 
 /* ===================== OIL FINAL ===================== */
 let oilData = null
