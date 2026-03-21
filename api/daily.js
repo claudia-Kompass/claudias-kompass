@@ -555,7 +555,8 @@ try {
   if (cryptoRes && cryptoRes.json) {
 
     const json = await cryptoRes.json().catch(() => null)
-    if (!json) return
+
+    if (json) {
 
       // BITCOIN
       if (json.bitcoin && json.bitcoin.usd != null) {
@@ -593,7 +594,7 @@ try {
         }
       }
 
-      // OIL (robust)
+      // OIL
       if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
         markets.oil = {
           usd: safeNumber(json["brent-crude-oil"].usd, 0),
@@ -610,6 +611,7 @@ try {
 } catch (e) {
   console.log("crypto failed")
 }
+      
 
 /* ================= DAX ================= */
 
