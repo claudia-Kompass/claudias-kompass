@@ -614,7 +614,7 @@ try {
   console.log("BTC Binance failed")
 }
 
-/* ================= DAX ================= */
+/* ================= DAX ROBUST ================= */
 
 try {
   if (daxRes) {
@@ -624,7 +624,12 @@ try {
     if (lines.length > 1) {
       const parts = lines[1].split(",")
 
-      const price = parseFloat(parts[4])
+      let price = parseFloat(parts[4])
+
+      // fallback wenn Format anders
+      if (isNaN(price)) {
+        price = parseFloat(parts.find(p => !isNaN(parseFloat(p))))
+      }
 
       if (!isNaN(price) && price > 1000) {
         markets.dax.value = Math.round(price).toLocaleString("de-DE")
@@ -635,7 +640,6 @@ try {
 } catch (e) {
   console.log("DAX failed")
 }
-
 /* ================= OIL FALLBACK ================= */
 
 if (!markets.oil.usd || markets.oil.usd === "-") {
