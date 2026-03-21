@@ -1234,7 +1234,6 @@ financeNews = []
 
 // DAX
 if (!markets.dax?.value || markets.dax.value === "-") {
-  markets.dax.value = "18000"
   markets.dax.trend = markets.dax.trend || "yellow"
 }
 
