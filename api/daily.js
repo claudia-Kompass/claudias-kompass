@@ -524,17 +524,12 @@ function safeNumber(v, digits = 2, fallback = "-") {
 }
 
 let markets = {
-dax: { value: "-", trend: "yellow", time: marketDateString },
+  dax: { value: "-", trend: "yellow", time: marketDateString },
   eurusd: { value: "-", trend: "yellow" },
   gold: { usd: "-", eur: "-", trend: "yellow" },
   oil: { usd: "-", eur: "-", trend: "yellow" },
   bitcoin: { usd: "-", eur: "-", trend: "yellow" },
   nexo: { usd: "-", eur: "-", trend: "yellow" }
-}
-markets.bitcoin = {
-  usd: "loading",
-  eur: "loading",
-  trend: "yellow"
 }
 let fxRate = 0.92 // fallback Default
 
