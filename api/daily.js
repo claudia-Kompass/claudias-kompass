@@ -557,7 +557,7 @@ try {
 
   try {
     if (cryptoRes) {
-      json = await cryptoRes.json()
+      json = await cryptoRes.json().catch(() => null)
     }
   } catch (e) {
     console.log("crypto json parse failed")
