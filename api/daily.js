@@ -493,30 +493,24 @@ rssCacheTime = Date.now()
 
 
 /* =========================================
+/* =========================================
    MARKET DATE LOGIC
 ========================================= */
 
 const today = new Date()
 
 let marketDate = new Date(today)
-
 const day = today.getDay()
 
-// Sonntag
-if(day === 0){
-  marketDate.setDate(today.getDate()-2)
-}
-
-// Samstag
-if(day === 6){
-  marketDate.setDate(today.getDate()-1)
-}
+if (day === 0) marketDate.setDate(today.getDate() - 2)
+if (day === 6) marketDate.setDate(today.getDate() - 1)
 
 const marketDateString = marketDate.toLocaleDateString("de-DE")
 
-/* =======================================================
-MARKETS FINAL (STABLE)
-======================================================= */
+
+/* =========================================
+   MARKETS CORE
+========================================= */
 
 function safeNumber(v, digits = 2, fallback = "-") {
   if (v == null || isNaN(v)) return fallback
@@ -531,7 +525,9 @@ let markets = {
   bitcoin: { usd: "-", eur: "-", trend: "yellow" },
   nexo: { usd: "-", eur: "-", trend: "yellow" }
 }
-let fxRate = 0.92 // fallback Default
+
+let fxRate = 0.92
+
 
 /* ================= FX ================= */
 
@@ -539,130 +535,106 @@ try {
   if (fxRes) {
     const fx = await fxRes.json()
 
-    if (fx && fx.rates && fx.rates.USD != null) {
+    if (fx?.rates?.USD) {
       fxRate = Number(fx.rates.USD)
       markets.eurusd.value = safeNumber(fxRate, 2)
     }
   }
-} catch (e) {
+} catch {
   console.log("FX failed")
 }
 
-/* ================= CRYPTO + GOLD + OIL ================= */
+
+/* ================= CRYPTO / GOLD / OIL ================= */
+
+let btcPrice = null
 
 try {
 
   let json = null
 
-  try {
-    if (cryptoRes) {
-      json = await cryptoRes.json().catch(() => null)
+  if (cryptoRes) {
+    try {
+      json = await cryptoRes.json()
+    } catch {
+      json = null
     }
-  } catch (e) {
-    console.log("crypto json parse failed")
   }
 
-  console.log("crypto json:", json)
+  if (json) {
 
-  if (json && typeof json === "object") {
-
-    // BITCOIN
-    if (json.bitcoin && json.bitcoin.usd != null) {
-      markets.bitcoin = {
-        usd: safeNumber(json.bitcoin.usd, 2),
-        eur: safeNumber(
-          json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
-          2
-        ),
-        trend: "yellow"
-      }
+    // BTC
+    if (json.bitcoin?.usd) {
+      btcPrice = Number(json.bitcoin.usd)
+      console.log("BTC via CoinGecko")
     }
 
     // NEXO
-    if (json.nexo && json.nexo.usd != null) {
+    if (json.nexo?.usd != null) {
       markets.nexo = {
         usd: safeNumber(json.nexo.usd, 3),
-        eur: safeNumber(
-          json.nexo.eur ?? json.nexo.usd * fxRate,
-          3
-        ),
+        eur: safeNumber(json.nexo.eur ?? json.nexo.usd * fxRate, 3),
         trend: "green"
       }
     }
 
     // GOLD
-    if (json["pax-gold"] && json["pax-gold"].usd != null) {
+    if (json["pax-gold"]?.usd != null) {
       markets.gold = {
         usd: safeNumber(json["pax-gold"].usd, 0),
-        eur: safeNumber(
-          json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
-          0
-        ),
+        eur: safeNumber(json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate, 0),
         trend: "yellow"
       }
     }
 
     // OIL
-    if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
+    if (json["brent-crude-oil"]?.usd != null) {
       markets.oil = {
         usd: safeNumber(json["brent-crude-oil"].usd, 0),
-        eur: safeNumber(
-          json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
-          0
-        ),
+        eur: safeNumber(json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate, 0),
         trend: "yellow"
       }
     }
   }
 
-} catch (e) {
+} catch {
   console.log("crypto failed")
 }
 
-      
-// FALLBACK: Binance (Bitcoin IMMER anzeigen)
-// ================= BTC FALLBACK =================
-if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
 
-  let btcPrice = null
+/* ================= BTC FALLBACK ================= */
 
-  // Binance
+if (!btcPrice) {
+
   try {
     const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+
     if (res) {
       const data = await res.json()
+
       if (data?.price) {
         btcPrice = Number(data.price)
         console.log("BTC via Binance")
       }
     }
-  } catch (e) {}
 
-  // CoinCap Backup
-  if (!btcPrice) {
-    try {
-      const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
-      if (res) {
-        const data = await res.json()
-        if (data?.data?.priceUsd) {
-          btcPrice = Number(data.data.priceUsd)
-          console.log("BTC via CoinCap")
-        }
-      }
-    } catch (e) {}
-  }
-
-  // Final setzen
-  if (btcPrice) {
-    markets.bitcoin = {
-      usd: btcPrice.toFixed(2),
-      eur: (btcPrice * fxRate).toFixed(2),
-      trend: "yellow"
-    }
-  } else {
-    console.log("BTC fallback failed komplett")
+  } catch {
+    console.log("BTC fallback failed")
   }
 }
+
+
+/* ================= BTC FINAL ================= */
+
+if (btcPrice) {
+  markets.bitcoin = {
+    usd: btcPrice.toFixed(2),
+    eur: (btcPrice * fxRate).toFixed(2),
+    trend: "yellow"
+  }
+}
+
+
 /* ================= DAX ================= */
 
 try {
@@ -673,108 +645,32 @@ try {
     if (lines.length > 1) {
       const parts = lines[1].split(",")
 
-      const price = parseFloat(parts[6])
+      const price =
+        parseFloat(parts[6]) ||
+        parseFloat(parts[5]) ||
+        parseFloat(parts[4])
 
       if (!isNaN(price) && price > 1000) {
         markets.dax.value = Math.round(price).toLocaleString("de-DE")
         markets.dax.time = new Date().toLocaleString("de-DE")
+        console.log("DAX OK")
       }
     }
   }
-} catch (e) {
+} catch {
   console.log("DAX failed")
 }
 
-/* ================= OIL FALLBACK ================= */
 
-if (!markets.oil.usd || markets.oil.usd === "-") {
-  markets.oil = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
+/* ================= DAX FALLBACK ================= */
+
+if (!markets.dax.value || markets.dax.value === "-") {
+  markets.dax.value = "-"
+  markets.dax.time = marketDateString
 }
 
-// ================= HARD BTC FALLBACK =================
-// ================= BTC HARD FALLBACK =================
-try {
 
-  const hasBTC =
-    markets.bitcoin &&
-    markets.bitcoin.usd &&
-    markets.bitcoin.usd !== "-"
 
-  if (!hasBTC) {
-
-    console.log("BTC fallback triggered")
-try {
-
-  let json = null
-
-  try {
-    if (cryptoRes) {
-      json = await cryptoRes.json().catch(() => null)
-    }
-  } catch (e) {
-    console.log("crypto json parse failed")
-  }
-
-  console.log("crypto json:", json)
-
-  if (json && typeof json === "object") {
-
-    // BITCOIN
-    if (json.bitcoin && json.bitcoin.usd != null) {
-      markets.bitcoin = {
-        usd: safeNumber(json.bitcoin.usd, 2),
-        eur: safeNumber(
-          json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
-          2
-        ),
-        trend: "yellow"
-      }
-    }
-
-    // NEXO
-    if (json.nexo && json.nexo.usd != null) {
-      markets.nexo = {
-        usd: safeNumber(json.nexo.usd, 3),
-        eur: safeNumber(
-          json.nexo.eur ?? json.nexo.usd * fxRate,
-          3
-        ),
-        trend: "green"
-      }
-    }
-
-    // GOLD
-    if (json["pax-gold"] && json["pax-gold"].usd != null) {
-      markets.gold = {
-        usd: safeNumber(json["pax-gold"].usd, 0),
-        eur: safeNumber(
-          json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
-          0
-        ),
-        trend: "yellow"
-      }
-    }
-
-    // OIL
-    if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
-      markets.oil = {
-        usd: safeNumber(json["brent-crude-oil"].usd, 0),
-        eur: safeNumber(
-          json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
-          0
-        ),
-        trend: "yellow"
-      }
-    }
-  }
-
-} catch (e) {
-  console.log("crypto failed")
-         }
 /* =======================================================
 EVENT ENGINE
 ======================================================= */
