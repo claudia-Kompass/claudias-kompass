@@ -513,117 +513,142 @@ marketDate.setDate(today.getDate()-1)
 }
 
 const marketDateString =
-marketDate.toLocaleDateString("de-DE")
 
-
-   
-  /* =======================================================
-MARKETS FINAL (STABLE WORKING)
+/* =======================================================
+MARKETS FINAL (STABLE)
 ======================================================= */
 
-let markets = {
-  dax: { value:"-", trend:"yellow", time:null },
-  eurusd: { value:"-", trend:"yellow" },
-  gold: { usd:"-", eur:"-", trend:"yellow" },
-  oil: { usd:"-", eur:"-", trend:"yellow" },
-  bitcoin: { usd:"-", eur:"-", trend:"yellow" },
-  nexo: { usd:"-", eur:"-", trend:"yellow" }
+function safeNumber(v, digits = 2, fallback = "-") {
+  if (v == null || isNaN(v)) return fallback
+  return Number(v).toFixed(digits)
 }
 
-let fxRate = null
-   
+let markets = {
+  dax: { value: "-", trend: "yellow", time: null },
+  eurusd: { value: "-", trend: "yellow" },
+  gold: { usd: "-", eur: "-", trend: "yellow" },
+  oil: { usd: "-", eur: "-", trend: "yellow" },
+  bitcoin: { usd: "-", eur: "-", trend: "yellow" },
+  nexo: { usd: "-", eur: "-", trend: "yellow" }
+}
+
+let fxRate = 0.92 // fallback Default
+
 /* ================= FX ================= */
 
-try{
-  if(fxRes){
+try {
+  if (fxRes) {
     const fx = await fxRes.json()
-    if(fx && fx.rates && fx.rates.USD){
+
+    if (fx && fx.rates && fx.rates.USD != null) {
       fxRate = Number(fx.rates.USD)
-      markets.eurusd.value = fxRate.toFixed(2)
+      markets.eurusd.value = safeNumber(fxRate, 2)
     }
   }
-}catch(e){
+} catch (e) {
   console.log("FX failed")
 }
 
-/* ================= CRYPTO ================= */
-try{
-  if(cryptoRes){
+/* ================= CRYPTO + GOLD + OIL ================= */
+
+try {
+  if (cryptoRes) {
     const json = await cryptoRes.json()
 
-    if(json){
+    if (json) {
 
-      if(json.bitcoin && json.bitcoin.usd != null){
+      // BITCOIN
+      if (json.bitcoin && json.bitcoin.usd != null) {
         markets.bitcoin = {
-          usd: Number(json.bitcoin.usd).toFixed(2),
-          eur: json.bitcoin.eur
-            ? Number(json.bitcoin.eur).toFixed(2)
-            : (json.bitcoin.usd * (fxRate || 0.92)).toFixed(2),
+          usd: safeNumber(json.bitcoin.usd, 2),
+          eur: safeNumber(
+            json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
+            2
+          ),
           trend: "yellow"
         }
       }
 
-      if(json.nexo && json.nexo.usd != null){
+      // NEXO
+      if (json.nexo && json.nexo.usd != null) {
         markets.nexo = {
-          usd: Number(json.nexo.usd).toFixed(3),
-          eur: json.nexo.eur
-            ? Number(json.nexo.eur).toFixed(3)
-            : (json.nexo.usd * (fxRate || 0.92)).toFixed(3),
+          usd: safeNumber(json.nexo.usd, 3),
+          eur: safeNumber(
+            json.nexo.eur ?? json.nexo.usd * fxRate,
+            3
+          ),
           trend: "green"
         }
       }
 
-      if(json["pax-gold"] && json["pax-gold"].usd != null){
+      // GOLD
+      if (json["pax-gold"] && json["pax-gold"].usd != null) {
         markets.gold = {
-          usd: Number(json["pax-gold"].usd).toFixed(0),
-          eur: json["pax-gold"].eur
-            ? Number(json["pax-gold"].eur).toFixed(0)
-            : (json["pax-gold"].usd * (fxRate || 0.92)).toFixed(0),
+          usd: safeNumber(json["pax-gold"].usd, 0),
+          eur: safeNumber(
+            json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
+            0
+          ),
           trend: "yellow"
         }
       }
 
-      if(json["brent-crude-oil"] && json["brent-crude-oil"].usd != null){
+      // OIL (robust)
+      if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
         markets.oil = {
-          usd: Number(json["brent-crude-oil"].usd).toFixed(0),
-          eur: json["brent-crude-oil"].eur
-            ? Number(json["brent-crude-oil"].eur).toFixed(0)
-            : (json["brent-crude-oil"].usd * (fxRate || 0.92)).toFixed(0),
+          usd: safeNumber(json["brent-crude-oil"].usd, 0),
+          eur: safeNumber(
+            json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
+            0
+          ),
           trend: "yellow"
         }
       }
 
     }
   }
-}catch(e){
+} catch (e) {
   console.log("crypto failed")
 }
 
 /* ================= DAX ================= */
 
-try{
-  if(daxRes){
+try {
+  if (daxRes) {
     const text = await daxRes.text()
     const lines = text.split("\n")
 
-    if(lines.length > 1){
+    if (lines.length > 1) {
       const parts = lines[1].split(",")
       const price = Number(parts[6]) || Number(parts[5])
 
-      if(price && price > 1000){
+      if (price && price > 1000) {
         markets.dax.value = Math.round(price).toLocaleString("de-DE")
         markets.dax.time = new Date().toLocaleString("de-DE")
       }
     }
   }
-}catch(e){
+} catch (e) {
   console.log("DAX failed")
 }
-if(!markets.dax.time){
+
+/* ================= DAX FALLBACK ================= */
+
+if (!markets.dax.time) {
   markets.dax.value = "-"
   markets.dax.time = marketDateString
 }
-  
+
+/* ================= OIL FALLBACK ================= */
+
+if (!markets.oil.usd || markets.oil.usd === "-") {
+  markets.oil = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
+}
+
    
 /* =======================================================
 EVENT ENGINE
