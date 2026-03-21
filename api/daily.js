@@ -547,12 +547,10 @@ try{
 }
 
 /* ================= CRYPTO ================= */
-
 try{
-   console.log("cryptoRes exists:", !!cryptoRes)
   if(cryptoRes){
     const json = await cryptoRes.json()
-console.log("CRYPTO JSON:", JSON.stringify(json))
+
     if(json){
 
       if(json.bitcoin && json.bitcoin.usd != null){
@@ -575,7 +573,7 @@ console.log("CRYPTO JSON:", JSON.stringify(json))
         }
       }
 
-      if(json["pax-gold"]?.usd){
+      if(json["pax-gold"] && json["pax-gold"].usd != null){
         markets.gold = {
           usd: Number(json["pax-gold"].usd).toFixed(0),
           eur: json["pax-gold"].eur
@@ -585,7 +583,7 @@ console.log("CRYPTO JSON:", JSON.stringify(json))
         }
       }
 
-      if(json["brent-crude-oil"]?.usd){
+      if(json["brent-crude-oil"] && json["brent-crude-oil"].usd != null){
         markets.oil = {
           usd: Number(json["brent-crude-oil"].usd).toFixed(0),
           eur: json["brent-crude-oil"].eur
@@ -594,16 +592,7 @@ console.log("CRYPTO JSON:", JSON.stringify(json))
           trend: "yellow"
         }
       }
-       } // <-- schließt if(json)
 
-if(!markets.oil.usd || markets.oil.usd === "-"){
-  markets.oil = {
-    usd: "-",
-    eur: "-",
-    trend: "yellow"
-  }
-}
-       
     }
   }
 }catch(e){
