@@ -552,7 +552,7 @@ try {
 
   if (cryptoRes) {
     const json = await cryptoRes.json().catch(() => null)
-
+console.log("crypto JSON:", json)
     if (json) {
 
       if (json.bitcoin?.usd) {
@@ -590,6 +590,10 @@ try {
 
     }
   }
+
+console.log("markets after crypto:", markets)
+console.log("=== DEBUG END ===")
+   
 } catch (e) {
   console.log("crypto failed")
 }
