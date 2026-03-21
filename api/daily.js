@@ -623,23 +623,46 @@ console.log("BTC after crypto:", markets.bitcoin)
 }
       
 // FALLBACK: Binance (Bitcoin IMMER anzeigen)
+// ================= BTC FALLBACK (ROBUST) =================
 if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
+
+  let btcPrice = null
+
+  // 1. Binance
   try {
     const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
-    if (!res) throw new Error("binance failed")
-
-    const data = await res.json()
-
-    if (data && data.price) {
-      markets.bitcoin = {
-        usd: Number(data.price).toFixed(2),
-        eur: Number(data.price * fxRate).toFixed(2),
-        trend: "yellow"
+    if (res) {
+      const data = await res.json()
+      if (data && data.price) {
+        btcPrice = Number(data.price)
+        console.log("BTC via Binance")
       }
-      console.log("BTC fallback used")
     }
-  } catch (e) {
-    console.log("BTC fallback failed")
+  } catch (e) {}
+
+  // 2. CoinCap (Backup)
+  if (!btcPrice) {
+    try {
+      const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
+      if (res) {
+        const data = await res.json()
+        if (data && data.data && data.data.priceUsd) {
+          btcPrice = Number(data.data.priceUsd)
+          console.log("BTC via CoinCap")
+        }
+      }
+    } catch (e) {}
+  }
+
+  // FINAL setzen
+  if (btcPrice) {
+    markets.bitcoin = {
+      usd: btcPrice.toFixed(2),
+      eur: (btcPrice * fxRate).toFixed(2),
+      trend: "yellow"
+    }
+  } else {
+    console.log("BTC fallback komplett failed")
   }
 }
 /* ================= DAX ================= */
