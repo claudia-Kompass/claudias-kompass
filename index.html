@@ -741,8 +741,13 @@ link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
 
 {
 name:"Gold",
-value:"$"+data.markets?.gold?.usd,
-sub:"€"+data.markets?.gold?.eur,
+value: data.markets?.gold?.usd && data.markets.gold.usd !== "-"
+  ? "$" + data.markets.gold.usd
+  : "keine Live-Daten",
+
+sub: data.markets?.gold?.eur && data.markets.gold.eur !== "-"
+  ? "€" + data.markets.gold.eur
+  : "",
 trend:data.markets?.gold?.trend,
 link:"https://www.finanzen.net/rohstoffe/goldpreis"
 },
@@ -799,9 +804,9 @@ ${r.name}
 <td class="marketValue">
 
 <div>
-${(!r.value || r.value === "NaN" || r.value === "-") 
-  ? "keine Live-Daten" 
-  : r.value}
+${typeof r.value === "string" && r.value !== "-" && r.value !== ""
+  ? r.value
+  : "keine Live-Daten"}
 </div>
 
 ${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
