@@ -546,6 +546,10 @@ try {
 let btcPrice = null
 
 try {
+
+  console.log("=== DEBUG START ===")
+  console.log("cryptoRes:", cryptoRes ? "OK" : "NULL")
+
   if (cryptoRes) {
     const json = await cryptoRes.json().catch(() => null)
 
