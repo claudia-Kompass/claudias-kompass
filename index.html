@@ -723,15 +723,13 @@ let html = `<table class="marketTable">`
 const rows = [
 
 {
-name:"DAX",
-value: data.markets?.dax?.value ?? "—",
-sub:`
-${data.markets?.dax?.value
-  ? "Stand: " + data.markets.dax.time
-  : "keine aktuellen Daten"}
-`,
-trend:data.markets?.dax?.trend,
-link:"https://www.tradingview.com/symbols/DEU40/"
+  name: "DAX",
+  value: data.markets?.dax?.value && data.markets.dax.value !== "-"
+    ? data.markets.dax.value
+    : "keine Live-Daten",
+  sub: data.markets?.dax?.time || "",
+  trend: data.markets?.dax?.trend,
+  link: "https://www.boerse.de/index/DAX"
 },
 
 {
@@ -750,12 +748,15 @@ link:"https://www.finanzen.net/rohstoffe/goldpreis"
 },
 
 {
-name:"Öl",
-value: (!data.markets?.oil?.usd || data.markets.oil.usd === "-")
-  ? "keine Live-Daten"
-  : "$" + data.markets.oil.usd,
-trend:data.markets?.oil?.trend,
-link:"https://www.finanzen.net/rohstoffe/oelpreis"
+  name: "Öl",
+  value: data.markets?.oil?.usd && data.markets.oil.usd !== "-"
+    ? "$" + data.markets.oil.usd
+    : "keine Live-Daten",
+  sub: data.markets?.oil?.eur && data.markets.oil.eur !== "-"
+    ? "€" + data.markets.oil.eur
+    : "",
+  trend: data.markets?.oil?.trend,
+  link: "https://www.finanzen.net/rohstoffe/oelpreis"
 },
 
 {
