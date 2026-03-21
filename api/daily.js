@@ -531,7 +531,11 @@ dax: { value: "-", trend: "yellow", time: marketDateString },
   bitcoin: { usd: "-", eur: "-", trend: "yellow" },
   nexo: { usd: "-", eur: "-", trend: "yellow" }
 }
-
+markets.bitcoin = {
+  usd: "loading",
+  eur: "loading",
+  trend: "yellow"
+}
 let fxRate = 0.92 // fallback Default
 
 /* ================= FX ================= */
@@ -565,7 +569,7 @@ try {
 
   console.log("crypto json:", json)
 
- if (json) {
+ if (json && json.bitcoin && json.bitcoin.usd) {
 
       // BITCOIN
       if (json.bitcoin && json.bitcoin.usd != null) {
@@ -697,7 +701,36 @@ if (!markets.oil.usd || markets.oil.usd === "-") {
   }
 }
 
-   
+// ================= HARD BTC FALLBACK =================
+try {
+
+  if (!markets.bitcoin.usd || markets.bitcoin.usd === "-" || markets.bitcoin.usd === "loading") {
+
+    const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
+
+    if (res) {
+      const data = await res.json()
+
+      if (data?.data?.priceUsd) {
+
+        const price = Number(data.data.priceUsd)
+
+        markets.bitcoin = {
+          usd: price.toFixed(2),
+          eur: (price * fxRate).toFixed(2),
+          trend: "yellow"
+        }
+
+        console.log("BTC HARD fallback used")
+
+      }
+    }
+
+  }
+
+} catch(e){
+  console.log("BTC HARD fallback failed")
+}
 /* =======================================================
 EVENT ENGINE
 ======================================================= */
