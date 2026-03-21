@@ -623,10 +623,11 @@ console.log("BTC after crypto:", markets.bitcoin)
 }
       
 // FALLBACK: Binance (Bitcoin IMMER anzeigen)
-
-if (!markets.bitcoin || markets.bitcoin.usd === "-" || markets.bitcoin.usd === undefined) {
+if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
   try {
-    const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+    const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+    if (!res) throw new Error("binance failed")
+
     const data = await res.json()
 
     if (data && data.price) {
