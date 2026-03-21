@@ -569,19 +569,19 @@ try {
 
   console.log("crypto json:", json)
 
- if (json && json.bitcoin && json.bitcoin.usd) {
+if (json && typeof json === "object") {
 
-      // BITCOIN
-      if (json.bitcoin && json.bitcoin.usd != null) {
-        markets.bitcoin = {
-          usd: safeNumber(json.bitcoin.usd, 2),
-          eur: safeNumber(
-            json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
-            2
-          ),
-          trend: "yellow"
-        }
-      }
+  // BITCOIN
+  if (json.bitcoin && json.bitcoin.usd != null) {
+    markets.bitcoin = {
+      usd: safeNumber(json.bitcoin.usd, 2),
+      eur: safeNumber(
+        json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
+        2
+      ),
+      trend: "yellow"
+    }
+  }
 
       // NEXO
       if (json.nexo && json.nexo.usd != null) {
