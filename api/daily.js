@@ -612,7 +612,28 @@ try {
   console.log("crypto failed")
 }
       
+/* ================= BTC FALLBACK ================= */
 
+if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
+
+  try {
+    const fallback = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
+    const data = await fallback.json()
+
+    if (data && data.price) {
+      const price = Number(data.price)
+
+      markets.bitcoin = {
+        usd: price.toFixed(2),
+        eur: (price * fxRate).toFixed(2),
+        trend: "yellow"
+      }
+    }
+
+  } catch (e) {
+    console.log("BTC fallback failed")
+  }
+}
 /* ================= DAX ================= */
 
 try {
