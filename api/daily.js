@@ -524,7 +524,7 @@ function safeNumber(v, digits = 2, fallback = "-") {
 }
 
 let markets = {
-  dax: { value: "-", trend: "yellow", time: null },
+dax: { value: "-", trend: "yellow", time: marketDateString },
   eurusd: { value: "-", trend: "yellow" },
   gold: { usd: "-", eur: "-", trend: "yellow" },
   oil: { usd: "-", eur: "-", trend: "yellow" },
