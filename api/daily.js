@@ -648,21 +648,29 @@ if (!btcSet) {
 /* ===================== DAX FINAL ===================== */
 try {
   if (daxRes) {
-    const json = await daxRes.json().catch(() => null)
+    const text = await daxRes.text()
+    const lines = text.split("\n")
 
-    if (json) {
-      // typische Struktur prüfen
-      const price =
-        json?.chart?.result?.[0]?.meta?.regularMarketPrice
+    let price = null
 
-      if (price && price > 10000 && price < 30000) {
-        markets.dax.value = Math.round(price).toLocaleString("de-DE")
-        markets.dax.time = marketDateString
-      } else {
-        console.log("❌ DAX PRICE INVALID", price)
+    for (let i = 1; i < lines.length; i++) { // skip header
+      const parts = lines[i].split(",")
+
+      if (parts.length >= 5) {
+        const close = parseFloat(parts[4])
+
+        if (!isNaN(close)) {
+          price = close
+          break
+        }
       }
+    }
+
+    if (price) {
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.time = marketDateString
     } else {
-      console.log("❌ DAX JSON EMPTY")
+      console.log("❌ DAX NOT PARSED")
     }
   }
 } catch (e) {
