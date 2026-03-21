@@ -1274,6 +1274,54 @@ if (!markets.nexo?.usd || markets.nexo.usd === "-") {
     trend: "green"
   }
 }
+
+// ================= FINAL GUARD =================
+
+function ensureValue(val, fallback) {
+  return (!val || val === "-" || val === "NaN") ? fallback : val
+}
+
+// DAX
+markets.dax.value = ensureValue(markets.dax.value, "~20.000")
+
+// EUR/USD
+markets.eurusd.value = ensureValue(markets.eurusd.value, "1.10")
+
+// GOLD
+if (!markets.gold?.usd || markets.gold.usd === "-") {
+  markets.gold = {
+    usd: "4500",
+    eur: (4500 * fxRate).toFixed(0),
+    trend: "yellow"
+  }
+}
+
+// OIL
+if (!markets.oil?.usd || markets.oil.usd === "-") {
+  markets.oil = {
+    usd: "85",
+    eur: (85 * fxRate).toFixed(0),
+    trend: "yellow"
+  }
+}
+
+// BTC
+if (!markets.bitcoin?.usd || markets.bitcoin.usd === "-") {
+  markets.bitcoin = {
+    usd: "70000",
+    eur: (70000 * fxRate).toFixed(2),
+    trend: "yellow"
+  }
+}
+
+// NEXO
+if (!markets.nexo?.usd || markets.nexo.usd === "-") {
+  markets.nexo = {
+    usd: "0.90",
+    eur: (0.90 * fxRate).toFixed(3),
+    trend: "yellow"
+  }
+}
    
 /* =======================================================
 RESPONSE
