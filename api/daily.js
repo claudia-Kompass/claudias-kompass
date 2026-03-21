@@ -718,11 +718,11 @@ if (!markets.oil.usd || markets.oil.usd === "-") {
 }
 
 if (!markets.dax.value || markets.dax.value === "-") {
-  markets.dax.value = "18.000"
+  markets.dax.value = "-"
   markets.dax.time = marketDateString
+  markets.dax.trend = "yellow"
   console.log("⚠️ DAX FALLBACK USED")
 }
-
 
 /* =======================================================
 EVENT ENGINE
