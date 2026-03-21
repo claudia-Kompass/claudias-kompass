@@ -564,88 +564,87 @@ try {
 
   console.log("crypto json:", json)
 
-if (json && typeof json === "object") {
+  if (json && typeof json === "object") {
 
-  // BITCOIN
-  if (json.bitcoin && json.bitcoin.usd != null) {
-    markets.bitcoin = {
-      usd: safeNumber(json.bitcoin.usd, 2),
-      eur: safeNumber(
-        json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
-        2
-      ),
-      trend: "yellow"
+    // BITCOIN
+    if (json.bitcoin && json.bitcoin.usd != null) {
+      markets.bitcoin = {
+        usd: safeNumber(json.bitcoin.usd, 2),
+        eur: safeNumber(
+          json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
+          2
+        ),
+        trend: "yellow"
+      }
+    }
+
+    // NEXO
+    if (json.nexo && json.nexo.usd != null) {
+      markets.nexo = {
+        usd: safeNumber(json.nexo.usd, 3),
+        eur: safeNumber(
+          json.nexo.eur ?? json.nexo.usd * fxRate,
+          3
+        ),
+        trend: "green"
+      }
+    }
+
+    // GOLD
+    if (json["pax-gold"] && json["pax-gold"].usd != null) {
+      markets.gold = {
+        usd: safeNumber(json["pax-gold"].usd, 0),
+        eur: safeNumber(
+          json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
+          0
+        ),
+        trend: "yellow"
+      }
+    }
+
+    // OIL
+    if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
+      markets.oil = {
+        usd: safeNumber(json["brent-crude-oil"].usd, 0),
+        eur: safeNumber(
+          json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
+          0
+        ),
+        trend: "yellow"
+      }
     }
   }
 
-      // NEXO
-      if (json.nexo && json.nexo.usd != null) {
-        markets.nexo = {
-          usd: safeNumber(json.nexo.usd, 3),
-          eur: safeNumber(
-            json.nexo.eur ?? json.nexo.usd * fxRate,
-            3
-          ),
-          trend: "green"
-        }
-      }
-
-console.log("BTC after crypto:", markets.bitcoin)
-    
-          // GOLD
-      if (json["pax-gold"] && json["pax-gold"].usd != null) {
-        markets.gold = {
-          usd: safeNumber(json["pax-gold"].usd, 0),
-          eur: safeNumber(
-            json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
-            0
-          ),
-          trend: "yellow"
-        }
-      }
-
-      // OIL
-      if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
-        markets.oil = {
-          usd: safeNumber(json["brent-crude-oil"].usd, 0),
-          eur: safeNumber(
-            json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
-            0
-          ),
-          trend: "yellow"
-        }
-      }
-
-  }
 } catch (e) {
   console.log("crypto failed")
 }
+
       
 // FALLBACK: Binance (Bitcoin IMMER anzeigen)
-// ================= BTC FALLBACK (ROBUST) =================
+// ================= BTC FALLBACK =================
 if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
 
   let btcPrice = null
 
-  // 1. Binance
+  // Binance
   try {
     const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
     if (res) {
       const data = await res.json()
-      if (data && data.price) {
+      if (data?.price) {
         btcPrice = Number(data.price)
         console.log("BTC via Binance")
       }
     }
   } catch (e) {}
 
-  // 2. CoinCap (Backup)
+  // CoinCap Backup
   if (!btcPrice) {
     try {
       const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
       if (res) {
         const data = await res.json()
-        if (data && data.data && data.data.priceUsd) {
+        if (data?.data?.priceUsd) {
           btcPrice = Number(data.data.priceUsd)
           console.log("BTC via CoinCap")
         }
@@ -653,7 +652,7 @@ if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
     } catch (e) {}
   }
 
-  // FINAL setzen
+  // Final setzen
   if (btcPrice) {
     markets.bitcoin = {
       usd: btcPrice.toFixed(2),
@@ -661,7 +660,7 @@ if (!markets.bitcoin.usd || markets.bitcoin.usd === "-") {
       trend: "yellow"
     }
   } else {
-    console.log("BTC fallback komplett failed")
+    console.log("BTC fallback failed komplett")
   }
 }
 /* ================= DAX ================= */
@@ -708,37 +707,74 @@ try {
   if (!hasBTC) {
 
     console.log("BTC fallback triggered")
+try {
 
-    const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin")
+  let json = null
 
-    if (res) {
-      const data = await res.json()
+  try {
+    if (cryptoRes) {
+      json = await cryptoRes.json().catch(() => null)
+    }
+  } catch (e) {
+    console.log("crypto json parse failed")
+  }
 
-      if (data?.data?.priceUsd) {
+  console.log("crypto json:", json)
 
-        const price = Number(data.data.priceUsd)
+  if (json && typeof json === "object") {
 
-        markets.bitcoin = {
-          usd: price.toFixed(2),
-          eur: (price * fxRate).toFixed(2),
-          trend: "yellow"
-        }
-
-        console.log("BTC fallback SUCCESS")
-
-      } else {
-        console.log("BTC fallback NO DATA")
+    // BITCOIN
+    if (json.bitcoin && json.bitcoin.usd != null) {
+      markets.bitcoin = {
+        usd: safeNumber(json.bitcoin.usd, 2),
+        eur: safeNumber(
+          json.bitcoin.eur ?? json.bitcoin.usd * fxRate,
+          2
+        ),
+        trend: "yellow"
       }
-
-    } else {
-      console.log("BTC fallback NO RESPONSE")
     }
 
+    // NEXO
+    if (json.nexo && json.nexo.usd != null) {
+      markets.nexo = {
+        usd: safeNumber(json.nexo.usd, 3),
+        eur: safeNumber(
+          json.nexo.eur ?? json.nexo.usd * fxRate,
+          3
+        ),
+        trend: "green"
+      }
+    }
+
+    // GOLD
+    if (json["pax-gold"] && json["pax-gold"].usd != null) {
+      markets.gold = {
+        usd: safeNumber(json["pax-gold"].usd, 0),
+        eur: safeNumber(
+          json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate,
+          0
+        ),
+        trend: "yellow"
+      }
+    }
+
+    // OIL
+    if (json["brent-crude-oil"] && json["brent-crude-oil"].usd != null) {
+      markets.oil = {
+        usd: safeNumber(json["brent-crude-oil"].usd, 0),
+        eur: safeNumber(
+          json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate,
+          0
+        ),
+        trend: "yellow"
+      }
+    }
   }
 
 } catch (e) {
-  console.log("BTC fallback ERROR")
-}
+  console.log("crypto failed")
+         }
 /* =======================================================
 EVENT ENGINE
 ======================================================= */
