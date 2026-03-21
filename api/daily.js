@@ -654,6 +654,7 @@ try {
       console.log("❌ DAX NO DATA")
     } else {
       const lines = text.trim().split("\n")
+       console.log("DAX LINE:", lastLine)
 
       // letzte gültige Datenzeile (nicht Header)
       const lastLine = lines[lines.length - 1] === ""
@@ -663,7 +664,7 @@ try {
       const parts = lastLine.split(",")
 
       if (parts.length >= 5) {
-        const close = parseFloat(parts[6])
+        const close = parseFloat(parts[7])
         const date = parts[0]
 
         if (!isNaN(close)) {
