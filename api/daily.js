@@ -591,13 +591,15 @@ try {
 }
 
 /* ================= BTC (PRIMARY BINANCE) ================= */
+/* ================= BTC ROBUST ================= */
 
+let btcSet = false
+
+// 1. Binance
 try {
-  const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
-
+  const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", 8000)
   if (res) {
     const data = await res.json()
-
     if (data?.price) {
       const price = Number(data.price)
 
@@ -607,11 +609,30 @@ try {
         trend: "yellow"
       }
 
-      btcPrice = price
+      btcSet = true
     }
   }
-} catch (e) {
-  console.log("BTC Binance failed")
+} catch (e) {}
+
+// 2. CoinCap fallback
+if (!btcSet) {
+  try {
+    const res = await fetchTimeout("https://api.coincap.io/v2/assets/bitcoin", 8000)
+    if (res) {
+      const data = await res.json()
+      if (data?.data?.priceUsd) {
+        const price = Number(data.data.priceUsd)
+
+        markets.bitcoin = {
+          usd: price.toFixed(2),
+          eur: (price * fxRate).toFixed(2),
+          trend: "yellow"
+        }
+
+        btcSet = true
+      }
+    }
+  } catch (e) {}
 }
 
 /* ================= DAX ROBUST ================= */
