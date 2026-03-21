@@ -504,12 +504,12 @@ const day = today.getDay()
 
 // Sonntag
 if(day === 0){
-marketDate.setDate(today.getDate()-2)
+  marketDate.setDate(today.getDate()-2)
 }
 
 // Samstag
 if(day === 6){
-marketDate.setDate(today.getDate()-1)
+  marketDate.setDate(today.getDate()-1)
 }
 
 const marketDateString = marketDate.toLocaleDateString("de-DE")
