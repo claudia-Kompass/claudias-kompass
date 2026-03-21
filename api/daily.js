@@ -164,7 +164,7 @@ fetchTimeout("https://api.open-meteo.com/v1/forecast?latitude=49.17&longitude=9.
 fetchTimeout("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo,pax-gold,brent-crude-oil&vs_currencies=usd,eur&include_24hr_change=true"),
 
 fetchTimeout("https://open.er-api.com/v6/latest/EUR"),
-fetchTimeout("https://stooq.com/q/l/?s=dax&i=d"),
+fetchTimeout("https://stooq.com/q/d/l/?s=dax&i=d"),
 fetchTimeout("https://api.allorigins.win/raw?url=https://www.finanzen.net/rohstoffe/oelpreis"),
 fetchTimeout("https://www.tagesschau.de/xml/rss2/"),
 fetchTimeout("https://www.spiegel.de/schlagzeilen/tops/index.rss"),
