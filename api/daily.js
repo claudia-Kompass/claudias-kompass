@@ -647,33 +647,27 @@ if (!btcSet) {
 
 /* ===================== DAX FINAL ===================== */
 try {
-  if (daxRes) {
-    const text = await daxRes.text()
+try {
+  const res = await fetchTimeout("https://query1.finance.yahoo.com/v8/finance/chart/%5EGDAXI", 8000)
 
-    if (!text || text.includes("No data")) {
-      console.log("❌ DAX NO DATA")
-    } else {
-      const lines = text.trim().split("\n")
+  if (res) {
+    const json = await res.json()
 
-      const lastLine = lines[lines.length - 1] === ""
-        ? lines[lines.length - 2]
-        : lines[lines.length - 1]
+    const price =
+      json?.chart?.result?.[0]?.meta?.regularMarketPrice
 
-      const parts = lastLine.split(",")
+    const time =
+      json?.chart?.result?.[0]?.meta?.regularMarketTime
 
-      if (parts.length >= 5 && parts[4]) {
-        const close = parseFloat(parts[4])
-        const date = parts[0]
+    if (price) {
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
 
-        if (!isNaN(close)) {
-          markets.dax.value = Math.round(close).toLocaleString("de-DE")
-          markets.dax.time = date
-        } else {
-          console.log("❌ DAX INVALID CLOSE")
-        }
-      } else {
-        console.log("❌ DAX BAD FORMAT")
+      if (time) {
+        const d = new Date(time * 1000)
+        markets.dax.time = d.toLocaleDateString("de-DE")
       }
+    } else {
+      console.log("❌ DAX NO PRICE")
     }
   }
 } catch (e) {
