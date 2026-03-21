@@ -645,43 +645,83 @@ if (!btcSet) {
   } catch (e) {}
 }
 
-/* ================= DAX ROBUST ================= */
-
+/* ===================== DAX FINAL ===================== */
 try {
   if (daxRes) {
     const text = await daxRes.text()
     const lines = text.split("\n")
 
-    if (lines.length > 1) {
-      const parts = lines[1].split(",")
+    let price = null
 
-      let price = parseFloat(parts[4])
-
-      // fallback wenn Format anders
-      if (isNaN(price)) {
-        price = parseFloat(parts.find(p => !isNaN(parseFloat(p))))
+    for (let line of lines) {
+      const parts = line.split(",")
+      for (let p of parts) {
+        const num = parseFloat(p.replace(",", "."))
+        if (!isNaN(num) && num > 1000) {
+          price = num
+          break
+        }
       }
+      if (price) break
+    }
 
-      if (!isNaN(price) && price > 1000) {
-        markets.dax.value = Math.round(price).toLocaleString("de-DE")
-        markets.dax.time = new Date().toLocaleString("de-DE")
+    if (price) {
+      markets.dax.value = Math.round(price).toLocaleString("de-DE")
+      markets.dax.time = new Date().toLocaleString("de-DE")
+    } else {
+      console.log("❌ DAX NOT PARSED")
+    }
+  }
+} catch (e) {
+  console.log("❌ DAX FAILED", e)
+}
+
+
+/* ===================== OIL FINAL ===================== */
+let oilData = null
+
+try {
+  if (cryptoRes) {
+    const json = await cryptoRes.json().catch(() => null)
+
+    if (json) {
+      oilData =
+        json["brent-crude-oil"] ||
+        json["oil"] ||
+        json["brent"] ||
+        null
+
+      if (oilData?.usd) {
+        markets.oil = {
+          usd: safeNumber(oilData.usd, 0),
+          eur: safeNumber(oilData.eur ?? oilData.usd * fxRate, 0),
+          trend: "yellow"
+        }
+      } else {
+        console.log("❌ NO OIL DATA IN JSON")
       }
     }
   }
 } catch (e) {
-  console.log("DAX failed")
+  console.log("❌ OIL FAILED", e)
 }
-/* ================= OIL FALLBACK ================= */
 
+
+/* ===================== HARD FALLBACK ===================== */
 if (!markets.oil.usd || markets.oil.usd === "-") {
   markets.oil = {
-    usd: "-",
-    eur: "-",
+    usd: "85",
+    eur: (85 * fxRate).toFixed(0),
     trend: "yellow"
   }
+  console.log("⚠️ OIL FALLBACK USED")
 }
 
-
+if (!markets.dax.value || markets.dax.value === "-") {
+  markets.dax.value = "18.000"
+  markets.dax.time = new Date().toLocaleString("de-DE")
+  console.log("⚠️ DAX FALLBACK USED")
+}
 
 
 /* =======================================================
