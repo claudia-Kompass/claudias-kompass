@@ -558,19 +558,29 @@ console.log("crypto JSON:", json)
 
       if (json.bitcoin?.usd) {
         btcPrice = Number(json.bitcoin.usd)
-        markets.bitcoin = {
-          usd: safeNumber(json.bitcoin.usd, 2),
-          eur: safeNumber(json.bitcoin.eur ?? json.bitcoin.usd * fxRate, 2),
-          trend: "yellow"
-        }
+        let btcTrend = "yellow"
+
+if (json.bitcoin?.usd_24h_change > 1) btcTrend = "green"
+else if (json.bitcoin?.usd_24h_change < -1) btcTrend = "red"
+
+markets.bitcoin = {
+  usd: safeNumber(json.bitcoin.usd, 2),
+  eur: safeNumber(json.bitcoin.eur ?? json.bitcoin.usd * fxRate, 2),
+  trend: btcTrend
+}
       }
 
       if (json.nexo?.usd) {
-        markets.nexo = {
-          usd: safeNumber(json.nexo.usd, 3),
-          eur: safeNumber(json.nexo.eur ?? json.nexo.usd * fxRate, 3),
-          trend: "green"
-        }
+        let nexoTrend = "yellow"
+
+if (json.nexo?.usd_24h_change > 1) nexoTrend = "green"
+else if (json.nexo?.usd_24h_change < -1) nexoTrend = "red"
+
+markets.nexo = {
+  usd: safeNumber(json.nexo.usd, 3),
+  eur: safeNumber(json.nexo.eur ?? json.nexo.usd * fxRate, 3),
+  trend: nexoTrend
+}
       }
 
       if (json["pax-gold"]?.usd) {
