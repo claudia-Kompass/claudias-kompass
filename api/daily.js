@@ -530,110 +530,107 @@ let fxRate = 0.92
 
 
 /* ================= FX ================= */
+/* =======================================================
+MARKETS (CLEAN FINAL)
+======================================================= */
+
+function safeNumber(v, digits = 2, fallback = "-") {
+  if (v == null || isNaN(v)) return fallback
+  return Number(v).toFixed(digits)
+}
+
+let markets = {
+  dax: { value: "-", trend: "yellow", time: marketDateString },
+  eurusd: { value: "-", trend: "yellow" },
+  gold: { usd: "-", eur: "-", trend: "yellow" },
+  oil: { usd: "-", eur: "-", trend: "yellow" },
+  bitcoin: { usd: "-", eur: "-", trend: "yellow" },
+  nexo: { usd: "-", eur: "-", trend: "yellow" }
+}
+
+let fxRate = 0.92
+
+/* ================= FX ================= */
 
 try {
   if (fxRes) {
     const fx = await fxRes.json()
-
     if (fx?.rates?.USD) {
       fxRate = Number(fx.rates.USD)
       markets.eurusd.value = safeNumber(fxRate, 2)
     }
   }
-} catch {
+} catch (e) {
   console.log("FX failed")
 }
 
-
-/* ================= CRYPTO / GOLD / OIL ================= */
+/* ================= CRYPTO ================= */
 
 let btcPrice = null
 
 try {
-
-  let json = null
-
   if (cryptoRes) {
-    try {
-      json = await cryptoRes.json()
-    } catch {
-      json = null
+    const json = await cryptoRes.json().catch(() => null)
+
+    if (json) {
+
+      if (json.bitcoin?.usd) {
+        btcPrice = Number(json.bitcoin.usd)
+        markets.bitcoin = {
+          usd: safeNumber(json.bitcoin.usd, 2),
+          eur: safeNumber(json.bitcoin.eur ?? json.bitcoin.usd * fxRate, 2),
+          trend: "yellow"
+        }
+      }
+
+      if (json.nexo?.usd) {
+        markets.nexo = {
+          usd: safeNumber(json.nexo.usd, 3),
+          eur: safeNumber(json.nexo.eur ?? json.nexo.usd * fxRate, 3),
+          trend: "green"
+        }
+      }
+
+      if (json["pax-gold"]?.usd) {
+        markets.gold = {
+          usd: safeNumber(json["pax-gold"].usd, 0),
+          eur: safeNumber(json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate, 0),
+          trend: "yellow"
+        }
+      }
+
+      if (json["brent-crude-oil"]?.usd) {
+        markets.oil = {
+          usd: safeNumber(json["brent-crude-oil"].usd, 0),
+          eur: safeNumber(json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate, 0),
+          trend: "yellow"
+        }
+      }
+
     }
   }
-
-  if (json) {
-
-    // BTC
-    if (json.bitcoin?.usd) {
-      btcPrice = Number(json.bitcoin.usd)
-      console.log("BTC via CoinGecko")
-    }
-
-    // NEXO
-    if (json.nexo?.usd != null) {
-      markets.nexo = {
-        usd: safeNumber(json.nexo.usd, 3),
-        eur: safeNumber(json.nexo.eur ?? json.nexo.usd * fxRate, 3),
-        trend: "green"
-      }
-    }
-
-    // GOLD
-    if (json["pax-gold"]?.usd != null) {
-      markets.gold = {
-        usd: safeNumber(json["pax-gold"].usd, 0),
-        eur: safeNumber(json["pax-gold"].eur ?? json["pax-gold"].usd * fxRate, 0),
-        trend: "yellow"
-      }
-    }
-
-    // OIL
-    if (json["brent-crude-oil"]?.usd != null) {
-      markets.oil = {
-        usd: safeNumber(json["brent-crude-oil"].usd, 0),
-        eur: safeNumber(json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate, 0),
-        trend: "yellow"
-      }
-    }
-  }
-
-} catch {
+} catch (e) {
   console.log("crypto failed")
 }
 
-
-/* ================= BTC FALLBACK ================= */
+/* ================= BTC FALLBACK (EINMAL!) ================= */
 
 if (!btcPrice) {
-
   try {
     const res = await fetchTimeout("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")
-
     if (res) {
       const data = await res.json()
-
       if (data?.price) {
-        btcPrice = Number(data.price)
-        console.log("BTC via Binance")
+        const price = Number(data.price)
+        markets.bitcoin = {
+          usd: price.toFixed(2),
+          eur: (price * fxRate).toFixed(2),
+          trend: "yellow"
+        }
       }
     }
-
-  } catch {
-    console.log("BTC fallback failed")
-  }
+  } catch (e) {}
 }
-
-
-/* ================= BTC FINAL ================= */
-
-if (btcPrice) {
-  markets.bitcoin = {
-    usd: btcPrice.toFixed(2),
-    eur: (btcPrice * fxRate).toFixed(2),
-    trend: "yellow"
-  }
-}
-
 
 /* ================= DAX ================= */
 
@@ -645,29 +642,28 @@ try {
     if (lines.length > 1) {
       const parts = lines[1].split(",")
 
-      const price =
-        parseFloat(parts[6]) ||
-        parseFloat(parts[5]) ||
-        parseFloat(parts[4])
+      const price = parseFloat(parts[4])
 
       if (!isNaN(price) && price > 1000) {
         markets.dax.value = Math.round(price).toLocaleString("de-DE")
         markets.dax.time = new Date().toLocaleString("de-DE")
-        console.log("DAX OK")
       }
     }
   }
-} catch {
+} catch (e) {
   console.log("DAX failed")
 }
 
+/* ================= OIL FALLBACK ================= */
 
-/* ================= DAX FALLBACK ================= */
-
-if (!markets.dax.value || markets.dax.value === "-") {
-  markets.dax.value = "-"
-  markets.dax.time = marketDateString
+if (!markets.oil.usd || markets.oil.usd === "-") {
+  markets.oil = {
+    usd: "-",
+    eur: "-",
+    trend: "yellow"
+  }
 }
+
 
 
 
