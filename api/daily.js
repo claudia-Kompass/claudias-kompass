@@ -552,10 +552,10 @@ try {
 /* ================= CRYPTO + GOLD + OIL ================= */
 
 try {
-if (cryptoRes && cryptoRes.json) {
-    const json = await cryptoRes.json()
+  if (cryptoRes && cryptoRes.json) {
 
-    if (json) {
+    const json = await cryptoRes.json().catch(() => null)
+    if (!json) return
 
       // BITCOIN
       if (json.bitcoin && json.bitcoin.usd != null) {
