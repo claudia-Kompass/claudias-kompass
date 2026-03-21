@@ -615,7 +615,6 @@ try {
         }
       }
 
-    }
   }
 } catch (e) {
   console.log("crypto failed")
