@@ -512,7 +512,7 @@ if(day === 6){
 marketDate.setDate(today.getDate()-1)
 }
 
-const marketDateString =
+const marketDateString = marketDate.toLocaleDateString("de-DE")
 
 /* =======================================================
 MARKETS FINAL (STABLE)
@@ -552,7 +552,7 @@ try {
 /* ================= CRYPTO + GOLD + OIL ================= */
 
 try {
-  if (cryptoRes) {
+if (cryptoRes && cryptoRes.json) {
     const json = await cryptoRes.json()
 
     if (json) {
