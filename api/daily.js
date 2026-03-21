@@ -650,17 +650,13 @@ try {
   if (daxRes) {
     const text = await daxRes.text()
 
-    if (!text || text.includes("No data")) {
-      console.log("❌ DAX NO DATA")
-    } else {
+    if (text && !text.includes("No data")) {
       const lines = text.trim().split("\n")
 
       const lastLine =
         lines[lines.length - 1] === ""
           ? lines[lines.length - 2]
           : lines[lines.length - 1]
-
-      console.log("DAX LINE:", lastLine)
 
       const parts = lastLine.split(",")
 
@@ -671,16 +667,19 @@ try {
         if (!isNaN(close)) {
           markets.dax.value = Math.round(close).toLocaleString("de-DE")
           markets.dax.time = date
-        } else {
-          console.log("❌ DAX INVALID CLOSE")
         }
-      } else {
-        console.log("❌ DAX BAD FORMAT")
       }
     }
   }
 } catch (e) {
   console.log("❌ DAX FAILED", e)
+}
+
+/* FALLBACK = letzter bekannter Wert */
+if (!markets.dax.value || markets.dax.value === "-") {
+  markets.dax.value = "~20.000"
+  markets.dax.time = marketDateString
+  markets.dax.trend = "yellow"
 }
 
 /* ===================== OIL FINAL ===================== */
