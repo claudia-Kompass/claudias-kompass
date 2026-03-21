@@ -580,14 +580,15 @@ console.log("crypto JSON:", json)
           trend: "yellow"
         }
       }
+if (json.oil?.usd || json["oil"]?.usd) {
+  const oil = json.oil || json["oil"]
 
-      if (json["brent-crude-oil"]?.usd) {
-        markets.oil = {
-          usd: safeNumber(json["brent-crude-oil"].usd, 0),
-          eur: safeNumber(json["brent-crude-oil"].eur ?? json["brent-crude-oil"].usd * fxRate, 0),
-          trend: "yellow"
-        }
-      }
+  markets.oil = {
+    usd: safeNumber(oil.usd, 0),
+    eur: safeNumber(oil.eur ?? oil.usd * fxRate, 0),
+    trend: "yellow"
+  }
+}
 
     }
   }
