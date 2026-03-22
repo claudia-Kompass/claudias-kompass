@@ -970,27 +970,46 @@ const unifiedEvents = [
 
 // 🧠 Date Resolver (ALLE Fälle)
 function resolveUnifiedDate(e){
-console.log("unifiedEvents:", unifiedEvents.length)
+
+  if(!e) return null
+
+  // 1. echtes Datum
+  if(e.date){
+    return new Date(e.date)
+  }
+
+  // 2. jährlich (month + day)
+  if(e.month && e.day){
+    let d = new Date(now.getFullYear(), e.month - 1, e.day)
+
+    if(d < startOfDay(now)){
+      d = new Date(now.getFullYear()+1, e.month - 1, e.day)
+    }
+
+    return d
+  }
+
+  // 3. weekly (inkl. Arrays!)
   if(e.weekday != null){
 
-  const today = now.getDay() || 7
+    const today = now.getDay() || 7
 
-  const days = Array.isArray(e.weekday)
-    ? e.weekday
-    : [e.weekday]
+    const days = Array.isArray(e.weekday)
+      ? e.weekday
+      : [e.weekday]
 
-  const diffs = days.map(d => (Number(d) + 7 - today) % 7)
+    const diffs = days.map(d => (Number(d) + 7 - today) % 7)
 
-  const minDiff = Math.min(...diffs)
+    const minDiff = Math.min(...diffs)
 
-  const d = new Date()
-  d.setDate(now.getDate() + minDiff)
+    const d = new Date()
+    d.setDate(now.getDate() + minDiff)
 
-  return d
-}
+    return d
+  }
 
   return null
-}
+   }
 
 // 📦 Container
 let todayEvents = []
