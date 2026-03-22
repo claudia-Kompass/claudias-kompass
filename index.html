@@ -1064,6 +1064,33 @@ try{
 const res=await fetch("/api/daily");
 const data=await res.json();
 
+// EVENTS FIX
+if(Array.isArray(data.events)){
+  data.events = {
+    today: data.events.filter(e => isToday(e.date)),
+    week: data.events,
+    upcoming: [],
+    fairs: []
+  }
+}
+
+// DANCE FIX
+if(Array.isArray(data.dance)){
+  data.dance = {
+    today: data.dance.filter(e => isToday(e.date)),
+    week: data.dance,
+    festivals: []
+  }
+}
+
+// HELPER
+function isToday(dateStr){
+  if(!dateStr) return false
+  const d = new Date(dateStr)
+  const now = new Date()
+  return d.toDateString() === now.toDateString()
+}
+   
 render(data);
 
 }catch(err){
