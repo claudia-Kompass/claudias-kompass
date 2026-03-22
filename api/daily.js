@@ -23,7 +23,7 @@ async function buildEventUniverse() {
   try {
     const local = require("./data/events")
     all = all.concat(local)
-  } catch(e){}9
+  } catch(e){}
 
   // 2. Dance Radar
   try {
