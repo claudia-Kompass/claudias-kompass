@@ -971,23 +971,23 @@ const unifiedEvents = [
 // 🧠 Date Resolver (ALLE Fälle)
 function resolveUnifiedDate(e){
 
-  if(!e) return null
+  if(e.weekday != null){
 
-  // echtes Datum
-  if(e.date){
-    return new Date(e.date)
-  }
+  const today = now.getDay() || 7
 
-  // jährlich (z.B. Märkte)
-  if(e.month && e.day){
-    let d = new Date(now.getFullYear(), e.month - 1, e.day)
+  const days = Array.isArray(e.weekday)
+    ? e.weekday
+    : [e.weekday]
 
-    if(d < startOfDay(now)){
-      d = new Date(now.getFullYear()+1, e.month - 1, e.day)
-    }
+  const diffs = days.map(d => (Number(d) + 7 - today) % 7)
 
-    return d
-  }
+  const minDiff = Math.min(...diffs)
+
+  const d = new Date()
+  d.setDate(now.getDate() + minDiff)
+
+  return d
+}
 
   // weekly
   if(e.weekday != null){
