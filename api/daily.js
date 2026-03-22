@@ -14,7 +14,43 @@ module.exports = async function handler(req,res){
 res.setHeader("Cache-Control", "no-store")
    
 try{
-   
+
+async function buildEventUniverse() {
+
+  let all = []
+
+  // 1. Lokale Events (events.js)
+  try {
+    const local = require("./data/events")
+    all = all.concat(local)
+  } catch(e){}
+
+  // 2. Dance Radar
+  try {
+    const r = await fetch(
+      process.env.VERCEL_URL
+      ? "https://" + process.env.VERCEL_URL + "/api/radar"
+      : "http://localhost:3000/api/radar"
+    )
+    const data = await r.json()
+    all = all.concat(data.radar || [])
+  } catch(e){}
+
+  // 3. Festival Radar
+  try {
+    const f = await fetch(
+      process.env.VERCEL_URL
+      ? "https://" + process.env.VERCEL_URL + "/api/festival-radar"
+      : "http://localhost:3000/api/festival-radar"
+    )
+    const data = await f.json()
+    all = all.concat(data.festivals || [])
+  } catch(e){}
+
+  return all
+}
+
+
 res.setHeader("Cache-Control","s-maxage=300, stale-while-revalidate=600")
 res.setHeader("X-Content-Type-Options","nosniff")
 res.setHeader("X-Frame-Options","DENY")
