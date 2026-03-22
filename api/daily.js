@@ -1129,7 +1129,7 @@ try{
 
 const type = e.type || (e.weekday ? "weekly" : (e.month ? "date" : "other"))
    
-if(!e || !e.type || !e.title) return
+if(!e || !e.title) return
 
 let dist=null
 
