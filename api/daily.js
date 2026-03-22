@@ -1080,15 +1080,9 @@ regionalBusiness,
 
 events,
 dance:{
-today:[
-...events.today,
-...danceToday
-],
-week:[
-...events.week,
-...danceWeek
-],
-festivals:danceFestivals
+  today: events.today,
+  week: events.week,
+  festivals: []
 },
    
 markets,
