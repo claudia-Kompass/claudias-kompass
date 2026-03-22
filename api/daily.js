@@ -1130,7 +1130,7 @@ url:nextFestival.url || ""
 }
    
 const safeDance = await loadDanceEvents()
-safeDance.forEach(e=>{
+mergedEvents.forEach(e=>{
 
 try{
 
