@@ -904,11 +904,11 @@ weekEvents.sort(sortByDate)
 upcomingEvents.sort(sortByDate)
 
 // 👉 FINAL RESPONSE
-return res.status(200).json({
+const events = {
   today: todayEvents,
   week: weekEvents,
   upcoming: upcomingEvents
-})
+}
 
 
 
