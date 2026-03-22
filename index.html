@@ -1048,44 +1048,74 @@ return radar
 
   
   
-async function loadData(){
+async function loadRadar(){
 
 try{
 
-const res = await fetch("/api/daily");
+const res = await fetch("/api/radar");
 const data = await res.json();
 
-// HELPER
-function isToday(dateStr){
-  if(!dateStr) return false
-  const d = new Date(dateStr)
-  const now = new Date()
-  return d.toDateString() === now.toDateString()
+if(!data.radar || !data.radar.length) return;
+
+let html = "";
+
+function renderRadarCard(e){
+
+const t = (e.title || "").toLowerCase()
+const s = (e.style || "").toLowerCase()
+
+let icon = "📍"
+
+if(s.includes("salsa") || s.includes("bachata") || s.includes("kizomba")){
+  icon = "💃"
+}
+else if(t.includes("markt")){
+  icon = "🧺"
+}
+else if(t.includes("messe")){
+  icon = "🛍️"
+}
+else if(t.includes("festival")){
+  icon = "🎪"
 }
 
-/* EVENTS NORMALISIEREN */
-if(Array.isArray(data.events)){
-  data.events = {
-    today: data.events.filter(e => isToday(e.date)),
-    week: data.events,
-    upcoming: [],
-    fairs: []
-  }
+let link = "#"
+if(e.url && e.url.length > 5){
+  link = e.url
+}else if(e.maps){
+  link = e.maps
 }
 
-/* DANCE NORMALISIEREN */
-if(Array.isArray(data.dance)){
-  data.dance = {
-    today: data.dance.filter(e => isToday(e.date)),
-    week: data.dance,
-    festivals: []
-  }
+return `
+<a href="${link}" target="_blank" class="card-link">
+
+<div class="card">
+
+  <div class="card-title">
+    ${icon} ${e.title}
+  </div>
+
+  <div class="card-meta">
+    ${e.city || ""} ${e.time ? " · "+e.time : ""}
+  </div>
+
+  <div class="card-sub">
+    ${e.location || ""}
+  </div>
+
+</div>
+
+</a>
+`
 }
 
-render(data);
+html = data.radar.slice(0,5).map(renderRadarCard).join("")
+
+// 👉 Anzeige oben im Radar-Balken
+document.getElementById("dailyRadar").innerHTML = html
 
 }catch(err){
-console.error("LOAD ERROR", err);
+console.error("RADAR ERROR", err)
 }
 
 }
