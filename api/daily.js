@@ -967,8 +967,8 @@ let upcoming=[]
 
 mergedEvents.forEach(e=>{
 
-const d = e.date ? new Date(e.date) : null
-if(!d)return
+const d = resolveDate(e)
+if(!d) return
 
 const eventDate=startOfDay(d)
 
