@@ -1072,32 +1072,27 @@ RESPONSE
 ======================================================= */
 res.status(200).json({
 
-version:fullVersion,
+  version: fullVersion,
 
-news,
-regional,
-regionalBusiness,
+  news,
+  regional,
+  regionalBusiness,
 
-events,
-dance:{
-  today: events.today,
-  week: events.week,
-  festivals: []
-},
-   
-markets,
+  events: eventsClean,
+  dance: danceClean,
+  festivals,
 
-financeNews,
-weather,
-travelRadar : [travel],
-recipe: recipeToday,
-recipes: recipeList,
-language,
+  markets,
+  financeNews,
+  weather,
 
-ukulele: ukuleleSongs,
+  travelRadar: [travel],
+  recipe: recipeToday,
+  recipes: recipeList,
+  language,
 
-   
-quote
+  ukulele: ukuleleSongs,
+  quote
 
 })
 
