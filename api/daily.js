@@ -1075,10 +1075,6 @@ const events = {
   upcoming: upcomingEvents
 }
 
-   const events = {
-today: todayEvents,
-week: week
-   }
 
 /* =======================================================
 DANCE ENGINE
