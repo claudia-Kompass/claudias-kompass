@@ -967,7 +967,11 @@ const unifiedEvents = [
   ...(Array.isArray(safeDance) ? safeDance : []),
   ...movableEvents()
 ]
-
+console.log("mergedEvents:", mergedEvents?.length)
+console.log("safeDance:", safeDance?.length)
+console.log("movable:", movableEvents().length)
+console.log("unifiedEvents TOTAL:", unifiedEvents.length)
+   
 // 🧠 Date Resolver (ALLE Fälle)
 function resolveUnifiedDate(e){
 
