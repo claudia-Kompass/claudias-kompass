@@ -782,8 +782,6 @@ if (!markets.dax.value || markets.dax.value === "-") {
 // UNIFIED EVENT ENGINE (CLEAN)
 // ================================
 
-const now = new Date()
-
 // 👉 Daten laden
 const eventsData = require("./data/events")
 const danceData = require("./data/dance")
