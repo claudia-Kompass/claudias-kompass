@@ -1140,6 +1140,29 @@ if(!e || !e.type || !e.title) return
 
 let dist=null
 
+let eventDate = null
+
+// 1. echtes Datum (Sheet / API)
+if (e.date) {
+  eventDate = new Date(e.date)
+}
+
+// 2. annual (month + day)
+else if (e.month && e.day) {
+  eventDate = new Date(now.getFullYear(), e.month - 1, e.day)
+}
+
+// 3. weekly
+else if (type === "weekly" && e.weekday != null) {
+  const today = now.getDay()
+  const diff = (Number(e.weekday) + 7 - today) % 7
+
+  const d = new Date()
+  d.setDate(now.getDate() + diff)
+
+  eventDate = d
+}
+   
 if(e.lat && e.lon){
 
 dist = distanceKm(
