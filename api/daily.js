@@ -23,7 +23,7 @@ async function buildEventUniverse() {
   try {
     const local = require("./data/events")
     all = all.concat(local)
-  } catch(e){}
+  } catch(e){}9
 
   // 2. Dance Radar
   try {
@@ -954,89 +954,126 @@ time:"07:00–13:00"
 
 ]
 
-/* ======================
-ENGINE
-====================== */
 
-const todayStart=startOfDay(now)
-const weekEnd=endOfWeek(now)
+/* =======================================================
+UNIFIED EVENT ENGINE (FINAL CLEAN)
+======================================================= */
 
-let todayEvents=[]
-let week=[]
-let upcoming=[]
+// 🔗 alle Quellen zusammenführen
+const safeDance = await loadDanceEvents()
 
-mergedEvents.forEach(e=>{
+const unifiedEvents = [
+  ...(Array.isArray(mergedEvents) ? mergedEvents : []),
+  ...(Array.isArray(safeDance) ? safeDance : []),
+  ...movableEvents()
+]
 
-let d = resolveDate(e)
+// 🧠 Date Resolver (ALLE Fälle)
+function resolveUnifiedDate(e){
 
-// 👉 WEEKLY FIX
-if(!d && e.weekday != null){
+  if(!e) return null
 
-  const today = now.getDay() || 7
-  const diff = (Number(e.weekday) + 7 - today) % 7
+  // echtes Datum
+  if(e.date){
+    return new Date(e.date)
+  }
 
-  const next = new Date()
-  next.setDate(now.getDate() + diff)
+  // jährlich (z.B. Märkte)
+  if(e.month && e.day){
+    let d = new Date(now.getFullYear(), e.month - 1, e.day)
 
-  d = next
+    if(d < startOfDay(now)){
+      d = new Date(now.getFullYear()+1, e.month - 1, e.day)
+    }
+
+    return d
+  }
+
+  // weekly
+  if(e.weekday != null){
+
+    const today = now.getDay() || 7
+    const target = Number(e.weekday)
+
+    const diff = (target + 7 - today) % 7
+
+    const d = new Date()
+    d.setDate(now.getDate() + diff)
+
+    return d
+  }
+
+  return null
 }
 
-if(!d) return
+// 📦 Container
+let todayEvents = []
+let weekEvents = []
+let upcomingEvents = []
 
-const eventDate=startOfDay(d)
+const seen = new Set()
 
-const event={
+// 🔄 Hauptloop
+unifiedEvents.forEach(e => {
 
-title:e.title,
-city:e.city,
-weekday:e.weekday || null,
-date:d.toISOString().split("T")[0],
-time:e.time||"",
-location:e.location||"",
-url:e.url||"",
-maps:e.address
-?`https://maps.google.com/?q=${encodeURIComponent(e.address)}`
-:""
+  try{
 
-}
+    if(!e || !e.title) return
 
-if(eventDate.getTime()===todayStart.getTime()){
-todayEvents.push(event)
-}
+    const d = resolveUnifiedDate(e)
+    if(!d) return
 
-else if(eventDate>=todayStart && eventDate<=weekEnd){
-week.push(event)
-}
+    const eventDate = startOfDay(d)
 
-else if(eventDate>weekEnd){
-upcoming.push(event)
-}
+    // ❌ Duplikate verhindern
+    const key = e.title + "_" + (e.city || "")
+    if(seen.has(key)) return
+    seen.add(key)
+
+    const event = {
+      title: e.title,
+      city: e.city || "",
+      date: d.toISOString().split("T")[0],
+      time: e.time || "",
+      location: e.location || "",
+      style: e.style || "",
+      url: e.url || "",
+      maps: e.address
+        ? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
+        : ""
+    }
+
+    if(eventDate.getTime() === startOfDay(now).getTime()){
+      todayEvents.push(event)
+    }
+    else if(eventDate >= startOfDay(now) && eventDate <= endOfWeek(now)){
+      weekEvents.push(event)
+    }
+    else if(eventDate > endOfWeek(now)){
+      upcomingEvents.push(event)
+    }
+
+  } catch(err){
+    console.log("Event error:", e)
+  }
 
 })
 
-   
-/* ======================
-TODAY MARKETS
-====================== */
+// 📊 Sortierung
+function sortByDate(a,b){
+  return new Date(a.date) - new Date(b.date)
+}
 
-const weekday=now.getDay()||7
+todayEvents.sort(sortByDate)
+weekEvents.sort(sortByDate)
+upcomingEvents.sort(sortByDate)
 
-const marketsToday=weeklyMarkets
-.filter(m=>m.weekday.includes(weekday))
-.map(m=>({
-
-title:m.title,
-city:m.city,
-time:m.time,
-location:m.location,
-maps:`https://maps.google.com/?q=${encodeURIComponent(m.address)}`
-
-}))
-
-todayEvents = [
-...todayEvents,
-...marketsToday
-]
+// 📦 FINAL OUTPUT
+const events = {
+  today: todayEvents,
+  week: weekEvents,
+  upcoming: upcomingEvents
+}
 
    const events = {
 today: todayEvents,
