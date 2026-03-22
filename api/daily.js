@@ -872,6 +872,7 @@ allEvents.forEach(e => {
       address: e.address || "",
       style: e.style || "",
       url: e.url || "",
+      category: e.category || "event",
       category: e.category || "",
       maps: e.address
         ? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
@@ -902,6 +903,53 @@ function sortByDate(a,b){
 todayEvents.sort(sortByDate)
 weekEvents.sort(sortByDate)
 upcomingEvents.sort(sortByDate)
+const now = new Date()
+
+function daysDiff(dateStr){
+  return (new Date(dateStr) - now) / (1000*60*60*24)
+}
+
+const eventsClean = []
+const danceClean = []
+const festivals = []
+
+const allMerged = [
+  ...todayEvents,
+  ...weekEvents,
+  ...upcomingEvents
+]
+
+allMerged.forEach(e => {
+
+  if(!e.date) return
+
+  const diff = daysDiff(e.date)
+
+  // 🕺 Dance
+  if(e.category === "dance"){
+    if(diff >= 0 && diff <= 7){
+      danceClean.push(e)
+    }
+    return
+  }
+
+  // 🏡 Events
+  if(diff >= 0 && diff <= 30){
+    eventsClean.push(e)
+    return
+  }
+
+  // 🎪 Festivals
+  if(diff > 30){
+    festivals.push(e)
+  }
+
+})
+
+eventsClean.sort(sortByDate)
+danceClean.sort(sortByDate)
+festivals.sort(sortByDate)
+   
 
 // 👉 FINAL RESPONSE
 const now = new Date()
