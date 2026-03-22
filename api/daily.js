@@ -965,16 +965,9 @@ let todayEvents=[]
 let week=[]
 let upcoming=[]
 
-const allEvents=[
+mergedEvents.forEach(e=>{
 
-...(Array.isArray(eventDB)?eventDB:[]),
-...movableEvents()
-
-]
-
-allEvents.forEach(e=>{
-
-const d=resolveDate(e)
+const d = e.date ? new Date(e.date) : null
 if(!d)return
 
 const eventDate=startOfDay(d)
