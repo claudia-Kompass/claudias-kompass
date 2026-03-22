@@ -1047,79 +1047,91 @@ return radar
 
 }
 
+ async function loadRadar(){
+
+  try{
+
+    const res = await fetch("/api/radar");
+    const data = await res.json();
+
+    let html = "";
+
+    // 👉 FALLBACK wenn API leer
+    if(!data.radar || !data.radar.length){
+
+      html = `
+      <div style="opacity:.7">
+        🌤 ${new Date().toLocaleDateString("de-DE",{weekday:"short"})} •
+        Kein Radar verfügbar
+      </div>
+      `;
+
+      document.getElementById("dailyRadar").innerHTML = html;
+      return;
+    }
+
+    function renderRadarCard(e){
+
+      const t = (e.title || "").toLowerCase()
+      const s = (e.style || "").toLowerCase()
+
+      let icon = "📍"
+
+      if(s.includes("salsa") || s.includes("bachata") || s.includes("kizomba")){
+        icon = "💃"
+      }
+      else if(t.includes("markt")){
+        icon = "🧺"
+      }
+      else if(t.includes("messe")){
+        icon = "🛍️"
+      }
+      else if(t.includes("festival")){
+        icon = "🎪"
+      }
+
+      let link = "#"
+      if(e.url && e.url.length > 5){
+        link = e.url
+      }else if(e.maps){
+        link = e.maps
+      }
+
+      return `
+      <a href="${link}" target="_blank" class="card-link">
+
+        <div class="card">
+          <div class="card-title">
+            ${icon} ${e.title}
+          </div>
+
+          <div class="card-meta">
+            ${e.city || ""} ${e.time ? " · "+e.time : ""}
+          </div>
+
+          <div class="card-sub">
+            ${e.location || ""}
+          </div>
+        </div>
+
+      </a>
+      `
+    }
+
+    html = data.radar.slice(0,5).map(renderRadarCard).join("")
+
+    document.getElementById("dailyRadar").innerHTML = html
+
+  }catch(err){
+
+    console.error("RADAR ERROR", err)
+
+    document.getElementById("dailyRadar").innerHTML =
+      '<div style="opacity:.7">Radar nicht verfügbar</div>'
+  }
+ } 
   
-  
-async function loadRadar(){
 
-try{
-
-const res = await fetch("/api/radar");
-const data = await res.json();
-
-if(!data.radar || !data.radar.length) return;
-
-let html = "";
-
-function renderRadarCard(e){
-
-const t = (e.title || "").toLowerCase()
-const s = (e.style || "").toLowerCase()
-
-let icon = "📍"
-
-if(s.includes("salsa") || s.includes("bachata") || s.includes("kizomba")){
-  icon = "💃"
-}
-else if(t.includes("markt")){
-  icon = "🧺"
-}
-else if(t.includes("messe")){
-  icon = "🛍️"
-}
-else if(t.includes("festival")){
-  icon = "🎪"
-}
-
-let link = "#"
-if(e.url && e.url.length > 5){
-  link = e.url
-}else if(e.maps){
-  link = e.maps
-}
-
-return `
-<a href="${link}" target="_blank" class="card-link">
-
-<div class="card">
-
-  <div class="card-title">
-    ${icon} ${e.title}
-  </div>
-
-  <div class="card-meta">
-    ${e.city || ""} ${e.time ? " · "+e.time : ""}
-  </div>
-
-  <div class="card-sub">
-    ${e.location || ""}
-  </div>
-
-</div>
-
-</a>
-`
-}
-
-html = data.radar.slice(0,5).map(renderRadarCard).join("")
-
-// 👉 Anzeige oben im Radar-Balken
-document.getElementById("dailyRadar").innerHTML = html
-
-}catch(err){
-console.error("RADAR ERROR", err)
-}
-
-}
 
   
 function render(data){
