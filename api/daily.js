@@ -989,20 +989,6 @@ console.log("unifiedEvents:", unifiedEvents.length)
   return d
 }
 
-  // weekly
-  if(e.weekday != null){
-
-    const today = now.getDay() || 7
-    const target = Number(e.weekday)
-
-    const diff = (target + 7 - today) % 7
-
-    const d = new Date()
-    d.setDate(now.getDate() + diff)
-
-    return d
-  }
-
   return null
 }
 
