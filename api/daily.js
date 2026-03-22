@@ -1176,7 +1176,7 @@ url:e.url || ""
 
 /* WÖCHENTLICH */
 
-if(e.type==="weekly"){
+if(type==="weekly"){
 
 if(e.weekday===todayDay){
 danceToday.push(event)
@@ -1188,7 +1188,7 @@ danceWeek.push(event)
 
 /* FESTIVAL */
    
-if(e.type==="festival"){
+if(type==="festival"){
 
 if(e.month >= month){
 
