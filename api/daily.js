@@ -970,7 +970,7 @@ const unifiedEvents = [
 
 // 🧠 Date Resolver (ALLE Fälle)
 function resolveUnifiedDate(e){
-
+console.log("unifiedEvents:", unifiedEvents.length)
   if(e.weekday != null){
 
   const today = now.getDay() || 7
