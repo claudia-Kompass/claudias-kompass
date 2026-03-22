@@ -1050,21 +1050,20 @@ return radar
   
 async function loadData(){
 
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(pos=>{
-userPos = {
-lat: pos.coords.latitude,
-lon: pos.coords.longitude
-}
-})
-}
-   
 try{
 
-const res=await fetch("/api/daily");
-const data=await res.json();
+const res = await fetch("/api/daily");
+const data = await res.json();
 
-// EVENTS FIX
+// HELPER
+function isToday(dateStr){
+  if(!dateStr) return false
+  const d = new Date(dateStr)
+  const now = new Date()
+  return d.toDateString() === now.toDateString()
+}
+
+/* EVENTS NORMALISIEREN */
 if(Array.isArray(data.events)){
   data.events = {
     today: data.events.filter(e => isToday(e.date)),
@@ -1074,7 +1073,7 @@ if(Array.isArray(data.events)){
   }
 }
 
-// DANCE FIX
+/* DANCE NORMALISIEREN */
 if(Array.isArray(data.dance)){
   data.dance = {
     today: data.dance.filter(e => isToday(e.date)),
@@ -1083,20 +1082,10 @@ if(Array.isArray(data.dance)){
   }
 }
 
-// HELPER
-function isToday(dateStr){
-  if(!dateStr) return false
-  const d = new Date(dateStr)
-  const now = new Date()
-  return d.toDateString() === now.toDateString()
-}
-   
 render(data);
 
 }catch(err){
-
-console.error("LOAD ERROR",err);
-
+console.error("LOAD ERROR", err);
 }
 
 }
