@@ -1049,6 +1049,15 @@ return radar
   
 async function loadData(){
 
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(pos=>{
+userPos = {
+lat: pos.coords.latitude,
+lon: pos.coords.longitude
+}
+})
+}
+   
 try{
 
 const res=await fetch("/api/daily");
