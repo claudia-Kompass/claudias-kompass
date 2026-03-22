@@ -782,6 +782,174 @@ if (!markets.dax.value || markets.dax.value === "-") {
 // UNIFIED EVENT ENGINE (CLEAN)
 // ================================
 
+const now = new Date()
+
+// 👉 Daten laden
+const eventsData = require("./data/events")
+const danceData = require("./data/dance")
+
+const allEvents = [
+  ...eventsData.map(e => ({ ...e, category: "event" })),
+  ...danceData.map(e => ({ ...e, category: "dance" }))
+]
+
+// 👉 Helpers
+function startOfDay(d){
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+}
+
+function endOfWeek(d){
+  const end = new Date(d)
+  const day = d.getDay() || 7
+  end.setDate(d.getDate() + (7 - day))
+  return startOfDay(end)
+}
+
+function resolveDate(e){
+  if(!e) return null
+
+  // echtes Datum
+  if(e.date){
+    return new Date(e.date)
+  }
+
+  // jährlich
+  if(e.month && e.day){
+    let d = new Date(now.getFullYear(), e.month-1, e.day)
+
+    if(d < startOfDay(now)){
+      d = new Date(now.getFullYear()+1, e.month-1, e.day)
+    }
+
+    return d
+  }
+
+  // weekly
+  if(e.weekday != null){
+    const today = now.getDay() || 7
+    const days = Array.isArray(e.weekday) ? e.weekday : [e.weekday]
+
+    const diffs = days.map(d => (Number(d)+7-today)%7)
+    const minDiff = Math.min(...diffs)
+
+    const d = new Date()
+    d.setDate(now.getDate() + minDiff)
+
+    return d
+  }
+
+  return null
+}
+
+// 👉 Container
+const todayEvents = []
+const weekEvents = []
+const upcomingEvents = []
+
+const seen = new Set()
+
+// 👉 Hauptlogik
+allEvents.forEach(e => {
+
+  try{
+
+    if(!e || !e.title) return
+
+    const d = resolveDate(e)
+    if(!d) return
+
+    const eventDate = startOfDay(d)
+
+    // ❌ Duplikate killen
+    const key = e.title + "_" + (e.city || "")
+    if(seen.has(key)) return
+    seen.add(key)
+
+    const event = {
+      title: e.title,
+      city: e.city || "",
+      date: d.toISOString().split("T")[0],
+      time: e.time || "",
+      location: e.location || "",
+      address: e.address || "",
+      style: e.style || "",
+      url: e.url || "",
+      category: e.category || "event",
+      maps: e.address
+        ? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
+        : ""
+    }
+
+    if(eventDate.getTime() === startOfDay(now).getTime()){
+      todayEvents.push(event)
+    }
+    else if(eventDate >= startOfDay(now) && eventDate <= endOfWeek(now)){
+      weekEvents.push(event)
+    }
+    else{
+      upcomingEvents.push(event)
+    }
+
+  } catch(err){
+    console.log("EVENT ERROR:", err)
+  }
+
+})
+
+// 👉 Sortierung
+function sortByDate(a,b){
+  return new Date(a.date) - new Date(b.date)
+}
+
+todayEvents.sort(sortByDate)
+weekEvents.sort(sortByDate)
+upcomingEvents.sort(sortByDate)
+
+// 👉 Filter-Logik (saubere Trennung)
+function daysDiff(dateStr){
+  return (new Date(dateStr) - now) / (1000*60*60*24)
+}
+
+const eventsClean = []
+const danceClean = []
+const festivals = []
+
+const allMerged = [
+  ...todayEvents,
+  ...weekEvents,
+  ...upcomingEvents
+]
+
+allMerged.forEach(e => {
+
+  if(!e.date) return
+
+  const diff = daysDiff(e.date)
+
+  // 🕺 Dance (nur 7 Tage)
+  if(e.category === "dance"){
+    if(diff >= 0 && diff <= 7){
+      danceClean.push(e)
+    }
+    return
+  }
+
+  // 🏡 Events (30 Tage)
+  if(diff >= 0 && diff <= 30){
+    eventsClean.push(e)
+    return
+  }
+
+  // 🎪 Festivals (alles danach)
+  if(diff > 30){
+    festivals.push(e)
+  }
+
+})
+
+eventsClean.sort(sortByDate)
+danceClean.sort(sortByDate)
+festivals.sort(sortByDate)
 
 
 
