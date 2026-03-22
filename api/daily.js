@@ -967,7 +967,20 @@ let upcoming=[]
 
 mergedEvents.forEach(e=>{
 
-const d = resolveDate(e)
+let d = resolveDate(e)
+
+// 👉 WEEKLY FIX
+if(!d && e.weekday != null){
+
+  const today = now.getDay() || 7
+  const diff = (Number(e.weekday) + 7 - today) % 7
+
+  const next = new Date()
+  next.setDate(now.getDate() + diff)
+
+  d = next
+}
+
 if(!d) return
 
 const eventDate=startOfDay(d)
