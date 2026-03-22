@@ -1775,10 +1775,11 @@ else if(t.includes("festival")){
   icon = "🎪"
 }
 
-// 📏 DISTANZ (falls vorhanden)
 let dist = ""
-if(e.distance){
-  dist = ` · ${e.distance} km`
+
+if(userPos && e.lat && e.lon){
+  const d = calcDistance(userPos.lat, userPos.lon, e.lat, e.lon)
+  dist = ` · ${d} km`
 }
 
 // LINK LOGIK
