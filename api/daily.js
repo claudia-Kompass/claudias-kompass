@@ -904,11 +904,53 @@ weekEvents.sort(sortByDate)
 upcomingEvents.sort(sortByDate)
 
 // 👉 FINAL RESPONSE
-const events = {
-  today: todayEvents,
-  week: weekEvents,
-  upcoming: upcomingEvents
+const now = new Date()
+
+function daysDiff(dateStr){
+  return (new Date(dateStr) - now) / (1000*60*60*24)
 }
+
+const eventsClean = []
+const danceClean = []
+const festivals = []
+
+const allMerged = [
+  ...todayEvents,
+  ...weekEvents,
+  ...upcomingEvents
+]
+
+allMerged.forEach(e => {
+
+  if(!e.date) return
+
+  const diff = daysDiff(e.date)
+
+  // 🕺 Dance
+  if(e.category === "dance"){
+    if(diff >= 0 && diff <= 7){
+      danceClean.push(e)
+    }
+    return
+  }
+
+  // 🏡 Events (max 30 Tage)
+  if(diff >= 0 && diff <= 30){
+    eventsClean.push(e)
+    return
+  }
+
+  // 🎪 Festivals
+  if(diff > 30){
+    festivals.push(e)
+  }
+
+})
+
+// Sortierung
+eventsClean.sort(sortByDate)
+danceClean.sort(sortByDate)
+festivals.sort(sortByDate)
 
 
 
