@@ -777,233 +777,57 @@ if (!markets.dax.value || markets.dax.value === "-") {
   console.log("⚠️ DAX FALLBACK USED")
 }
 
-/* =======================================================
-EVENT ENGINE
-======================================================= */
 
+// ================================
+// UNIFIED EVENT ENGINE (CLEAN)
+// ================================
+
+// 👉 Daten laden
+const eventsData = require("./data/events")
+const danceData = require("./data/dance")
+
+const allEvents = [
+  ...eventsData.map(e => ({ ...e, category: "event" })),
+  ...danceData.map(e => ({ ...e, category: "dance" }))
+]
+
+// 👉 Helpers
 function startOfDay(d){
-const x=new Date(d)
-x.setHours(0,0,0,0)
-return x
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
 function endOfWeek(d){
-const x=new Date(d)
-const day=x.getDay()||7
-if(day!==7)x.setDate(x.getDate()+(7-day))
-x.setHours(23,59,59,999)
-return x
+  const end = new Date(d)
+  const day = d.getDay() || 7
+  end.setDate(d.getDate() + (7 - day))
+  return startOfDay(end)
 }
 
-   function distanceKm(lat1,lon1,lat2,lon2){
-
-const R = 6371
-
-const dLat = (lat2-lat1) * Math.PI/180
-const dLon = (lon2-lon1) * Math.PI/180
-
-const a =
-Math.sin(dLat/2) * Math.sin(dLat/2) +
-Math.cos(lat1*Math.PI/180) *
-Math.cos(lat2*Math.PI/180) *
-Math.sin(dLon/2) * Math.sin(dLon/2)
-
-const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-
-return R * c
-
-   }
-
-const HOME = {
-lat:49.169,
-lon:9.918
-}
-
-
-   
 function resolveDate(e){
-
-const now=new Date()
-
-if(e.date){
-return new Date(e.date)
-}
-
-if(e.month && e.day){
-
-let d=new Date(now.getFullYear(),e.month-1,e.day)
-
-if(d < startOfDay(now)){
-d=new Date(now.getFullYear()+1,e.month-1,e.day)
-}
-
-return d
-}
-
-return null
-}
-
-/* ======================
-MOVABLE EVENTS
-====================== */
-
-function getSecondSunday(month){
-
-const now=new Date()
-const year=now.getFullYear()
-
-let d=new Date(year,month-1,1)
-
-while(d.getDay()!==0){
-d.setDate(d.getDate()+1)
-}
-
-d.setDate(d.getDate()+7)
-
-return d
-}
-
-function getAdventMarkets(){
-
-const now=new Date()
-const year=now.getFullYear()
-
-let d=new Date(year,11,24)
-
-while(d.getDay()!==0){
-d.setDate(d.getDate()-1)
-}
-
-const firstAdvent=new Date(d)
-firstAdvent.setDate(d.getDate()-21)
-
-return [
-
-{
-title:"Weihnachtsmarkt Schwäbisch Hall",
-city:"Schwäbisch Hall",
-location:"Marktplatz",
-address:"Marktplatz 1, 74523 Schwäbisch Hall",
-date:firstAdvent.toISOString().split("T")[0],
-time:"11:00–20:00"
-}
-
-]
-
-}
-
-function movableEvents(){
-
-const now=new Date()
-const list=[]
-
-/* Verkaufsoffener Sonntag */
-
-const verkaufsoffen=getSecondSunday(4)
-
-if(verkaufsoffen>=startOfDay(now)){
-
-list.push({
-
-title:"Verkaufsoffener Sonntag",
-city:"Schwäbisch Hall",
-location:"Innenstadt",
-address:"Marktplatz 1, 74523 Schwäbisch Hall",
-date:verkaufsoffen.toISOString().split("T")[0],
-time:"13:00–18:00"
-
-})
-
-}
-
-/* Weihnachtsmarkt nur ab November */
-
-if(now.getMonth()>=10){
-
-list.push(...getAdventMarkets())
-
-}
-
-return list
-
-}
-
-/* ======================
-WEEKLY MARKETS
-====================== */
-
-const weeklyMarkets=[
-
-{
-title:"Wochenmarkt Schwäbisch Hall",
-city:"Schwäbisch Hall",
-location:"Marktplatz",
-address:"Marktplatz 1, 74523 Schwäbisch Hall",
-weekday:[3,6],
-time:"07:00–13:00"
-},
-
-{
-title:"Wochenmarkt Crailsheim",
-city:"Crailsheim",
-location:"Marktplatz",
-address:"Marktplatz 1, 74564 Crailsheim",
-weekday:[6],
-time:"07:00–13:00"
-}
-
-]
-
-
-/* =======================================================
-UNIFIED EVENT ENGINE (FINAL CLEAN)
-======================================================= */
-
-// 🔗 alle Quellen zusammenführen
-const safeDance = await loadDanceEvents()
-
-const unifiedEvents = [
-  ...(Array.isArray(mergedEvents) ? mergedEvents : []),
-  ...(Array.isArray(safeDance) ? safeDance : []),
-  ...movableEvents()
-]
-console.log("mergedEvents:", mergedEvents?.length)
-console.log("safeDance:", safeDance?.length)
-console.log("movable:", movableEvents().length)
-console.log("unifiedEvents TOTAL:", unifiedEvents.length)
-   
-// 🧠 Date Resolver (ALLE Fälle)
-function resolveUnifiedDate(e){
-
   if(!e) return null
 
-  // 1. echtes Datum
+  // echtes Datum
   if(e.date){
     return new Date(e.date)
   }
 
-  // 2. jährlich (month + day)
+  // jährlich
   if(e.month && e.day){
-    let d = new Date(now.getFullYear(), e.month - 1, e.day)
+    let d = new Date(now.getFullYear(), e.month-1, e.day)
 
     if(d < startOfDay(now)){
-      d = new Date(now.getFullYear()+1, e.month - 1, e.day)
+      d = new Date(now.getFullYear()+1, e.month-1, e.day)
     }
 
     return d
   }
 
-  // 3. weekly (inkl. Arrays!)
+  // weekly
   if(e.weekday != null){
-
     const today = now.getDay() || 7
+    const days = Array.isArray(e.weekday) ? e.weekday : [e.weekday]
 
-    const days = Array.isArray(e.weekday)
-      ? e.weekday
-      : [e.weekday]
-
-    const diffs = days.map(d => (Number(d) + 7 - today) % 7)
-
+    const diffs = days.map(d => (Number(d)+7-today)%7)
     const minDiff = Math.min(...diffs)
 
     const d = new Date()
@@ -1013,28 +837,28 @@ function resolveUnifiedDate(e){
   }
 
   return null
-   }
+}
 
-// 📦 Container
-let todayEvents = []
-let weekEvents = []
-let upcomingEvents = []
+// 👉 Container
+const todayEvents = []
+const weekEvents = []
+const upcomingEvents = []
 
 const seen = new Set()
 
-// 🔄 Hauptloop
-unifiedEvents.forEach(e => {
+// 👉 Hauptlogik
+allEvents.forEach(e => {
 
   try{
 
     if(!e || !e.title) return
 
-    const d = resolveUnifiedDate(e)
+    const d = resolveDate(e)
     if(!d) return
 
     const eventDate = startOfDay(d)
 
-    // ❌ Duplikate verhindern
+    // ❌ Duplikate killen
     const key = e.title + "_" + (e.city || "")
     if(seen.has(key)) return
     seen.add(key)
@@ -1045,8 +869,10 @@ unifiedEvents.forEach(e => {
       date: d.toISOString().split("T")[0],
       time: e.time || "",
       location: e.location || "",
+      address: e.address || "",
       style: e.style || "",
       url: e.url || "",
+      category: e.category || "",
       maps: e.address
         ? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
         : ""
@@ -1058,17 +884,17 @@ unifiedEvents.forEach(e => {
     else if(eventDate >= startOfDay(now) && eventDate <= endOfWeek(now)){
       weekEvents.push(event)
     }
-    else if(eventDate > endOfWeek(now)){
+    else{
       upcomingEvents.push(event)
     }
 
   } catch(err){
-    console.log("Event error:", e)
+    console.log("EVENT ERROR:", err)
   }
 
 })
 
-// 📊 Sortierung
+// 👉 Sortierung
 function sortByDate(a,b){
   return new Date(a.date) - new Date(b.date)
 }
@@ -1077,111 +903,15 @@ todayEvents.sort(sortByDate)
 weekEvents.sort(sortByDate)
 upcomingEvents.sort(sortByDate)
 
-// 📦 FINAL OUTPUT
-const events = {
+// 👉 FINAL RESPONSE
+return res.status(200).json({
   today: todayEvents,
   week: weekEvents,
   upcoming: upcomingEvents
-}
-
-
-/* =======================================================
-DANCE ENGINE
-======================================================= */
-
-let radarFestivals = []
-
-try{
-
-const radar = await fetch(
-process.env.VERCEL_URL
-? "https://" + process.env.VERCEL_URL + "/api/festival-radar"
-: "http://localhost:3000/api/festival-radar"
-)
-
-const radarData = await radar.json()
-
-radarFestivals = radarData.festivals || []
-
-}catch(e){
-
-console.log("Festival radar failed")
-
-}
-
-/* FALLBACK FESTIVALS */
-
-radarFestivals = radarFestivals.concat([
-
-{
-title:"Paris Semba Festival",
-city:"Paris",
-country:"France",
-style:"festival",
-month:10,
-url:"https://paris-semba-festival.com"
-},
-
-{
-title:"Lisbon Kizomba Congress",
-city:"Lisbon",
-country:"Portugal",
-style:"festival",
-month:9,
-url:"https://kizombacongress.com"
-},
-
-{
-title:"Warsaw Salsa Festival",
-city:"Warsaw",
-country:"Poland",
-style:"festival",
-month:11,
-url:"https://warsawsalsafestival.com"
-}
-
-])
-
-const todayDay = now.getDay() || 0
-const month = now.getMonth()+1
-
-let danceToday=[]
-let danceWeek=[]
-let danceFestivals=[]
-
-/* Radar Festivals – nur nächstes Festival */
-
-const nowMonth = now.getMonth()+1
-
-const upcomingFestivals = radarFestivals
-.filter(f => !f.month || f.month >= nowMonth)
-.sort((a,b)=>(a.month||12)-(b.month||12))
-
-if(upcomingFestivals.length){
-
-const nextFestival = upcomingFestivals[0]
-
-danceFestivals.push({
-
-title:nextFestival.title,
-city:nextFestival.city || "",
-style:"festival",
-weekday:null,
-location:nextFestival.location || "",
-time:nextFestival.time || "",
-distance:null,
-maps:"",
-url:nextFestival.url || ""
-
 })
 
-}
-   
-const safeDance = await loadDanceEvents()
 
-danceFestivals.sort((a,b)=>(a.month||12)-(b.month||12))
-danceToday.sort((a,b)=>(a.distance||999)-(b.distance||999))
-danceWeek.sort((a,b)=>(a.distance||999)-(b.distance||999))
+
 
 
 /* =========================================
