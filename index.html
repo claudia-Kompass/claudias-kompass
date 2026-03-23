@@ -1140,46 +1140,6 @@ return radar
 
 }
 
-try{
-
-  const res = await fetch("/api/radar");
-  const data = await res.json();
-
-  if(!data.radar || !data.radar.length){
-    document.getElementById("dailyRadar").innerHTML =
-      '<div style="opacity:.7">Kein Radar verfügbar</div>';
-    return;
-  }
-
-  const event = data.radar.find(e =>
-    (e.style || "").toLowerCase().includes("salsa") ||
-    (e.style || "").toLowerCase().includes("bachata") ||
-    (e.style || "").toLowerCase().includes("kizomba")
-  );
-
-  const travel = data.radar.find(e =>
-    (e.title || "").toLowerCase().includes("küste") ||
-    (e.title || "").toLowerCase().includes("insel")
-  );
-
-  const temp = data.weather?.temp || "--";
-
-  const line = `
-    ☀️ ${temp}°C • 
-    ${event ? "💃 " + event.title : "kein Event"} • 
-    ${travel ? "🌍 " + travel.title : ""}
-  `;
-
-  document.getElementById("dailyRadar").innerHTML =
-    `<div>${line}</div>`;
-
-}catch(err){
-
-  console.error("RADAR ERROR", err);
-
-  document.getElementById("dailyRadar").innerHTML =
-    '<div style="opacity:.7">Radar nicht verfügbar</div>';
-}
 
 
   
