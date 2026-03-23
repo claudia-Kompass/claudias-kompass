@@ -1640,28 +1640,7 @@ document.getElementById("recipeCounter").textContent =
 
 loadRecipes(data)
    
-/* WEATHER */
-
-document.getElementById("weatherNow").innerHTML =
-weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
-
-document.getElementById("mIcon").innerText =
-weatherIcon(data.weather.trend.morning.code);
-
-document.getElementById("morningTemp").innerText =
-data.weather.trend.morning.temp+"°C";
-
-document.getElementById("aIcon").innerText =
-weatherIcon(data.weather.trend.afternoon.code);
-
-document.getElementById("afternoonTemp").innerText =
-data.weather.trend.afternoon.temp+"°C";
-
-document.getElementById("eIcon").innerText =
-weatherIcon(data.weather.trend.evening.code);
-
-document.getElementById("eveningTemp").innerText =
-data.weather.trend.evening.temp+"°C";
+renderWeather(data)
 
 }
 
