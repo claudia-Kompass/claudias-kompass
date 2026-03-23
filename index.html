@@ -1727,7 +1727,22 @@ alert("Event übernommen")
 
 }
 
-  
+async function loadData(){
+
+  try{
+
+    const res = await fetch("/api/daily");
+    const data = await res.json();
+
+    render(data);
+
+  }catch(err){
+
+    console.error("LOAD ERROR", err);
+
+  }
+
+}  
 window.addEventListener("load",loadData);
 window.addEventListener("load",loadRadar);
   
