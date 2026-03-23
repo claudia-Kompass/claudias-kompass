@@ -1164,6 +1164,14 @@ return radar
 
     function renderRadarCard(e){
 
+if(
+  (e.style || "").toLowerCase().includes("salsa") ||
+  (e.style || "").toLowerCase().includes("bachata") ||
+  (e.style || "").toLowerCase().includes("kizomba")
+){
+  return "";
+}
+       
       const t = (e.title || "").toLowerCase()
       const s = (e.style || "").toLowerCase()
 
