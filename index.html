@@ -1212,16 +1212,15 @@ document.getElementById("meta").innerHTML =
 /* QUOTE FIX */
 if(data.quote){
   document.getElementById("quoteBlock").innerHTML = `
-    <div style="font-style:italic; font-size:18px; margin-top:10px">
-      "${data.quote.text}"
-    </div>
-    <div style="opacity:.7; margin-top:6px">
-      — ${data.quote.author || "Unbekannt"}
+    <div class="quoteBox">
+      <div class="quoteText">
+        "${data.quote.text}"
+      </div>
+      <div class="quoteAuthor">
+        — ${data.quote.author || "Unbekannt"}
+      </div>
     </div>
   `
-} else {
-  document.getElementById("quoteBlock").innerHTML =
-    '<div style="opacity:.6">Kein Zitat verfügbar</div>'
 }
 
 
