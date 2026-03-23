@@ -1327,7 +1327,6 @@ data.regional.map(r=>`
    
 
 /* EVENTS */
-/* EVENTS */
 
 if(data.events){
 
@@ -1335,19 +1334,19 @@ let html=""
 
 /* HEUTE */
 
+if(data.events.today?.length){
+
 html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ 🔥 Heute
+<div class="dayHeader">
+🔥 Heute
 </div>
 
-<div class="dayEvents">
-${
-(data.events.today||[]).length
-? data.events.today.map(renderEventCard).join("")
-: `<div style="opacity:.7;padding:8px 0">Heute keine Events</div>`
-}
+<div class="dayEvents" style="display:block">
+${data.events.today.map(renderEventCard).join("")}
 </div>
 `
+
+}
 /* WOCHENMÄRKTE */
 
 if(data.events.marketsToday?.length){
