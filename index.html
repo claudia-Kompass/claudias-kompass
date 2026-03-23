@@ -761,11 +761,54 @@ return "⛈️";
 }
 
 function ampel(trend){
+  if(trend==="green") return '<span class="ampel green"></span>';
+  if(trend==="red") return '<span class="ampel red"></span>';
+  if(!trend || trend === "none") return '<span class="ampel grey"></span>';
+  return '<span class="ampel yellow"></span>';
+}
 
-if(trend==="green") return '<span class="ampel green"></span>';
-if(trend==="red") return '<span class="ampel red"></span>';
-if(!trend || trend === "none") return '<span class="ampel grey"></span>';
-return '<span class="ampel yellow"></span>'; // ← DAS FEHLT
+
+function renderWeather(data){
+
+  const now = document.getElementById("weatherNow")
+  const mIcon = document.getElementById("mIcon")
+  const mTemp = document.getElementById("morningTemp")
+  const aIcon = document.getElementById("aIcon")
+  const aTemp = document.getElementById("afternoonTemp")
+  const eIcon = document.getElementById("eIcon")
+  const eTemp = document.getElementById("eveningTemp")
+
+  if(!data?.weather){
+    now.innerText = "—"
+    return
+  }
+
+  try{
+    now.innerHTML =
+      weatherIcon(data.weather.code)+" "+data.weather.temp+"°C";
+
+    mIcon.innerText =
+      weatherIcon(data.weather.trend?.morning?.code);
+
+    mTemp.innerText =
+      (data.weather.trend?.morning?.temp ?? "—")+"°C";
+
+    aIcon.innerText =
+      weatherIcon(data.weather.trend?.afternoon?.code);
+
+    aTemp.innerText =
+      (data.weather.trend?.afternoon?.temp ?? "—")+"°C";
+
+    eIcon.innerText =
+      weatherIcon(data.weather.trend?.evening?.code);
+
+    eTemp.innerText =
+      (data.weather.trend?.evening?.temp ?? "—")+"°C";
+
+  }catch(e){
+    console.error("Weather crash", e)
+    now.innerText = "—"
+  }
 
 }
    
