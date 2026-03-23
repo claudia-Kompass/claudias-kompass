@@ -1140,102 +1140,46 @@ return radar
 
 }
 
- async function loadRadar(){
+try{
 
-  try{
+  const res = await fetch("/api/radar");
+  const data = await res.json();
 
-    const res = await fetch("/api/radar");
-    const data = await res.json();
-
-    const w = data.weather
-    const radarList = data.radar || []
-    const travel = data.travelRadar || []
-
-    /* -----------------------
-       WETTER
-    ----------------------- */
-
-    let weatherPart = ""
-
-    if(w?.temp){
-
-      let icon = "🌤"
-
-      if(w.code >= 60) icon = "☔"
-      else if(w.code === 0) icon = "☀️"
-      else if(w.code >= 3) icon = "☁️"
-
-      weatherPart = `${icon} ${w.temp}°`
-    }
-
-    /* -----------------------
-       EVENT (OHNE DETAILS = Option A)
-    ----------------------- */
-
-    const now = new Date()
-    const today = now.getDay()
-
-    let todayEvent = radarList.find(e => e.weekday === today)
-    let nextEvent = radarList[0]
-
-    let eventPart = ""
-
-    if(todayEvent){
-
-      let icon = "🔥"
-
-      if(todayEvent.style?.includes("markt")) icon = "🧺"
-      if(todayEvent.style?.includes("salsa") || todayEvent.style?.includes("bachata")) icon = "💃"
-
-      eventPart = `${icon} ${todayEvent.title}`
-
-    } else if(nextEvent){
-
-      let icon = "📅"
-
-      if(nextEvent.style?.includes("markt")) icon = "🧺"
-
-      eventPart = `${icon} ${nextEvent.title}`
-    }
-
-    /* -----------------------
-       TRAVEL
-    ----------------------- */
-
-    let travelPart = ""
-
-    if(!todayEvent && travel.length){
-      travelPart = `🌍 ${travel[0].title}`
-    }
-
-    /* -----------------------
-       FINAL
-    ----------------------- */
-
-    const parts = [
-      weatherPart,
-      eventPart,
-      travelPart
-    ].filter(Boolean)
-
-    document.getElementById("dailyRadar").innerHTML = `
-      <div>
-        ${parts.join(" • ")}
-      </div>
-    `
-
-  }catch(err){
-
-    console.error("RADAR ERROR", err)
-
+  if(!data.radar || !data.radar.length){
     document.getElementById("dailyRadar").innerHTML =
-      '<div style="opacity:.7">Radar nicht verfügbar</div>'
+      '<div style="opacity:.7">Kein Radar verfügbar</div>';
+    return;
   }
-}
 
-    
-    
-  
+  const event = data.radar.find(e =>
+    (e.style || "").toLowerCase().includes("salsa") ||
+    (e.style || "").toLowerCase().includes("bachata") ||
+    (e.style || "").toLowerCase().includes("kizomba")
+  );
+
+  const travel = data.radar.find(e =>
+    (e.title || "").toLowerCase().includes("küste") ||
+    (e.title || "").toLowerCase().includes("insel")
+  );
+
+  const temp = data.weather?.temp || "--";
+
+  const line = `
+    ☀️ ${temp}°C • 
+    ${event ? "💃 " + event.title : "kein Event"} • 
+    ${travel ? "🌍 " + travel.title : ""}
+  `;
+
+  document.getElementById("dailyRadar").innerHTML =
+    `<div>${line}</div>`;
+
+}catch(err){
+
+  console.error("RADAR ERROR", err);
+
+  document.getElementById("dailyRadar").innerHTML =
+    '<div style="opacity:.7">Radar nicht verfügbar</div>';
+}
 
 
   
