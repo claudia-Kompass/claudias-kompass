@@ -1154,6 +1154,24 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerHTML =
 "<b>" + weekday + "</b> • " + date
 
+/* RADAR */
+
+let temp = data.weather?.temp ?? "--";
+
+const event = data.dance?.today?.[0] 
+           || data.dance?.week?.[0];
+
+const travel = data.travelRadar?.[0];
+
+const line = `
+  ☀️ ${temp}°C • 
+  ${event ? "💃 " + event.title : "nix los"}
+  ${travel ? " • 🌍 " + travel.title : ""}
+`;
+
+document.getElementById("dailyRadar").innerHTML =
+  `<div>${line}</div>`;
+   
 /* QUOTE FIX */
 if(data.quote){
   document.getElementById("quoteBlock").innerHTML = `
