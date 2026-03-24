@@ -785,30 +785,41 @@ async function loadEvents(){
 
   let all = []
 
-try{
-  const sheet = await fetch("https://claudias-kompass.vercel.app/api/sheet")
+  // 🔥 1. Lokale Events (IMMER)
+  try{
+    const local = require("./data/events")
+    all = all.concat(local)
+  }catch(e){}
 
-  if(sheet && sheet.ok){
-    const data = await sheet.json()
-    all = all.concat(data.events || [])
+  // 🔥 2. Sheet
+  try{
+    const sheet = await fetch("https://claudias-kompass.vercel.app/api/sheet")
+
+    if(sheet && sheet.ok){
+      const data = await sheet.json()
+      all = all.concat(data.events || [])
+    }
+
+  }catch(e){
+    console.log("sheet failed")
   }
 
-}catch(e){
-  console.log("sheet failed")
-}
-
+  // 🔥 3. Auto Events
   try{
     const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
+
     if(auto && auto.ok){
-  const data = await auto.json()
-  all = all.concat(data.events || [])
-}
-    all = all.concat(data.events || [])
-  }catch(e){}
+      const data = await auto.json()
+      all = all.concat(data.events || [])
+    }
+
+  }catch(e){
+    console.log("auto events failed")
+  }
 
   return all
 }
-
+   
 function toDate(d){
   if(!d) return null
   const x = new Date(d)
