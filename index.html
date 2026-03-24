@@ -1261,90 +1261,60 @@ data.regional.map(r=>`
 
 if(data.events){
 
-let html=""
+  const now = new Date()
 
-/* HEUTE */
+  const today = []
+  const week = []
+  const upcoming = []
 
-if(data.events.today?.length){
+  data.events.forEach(e => {
 
-html+=`
-<div class="dayHeader">
-🔥 Heute
-</div>
+    if(!e.date) return
 
-<div class="dayEvents" style="display:block">
-${data.events.today.map(renderEventCard).join("")}
-</div>
-`
+    const d = new Date(e.date)
+    const diff = (d - now) / (1000*60*60*24)
 
-}
-/* WOCHENMÄRKTE */
+    if(diff >= 0 && diff < 1){
+      today.push(e)
+    }
+    else if(diff <= 7){
+      week.push(e)
+    }
+    else{
+      upcoming.push(e)
+    }
 
-if(data.events.marketsToday?.length){
+  })
 
-html += `
-<div class="dayHeader">
-▾ 🧺 Wochenmarkt
-</div>
+  let html = ""
 
-<div class="dayEvents" style="display:block">
-${data.events.marketsToday.map(renderEventCard).join("")}
-</div>
-`
+  if(today.length){
+    html += `
+    <div class="dayHeader">🔥 Heute</div>
+    <div class="dayEvents" style="display:block">
+      ${today.map(renderEventCard).join("")}
+    </div>`
+  }
 
-}
-   
-/* DIESE WOCHE */
+  if(week.length){
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">▸ Diese Woche</div>
+    <div class="dayEvents">
+      ${week.map(renderEventCard).join("")}
+    </div>`
+  }
 
-if(data.events.week?.length){
+  if(upcoming.length){
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
+    <div class="dayEvents">
+      ${upcoming.map(renderEventCard).join("")}
+    </div>`
+  }
 
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ Diese Woche
-</div>
-
-<div class="dayEvents">
-${data.events.week.map(renderEventCard).join("")}
-</div>
-`
-
-}
-
-/* DEMNÄCHST */
-
-if(data.events.upcoming?.length){
-
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ Demnächst
-</div>
-
-<div class="dayEvents">
-${data.events.upcoming.map(renderEventCard).join("")}
-</div>
-`
-
+  document.getElementById("eventsBlock").innerHTML = html
 }
 
-/* MESSEN */
-
-if(data.events.fairs?.length){
-
-html+=`
-<div class="dayHeader" onclick="toggleDay(this)">
-▸ Messen
-</div>
-
-<div class="dayEvents">
-${data.events.fairs.map(renderEventCard).join("")}
-</div>
-`
-
-}
-
-document.getElementById("eventsBlock").innerHTML=html
-
-}
 
 
   
