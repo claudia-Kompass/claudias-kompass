@@ -785,11 +785,17 @@ async function loadEvents(){
 
   let all = []
 
-  try{
-    const sheet = await fetch("https://claudias-kompass.vercel.app/api/sheet")
+try{
+  const sheet = await fetch("https://claudias-kompass.vercel.app/api/sheet")
+
+  if(sheet && sheet.ok){
     const data = await sheet.json()
     all = all.concat(data.events || [])
-  }catch(e){}
+  }
+
+}catch(e){
+  console.log("sheet failed")
+}
 
   try{
     const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
