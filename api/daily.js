@@ -805,20 +805,18 @@ async function loadEvents(){
   }
 
   // 🔥 3. Auto Events
-  try{
-    const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
 
-    if(auto && auto.ok){
-      const data = await auto.json()
-      all = all.concat(data.events || [])
-    }
+   try{
+  const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
 
-  }catch(e){
-    console.log("auto events failed")
+  if(auto && auto.ok){
+    const data = await auto.json()
+    all = all.concat(data.events || [])
   }
 
-  return all
-}
+}catch(e){
+  console.log("auto failed")
+   }
    
 function toDate(d){
   if(!d) return null
