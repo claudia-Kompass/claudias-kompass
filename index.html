@@ -1167,7 +1167,7 @@ async function loadRadar(){
   (e.title || "").toLowerCase().includes("griechenland")
     );
 
-    const temp = data.weather?.temp || "--";
+    let temp = "--";
 
     const line = `
   ☀️ ${temp}°C • 
