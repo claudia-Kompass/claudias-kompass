@@ -1170,10 +1170,10 @@ async function loadRadar(){
     const temp = data.weather?.temp || "--";
 
     const line = `
-      ☀️ ${temp}°C • 
-      ${event ? "💃 " + event.title : "kein Event"} • 
-      ${travel ? "🌍 " + travel.title : ""}
-    `;
+  ☀️ ${temp}°C • 
+  ${event ? "💃 " + event.title : "nix los"}
+  ${travel ? " • 🌍 " + travel.title : ""}
+`;
 
     document.getElementById("dailyRadar").innerHTML =
       `<div>${line}</div>`;
