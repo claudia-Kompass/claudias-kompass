@@ -1160,8 +1160,11 @@ async function loadRadar(){
     );
 
     const travel = data.radar.find(e =>
-      (e.title || "").toLowerCase().includes("küste") ||
-      (e.title || "").toLowerCase().includes("insel")
+  (e.category || "").toLowerCase().includes("travel") ||
+  (e.type || "").toLowerCase().includes("travel") ||
+  (e.title || "").toLowerCase().includes("italien") ||
+  (e.title || "").toLowerCase().includes("spanien") ||
+  (e.title || "").toLowerCase().includes("griechenland")
     );
 
     const temp = data.weather?.temp || "--";
