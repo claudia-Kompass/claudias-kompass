@@ -778,171 +778,75 @@ if (!markets.dax.value || markets.dax.value === "-") {
 
 
 // ================================
-// UNIFIED EVENT ENGINE (CLEAN)
+// NEW EVENT ENGINE (SHEET + AUTO)
 // ================================
 
-// 👉 Daten laden
-const eventsData = require("./data/events")
-const danceData = require("./data/dance")
+async function loadEvents(){
 
-const allEvents = [
-  ...eventsData.map(e => ({ ...e, category: "event" })),
-  ...danceData.map(e => ({ ...e, category: "dance" }))
-]
-
-// 👉 Helpers
-function startOfDay(d){
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
-}
-
-function endOfWeek(d){
-  const end = new Date(d)
-  const day = d.getDay() || 7
-  end.setDate(d.getDate() + (7 - day))
-  return startOfDay(end)
-}
-
-function resolveDate(e){
-  if(!e) return null
-
-  // echtes Datum
-  if(e.date){
-    return new Date(e.date)
-  }
-
-  // jährlich
-  if(e.month && e.day){
-    let d = new Date(now.getFullYear(), e.month-1, e.day)
-
-    if(d < startOfDay(now)){
-      d = new Date(now.getFullYear()+1, e.month-1, e.day)
-    }
-
-    return d
-  }
-
-  // weekly
-  if(e.weekday != null){
-    const today = now.getDay() || 7
-    const days = Array.isArray(e.weekday) ? e.weekday : [e.weekday]
-
-    const diffs = days.map(d => (Number(d)+7-today)%7)
-    const minDiff = Math.min(...diffs)
-
-    const d = new Date()
-    d.setDate(now.getDate() + minDiff)
-
-    return d
-  }
-
-  return null
-}
-
-// 👉 Container
-const todayEvents = []
-const weekEvents = []
-const upcomingEvents = []
-
-const seen = new Set()
-
-// 👉 Hauptlogik
-allEvents.forEach(e => {
+  let all = []
 
   try{
+    const sheet = await fetch("https://claudias-kompass.vercel.app/api/sheet")
+    const data = await sheet.json()
+    all = all.concat(data.events || [])
+  }catch(e){}
 
-    if(!e || !e.title) return
+  try{
+    const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
+    const data = await auto.json()
+    all = all.concat(data.events || [])
+  }catch(e){}
 
-    const d = resolveDate(e)
-    if(!d) return
-
-    const eventDate = startOfDay(d)
-
-    // ❌ Duplikate killen
-    const key = e.title + "_" + (e.city || "")
-    if(seen.has(key)) return
-    seen.add(key)
-
-    const event = {
-      title: e.title,
-      city: e.city || "",
-      date: d.toISOString().split("T")[0],
-      time: e.time || "",
-      location: e.location || "",
-      address: e.address || "",
-      style: e.style || "",
-      url: e.url || "",
-      category: e.category || "event",
-      maps: e.address
-        ? `https://maps.google.com/?q=${encodeURIComponent(e.address)}`
-        : ""
-    }
-
-    if(eventDate.getTime() === startOfDay(now).getTime()){
-      todayEvents.push(event)
-    }
-    else if(eventDate >= startOfDay(now) && eventDate <= endOfWeek(now)){
-      weekEvents.push(event)
-    }
-    else{
-      upcomingEvents.push(event)
-    }
-
-  } catch(err){
-    console.log("EVENT ERROR:", err)
-  }
-
-})
-
-// 👉 Sortierung
-function sortByDate(a,b){
-  return new Date(a.date) - new Date(b.date)
+  return all
 }
 
-todayEvents.sort(sortByDate)
-weekEvents.sort(sortByDate)
-upcomingEvents.sort(sortByDate)
-
-// 👉 Filter-Logik (saubere Trennung)
-function daysDiff(dateStr){
-  return (new Date(dateStr) - now) / (1000*60*60*24)
+function toDate(d){
+  if(!d) return null
+  const x = new Date(d)
+  x.setHours(0,0,0,0)
+  return x
 }
 
-const eventsClean = []
-const danceClean = []
-const festivals = []
+function isToday(e){
+  const start = toDate(e.date)
+  const end = e.date_end ? toDate(e.date_end) : start
+  return now >= start && now <= end
+}
 
-const allMerged = [
-  ...todayEvents,
-  ...weekEvents,
-  ...upcomingEvents
-]
+function isWeek(e){
+  const start = toDate(e.date)
+  const diff = (start - now)/(1000*60*60*24)
+  return diff >= 0 && diff <= 7
+}
 
-allMerged.forEach(e => {
+function buildMaps(e){
+  const q = e.address
+    ? `${e.address}, ${e.city}`
+    : e.city
 
-  if(!e.date) return
+  return "https://maps.google.com/?q=" + encodeURIComponent(q)
+}
 
-  const diff = daysDiff(e.date)
+const rawEvents = await loadEvents()
 
-  // 🕺 Dance (nur 7 Tage)
-  if(e.category === "dance"){
-    if(diff >= 0 && diff <= 7){
-      danceClean.push(e)
-    }
-    return
-  }
+const eventsClean = rawEvents
+  .filter(e => e.category !== "dance")
+  .map(e => ({
+    ...e,
+    maps: e.maps || buildMaps(e)
+  }))
 
-  // 🏡 Events (30 Tage)
-  if(diff >= 0 && diff <= 30){
-    eventsClean.push(e)
-    return
-  }
+const danceClean = rawEvents
+  .filter(e => e.category === "dance")
+  .map(e => ({
+    ...e,
+    maps: e.maps || buildMaps(e)
+  }))
 
-  // 🎪 Festivals (alles danach)
-  if(diff > 30){
-    festivals.push(e)
-  }
+const festivals = rawEvents.filter(e => e.category === "festival")
 
-})
+
+
 
 eventsClean.sort(sortByDate)
 danceClean.sort(sortByDate)
