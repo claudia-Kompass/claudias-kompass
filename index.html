@@ -1154,6 +1154,21 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerHTML =
 "<b>" + weekday + "</b> • " + date
 
+ const event = data.events?.today?.[0] || data.events?.week?.[0];
+
+const travel = data.travelRadar?.[0];
+
+const temp = data.weather?.temp || "--";
+
+const line = `
+☀️ ${temp}°C • 
+${event ? "💃 " + event.title : "kein Event"} 
+${travel ? " • 🌍 " + travel.title : ""}
+`;
+
+document.getElementById("dailyRadar").innerHTML =
+`<div>${line}</div>`;  
+
 /* RADAR */
 
 let temp = data.weather?.temp ?? "--";
