@@ -799,7 +799,10 @@ try{
 
   try{
     const auto = await fetch("https://claudias-kompass.vercel.app/api/auto-events")
-    const data = await auto.json()
+    if(auto && auto.ok){
+  const data = await auto.json()
+  all = all.concat(data.events || [])
+}
     all = all.concat(data.events || [])
   }catch(e){}
 
