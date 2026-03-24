@@ -849,7 +849,24 @@ function buildMaps(e){
   return "https://maps.google.com/?q=" + encodeURIComponent(q)
 }
 
-const rawEvents = await loadEvents()
+function enrichEvent(e){
+
+  if(e.date) return e
+
+  if(e.month && e.day){
+    const year = new Date().getFullYear()
+    const d = new Date(year, e.month-1, e.day)
+
+    return {
+      ...e,
+      date: d.toISOString().split("T")[0]
+    }
+  }
+
+  return e
+}
+
+const rawEvents = (await loadEvents()).map(enrichEvent)
 
 const eventsClean = rawEvents
   .filter(e => e.category !== "dance")
