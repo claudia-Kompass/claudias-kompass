@@ -846,7 +846,10 @@ const danceClean = rawEvents
 const festivals = rawEvents.filter(e => e.category === "festival")
 
 
-
+function sortByDate(a,b){
+  if(!a.date || !b.date) return 0
+  return new Date(a.date) - new Date(b.date)
+}
 
 eventsClean.sort(sortByDate)
 danceClean.sort(sortByDate)
