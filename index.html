@@ -1140,55 +1140,7 @@ return radar
 
 }
 
-async function loadRadar(){
 
-  try{
-
-    const res = await fetch("/api/radar");
-    const data = await res.json();
-
-    if(!data.radar || !data.radar.length){
-      document.getElementById("dailyRadar").innerHTML =
-        '<div style="opacity:.7">Kein Radar verfügbar</div>';
-      return;
-    }
-
-    const event = data.radar.find(e =>
-      (e.style || "").toLowerCase().includes("salsa") ||
-      (e.style || "").toLowerCase().includes("bachata") ||
-      (e.style || "").toLowerCase().includes("kizomba")
-    );
-
-    const travel = data.radar.find(e =>
-  (e.category || "").toLowerCase().includes("travel") ||
-  (e.type || "").toLowerCase().includes("travel") ||
-  (e.title || "").toLowerCase().includes("italien") ||
-  (e.title || "").toLowerCase().includes("spanien") ||
-  (e.title || "").toLowerCase().includes("griechenland")
-    );
-
-    let temp = "--";
-
-    const line = `
-  ☀️ ${temp}°C • 
-  ${event ? "💃 " + event.title : "nix los"}
-  ${travel ? " • 🌍 " + travel.title : ""}
-`;
-
-    document.getElementById("dailyRadar").innerHTML =
-      `<div>${line}</div>`;
-
-  }catch(err){
-
-    console.error("RADAR ERROR", err);
-
-    document.getElementById("dailyRadar").innerHTML =
-      '<div style="opacity:.7">Radar nicht verfügbar</div>';
-  }
-
-}
-window.addEventListener("load",loadRadar);
-  
 function render(data){
    
 
