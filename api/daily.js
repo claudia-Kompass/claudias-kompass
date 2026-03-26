@@ -1051,6 +1051,16 @@ if (!markets.nexo?.usd || markets.nexo.usd === "-") {
     trend: "yellow"
   }
 }
+
+/* =========================
+   NEW EVENT MASTER (TEST)
+========================= */
+
+let fixedEvents = require("./data/events").map(e => ({
+  ...e,
+  source: "fixed"
+}))
+
    
 /* =======================================================
 RESPONSE
@@ -1084,57 +1094,6 @@ res.status(200).json({
 }catch(err){
 
 console.error("API ERROR",err)
-
-
-/* =========================
-   NEW EVENT MASTER (TEST)
-========================= */
-
-function normalize(e){
-  return {
-    type: e.type || "event",
-    title: e.title || "",
-    city: e.city || "",
-    date: e.date || null,
-    date_end: e.date_end || null,
-    weekday: e.weekday ?? null,
-    time: e.time || "",
-    style: e.style || "",
-    location: e.location || "",
-    address: e.address || "",
-    url: e.url || "",
-    source: e.source || "fixed"
-  }
-}
-
-function toDate(d){
-  if(!d) return null
-  const x = new Date(d)
-  x.setHours(0,0,0,0)
-  return x
-}
-
-function isToday(e){
-  const today = toDate(new Date())
-  const start = toDate(e.date)
-  const end = e.date_end ? toDate(e.date_end) : start
-  return today >= start && today <= end
-}
-
-function isWeek(e){
-  const today = new Date()
-  const start = toDate(e.date)
-  const diff = (start - today)/(1000*60*60*24)
-  return diff > 0 && diff <= 7
-}
-
-function isUpcoming(e){
-  const today = new Date()
-  const start = toDate(e.date)
-  const diff = (start - today)/(1000*60*60*24)
-  return diff > 7
-}
-
    
 res.status(500).json({
 error:"api_failed"
