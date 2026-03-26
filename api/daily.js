@@ -864,6 +864,29 @@ function enrichEvent(e){
   if(e.date) return e
 
   if(e.month && e.day){
+
+    const now = new Date()
+    let year = now.getFullYear()
+
+    let d = new Date(year, e.month-1, e.day)
+
+    // 🔥 WICHTIG: wenn vorbei → nächstes Jahr
+    if(d < now){
+      d = new Date(year+1, e.month-1, e.day)
+    }
+
+    return {
+      ...e,
+      date: d.toISOString().split("T")[0]
+    }
+  }
+
+  return e
+}
+
+  if(e.date) return e
+
+  if(e.month && e.day){
     const year = new Date().getFullYear()
     const d = new Date(year, e.month-1, e.day)
 
