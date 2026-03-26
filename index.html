@@ -1052,37 +1052,44 @@ return days[n] || ""
 
 
 function renderDanceCard(e){
-let title = e.title || `${e.style || ""} ${e.city || ""}`
 
-if(e.style === "festival"){
-title = "🌍 " + title
+  const isToday = e.weekday === new Date().getDay()
+
+  let title = e.title || `${e.style || ""} ${e.city || ""}`
+
+  if(e.style === "festival"){
+    title = "🌍 " + title
+  }
+
+  return `
+
+  <div class="card ${isToday ? "todayCard" : ""}">
+
+    <strong>
+      ${flagFromCountry(e.country, e.city)} ${title}
+    </strong>
+
+    ${isToday ? `<div style="color:#e6c27a;font-size:12px">HEUTE</div>` : ""}
+
+    <div style="opacity:.8">
+      ${weekdayFromNumber(e.weekday || 0)} • ${e.city}
+    </div>
+
+    ${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
+
+    ${e.style}<br>
+
+    ${e.time ? e.time : ""}
+
+    ${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
+
+    ${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
+
+  </div>
+
+  `
 }
-
-return `
-
-${flagFromCountry(e.country, e.city)} ${title}
-</strong>
-
-<div style="opacity:.8">
-${weekdayFromNumber(e.weekday || 0)} • ${e.city}
-</div>
-
-${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
-
-${e.style}<br>
-
-${e.time ? e.time : ""}
-
-${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
-
-${e.url?` • <a href="${e.url}" target="_blank" class="news-link">Infos</a>`:""}
-
-</div>
-
-`
-
-}
-
+   
 function renderEventCard(e){
 
 return`
