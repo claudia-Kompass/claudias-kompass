@@ -1260,30 +1260,38 @@ data.regional.map(r=>`
 
 if(data.events){
 
-  const now = new Date()
+  const today = data.events.today || []
+  const week = data.events.week || []
+  const upcoming = data.events.upcoming || []
 
-  const today = []
-  const week = []
-  const upcoming = []
+  let html = ""
 
-  data.events.forEach(e => {
+  if(today.length){
+    html += `
+    <div class="dayHeader">🔥 Heute</div>
+    <div class="dayEvents" style="display:block">
+      ${today.map(renderEventCard).join("")}
+    </div>`
+  }
 
-    if(!e.date) return
+  if(week.length){
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">▸ Diese Woche</div>
+    <div class="dayEvents">
+      ${week.map(renderEventCard).join("")}
+    </div>`
+  }
 
-    const d = new Date(e.date)
-    const diff = (d - now) / (1000*60*60*24)
+  if(upcoming.length){
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
+    <div class="dayEvents">
+      ${upcoming.map(renderEventCard).join("")}
+    </div>`
+  }
 
-    if(diff >= 0 && diff < 1){
-      today.push(e)
-    }
-    else if(diff <= 7){
-      week.push(e)
-    }
-    else{
-      upcoming.push(e)
-    }
-
-  })
+  document.getElementById("eventsBlock").innerHTML = html
+}
 
   let html = ""
 
