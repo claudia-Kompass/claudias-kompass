@@ -1064,14 +1064,6 @@ if (!markets.nexo?.usd || markets.nexo.usd === "-") {
   }
 }
 
-/* =========================
-   NEW EVENT MASTER (TEST)
-========================= */
-
-let fixedEvents = require("./data/events").map(e => ({
-  ...e,
-  source: "fixed"
-}))
 
    
 /* =======================================================
