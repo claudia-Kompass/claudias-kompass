@@ -1514,14 +1514,33 @@ document.getElementById("recipeCounter").textContent =
 }
 
 loadRecipes(data)
-renderDance({
-  today: data.eventSections?.today || [],
-  week: (data.eventSections?.week || []).map(e => ({
-    ...e,
-    weekday: new Date(e.date).getDay()
-  })),
+const today = new Date().getDay()
+
+const danceData = {
+  today: [],
+  week: [],
   festivals: []
+}
+
+;(data.dance || []).forEach(e => {
+
+  if(e.type === "weekly"){
+
+    if(e.weekday === today){
+      danceData.today.push(e)
+    } else {
+      danceData.week.push(e)
+    }
+
+  }
+
+  if(e.type === "festival"){
+    danceData.festivals.push(e)
+  }
+
 })
+
+renderDance(danceData)
 renderWeather(data)
 
 }
