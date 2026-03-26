@@ -1177,7 +1177,12 @@ const date = now.toLocaleDateString("de-DE")
 document.getElementById("meta").innerHTML =
 "<b>" + weekday + "</b> • " + date
 
- const event = data.eventSections?.today?.[0]
+ const today = new Date().getDay()
+
+const danceToday = (data.dance || [])
+  .filter(e => e.weekday === today)
+
+const event = danceToday[0]
 const travel = data.travelRadar?.[0];
 
 const temp = data.weather?.temp || "--";
