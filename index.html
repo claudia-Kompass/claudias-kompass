@@ -1701,7 +1701,95 @@ el.innerHTML = el.innerHTML.replace("▶","▼")
 
 }
 
-  
+function renderDance(dance){
+
+  if(!dance){
+    document.getElementById("danceWeek").innerHTML = ""
+    return
+  }
+
+  const today = new Date().getDay()
+
+  const todayEvents = dance.today || []
+  const weekEvents  = dance.week || []
+  const festivals   = dance.festivals || []
+
+  let html = ""
+
+  if(todayEvents.length){
+    html += `
+    <div class="dayHeader">🔥 Heute</div>
+    <div class="dayEvents" style="display:block">
+      ${todayEvents.map(renderDanceCard).join("")}
+    </div>`
+  }
+
+  if(weekEvents.length){
+
+    const grouped = {}
+
+    weekEvents.forEach(e=>{
+      if(!grouped[e.weekday]) grouped[e.weekday]=[]
+      grouped[e.weekday].push(e)
+    })
+
+    let weekBlock=""
+
+    Object.keys(grouped)
+    .sort((a,b)=>a-b)
+    .forEach(day=>{
+      weekBlock += `
+      <div class="dayHeader" onclick="toggleDay(this)">
+        ▸ ${weekdayFromNumber(day)}
+      </div>
+      <div class="dayEvents">
+        ${grouped[day].map(renderDanceCard).join("")}
+      </div>`
+    })
+
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">
+      ▸ ⭐ Diese Woche
+    </div>
+    <div class="dayEvents">
+      ${weekBlock}
+    </div>`
+  }
+
+  const allEvents = [...todayEvents, ...weekEvents]
+
+  const future = allEvents
+    .filter(e => e.weekday >= today)
+    .sort((a,b)=>a.weekday-b.weekday)
+
+  if(future.length){
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">
+      ▸ 📅 Nächstes Event
+    </div>
+    <div class="dayEvents">
+      ${renderDanceCard(future[0])}
+    </div>`
+  }
+
+  if(festivals.length){
+
+    const nextFestival =
+      festivals.sort((a,b)=>(a.month||12)-(b.month||12))[0]
+
+    html += `
+    <div class="dayHeader" onclick="toggleDay(this)">
+      ▸ 🌍 Festival Europa
+    </div>
+    <div class="dayEvents">
+      ${renderDanceCard(nextFestival)}
+    </div>`
+  }
+
+  document.getElementById("danceWeek").innerHTML = html
+}
+
+   
 </script>
 
 
