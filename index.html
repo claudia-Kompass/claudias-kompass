@@ -1524,7 +1524,7 @@ const danceData = {
 
 ;(data.dance || []).forEach(e => {
 
-  if(e.type === "weekly"){
+if(!e.type || e.type === "weekly"){
 
     if(e.weekday === today){
       danceData.today.push(e)
