@@ -1085,7 +1085,11 @@ res.status(200).json({
   regional,
   regionalBusiness,
 
-  events: eventsClean,
+  events: {
+  today: todayEvents,
+  week: weekEvents,
+  upcoming: upcomingEvents
+},
   dance: danceClean,
   festivals,
 
