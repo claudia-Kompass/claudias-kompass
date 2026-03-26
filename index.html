@@ -1516,7 +1516,10 @@ document.getElementById("recipeCounter").textContent =
 loadRecipes(data)
 renderDance({
   today: data.eventSections?.today || [],
-  week: data.eventSections?.week || [],
+  week: (data.eventSections?.week || []).map(e => ({
+    ...e,
+    weekday: new Date(e.date).getDay()
+  })),
   festivals: []
 })
 renderWeather(data)
