@@ -1056,7 +1056,9 @@ return `
 ${flagFromCountry(e.country, e.city)} ${title}
 </strong>
 
-${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
+<div style="opacity:.8">
+${weekdayFromNumber(e.weekday || 0)} • ${e.city}
+</div>
 
 ${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
 
