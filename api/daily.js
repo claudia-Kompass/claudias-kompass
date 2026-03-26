@@ -4,6 +4,7 @@ const quotes = require("./data/quotes")
 const recipes = require("./data/recipes")
 const languages = require("./data/languages")
 const eventDB = require("./data/events")
+const danceDB = require("./data/dance")
 const travelDB = require("./data/travel")
 
 
@@ -1102,7 +1103,7 @@ eventSections: {
   week: weekEvents,
   upcoming: upcomingEvents
 },
-  dance: danceClean,
+  dance: danceDB,
   festivals,
 
   markets,
