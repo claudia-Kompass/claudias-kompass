@@ -824,6 +824,16 @@ async function loadEvents(){
    
 function toDate(d){
   if(!d) return null
+
+  // deutsches Format 25.04.2026
+  if(d.includes(".")){
+    const parts = d.split(".")
+    const x = new Date(parts[2], parts[1]-1, parts[0])
+    x.setHours(0,0,0,0)
+    return x
+  }
+
+  // ISO Format 2026-04-25
   const x = new Date(d)
   x.setHours(0,0,0,0)
   return x
