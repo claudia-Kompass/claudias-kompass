@@ -1043,7 +1043,7 @@ return days[n] || ""
 
 
 function renderDanceCard(e){
-let title = e.title
+let title = e.title || `${e.style || ""} ${e.city || ""}`
 
 if(e.style === "festival"){
 title = "🌍 " + title
