@@ -1258,15 +1258,13 @@ data.regional.map(r=>`
 
 /* EVENTS */
 
-if(data.events){
+if(data.eventSections){
 
-  const today = data.events.today || []
-  const week = data.events.week || []
-  const upcoming = data.events.upcoming || []
+  const { today, week, upcoming } = data.eventSections
 
   let html = ""
 
-  if(today.length){
+  if(today?.length){
     html += `
     <div class="dayHeader">🔥 Heute</div>
     <div class="dayEvents" style="display:block">
@@ -1274,7 +1272,7 @@ if(data.events){
     </div>`
   }
 
-  if(week.length){
+  if(week?.length){
     html += `
     <div class="dayHeader" onclick="toggleDay(this)">▸ Diese Woche</div>
     <div class="dayEvents">
@@ -1282,7 +1280,7 @@ if(data.events){
     </div>`
   }
 
-  if(upcoming.length){
+  if(upcoming?.length){
     html += `
     <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
     <div class="dayEvents">
@@ -1292,35 +1290,7 @@ if(data.events){
 
   document.getElementById("eventsBlock").innerHTML = html
 }
-
-  let html = ""
-
-  if(today.length){
-    html += `
-    <div class="dayHeader">🔥 Heute</div>
-    <div class="dayEvents" style="display:block">
-      ${today.map(renderEventCard).join("")}
-    </div>`
-  }
-
-  if(week.length){
-    html += `
-    <div class="dayHeader" onclick="toggleDay(this)">▸ Diese Woche</div>
-    <div class="dayEvents">
-      ${week.map(renderEventCard).join("")}
-    </div>`
-  }
-
-  if(upcoming.length){
-    html += `
-    <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
-    <div class="dayEvents">
-      ${upcoming.map(renderEventCard).join("")}
-    </div>`
-  }
-
-  document.getElementById("eventsBlock").innerHTML = html
-}
+    
 
 
 
