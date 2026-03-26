@@ -884,20 +884,6 @@ function enrichEvent(e){
   return e
 }
 
-  if(e.date) return e
-
-  if(e.month && e.day){
-    const year = new Date().getFullYear()
-    const d = new Date(year, e.month-1, e.day)
-
-    return {
-      ...e,
-      date: d.toISOString().split("T")[0]
-    }
-  }
-
-  return e
-}
 
 const rawEvents = (await loadEvents()).map(enrichEvent)
 
