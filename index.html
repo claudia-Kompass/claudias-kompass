@@ -1047,7 +1047,7 @@ return `
 
 <div class="card">
 
-<strong>${flagFromCountry(e.country)} ${title}</strong>
+<strong>${flagFromCountry(e.country || "Germany")} ${title}</strong>
 
 ${weekdayFromNumber(e.weekday || 0)} • ${e.city}<br>
 
