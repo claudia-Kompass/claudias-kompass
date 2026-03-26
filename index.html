@@ -1003,22 +1003,28 @@ return d.toLocaleDateString("de-DE");
 
 }
 
-function flagFromCountry(country){
+function flagFromCountry(country, city){
 
-const map = {
-Germany:"🇩🇪",
-France:"🇫🇷",
-Spain:"🇪🇸",
-Portugal:"🇵🇹",
-Italy:"🇮🇹",
-Poland:"🇵🇱",
-Croatia:"🇭🇷"
+  if(!country){
+    if(city === "Prag") return "🇨🇿"
+    if(city === "Wien") return "🇦🇹"
+    return "🇩🇪"
+  }
+
+  const map = {
+    Germany:"🇩🇪",
+    France:"🇫🇷",
+    Spain:"🇪🇸",
+    Portugal:"🇵🇹",
+    Italy:"🇮🇹",
+    Poland:"🇵🇱",
+    Croatia:"🇭🇷",
+    "Czech Republic":"🇨🇿",
+    Austria:"🇦🇹"
+  }
+
+  return map[country] || "🌍"
 }
-
-return map[country] || "🌍"
-
-}
-
 function weekdayFromNumber(n){
 
 const days = [
