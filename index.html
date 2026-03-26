@@ -1762,7 +1762,9 @@ function renderDance(dance){
 
   if(todayEvents.length){
     html += `
-    <div class="dayHeader">🔥 Heute</div>
+  <div class="dayHeader" style="color:#e6c27a">
+🔥 Heute
+</div>
     <div class="dayEvents" style="display:block">
       ${todayEvents.map(renderDanceCard).join("")}
     </div>`
