@@ -1514,7 +1514,11 @@ document.getElementById("recipeCounter").textContent =
 }
 
 loadRecipes(data)
-renderDance(data.eventSections)
+renderDance({
+  today: data.eventSections?.today || [],
+  week: data.eventSections?.week || [],
+  festivals: []
+})
 renderWeather(data)
 
 }
