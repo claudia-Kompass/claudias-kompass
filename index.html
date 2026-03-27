@@ -1354,15 +1354,21 @@ const festival = dance.find(e => e.type === "festival")
 const travel = data.travelRadar?.[0]
 const temp = data.weather?.temp || "--"
 
-const line = `
-☀️ ${temp}°C • 
-${todayEvent ? "💃 " + todayEvent.title : "kein Event"}
-${nextEvent ? " • 📅 " + nextEvent.title : ""}
-${festival ? " • 🌍 " + festival.title : ""}
-${travel ? " • ✈️ " + travel.title : ""}
-`
+buildRadar(data).then(radar => {
 
-document.getElementById("dailyRadar").innerHTML = line
+  const temp = data.weather?.temp || "--"
+
+  const line = `
+  ☀️ ${temp}°C
+  ${radar.today ? " • 💃 " + radar.today.title : " • kein Event"}
+  ${radar.next ? " • 📅 " + radar.next.title : ""}
+  ${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
+  ${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
+  `
+
+  document.getElementById("dailyRadar").innerHTML = line
+
+})
 
    
 /* QUOTE FIX */
