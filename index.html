@@ -1308,7 +1308,9 @@ if(data.eventSections){
     </div>`
   }
 
-  if(upcoming?.length){
+if(upcoming?.length){
+
+  const limited = upcoming.slice(0,3)
     html += `
     <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
     <div class="dayEvents">
