@@ -1316,19 +1316,28 @@ if(data.eventSections){
 
 if(upcoming?.length){
 
-  const limited = upcoming.slice(0,3)
-    html += `
-    <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
-    <div class="dayEvents">
-   ${limited.map(renderEventCard).join("")}
+  const hidden = upcoming.slice(3)
 
-${upcoming.length > 3 ? `
-<div style="opacity:.7;font-size:14px;margin-top:6px">
-+ ${upcoming.length - 3} weitere Events
-</div>
-` : ""}
-    </div>`
-  }
+  html += `
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ Demnächst
+  </div>
+
+  <div class="dayEvents">
+
+    ${upcoming.slice(0,3).map(renderEventCard).join("")}
+
+    ${hidden.length ? `
+      <div class="dayHeader" onclick="toggleDay(this)">
+        ▸ + ${hidden.length} weitere Events
+      </div>
+      <div class="dayEvents">
+        ${hidden.map(renderEventCard).join("")}
+      </div>
+    ` : ""}
+
+  </div>`
+}
 
   document.getElementById("eventsBlock").innerHTML = html
 }
