@@ -1314,7 +1314,13 @@ if(upcoming?.length){
     html += `
     <div class="dayHeader" onclick="toggleDay(this)">▸ Demnächst</div>
     <div class="dayEvents">
-      ${upcoming.map(renderEventCard).join("")}
+   ${limited.map(renderEventCard).join("")}
+
+${upcoming.length > 3 ? `
+<div style="opacity:.7;font-size:14px;margin-top:6px">
++ ${upcoming.length - 3} weitere Events
+</div>
+` : ""}
     </div>`
   }
 
