@@ -906,38 +906,31 @@ async function buildRadar(data){
 
   /* DISTANCE */
   if(user){
-    events.forEach(e=>{
 
-       // 🔥 DISTANCE IN DANCE ÜBERTRAGEN
-;(data.dance || []).forEach(d => {
+  // 1. Distance berechnen
+  events.forEach(e=>{
+    if(e.lat && e.lon){
+      e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
+    }
+  })
 
-  const title = d.title || `${d.style || ""} ${d.city || ""}`
+  // 2. Distance in Dance schreiben
+  ;(data.dance || []).forEach(d => {
 
-  const match = events.find(e =>
-  e.city === d.city &&
-  Math.abs(new Date(e.date) - new Date(getNextDateFromWeekday(d.weekday))) < 86400000
-)
+    const match = events.find(e =>
+      e.city === d.city &&
+      Math.abs(
+        new Date(e.date) - new Date(getNextDateFromWeekday(d.weekday))
+      ) < 86400000
+    )
 
-  if(match && match.distance){
-    d.distance = match.distance
-  }
+    if(match && match.distance){
+      d.distance = match.distance
+    }
 
-})
-       // Distance auch zurück in originale Daten schreiben
-;(data.dance || []).forEach(d => {
-  const match = events.find(e =>
-    e.title === (d.title || `${d.style || ""} ${d.city || ""}`) &&
-    e.city === d.city
-  )
-  if(match && match.distance){
-    d.distance = match.distance
-  }
-})
-      if(e.lat && e.lon){
-        e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
-      }
-    })
-  }
+  })
+
+     }
 
   /* SORT */
   const sorted = events
