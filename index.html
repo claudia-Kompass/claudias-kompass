@@ -806,6 +806,168 @@ const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
 
 return Math.round(R*c)
 }
+
+/* =========================
+   GLOBAL EVENT ENGINE + RADAR
+========================= */
+
+function getNextDateFromWeekday(weekday){
+  if(weekday === undefined) return null
+
+  const today = new Date()
+  const result = new Date()
+
+  const diff = (weekday + 7 - today.getDay()) % 7
+  result.setDate(today.getDate() + diff)
+
+  return result.toISOString().split("T")[0]
+}
+
+function calcDistance(lat1, lon1, lat2, lon2){
+  if(!lat1 || !lon1 || !lat2 || !lon2) return null
+
+  const R = 6371
+  const toRad = v => v * Math.PI / 180
+
+  const dLat = toRad(lat2-lat1)
+  const dLon = toRad(lon2-lon1)
+
+  const a =
+    Math.sin(dLat/2)**2 +
+    Math.cos(toRad(lat1)) *
+    Math.cos(toRad(lat2)) *
+    Math.sin(dLon/2)**2
+
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))
+}
+
+/* =========================
+   MERGE ALL EVENTS
+========================= */
+
+function buildEvents(data){
+
+  let list = []
+
+  /* DANCE */
+  ;(data.dance || []).forEach(e=>{
+    list.push({
+      title: e.title || `${e.style || ""} ${e.city || ""}`,
+      city: e.city,
+      date: getNextDateFromWeekday(e.weekday),
+      time: e.time,
+      type: e.type === "festival" ? "festival" : "dance",
+      lat: e.lat,
+      lon: e.lon
+    })
+  })
+
+  /* EVENTS */
+  const sec = data.eventSections || {}
+
+  ;["today","week","upcoming"].forEach(k=>{
+    (sec[k] || []).forEach(e=>{
+      list.push({
+        title: e.title,
+        city: e.city,
+        date: e.date,
+        time: e.time,
+        type: "event",
+        lat: e.lat,
+        lon: e.lon
+      })
+    })
+  })
+
+  /* DUPLICATES KILL */
+  const seen = new Set()
+
+  list = list.filter(e=>{
+    const key = e.title + e.date + e.city
+    if(seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+
+  return list
+}
+
+/* =========================
+   GEO LOCATION
+========================= */
+
+function getUserPosition(){
+  return new Promise(resolve=>{
+    if(!navigator.geolocation){
+      resolve(null)
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => resolve({
+        lat: pos.coords.latitude,
+        lon: pos.coords.longitude
+      }),
+      () => resolve(null),
+      {timeout:3000}
+    )
+  })
+}
+
+/* =========================
+   RADAR BUILDER
+========================= */
+
+async function buildRadar(data){
+
+  const events = buildEvents(data)
+  const user = await getUserPosition()
+
+  const today = new Date()
+
+  /* DISTANCE */
+  if(user){
+    events.forEach(e=>{
+      e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
+    })
+  }
+
+  /* SORT */
+  const sorted = events
+    .filter(e => e.date)
+    .sort((a,b)=> new Date(a.date) - new Date(b.date))
+
+  /* TODAY */
+  const todayEvent = sorted.find(e =>
+    new Date(e.date).toDateString() === today.toDateString()
+  )
+
+  /* NEXT */
+  const nextEvent = sorted.find(e =>
+    new Date(e.date) > today
+  )
+
+  /* NEAREST */
+  const nearest = user
+    ? [...events]
+        .filter(e => e.distance)
+        .sort((a,b)=>a.distance - b.distance)[0]
+    : null
+
+  /* SURPRISE 30% */
+  const surprise =
+    Math.random() < 0.3
+      ? sorted[Math.floor(Math.random()*sorted.length)]
+      : null
+
+  return {
+    today: todayEvent,
+    next: nextEvent,
+    nearest,
+    surprise
+  }
+}
+
    
 function weatherIcon(code){
 
