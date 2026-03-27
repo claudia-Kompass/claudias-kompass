@@ -1182,7 +1182,8 @@ document.getElementById("meta").innerHTML =
 const danceToday = (data.dance || [])
   .filter(e => e.weekday === today)
 
-const event = danceToday[0]
+event = danceToday
+  .sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
 const travel = data.travelRadar?.[0];
 
 const temp = data.weather?.temp || "--";
