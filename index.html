@@ -907,6 +907,16 @@ async function buildRadar(data){
   /* DISTANCE */
   if(user){
     events.forEach(e=>{
+       // Distance auch zurück in originale Daten schreiben
+;(data.dance || []).forEach(d => {
+  const match = events.find(e =>
+    e.title === (d.title || `${d.style || ""} ${d.city || ""}`) &&
+    e.city === d.city
+  )
+  if(match && match.distance){
+    d.distance = match.distance
+  }
+})
       if(e.lat && e.lon){
         e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
       }
