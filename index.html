@@ -1179,23 +1179,31 @@ document.getElementById("meta").innerHTML =
 
  const today = new Date().getDay()
 
-const danceToday = (data.dance || [])
-  .filter(e => e.weekday === today)
+const today = new Date().getDay()
 
-event = danceToday
-  .sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
-const travel = data.travelRadar?.[0];
+let event = null
 
-const temp = data.weather?.temp || "--";
+// 1. Versuch: dance (neu)
+if(data.dance?.length){
+  event = data.dance.find(e => e.weekday === today)
+}
+
+// 2. Fallback: eventSections (alt)
+if(!event && data.eventSections?.today?.length){
+  event = data.eventSections.today[0]
+}
+
+const travel = data.travelRadar?.[0]
+const temp = data.weather?.temp || "--"
 
 const line = `
 ☀️ ${temp}°C • 
 ${event ? "💃 " + event.title : "kein Event"} 
 ${travel ? " • 🌍 " + travel.title : ""}
-`;
+`
 
 document.getElementById("dailyRadar").innerHTML =
-`<div>${line}</div>`;  
+`<div>${line}</div>`
 
    
 /* QUOTE FIX */
