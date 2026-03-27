@@ -1773,6 +1773,9 @@ function renderDance(dance){
   const today = new Date().getDay()
 
   const todayEvents = dance.today || []
+   todayEvents.sort((a,b)=>{
+  return (a.time || "").localeCompare(b.time || "")
+})
   const weekEvents  = dance.week || []
   const festivals   = dance.festivals || []
 
