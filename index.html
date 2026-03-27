@@ -1378,12 +1378,12 @@ buildRadar(data).then(radar => {
   const temp = data.weather?.temp || "--"
 
   const line = `
-  ☀️ ${temp}°C
-  ${radar.today ? " • 💃 " + radar.today.title : " • kein Event"}
-  ${radar.next ? " • 📅 " + radar.next.title : ""}
-  ${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
-  ${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
-  `
+☀️ ${temp}°C • 
+${radar.today ? "💃 " + radar.today.title : "kein Event"}
+${radar.next ? " • 📅 " + radar.next.title : ""}
+${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
+${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
+`
 
   document.getElementById("dailyRadar").innerHTML = line
 
