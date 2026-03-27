@@ -1786,20 +1786,25 @@ alert("Event übernommen")
 
 async function loadData(){
 
+  document.getElementById("dailyRadar").innerHTML = "⏳ Lade Daten..."
+
   try{
 
-    const res = await fetch("/api/daily");
-    const data = await res.json();
+    const res = await fetch("/api/daily")
 
-    render(data);
+    const data = await res.json()
+
+    render(data)
 
   }catch(err){
 
-    console.error("LOAD ERROR", err);
+    document.getElementById("dailyRadar").innerHTML =
+      "⚠️ Daten konnten nicht geladen werden"
 
   }
 
-}  
+}
+   
 window.addEventListener("load",loadData);
   
 let compassClicks = 0;
