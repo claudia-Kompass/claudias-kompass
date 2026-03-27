@@ -942,10 +942,11 @@ async function buildRadar(data){
   return diff >= 0 && diff <= 14
 })
 
-const surprise =
-  Math.random() < 0.3 && upcomingShort.length
-    ? upcomingShort[Math.floor(Math.random()*upcomingShort.length)]
-    : null
+let surprise = null
+
+if (!todayEvent && !nextEvent && upcomingShort.length) {
+  surprise = upcomingShort[Math.floor(Math.random()*upcomingShort.length)]
+}
 
   return {
     today: todayEvent,
