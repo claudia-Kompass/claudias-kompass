@@ -9,26 +9,62 @@ export default async function handler(req, res){
 
     const url = `https://www.eventbriteapi.com/v3/events/search/?location.address=Germany&expand=venue`
 
-    const r = await fetch(url,{
-      headers:{ Authorization: `Bearer ${token}` }
-    })
+    let events = []
 
-    const json = await r.json()
+try{
 
-    let events = (json.events || []).map(e => ({
+  const r = await fetch(url,{
+    headers:{ Authorization: `Bearer ${token}` }
+  })
 
-      title: e.name?.text,
-      url: e.url,
+  const json = await r.json()
 
-      city: e.venue?.address?.city,
-      lat: parseFloat(e.venue?.latitude),
-      lon: parseFloat(e.venue?.longitude),
+  events = (json.events || []).map(e => ({
+    title: e.name?.text,
+    url: e.url,
+    city: e.venue?.address?.city,
+    lat: parseFloat(e.venue?.latitude),
+    lon: parseFloat(e.venue?.longitude),
+    date: e.start?.local,
+    type: "event",
+    known: false
+  }))
 
-      date: e.start?.local,
+}catch(e){
+  console.log("Eventbrite fail")
+}
 
-      type: "event",
-      known: false
-    }))
+/* 🔥 FALLBACK */
+if(!events.length){
+
+  events = [
+    {
+      title: "Gaildorfer Pferdemarkt",
+      city: "Gaildorf",
+      lat: 49.010,
+      lon: 9.770
+    },
+    {
+      title: "Street Food Festival Stuttgart",
+      city: "Stuttgart",
+      lat: 48.780,
+      lon: 9.180
+    },
+    {
+      title: "Frühlingsmarkt Ansbach",
+      city: "Ansbach",
+      lat: 49.300,
+      lon: 10.580
+    },
+    {
+      title: "Altmühlsee Frühlingsfest",
+      city: "Gunzenhausen",
+      lat: 49.100,
+      lon: 10.750
+    }
+  ]
+
+}
 
     events = events.filter(e => e.lat && e.lon)
 
