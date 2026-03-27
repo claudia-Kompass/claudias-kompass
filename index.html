@@ -1143,7 +1143,7 @@ radar.today = dance.today
 /* NÄCHSTES EVENT */
 
 const future = all
-.filter(e => e.weekday >= today)
+.filter(e => e.weekday > today)
 .sort((a,b)=>a.weekday-b.weekday)
 
 if(future.length){
