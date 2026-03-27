@@ -1827,7 +1827,7 @@ function renderDance(dance){
   const allEvents = [...todayEvents, ...weekEvents]
 
   const future = allEvents
-    .filter(e => e.weekday >= today)
+    .filter(e => e.weekday > today)
     .sort((a,b)=>a.weekday-b.weekday)
 
   if(future.length){
