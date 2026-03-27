@@ -914,9 +914,9 @@ async function buildRadar(data){
   const title = d.title || `${d.style || ""} ${d.city || ""}`
 
   const match = events.find(e =>
-    e.title === title &&
-    e.city === d.city
-  )
+  e.city === d.city &&
+  Math.abs(new Date(e.date) - new Date(getNextDateFromWeekday(d.weekday))) < 86400000
+)
 
   if(match && match.distance){
     d.distance = match.distance
