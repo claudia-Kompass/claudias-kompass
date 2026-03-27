@@ -907,6 +907,22 @@ async function buildRadar(data){
   /* DISTANCE */
   if(user){
     events.forEach(e=>{
+
+       // 🔥 DISTANCE IN DANCE ÜBERTRAGEN
+;(data.dance || []).forEach(d => {
+
+  const title = d.title || `${d.style || ""} ${d.city || ""}`
+
+  const match = events.find(e =>
+    e.title === title &&
+    e.city === d.city
+  )
+
+  if(match && match.distance){
+    d.distance = match.distance
+  }
+
+})
        // Distance auch zurück in originale Daten schreiben
 ;(data.dance || []).forEach(d => {
   const match = events.find(e =>
