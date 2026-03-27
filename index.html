@@ -824,6 +824,45 @@ function calcDistance(lat1, lon1, lat2, lon2){
    MERGE ALL EVENTS
 ========================= */
 
+function buildRadar(events){
+
+  const today = new Date().getDay()
+
+  if(userPos){
+    events.forEach(e => {
+      if(e.lat && e.lon){
+        e.distance = calcDistance(
+          userPos.lat,
+          userPos.lon,
+          e.lat,
+          e.lon
+        )
+      }
+    })
+  }
+
+  const todayEvent = events
+    .filter(e => new Date(e.date).getDay() === today)
+    .sort((a,b)=>(a.distance||999)-(b.distance||999))[0]
+
+  const next = events
+    .filter(e => new Date(e.date) >= new Date())
+    .sort((a,b)=>new Date(a.date)-new Date(b.date))[0]
+
+  const nearest = events
+    .filter(e => e.distance)
+    .sort((a,b)=>a.distance-b.distance)[0]
+
+  let surprise = null
+  if(Math.random() > 0.7 && events.length){
+    surprise = events[
+      Math.floor(Math.random() * events.length)
+    ]
+  }
+
+  return { today: todayEvent, next, nearest, surprise }
+}
+   
 function buildEvents(data){
 
   let list = []
