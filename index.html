@@ -1248,7 +1248,7 @@ return`
 <strong>${e.title}</strong>
 
 <div style="opacity:.8">
-${e.city ?? ""} ${e.location ? " • "+e.location : ""}
+${e.city ?? ""}${e.location ? " • "+e.location : ""}${e.distance ? " • 📍 "+e.distance+" km" : ""}
 </div>
 
 <div style="opacity:.8">
