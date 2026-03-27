@@ -1378,12 +1378,15 @@ buildRadar(data).then(radar => {
   const temp = data.weather?.temp || "--"
 
   const line = `
-☀️ ${temp}°C • 
-${radar.today ? "💃 " + radar.today.title : "kein Event"}
+☀️ ${temp}°C
+${radar.today ? " • 💃 " + radar.today.title : ""}
 ${radar.next ? " • 📅 " + radar.next.title : ""}
 ${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
 ${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
 `
+
+document.getElementById("dailyRadar").innerHTML =
+line || "Heute ruhig – kein Event gefunden"
 
   document.getElementById("dailyRadar").innerHTML = line
 
