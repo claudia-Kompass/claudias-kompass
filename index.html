@@ -1181,29 +1181,31 @@ document.getElementById("meta").innerHTML =
 
 const today = new Date().getDay()
 
-let event = null
+const dance = data.dance || []
 
-// 1. Versuch: dance (neu)
-if(data.dance?.length){
-  event = data.dance.find(e => e.weekday === today)
-}
+const todayEvents = dance.filter(e => e.weekday === today)
+const nextEvents  = dance
+  .filter(e => e.weekday > today)
+  .sort((a,b)=>a.weekday-b.weekday)
 
-// 2. Fallback: eventSections (alt)
-if(!event && data.eventSections?.today?.length){
-  event = data.eventSections.today[0]
-}
+const festivals = dance.filter(e => e.type === "festival")
+
+const todayEvent = todayEvents[0]
+const nextEvent  = nextEvents[0]
+const festival   = festivals[0]
 
 const travel = data.travelRadar?.[0]
 const temp = data.weather?.temp || "--"
 
 const line = `
 ☀️ ${temp}°C • 
-${event ? "💃 " + event.title : "kein Event"} 
-${travel ? " • 🌍 " + travel.title : ""}
+${todayEvent ? "💃 " + todayEvent.title : "kein Event"}
+${nextEvent ? " • 📅 " + nextEvent.title : ""}
+${festival ? " • 🌍 " + festival.title : ""}
+${travel ? " • ✈️ " + travel.title : ""}
 `
 
-document.getElementById("dailyRadar").innerHTML =
-`<div>${line}</div>`
+document.getElementById("dailyRadar").innerHTML = line
 
    
 /* QUOTE FIX */
