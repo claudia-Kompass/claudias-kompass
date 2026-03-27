@@ -938,12 +938,17 @@ function getUserPosition(){
 
 async function buildRadar(data){
 
+  const events = buildEvents(data)   // ← FEHLTE BEI DIR
+  const user = await getUserPosition()  // ← FEHLTE BEI DIR
+
   const today = new Date()
 
   /* DISTANCE */
   if(user){
     events.forEach(e=>{
-      e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
+      if(e.lat && e.lon){
+        e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
+      }
     })
   }
 
@@ -969,7 +974,7 @@ async function buildRadar(data){
         .sort((a,b)=>a.distance - b.distance)[0]
     : null
 
-  /* SURPRISE 30% */
+  /* SURPRISE */
   const surprise =
     Math.random() < 0.3
       ? sorted[Math.floor(Math.random()*sorted.length)]
@@ -982,7 +987,6 @@ async function buildRadar(data){
     surprise
   }
 }
-
    
 function weatherIcon(code){
 
