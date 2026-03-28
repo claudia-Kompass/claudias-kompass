@@ -1356,7 +1356,8 @@ const todayEvents = events.filter(e => isSameDay(e.date, nowDate))
 const weekEvents  = events.filter(e => !isSameDay(e.date, nowDate) && inNext7Days(e.date))
 const laterEvents = events.filter(e => {
   const d = new Date(e.date)
-  return d > nowDate && !inNext7Days(e.date)
+  const diff = (d - nowDate) / (1000*60*60*24)
+  return diff > 7
 })
 
 let html = ""
