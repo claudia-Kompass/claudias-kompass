@@ -65,7 +65,12 @@ let discovery = []
 try{
   const url = `${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : "http://localhost:3000"}/api/discovery`
   const d = await fetch(url)
-  discovery = await d.json()
+const json = await d.json()
+
+// 🔥 robust fix
+discovery = Array.isArray(json)
+  ? json
+  : json.events || json.data || []
 }catch(e){
   console.log("Discovery fail")
 }
