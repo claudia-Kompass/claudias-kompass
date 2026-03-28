@@ -986,7 +986,7 @@ function normalize(e, source="local"){
     address: e.address || "",
 
     url: e.url || "",
-    maps: e.maps || "",
+    maps: e.maps || buildMaps(e),
     style: e.style || "",
 
     distance: 999
