@@ -945,6 +945,109 @@ const upcomingEvents = eventsClean.filter(e =>
   !isToday(e) && !isWeek(e)
 )
 
+// ============================
+// 🔥 MASTER FEED ENGINE
+// ============================
+
+const baseLat = 49.170
+const baseLon = 9.920
+
+function calcDistance(lat1, lon1, lat2, lon2){
+  const R = 6371
+  const toRad = v => v * Math.PI / 180
+
+  const dLat = toRad(lat2-lat1)
+  const dLon = toRad(lon2-lon1)
+
+  const a =
+    Math.sin(dLat/2)**2 +
+    Math.cos(toRad(lat1)) *
+    Math.cos(toRad(lat2)) *
+    Math.sin(dLon/2)**2
+
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))
+}
+
+function isDanceEvent(e){
+  const text = (e.title || "").toLowerCase()
+  return (
+    text.includes("salsa") ||
+    text.includes("bachata") ||
+    text.includes("kizomba") ||
+    text.includes("dance") ||
+    text.includes("tanz")
+  )
+}
+
+// 🔹 1. Quellen normalisieren
+
+const localEvents = eventsClean.map(e => ({
+  ...e,
+  type: isDanceEvent(e) ? "dance" : "event",
+  source: "local"
+}))
+
+const danceEvents = danceDB.map(e => ({
+  ...e,
+  type: "dance",
+  source: "local"
+}))
+
+const discoveryEvents = (discovery || []).map(e => ({
+  ...e,
+  type: "event",
+  source: "discovery"
+}))
+
+let allEvents = [
+  ...localEvents,
+  ...danceEvents,
+  ...discoveryEvents
+]
+
+// 🔹 2. Distanz
+
+allEvents = allEvents.map(e => {
+  if(e.lat && e.lon){
+    e.distance = calcDistance(baseLat, baseLon, e.lat, e.lon)
+  } else {
+    e.distance = 999
+  }
+  return e
+})
+
+// 🔹 3. Radius
+
+allEvents = allEvents.filter(e => e.distance < 200)
+
+// 🔹 4. Split
+
+const local = allEvents.filter(e => e.source === "local")
+const discoveryList = allEvents.filter(e => e.source === "discovery")
+
+// 🔹 5. Sortierung
+
+local.sort((a,b)=>a.distance - b.distance)
+discoveryList.sort((a,b)=>a.distance - b.distance)
+
+// 🔹 6. 70/30 Mix
+
+const mixed = []
+let dIndex = 0
+
+for(let i = 0; i < local.length; i++){
+
+  if(local[i]) mixed.push(local[i])
+
+  if(i % 3 === 0 && discoveryList[dIndex]){
+    mixed.push(discoveryList[dIndex])
+    dIndex++
+  }
+}
+
+const finalFeed = mixed.slice(0, 20)
+
+   
 /* 🔥 30% DISCOVERY → UPCOMING */
 if(discovery && discovery.length > 0){
 
