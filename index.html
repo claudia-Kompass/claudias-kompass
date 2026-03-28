@@ -1352,13 +1352,27 @@ const events = (data.events || [])
   .sort((a,b)=> new Date(a.date) - new Date(b.date))
 
 /* FILTER */
-const todayEvents = events.filter(e => isSameDay(e.date, nowDate))
-const weekEvents  = events.filter(e => !isSameDay(e.date, nowDate) && inNext7Days(e.date))
+/* FILTER + TYPEN */
+
+const todayEvents = events.filter(e =>
+  isSameDay(e.date, nowDate) && e.type !== "festival"
+)
+
+const weekEvents = events.filter(e =>
+  !isSameDay(e.date, nowDate) &&
+  inNext7Days(e.date) &&
+  e.type !== "festival"
+)
+
 const laterEvents = events.filter(e => {
   const d = new Date(e.date)
   const diff = (d - nowDate) / (1000*60*60*24)
-  return diff > 7
+  return diff > 7 && e.type !== "festival"
 })
+
+/* FESTIVALS SEPARAT */
+
+const festivals = events.filter(e => e.type === "festival")
 
 let html = ""
 
