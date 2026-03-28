@@ -966,6 +966,7 @@ if(discovery.length){
     }))
 
   upcomingEvents.push(...normalized)
+   eventsClean.push(...normalized)
 }
 
 /* =========================================
