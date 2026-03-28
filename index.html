@@ -1213,6 +1213,8 @@ function renderDanceCard(e){
 
   const isToday = e.weekday === new Date().getDay()
 
+   <div class="card ${isToday ? "todayCard" : ""}">
+
   let title = e.title || `${e.style || ""} ${e.city || ""}`
 
   if(e.style === "festival"){
