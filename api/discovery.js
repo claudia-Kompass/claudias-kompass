@@ -19,16 +19,31 @@ try{
 
   const json = await r.json()
 
-  events = (json.events || []).map(e => ({
-    title: e.name?.text,
-    url: e.url,
-    city: e.venue?.address?.city,
+  events = (json.events || []).map(e => {
+
+  const date = e.start?.local
+    ? e.start.local.split("T")[0]
+    : null
+
+  return {
+    title: e.name?.text || "Event",
+    url: e.url || "",
+    city: e.venue?.address?.city || "",
     lat: parseFloat(e.venue?.latitude),
     lon: parseFloat(e.venue?.longitude),
-    date: e.start?.local,
+
+    date, // 🔥 KRITISCH
+
+    maps: e.venue?.address
+      ? `https://maps.google.com/?q=${encodeURIComponent(
+          e.venue.address.localized_address_display
+        )}`
+      : "",
+
     type: "event",
     known: false
-  }))
+  }
+})
 
 }catch(e){
   console.log("Eventbrite fail")
