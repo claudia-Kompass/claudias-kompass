@@ -52,6 +52,10 @@ try{
 /* 🔥 FALLBACK */
 if(!events.length){
 
+const tomorrow = new Date()
+tomorrow.setDate(tomorrow.getDate() + 1)
+const fallbackDate = tomorrow.toISOString().split("T")[0]
+  
   events = [
     {
       title: "Gaildorfer Pferdemarkt",
