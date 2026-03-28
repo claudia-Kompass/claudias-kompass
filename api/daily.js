@@ -1244,7 +1244,7 @@ res.status(200).json({
   regional,
   regionalBusiness,
 
-  events: eventsClean,
+  events: finalFeed,
 eventSections: {
   today: todayEvents,
   week: weekEvents,
