@@ -930,11 +930,114 @@ eventsClean.sort(sortByDate)
 danceClean.sort(sortByDate)
 festivals.sort(sortByDate)
 
-
-
 // ============================
-// 🔥 MASTER FEED ENGINE
+// 🔥 UNIFIED EVENT ENGINE (FINAL)
 // ============================
+
+const baseLat = 49.170
+const baseLon = 9.920
+
+function calcDistance(lat1, lon1, lat2, lon2){
+  const R = 6371
+  const toRad = v => v * Math.PI / 180
+
+  const dLat = toRad(lat2-lat1)
+  const dLon = toRad(lon2-lon1)
+
+  const a =
+    Math.sin(dLat/2)**2 +
+    Math.cos(toRad(lat1)) *
+    Math.cos(toRad(lat2)) *
+    Math.sin(dLon/2)**2
+
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))
+}
+
+function isDance(e){
+  const t = (e.title || "").toLowerCase()
+  return (
+    t.includes("salsa") ||
+    t.includes("bachata") ||
+    t.includes("kizomba") ||
+    t.includes("tanz") ||
+    t.includes("dance")
+  )
+}
+
+function normalize(e, source="local"){
+
+  return {
+    title: e.title || "Event",
+    city: e.city || "",
+
+    lat: e.lat ? Number(e.lat) : null,
+    lon: e.lon ? Number(e.lon) : null,
+
+    date: e.date || null,
+    weekday: e.weekday ?? null,
+
+    type: isDance(e) ? "dance" : "event",
+    source,
+
+    location: e.location || "",
+    address: e.address || "",
+
+    url: e.url || "",
+    maps: e.maps || "",
+    style: e.style || "",
+
+    distance: 999
+  }
+}
+
+// 🔹 1. ALLE DATEN REIN
+let all = [
+  ...eventsClean.map(e => normalize(e, "local")),
+  ...danceDB.map(e => normalize(e, "local")),
+  ...(discovery || []).map(e => normalize(e, "discovery"))
+]
+
+// 🔹 2. DISTANCE
+all = all.map(e => {
+  if(e.lat && e.lon){
+    e.distance = calcDistance(baseLat, baseLon, e.lat, e.lon)
+  }
+  return e
+})
+
+// 🔹 3. FILTER
+all = all.filter(e =>
+  e.title &&
+  e.city &&
+  e.distance < 200
+)
+
+// 🔹 4. DEDUPE
+const seen = new Set()
+
+all = all.filter(e => {
+  const key = (e.title + e.city + (e.date || e.weekday)).toLowerCase()
+  if(seen.has(key)) return false
+  seen.add(key)
+  return true
+})
+
+// 🔹 5. SMART SORT
+function score(e){
+  let s = 0
+
+  s += (200 - e.distance)   // Nähe
+  if(e.type === "dance") s += 20
+  if(e.source === "discovery") s -= 5
+
+  return s
+}
+
+all.sort((a,b) => score(b) - score(a))
+
+// 🔹 6. FINAL
+const finalFeed = all.slice(0,20)
+
 
 
 
