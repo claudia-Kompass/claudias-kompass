@@ -1343,24 +1343,14 @@ const inNext7Days = (date) => {
   return diff > 0 && diff <= 7
 }
 
-const events = [
-  ...(data.events || []),
+const events = (data.events || [])
+  .map(e => ({
+    ...e,
+    date: e.date || getNextDateFromWeekday(e.weekday)
+  }))
+  .filter(e => e.date)
+  .sort((a,b)=> new Date(a.date) - new Date(b.date))
 
-  // 🔥 TEST EVENT
-  {
-    title: "Test Festival",
-    city: "Barcelona",
-    date: "2026-06-10",
-    type: "festival"
-  }
-
-].map(e => ({
-  ...e,
-  date: e.date || getNextDateFromWeekday(e.weekday)
-}))
-.filter(e => e.date)
-.sort((a,b)=> new Date(a.date) - new Date(b.date))
-)
 
 const weekEvents = events.filter(e =>
   !isSameDay(e.date, nowDate) &&
