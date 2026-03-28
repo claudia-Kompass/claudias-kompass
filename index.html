@@ -1408,7 +1408,7 @@ buildRadar(data).then(radar => {
 
   const line = `
 ☀️ ${temp}°C
-${radar.today ? " • 💃 " + radar.today.title : ""}
+${radar.today ? " • 🔥 <b>" + radar.today.title + "</b>" : ""}
 ${radar.next ? " • 📅 " + radar.next.title : ""}
 ${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
 ${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
