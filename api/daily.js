@@ -956,7 +956,7 @@ console.log("DISCOVERY RAW:", discovery)
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
 
-  const normalized = discovery
+  const normalized = [...discovery]
     .sort(()=>0.5 - Math.random())
     .slice(0, max)
     .map(e => ({
