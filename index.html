@@ -1325,14 +1325,13 @@ return radar
 
 
 function render(data){
-   
 
 document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
 /* =========================
-   EVENTS NEU (HEUTE / WOCHE / SPÄTER)
+   EVENTS BLOCK CLEAN
 ========================= */
 
 const nowDate = new Date()
@@ -1371,10 +1370,10 @@ if(todayEvents.length){
   </div>`
 }
 
-/* DIESE WOCHE */
+/* WOCHE */
 if(weekEvents.length){
   html += `
-  <div class="dayHeader" style="color:#e6edf3">
+  <div class="dayHeader">
     ⭐ Diese Woche
   </div>
   <div class="dayEvents" style="display:block">
@@ -1396,26 +1395,17 @@ if(laterEvents.length){
 document.getElementById("eventsBlock").innerHTML =
   html || "<div style='opacity:.6'>Keine Events gefunden</div>"
 
+/* META */
+
 const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
 
 document.getElementById("meta").innerHTML =
 "<b>" + weekday + "</b> • " + date
 
-const today = new Date().getDay()
-
-const dance = data.dance || []
-
-const todayEvent = dance.find(e => e.weekday === today)
-
-const nextEvent = dance
-  .filter(e => e.weekday > today)
-  .sort((a,b)=>a.weekday-b.weekday)[0]
-
-const festival = dance.find(e => e.type === "festival")
-
-const travel = data.travelRadar?.[0]
-const temp = data.weather?.temp || "--"
+/* =========================
+   RADAR FIX (HEUTE FETT)
+========================= */
 
 buildRadar(data).then(radar => {
 
@@ -1434,7 +1424,10 @@ line || "Heute ruhig – kein Event gefunden"
 
 })
 
-   
+/* =========================
+   REST UNVERÄNDERT
+========================= */
+
 /* QUOTE FIX */
 if(data.quote){
   document.getElementById("quoteBlock").innerHTML = `
