@@ -1328,9 +1328,10 @@ document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
-/* =========================
-   EVENTS BLOCK CLEAN
+/* =======================
+   EVENTS – FINAL VERSION
 ========================= */
+
 const nowDate = new Date()
 
 const isSameDay = (d1, d2) =>
@@ -1342,7 +1343,6 @@ const inNext7Days = (date) => {
   return diff > 0 && diff <= 7
 }
 
-/* 🔥 EINZIGE QUELLE */
 const events = (data.events || [])
   .map(e => ({
     ...e,
@@ -1350,9 +1350,6 @@ const events = (data.events || [])
   }))
   .filter(e => e.date)
   .sort((a,b)=> new Date(a.date) - new Date(b.date))
-
-/* FILTER */
-/* FILTER + TYPEN */
 
 const todayEvents = events.filter(e =>
   isSameDay(e.date, nowDate) && e.type !== "festival"
@@ -1370,22 +1367,21 @@ const laterEvents = events.filter(e => {
   return diff > 7 && e.type !== "festival"
 })
 
-/* FESTIVALS SEPARAT */
-
 const festivals = events.filter(e => e.type === "festival")
 
 let html = ""
 
 /* HEUTE */
-if(todayEvents.length){
-  html += `
-  <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ 🔥 Heute
-  </div>
+html += `
+<div class="dayHeader">▸ 🔥 Heute</div>
 <div class="dayEvents" style="display:block">
-    ${todayEvents.map(renderEventCard).join("")}
-  </div>`
-}
+  ${
+    todayEvents.length
+      ? todayEvents.map(renderEventCard).join("")
+      : "<div style='opacity:.6'>Kein Event heute</div>"
+  }
+</div>
+`
 
 /* WOCHE */
 if(weekEvents.length){
@@ -1398,20 +1394,18 @@ if(weekEvents.length){
   </div>`
 }
 
-/* SPÄTER */
+/* DEMNÄCHST */
 if(laterEvents.length){
   html += `
   <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ 🧭 Später
+    ▸ 🧭 Demnächst
   </div>
   <div class="dayEvents">
     ${laterEvents.map(renderEventCard).join("")}
   </div>`
 }
 
-  
 /* FESTIVALS */
-
 if(festivals.length){
   html += `
   <div class="dayHeader" onclick="toggleDay(this)">
@@ -1422,9 +1416,9 @@ if(festivals.length){
   </div>`
 }
 
-   
 document.getElementById("eventsBlock").innerHTML =
   html || "<div style='opacity:.6'>Keine Events gefunden</div>"
+
 
 /* META */
 
