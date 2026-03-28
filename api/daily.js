@@ -954,13 +954,16 @@ function calcDistance(lat1, lon1, lat2, lon2){
 }
 
 function isDance(e){
-  const t = (e.title || "").toLowerCase()
+  const text = (
+    (e.title || "") + " " + (e.style || "")
+  ).toLowerCase()
+
   return (
-    t.includes("salsa") ||
-    t.includes("bachata") ||
-    t.includes("kizomba") ||
-    t.includes("tanz") ||
-    t.includes("dance")
+    text.includes("salsa") ||
+    text.includes("bachata") ||
+    text.includes("kizomba") ||
+    text.includes("tanz") ||
+    text.includes("dance")
   )
 }
 
