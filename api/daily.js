@@ -1039,10 +1039,6 @@ all.sort((a,b) => score(b) - score(a))
 const finalFeed = all.slice(0,20)
 
 
-
-
-   const finalFeed = mixed.slice(0, 20)
-
 /* =========================================
    TRAVEL ENGINE
 ========================================= */
