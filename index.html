@@ -842,6 +842,18 @@ function buildEvents(data){
   })
 
   /* EVENTS */
+
+if(data.events){
+
+  const html = data.events.map(e => renderEventCard({
+    ...e,
+    date: e.date || getNextDateFromWeekday(e.weekday)
+  })).join("")
+
+  document.getElementById("eventsBlock").innerHTML = html
+
+}
+   
   const sec = data.eventSections || {}
 
   ;["today","week","upcoming"].forEach(k=>{
