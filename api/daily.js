@@ -1245,14 +1245,7 @@ res.status(200).json({
   regional,
   regionalBusiness,
 
-  events: finalFeed,
-eventSections: {
-  today: todayEvents,
-  week: weekEvents,
-  upcoming: upcomingEvents
-},
-  dance: danceDB,
-  festivals,
+  events: finalFeed,   // 🔥 DAS IST DEIN HAUPTFEED
 
   markets,
   financeNews,
