@@ -57,31 +57,35 @@ tomorrow.setDate(tomorrow.getDate() + 1)
 const fallbackDate = tomorrow.toISOString().split("T")[0]
   
   events = [
-    {
-      title: "Gaildorfer Pferdemarkt",
-      city: "Gaildorf",
-      lat: 49.010,
-      lon: 9.770
-    },
-    {
-      title: "Street Food Festival Stuttgart",
-      city: "Stuttgart",
-      lat: 48.780,
-      lon: 9.180
-    },
-    {
-      title: "Frühlingsmarkt Ansbach",
-      city: "Ansbach",
-      lat: 49.300,
-      lon: 10.580
-    },
-    {
-      title: "Altmühlsee Frühlingsfest",
-      city: "Gunzenhausen",
-      lat: 49.100,
-      lon: 10.750
-    }
-  ]
+  {
+    title: "Gaildorfer Pferdemarkt",
+    city: "Gaildorf",
+    lat: 49.010,
+    lon: 9.770,
+    date: fallbackDate
+  },
+  {
+    title: "Street Food Festival Stuttgart",
+    city: "Stuttgart",
+    lat: 48.780,
+    lon: 9.180,
+    date: fallbackDate
+  },
+  {
+    title: "Frühlingsmarkt Ansbach",
+    city: "Ansbach",
+    lat: 49.300,
+    lon: 10.580,
+    date: fallbackDate
+  },
+  {
+    title: "Altmühlsee Frühlingsfest",
+    city: "Gunzenhausen",
+    lat: 49.100,
+    lon: 10.750,
+    date: fallbackDate
+  }
+]
 
 }
 
