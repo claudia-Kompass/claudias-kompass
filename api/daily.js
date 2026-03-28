@@ -948,6 +948,11 @@ const upcomingEvents = eventsClean.filter(e =>
 /* 🔥 30% DISCOVERY → UPCOMING */
 if(discovery && discovery.length > 0){
 
+const d = await fetch(url)
+discovery = await d.json()
+
+console.log("DISCOVERY RAW:", discovery)
+   
   const max = Math.ceil((upcomingEvents.length || 10) * 0.3)
 
   const tomorrow = new Date()
