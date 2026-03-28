@@ -1048,35 +1048,6 @@ for(let i = 0; i < local.length; i++){
 const finalFeed = mixed.slice(0, 20)
 
    
-/* 🔥 30% DISCOVERY → UPCOMING */
-if(discovery && discovery.length > 0){
-
-  console.log("DISCOVERY RAW:", discovery)
-   
-  const max = Math.ceil((upcomingEvents.length || 10) * 0.3)
-
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-
-  const normalized = [...discovery] // 🔥 FIX
-    .sort(()=>0.5 - Math.random())
-    .slice(0, max)
-    .map(e => ({
-      title: e.title || "Event",
-      city: e.city || "",
-      date: (e.date || tomorrow.toISOString()).split("T")[0],
-
-      category: "discovery",
-      maps: e.maps || "",
-      url: e.url || "",
-
-      isDiscovery: true,
-      source: "discovery"
-    }))
-
-  upcomingEvents.push(...normalized)
-  eventsClean.push(...normalized)
-}
 
 /* =========================================
    TRAVEL ENGINE
