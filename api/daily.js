@@ -959,7 +959,7 @@ if(discovery.length){
     .map(e => ({
       title: e.title || "Event",
       city: e.city || "",
-      date: tomorrow.toISOString().split("T")[0],
+      date: (e.date || tomorrow.toISOString()).split("T")[0],
 
       // optional aber sinnvoll
       category: "discovery",
