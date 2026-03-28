@@ -941,29 +941,31 @@ const upcomingEvents = eventsClean.filter(e =>
 )
 
 /* 🔥 30% DISCOVERY → UPCOMING */
-if(discovery.length && upcomingEvents.length){
+if(discovery.length){
 
-  const max = Math.ceil(upcomingEvents.length * 0.3)
+  const max = Math.ceil((upcomingEvents.length || 10) * 0.3)
 
-  let randomDiscovery = discovery
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  const normalized = discovery
     .sort(()=>0.5 - Math.random())
     .slice(0, max)
+    .map(e => ({
+      title: e.title || "Event",
+      city: e.city || "",
+      date: tomorrow.toISOString().split("T")[0],
 
-  randomDiscovery = randomDiscovery.map(e => {
+      // optional aber sinnvoll
+      category: "discovery",
+      maps: e.maps || "",
+      url: e.url || "",
 
-    // 👉 Fallback Datum (morgen)
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
-    return {
-      ...e,
-      date: tomorrow.toISOString().split("T")[0], // 🔥 KRITISCH
       isDiscovery: true,
       source: "discovery"
-    }
-  })
+    }))
 
-  upcomingEvents.push(...randomDiscovery)
+  upcomingEvents.push(...normalized)
 }
 
 /* =========================================
