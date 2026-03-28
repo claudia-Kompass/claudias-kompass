@@ -1463,21 +1463,7 @@ data.regional.map(r=>`
 }
 
 
-/* 🔥 UNIFIED EVENTS */
 
-if(data.events){
-
-  const events = data.events
-
-  const dance = events.filter(e => e.type === "dance")
-  const normal = events.filter(e => e.type !== "dance")
-
-  document.getElementById("eventsBlock").innerHTML =
-    normal.map(renderEventCard).join("")
-
-  document.getElementById("danceWeek").innerHTML =
-    dance.map(renderDanceCard).join("")
-}
 
 
 /* =========================
