@@ -1331,7 +1331,6 @@ const now = new Date()
 /* =========================
    EVENTS BLOCK CLEAN
 ========================= */
-
 const nowDate = new Date()
 
 const isSameDay = (d1, d2) =>
@@ -1343,6 +1342,7 @@ const inNext7Days = (date) => {
   return diff > 0 && diff <= 7
 }
 
+/* 🔥 EINZIGE QUELLE */
 const events = (data.events || [])
   .map(e => ({
     ...e,
@@ -1351,19 +1351,23 @@ const events = (data.events || [])
   .filter(e => e.date)
   .sort((a,b)=> new Date(a.date) - new Date(b.date))
 
+/* FILTER */
 const todayEvents = events.filter(e => isSameDay(e.date, nowDate))
 const weekEvents  = events.filter(e => !isSameDay(e.date, nowDate) && inNext7Days(e.date))
-const laterEvents = events.filter(e => !isSameDay(e.date, nowDate) && !inNext7Days(e.date))
+const laterEvents = events.filter(e => {
+  const d = new Date(e.date)
+  return d > nowDate && !inNext7Days(e.date)
+})
 
 let html = ""
 
 /* HEUTE */
 if(todayEvents.length){
   html += `
-  <div class="dayHeader" style="color:#e6c27a">
-    🔥 Heute
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ 🔥 Heute
   </div>
-  <div class="dayEvents" style="display:block">
+  <div class="dayEvents">
     ${todayEvents.map(renderEventCard).join("")}
   </div>`
 }
@@ -1377,8 +1381,8 @@ if(weekEvents.length){
   <div class="dayEvents">
     ${weekEvents.map(renderEventCard).join("")}
   </div>`
-   }
-   
+}
+
 /* SPÄTER */
 if(laterEvents.length){
   html += `
