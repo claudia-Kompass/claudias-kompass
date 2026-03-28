@@ -947,16 +947,17 @@ if(discovery.length && upcomingEvents.length){
   const max = Math.ceil(upcomingEvents.length * 0.3)
 
   let randomDiscovery = discovery
-  .sort(()=>0.5 - Math.random())
-  .slice(0, max)
+    .sort(()=>0.5 - Math.random())
+    .slice(0, max)
 
-/* 🔥 MARKIERUNG */
-randomDiscovery = randomDiscovery.map(e => ({
-  ...e,
-  isDiscovery: true
-}))
+  // 🔥 HIER passiert die Magie
+  randomDiscovery = randomDiscovery.map(e => ({
+    ...e,
+    isDiscovery: true,
+    source: "discovery"
+  }))
 
-upcomingEvents.push(...randomDiscovery)
+  upcomingEvents.push(...randomDiscovery)
 
 }
 
