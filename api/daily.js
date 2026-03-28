@@ -938,7 +938,7 @@ festivals.sort(sortByDate)
 
 
 
-   
+   const finalFeed = mixed.slice(0, 20)
 
 /* =========================================
    TRAVEL ENGINE
