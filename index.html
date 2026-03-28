@@ -826,20 +826,25 @@ function calcDistance(lat1, lon1, lat2, lon2){
    
 function buildEvents(data){
 
-  let list = []
+  return (data.events || []).map(e => {
 
-  /* DANCE */
-  ;(data.dance || []).forEach(e=>{
-    list.push({
-      title: e.title || `${e.style || ""} ${e.city || ""}`,
+    let date = e.date
+
+    if(!date && e.weekday !== null && e.weekday !== undefined){
+      date = getNextDateFromWeekday(e.weekday)
+    }
+
+    return {
+      title: e.title,
       city: e.city,
-      date: getNextDateFromWeekday(e.weekday),
+      date,
       time: e.time,
-      type: e.type === "festival" ? "festival" : "dance",
+      type: e.type,
       lat: e.lat,
       lon: e.lon
-    })
+    }
   })
+}
 
   /* EVENTS */
 
