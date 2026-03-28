@@ -1338,6 +1338,17 @@ document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
+   /* EVENTS RENDER */
+
+if(data.events){
+
+  document.getElementById("eventsBlock").innerHTML =
+    data.events.map(e => renderEventCard({
+      ...e,
+      date: e.date || getNextDateFromWeekday(e.weekday)
+    })).join("")
+}
+
 const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
 
