@@ -848,44 +848,26 @@ function buildEvents(data){
 
   /* EVENTS */
 
-if(data.events){
+function buildEvents(data){
 
-  const html = data.events.map(e => renderEventCard({
-    ...e,
-    date: e.date || getNextDateFromWeekday(e.weekday)
-  })).join("")
+  return (data.events || []).map(e => {
 
-  document.getElementById("eventsBlock").innerHTML = html
+    let date = e.date
 
-}
-   
-  const sec = data.eventSections || {}
+    if(!date && e.weekday !== null && e.weekday !== undefined){
+      date = getNextDateFromWeekday(e.weekday)
+    }
 
-  ;["today","week","upcoming"].forEach(k=>{
-    (sec[k] || []).forEach(e=>{
-      list.push({
-        title: e.title,
-        city: e.city,
-        date: e.date,
-        time: e.time,
-        type: "event",
-        lat: e.lat,
-        lon: e.lon
-      })
-    })
+    return {
+      title: e.title,
+      city: e.city,
+      date,
+      time: e.time,
+      type: e.type,
+      lat: e.lat,
+      lon: e.lon
+    }
   })
-
-  /* DUPLICATES KILL */
-  const seen = new Set()
-
-  list = list.filter(e=>{
-    const key = e.title + e.date + e.city
-    if(seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
-
-  return list
 }
 
 /* =========================
