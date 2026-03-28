@@ -940,7 +940,19 @@ const upcomingEvents = eventsClean.filter(e =>
   !isToday(e) && !isWeek(e)
 )
 
+/* 🔥 30% DISCOVERY → UPCOMING */
 
+if(discovery.length && upcomingEvents.length){
+
+  const max = Math.ceil(upcomingEvents.length * 0.3)
+
+  const randomDiscovery = discovery
+    .sort(()=>0.5 - Math.random())
+    .slice(0, max)
+
+  upcomingEvents.push(...randomDiscovery)
+
+}
 
 /* =========================================
    TRAVEL ENGINE
