@@ -846,29 +846,7 @@ function buildEvents(data){
   })
 }
 
-  /* EVENTS */
 
-function buildEvents(data){
-
-  return (data.events || []).map(e => {
-
-    let date = e.date
-
-    if(!date && e.weekday !== null && e.weekday !== undefined){
-      date = getNextDateFromWeekday(e.weekday)
-    }
-
-    return {
-      title: e.title,
-      city: e.city,
-      date,
-      time: e.time,
-      type: e.type,
-      lat: e.lat,
-      lon: e.lon
-    }
-  })
-}
 
 /* =========================
    GEO LOCATION
