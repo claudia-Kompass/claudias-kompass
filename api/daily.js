@@ -935,15 +935,6 @@ festivals.sort(sortByDate)
 // FILTER: TODAY / WEEK / UPCOMING
 // ============================
 
-const todayEvents = eventsClean.filter(isToday)
-
-const weekEvents = eventsClean.filter(e => 
-  !isToday(e) && isWeek(e)
-)
-
-const upcomingEvents = eventsClean.filter(e => 
-  !isToday(e) && !isWeek(e)
-)
 
 // ============================
 // 🔥 MASTER FEED ENGINE
