@@ -1409,6 +1409,21 @@ if(laterEvents.length){
   </div>`
 }
 
+}
+  
+/* FESTIVALS */
+
+if(festivals.length){
+  html += `
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ 🌍 Festivals
+  </div>
+  <div class="dayEvents">
+    ${festivals.map(renderEventCard).join("")}
+  </div>`
+}
+
+   
 document.getElementById("eventsBlock").innerHTML =
   html || "<div style='opacity:.6'>Keine Events gefunden</div>"
 
