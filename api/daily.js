@@ -1231,7 +1231,8 @@ if (!markets.nexo?.usd || markets.nexo.usd === "-") {
   }
 }
 
-
+console.log("FINAL FEED LENGTH:", finalFeed.length)
+console.log("FIRST ITEM:", finalFeed[0])
    
 /* =======================================================
 RESPONSE
