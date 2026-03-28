@@ -1939,10 +1939,10 @@ function renderDance(dance){
 
   if(todayEvents.length){
     html += `
-  <div class="dayHeader" style="color:#e6c27a">
-🔥 Heute
+<div class="dayHeader" onclick="toggleDay(this)">
+  ▸ 🔥 Heute
 </div>
-    <div class="dayEvents" style="display:block">
+<div class="dayEvents">
       ${todayEvents.map(renderDanceCard).join("")}
     </div>`
   }
