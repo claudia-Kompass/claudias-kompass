@@ -59,6 +59,17 @@ res.setHeader("X-XSS-Protection","1; mode=block")
 
 if(req.method!=="GET"){return res.status(405).end()}
 
+/* 🔥 DISCOVERY LADEN */
+let discovery = []
+
+try{
+  const url = `${process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : "http://localhost:3000"}/api/discovery`
+  const d = await fetch(url)
+  discovery = await d.json()
+}catch(e){
+  console.log("Discovery fail")
+}
+   
 const origin=req.headers.origin||""
 if(origin && !origin.includes("vercel.app")){
 return res.status(403).json({error:"Forbidden"})
