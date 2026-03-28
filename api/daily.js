@@ -941,7 +941,6 @@ const upcomingEvents = eventsClean.filter(e =>
 )
 
 /* 🔥 30% DISCOVERY → UPCOMING */
-
 if(discovery.length && upcomingEvents.length){
 
   const max = Math.ceil(upcomingEvents.length * 0.3)
@@ -950,15 +949,21 @@ if(discovery.length && upcomingEvents.length){
     .sort(()=>0.5 - Math.random())
     .slice(0, max)
 
-  // 🔥 HIER passiert die Magie
-  randomDiscovery = randomDiscovery.map(e => ({
-    ...e,
-    isDiscovery: true,
-    source: "discovery"
-  }))
+  randomDiscovery = randomDiscovery.map(e => {
+
+    // 👉 Fallback Datum (morgen)
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+    return {
+      ...e,
+      date: tomorrow.toISOString().split("T")[0], // 🔥 KRITISCH
+      isDiscovery: true,
+      source: "discovery"
+    }
+  })
 
   upcomingEvents.push(...randomDiscovery)
-
 }
 
 /* =========================================
