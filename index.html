@@ -1463,71 +1463,21 @@ data.regional.map(r=>`
 }
 
 
-   
+/* 🔥 UNIFIED EVENTS */
 
-/* EVENTS */
+if(data.events){
 
-if(data.eventSections){
+  const events = data.events
 
-  const { today, week, upcoming } = data.eventSections
+  const dance = events.filter(e => e.type === "dance")
+  const normal = events.filter(e => e.type !== "dance")
 
-  let html = ""
+  document.getElementById("eventsBlock").innerHTML =
+    normal.map(renderEventCard).join("")
 
-  if(today?.length){
-    html += `
-    <div class="dayHeader">🔥 Heute</div>
-    <div class="dayEvents" style="display:block">
-      ${today.map(renderEventCard).join("")}
-    </div>`
-  }
-
-  if(week?.length){
-    html += `
-    <div class="dayHeader" onclick="toggleDay(this)">▸ Diese Woche</div>
-    <div class="dayEvents">
-      ${week.map(renderEventCard).join("")}
-    </div>`
-  }
-
-if(upcoming?.length){
-
-  const hidden = upcoming.slice(3)
-
-  html += `
-  <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ Demnächst
-  </div>
-
-  <div class="dayEvents">
-
-    ${upcoming.slice(0,3).map(renderEventCard).join("")}
-
-    ${hidden.length ? `
-      <div class="dayHeader" onclick="toggleDay(this)">
-        ▸ + ${hidden.length} weitere Events
-      </div>
-      <div class="dayEvents">
-        ${hidden.map(renderEventCard).join("")}
-      </div>
-    ` : ""}
-
-  </div>`
+  document.getElementById("danceWeek").innerHTML =
+    dance.map(renderDanceCard).join("")
 }
-
-  document.getElementById("eventsBlock").innerHTML = html
-}
-    
-
-
-
-  
-/* =========================
-   TANZ ENGINE V4
-========================= */
-
-
-    
-
 
 
 /* =========================
