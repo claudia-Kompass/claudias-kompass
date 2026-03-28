@@ -948,15 +948,14 @@ const upcomingEvents = eventsClean.filter(e =>
 /* 🔥 30% DISCOVERY → UPCOMING */
 if(discovery && discovery.length > 0){
 
-
-console.log("DISCOVERY RAW:", discovery)
+  console.log("DISCOVERY RAW:", discovery)
    
   const max = Math.ceil((upcomingEvents.length || 10) * 0.3)
 
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
 
-  const normalized = [...discovery]
+  const normalized = [...discovery] // 🔥 FIX
     .sort(()=>0.5 - Math.random())
     .slice(0, max)
     .map(e => ({
@@ -964,7 +963,6 @@ console.log("DISCOVERY RAW:", discovery)
       city: e.city || "",
       date: (e.date || tomorrow.toISOString()).split("T")[0],
 
-      // optional aber sinnvoll
       category: "discovery",
       maps: e.maps || "",
       url: e.url || "",
@@ -974,7 +972,7 @@ console.log("DISCOVERY RAW:", discovery)
     }))
 
   upcomingEvents.push(...normalized)
-   eventsClean.push(...normalized)
+  eventsClean.push(...normalized)
 }
 
 /* =========================================
