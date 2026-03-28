@@ -1371,14 +1371,14 @@ if(todayEvents.length){
 /* WOCHE */
 if(weekEvents.length){
   html += `
-  <div class="dayHeader">
-    ⭐ Diese Woche
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ ⭐ Diese Woche
   </div>
-  <div class="dayEvents" style="display:block">
+  <div class="dayEvents">
     ${weekEvents.map(renderEventCard).join("")}
   </div>`
-}
-
+   }
+   
 /* SPÄTER */
 if(laterEvents.length){
   html += `
