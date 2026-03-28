@@ -1208,12 +1208,9 @@ return days[n] || ""
 
 }
 
-
 function renderDanceCard(e){
 
   const isToday = e.weekday === new Date().getDay()
-
-   <div class="card ${isToday ? "todayCard" : ""}">
 
   let title = e.title || `${e.style || ""} ${e.city || ""}`
 
@@ -1237,9 +1234,9 @@ function renderDanceCard(e){
 
     ${e.distance?`<span style="opacity:.7">${e.distance} km entfernt</span><br>`:""}
 
-    ${e.style}<br>
+    ${e.style || ""}<br>
 
-    ${e.time ? e.time : ""}
+    ${e.time || ""}
 
     ${e.maps?` 📍 <a href="${e.maps}" target="_blank" class="news-link">Karte</a>`:""}
 
@@ -1249,6 +1246,7 @@ function renderDanceCard(e){
 
   `
 }
+
    
 function renderEventCard(e){
 
