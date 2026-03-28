@@ -946,7 +946,7 @@ const upcomingEvents = eventsClean.filter(e =>
 )
 
 /* 🔥 30% DISCOVERY → UPCOMING */
-if(discovery.length){
+if(discovery && discovery.length > 0){
 
   const max = Math.ceil((upcomingEvents.length || 10) * 0.3)
 
