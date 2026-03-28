@@ -1691,31 +1691,7 @@ document.getElementById("recipeCounter").textContent =
 
 loadRecipes(data)
 
-const danceData = {
-  today: [],
-  week: [],
-  festivals: []
-}
 
-;(data.dance || []).forEach(e => {
-
-if(!e.type || e.type === "weekly"){
-
-    if(e.weekday === today){
-      danceData.today.push(e)
-    } else {
-      danceData.week.push(e)
-    }
-
-  }
-
-  if(e.type === "festival"){
-    danceData.festivals.push(e)
-  }
-
-})
-
-renderDance(danceData)
 renderWeather(data)
 
 }
