@@ -1558,7 +1558,12 @@ renderMarkets(data)
    
    /* REGIONAL */
 
-if(data.regional){
+if(data.regional && data.regional.length){
+}else{
+  document.getElementById("regionalBlock").innerHTML =
+    "<div style='opacity:.6'>Keine Regionalmeldungen</div>"
+}
+   
 
 document.getElementById("regionalBlock").innerHTML =
 data.regional.map(r=>`
