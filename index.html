@@ -1331,8 +1331,6 @@ const now = new Date()
 /* =======================
    EVENTS – FINAL VERSION
 ========================= */
-
-
 const nowDate = new Date()
 
 const isSameDay = (d1, d2) => {
@@ -1346,51 +1344,64 @@ const isSameDay = (d1, d2) => {
   )
 }
 
-/* EVENTS CLEAN */
+function inNext7Days(date){
+  const d = new Date(date)
+  const diff = (d - nowDate) / (1000*60*60*24)
+  return diff > 0 && diff <= 7
+}
+
+/* EVENTS CLEAN – FINAL */
 
 const events = [
   ...(data.events || []),
 
-  ...((data.dance || []).filter(e =>
-  e.type === "festival" || e.month
-)
+  ...((data.dance || [])
+    .filter(e => e.type === "festival" || e.month)
     .map(f => ({
       title: f.title,
       city: f.city,
       date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
       type: "festival"
-    })))
+    }))
+  )
 ]
-  .map(e => ({
+.map(e => ({
   ...e,
   date: e.date
     ? new Date(e.date + "T12:00:00")
     : new Date(getNextDateFromWeekday(e.weekday) + "T12:00:00")
 }))
+.filter(e => e.date)
+
+/* FILTER AB HEUTE */
+
 const todayStart = new Date()
 todayStart.setHours(0,0,0,0)
 
-.filter(e => e.date)
-.filter(e => e.date >= todayStart)
-.sort((a,b)=> a.date - b.date)
+const filteredEvents = events
+  .filter(e => e.date >= todayStart)
+  .sort((a,b)=> a.date - b.date)
 
-const todayEvents = events.filter(e =>
+/* SPLIT */
+
+const todayEvents = filteredEvents.filter(e =>
   isSameDay(e.date, nowDate) && e.type !== "festival"
 )
 
-const weekEvents = events.filter(e =>
+const weekEvents = filteredEvents.filter(e =>
   !isSameDay(e.date, nowDate) &&
   inNext7Days(e.date) &&
   e.type !== "festival"
 )
 
-const laterEvents = events.filter(e => {
-  const d = new Date(e.date)
-  const diff = (d - nowDate) / (1000*60*60*24)
+const laterEvents = filteredEvents.filter(e => {
+  const diff = (e.date - nowDate) / (1000*60*60*24)
   return diff > 7 && e.type !== "festival"
 })
 
-const festivals = events.filter(e => e.type === "festival")
+const festivals = filteredEvents.filter(e => e.type === "festival")
+
+/* RENDER */
 
 let html = ""
 
@@ -1440,7 +1451,10 @@ if(festivals.length){
 }
 
 document.getElementById("eventsBlock").innerHTML =
-  html || "<div style='opacity:.6'>Keine Events gefunden</div>"  
+  html || "<div style='opacity:.6'>Keine Events gefunden</div>"
+
+
+  
 
 
 /* META */
