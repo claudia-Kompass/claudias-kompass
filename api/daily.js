@@ -1025,13 +1025,62 @@ function isFutureOrToday(dateStr){
   return d >= today
 }
      
-// 🔹 3. FILTER
+// 🔹 3. FILTER (BASIS)
 all = all.filter(e =>
   e.title &&
   e.city &&
-  (e.distance < 200 || !e.lat) &&
-  isFutureOrToday(e.date)
+  (e.distance === null || e.distance < 200)
 )
+
+
+// 🔹 HELPER: TYPE
+function getType(e){
+  const text = ((e.title || "") + " " + (e.style || "")).toLowerCase()
+
+  if(
+    text.includes("salsa") ||
+    text.includes("bachata") ||
+    text.includes("kizomba") ||
+    text.includes("latin")
+  ){
+    return "dance"
+  }
+
+  if(
+    text.includes("festival") ||
+    text.includes("camp")
+  ){
+    return "festival"
+  }
+
+  return "event"
+}
+
+
+// 🔹 TYPE SETZEN
+all = all.map(e => ({
+  ...e,
+  type: getType(e)
+}))
+
+
+// 🔹 HELPER: DATE FILTER
+function isFutureOrToday(dateStr){
+  if(!dateStr) return true
+
+  const today = new Date()
+  today.setHours(0,0,0,0)
+
+  const d = new Date(dateStr)
+  d.setHours(0,0,0,0)
+
+  return d >= today
+}
+
+
+// 🔹 VERGANGENE EVENTS RAUS
+all = all.filter(e => isFutureOrToday(e.date))
+
 
 // 🔹 4. DEDUPE
 const seen = new Set()
@@ -1043,21 +1092,45 @@ all = all.filter(e => {
   return true
 })
 
-// 🔹 5. SMART SORT
-function score(e){
-  let s = 0
 
-  s += (200 - e.distance)   // Nähe
-  if(e.type === "dance") s += 20
-  if(e.source === "discovery") s -= 5
-
-  return s
+// 🔹 5. SORT HELPER
+function sortByDate(a,b){
+  if(!a.date || !b.date) return 0
+  return new Date(a.date) - new Date(b.date)
 }
 
-all.sort((a,b) => score(b) - score(a))
 
-// 🔹 6. FINAL
-const finalFeed = all.slice(0,20)
+// 🔹 6. AUFTEILUNG (DAS IST DER GAMECHANGER)
+const todayEvents = all.filter(e => isToday(e))
+const weekEvents = all.filter(e => isWeek(e))
+
+const danceEvents = all.filter(e => e.type === "dance")
+const festivalEvents = all.filter(e => e.type === "festival")
+
+const regionalEvents = all.filter(e =>
+  e.type === "event" &&
+  e.distance !== null &&
+  e.distance < 80
+)
+
+
+// 🔹 7. SORTIERUNG
+todayEvents.sort(sortByDate)
+weekEvents.sort(sortByDate)
+
+danceEvents.sort((a,b)=> (a.distance||999)-(b.distance||999))
+festivalEvents.sort((a,b)=> (a.distance||999)-(b.distance||999))
+regionalEvents.sort(sortByDate)
+
+
+// 🔹 8. LIMITS (UX STEUERUNG)
+const finalFeed = {
+  today: todayEvents.slice(0,5),
+  week: weekEvents.slice(0,8),
+  dance: danceEvents.slice(0,12),
+  festivals: festivalEvents.slice(0,8),
+  regional: regionalEvents.slice(0,10)
+}
 
 
 /* =========================================
