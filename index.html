@@ -1335,13 +1335,15 @@ const now = new Date()
 
 const nowDate = new Date()
 
-const isSameDay = (d1, d2) =>
-  new Date(d1).toDateString() === new Date(d2).toDateString()
+const isSameDay = (d1, d2) => {
+  const a = new Date(d1)
+  const b = new Date(d2)
 
-const inNext7Days = (date) => {
-  const d = new Date(date)
-  const diff = (d - nowDate) / (1000*60*60*24)
-  return diff > 0 && diff <= 7
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
 }
 
 /* EVENTS CLEAN */
