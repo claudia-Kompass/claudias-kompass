@@ -828,6 +828,71 @@ function calcDistance(lat1, lon1, lat2, lon2){
   return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))
 }
 
+function mapDance(e){
+  return {
+    title: e.title,
+    city: e.city,
+    location: e.location,
+    date: getNextDateFromWeekday(e.weekday),
+    time: e.time,
+    type: "dance",
+    lat: e.lat,
+    lon: e.lon,
+    url: e.url,
+    maps: e.maps
+  }
+}
+
+function prepareEvents(data){
+
+  const now = new Date()
+  now.setHours(0,0,0,0)
+
+  const all = [
+
+    ...(data.events || []),
+    ...(data.regionalEvents || []),
+    ...(data.marketsEvents || []),
+
+    ...(data.dance?.today || []).map(mapDance),
+    ...(data.dance?.week || []).map(mapDance),
+
+    ...(data.dance?.festivals || []).map(f => ({
+      title: f.title,
+      city: f.city,
+      date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
+      type: "festival"
+    }))
+  ]
+
+  .map(e => ({
+    ...e,
+    date: new Date(e.date + "T12:00:00")
+  }))
+
+  .filter(e => e.date && !isNaN(e.date))
+
+  const isSameDay = (d1,d2)=>
+    d1.toDateString() === d2.toDateString()
+
+  const diffDays = d =>
+    (d - now) / (1000*60*60*24)
+
+  return {
+    today: all.filter(e => isSameDay(e.date, now) && e.type !== "festival"),
+    week: all.filter(e =>
+      diffDays(e.date) > 0 &&
+      diffDays(e.date) <= 7 &&
+      e.type !== "festival"
+    ),
+    later: all.filter(e =>
+      diffDays(e.date) > 7 &&
+      e.type !== "festival"
+    ),
+    festivals: all.filter(e => e.type === "festival")
+  }
+}
+   
 /* =========================
    MERGE ALL EVENTS
 ========================= */
