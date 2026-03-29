@@ -1349,7 +1349,9 @@ const inNext7Days = (date) => {
 const events = [
   ...(data.events || []),
 
-  ...((data.dance || []).filter(e => e.type === "festival")
+  ...((data.dance || []).filter(e =>
+  e.type === "festival" || e.month
+)
     .map(f => ({
       title: f.title,
       city: f.city,
