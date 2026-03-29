@@ -1577,14 +1577,6 @@ if(data.regional && data.regional.length){
 
 renderMarkets(data)
 
-<div class="newsItem">
-<div style="font-weight:600">${r.title}</div>
-<a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
-<div class="newsSource">${r.source}</div>
-</div>
-
-`).join("");
-
 }
 
 
@@ -1669,7 +1661,7 @@ document.getElementById("languageBlock").innerHTML = `
 <button class="uke-btn" onclick="nextLanguage()">▶ Next</button>
 
 </div>
-`
+`%
 }
 
 window.nextLanguage=function(){
