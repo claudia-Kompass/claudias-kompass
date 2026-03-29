@@ -1558,27 +1558,25 @@ document.getElementById("financeNewsBlock").innerHTML =
 renderMarkets(data)
    
    /* REGIONAL */
+/* REGIONAL */
 
 if(data.regional && data.regional.length){
 
   document.getElementById("regionalBlock").innerHTML =
-  data.regional.map(r=>`
-
-  <div class="newsItem">
-    <div style="font-weight:600">${r.title}</div>
-    <a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
-    <div class="newsSource">${r.source}</div>
-  </div>
-
-  `).join("")
+    data.regional.map(r => `
+      <div class="newsItem">
+        <div style="font-weight:600">${r.title}</div>
+        <a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
+        <div class="newsSource">${r.source}</div>
+      </div>
+    `).join("")
 
 }else{
 
   document.getElementById("regionalBlock").innerHTML =
-  "<div style='opacity:.6'>Keine Regionalmeldungen</div>"
+    "<div style='opacity:.6'>Keine Regionalmeldungen</div>"
 
-}
-
+   }
 
    
 
