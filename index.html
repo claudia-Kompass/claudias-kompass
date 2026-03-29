@@ -870,7 +870,7 @@ function prepareEvents(data){
     date: new Date(e.date + "T12:00:00")
   }))
 
-  .filter(e => e.date && !isNaN(e.date))
+.filter(e => e.date instanceof Date && !isNaN(e.date))
 
   const isSameDay = (d1,d2)=>
     d1.toDateString() === d2.toDateString()
