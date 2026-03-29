@@ -1586,7 +1586,12 @@ renderMarkets(data)
 
 }
 
-
+/* TRAVEL */
+if(data.travelRadar?.length){
+  travelList = data.travelRadar
+  travelIndex = 0
+  renderTravel()
+         }
 
 
 
@@ -1594,13 +1599,6 @@ renderMarkets(data)
    TRAVEL
 ========================= */
 
-if(data.travelRadar?.length){
-
-travelList = data.travelRadar
-travelIndex = 0
-renderTravel()
-
-}
 
 function renderTravel(){
 
