@@ -1358,21 +1358,8 @@ function inNext7Days(date){
 
 const events = [
   ...(data.events || []),
-
-  ...(data.regionalEvents || []),   // 🔥 NEU
-
-  ...(data.marketsEvents || []),    // 🔥 NEU
-
-  ...((data.dance || [])
-    .filter(e => e.type === "festival" || e.month)
-    .map(f => ({
-      title: f.title,
-      city: f.city,
-      date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
-      type: "festival"
-    }))
-  )
-]
+  ...(data.regionalEvents || []),
+  ...(data.marketsEvents || []),
 
   ...((data.dance || [])
     .filter(e => e.type === "festival" || e.month)
