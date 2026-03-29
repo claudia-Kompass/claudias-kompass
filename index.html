@@ -1361,7 +1361,9 @@ const events = [
 ]
   .map(e => ({
     ...e,
-    date: e.date || getNextDateFromWeekday(e.weekday)
+    date: e.date
+  ? new Date(e.date + "T12:00:00")
+  : new Date(getNextDateFromWeekday(e.weekday) + "T12:00:00"))
   }))
   .filter(e => e.date)
    .filter(e => {
