@@ -1357,19 +1357,47 @@ function inNext7Days(date){
 /* EVENTS CLEAN – FINAL */
 
 const events = [
+
   ...(data.events || []),
   ...(data.regionalEvents || []),
   ...(data.marketsEvents || []),
 
-  ...((data.dance || [])
-    .filter(e => e.type === "festival" || e.month)
-    .map(f => ({
-      title: f.title,
-      city: f.city,
-      date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
-      type: "festival"
-    }))
-  )
+  // 💃 TANZ HEUTE
+  ...((data.dance?.today || []).map(e => ({
+    title: e.title,
+    city: e.city,
+    location: e.location,
+    date: getNextDateFromWeekday(e.weekday),
+    time: e.time,
+    type: "dance",
+    lat: e.lat,
+    lon: e.lon,
+    url: e.url,
+    maps: e.maps
+  }))),
+
+  // 💃 TANZ WOCHE
+  ...((data.dance?.week || []).map(e => ({
+    title: e.title,
+    city: e.city,
+    location: e.location,
+    date: getNextDateFromWeekday(e.weekday),
+    time: e.time,
+    type: "dance",
+    lat: e.lat,
+    lon: e.lon,
+    url: e.url,
+    maps: e.maps
+  }))),
+
+  // 🌍 FESTIVALS
+  ...((data.dance?.festivals || []).map(f => ({
+    title: f.title,
+    city: f.city,
+    date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
+    type: "festival"
+  })))
+
 ]
 .map(e => ({
   ...e,
