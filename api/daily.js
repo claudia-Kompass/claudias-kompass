@@ -1300,7 +1300,11 @@ res.status(200).json({
   regional,
   regionalBusiness,
 
-  events: finalFeed,   // 🔥 DAS IST DEIN HAUPTFEED
+  events: finalFeed.today,
+week: finalFeed.week,
+dance: finalFeed.dance,
+festivals: finalFeed.festivals,
+regional: finalFeed.regional,
 
   markets,
   financeNews,
