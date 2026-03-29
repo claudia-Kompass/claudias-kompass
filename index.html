@@ -1433,7 +1433,9 @@ const laterEvents = filteredEvents.filter(e => {
   return diff > 7 && e.type !== "festival"
 })
 
-const festivals = filteredEvents.filter(e => e.type === "festival")
+const festivals = filteredEvents.filter(e =>
+  e.type === "festival"
+)
 
 /* RENDER */
 
