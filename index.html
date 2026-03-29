@@ -1521,14 +1521,6 @@ if(data.news){
 document.getElementById("newsBlock").innerHTML =
 data.news.map(n=>`
 
-<div class="newsItem">
-<div style="font-weight:600">${n.title}</div>
-<a href="${n.url}" target="_blank" class="news-link">weiterlesen →</a>
-<div class="newsSource">${n.source}</div>
-</div>
-
-`).join("");
-
 }
 
 
