@@ -1013,8 +1013,7 @@ all = all.map(e => {
 // 🔹 3. FILTER
 all = all.filter(e =>
   e.title &&
-  e.city &&
-  e.distance < 200
+  e.city
 )
 
 // 🔹 4. DEDUPE
