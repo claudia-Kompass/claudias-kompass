@@ -850,26 +850,25 @@ function prepareEvents(data){
 
   const all = [
 
-    ...(data.events || []),
-    ...(data.regionalEvents || []),
-    ...(data.marketsEvents || []),
+  ...(data.events || []),
+  ...(data.regionalEvents || []),
+  ...(data.marketsEvents || []),
 
-    ...(data.dance?.today || []).map(mapDance),
-    ...(data.dance?.week || []).map(mapDance),
+  ...(data.dance?.today || []).map(mapDance),
+  ...(data.dance?.week || []).map(mapDance),
 
-    ...(data.dance?.festivals || []).map(f => ({
-      title: f.title,
-      city: f.city,
-      date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
-      type: "festival"
-    }))
-  ]
+  ...(data.dance?.festivals || []).map(f => ({
+    title: f.title,
+    city: f.city,
+    date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
+    type: "festival"
+  }))
 
- .map(e => {
+]
+.map(e => {
 
   let date = e.date
 
-  // fallback für weekday (wichtig!)
   if(!date && e.weekday !== undefined){
     date = getNextDateFromWeekday(e.weekday)
   }
@@ -878,8 +877,8 @@ function prepareEvents(data){
     ...e,
     date: date ? new Date(date + "T12:00:00") : null
   }
-})
 
+})
 .filter(e => e.date instanceof Date && !isNaN(e.date.getTime()))
 
   const isSameDay = (d1,d2)=>
