@@ -865,10 +865,20 @@ function prepareEvents(data){
     }))
   ]
 
-  .map(e => ({
+ .map(e => {
+
+  let date = e.date
+
+  // fallback für weekday (wichtig!)
+  if(!date && e.weekday !== undefined){
+    date = getNextDateFromWeekday(e.weekday)
+  }
+
+  return {
     ...e,
-    date: new Date(e.date + "T12:00:00")
-  }))
+    date: date ? new Date(date + "T12:00:00") : null
+  }
+})
 
 .filter(e => e.date instanceof Date && !isNaN(e.date))
 
