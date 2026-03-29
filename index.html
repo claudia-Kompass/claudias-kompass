@@ -1400,109 +1400,8 @@ const now = new Date()
 /* =======================
    EVENTS – FINAL VERSION
 ========================= */
-const nowDate = new Date()
 
-const isSameDay = (d1, d2) => {
-  const a = new Date(d1)
-  const b = new Date(d2)
-
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  )
-}
-
-function inNext7Days(date){
-  const d = new Date(date)
-  const diff = (d - nowDate) / (1000*60*60*24)
-  return diff > 0 && diff <= 7
-}
-
-/* EVENTS CLEAN – FINAL */
-
-const events = [
-
-  ...(data.events || []),
-  ...(data.regionalEvents || []),
-  ...(data.marketsEvents || []),
-
-  // 💃 TANZ HEUTE
-  ...((data.dance?.today || []).map(e => ({
-    title: e.title,
-    city: e.city,
-    location: e.location,
-    date: getNextDateFromWeekday(e.weekday),
-    time: e.time,
-    type: "dance",
-    lat: e.lat,
-    lon: e.lon,
-    url: e.url,
-    maps: e.maps
-  }))),
-
-  // 💃 TANZ WOCHE
-  ...((data.dance?.week || []).map(e => ({
-    title: e.title,
-    city: e.city,
-    location: e.location,
-    date: getNextDateFromWeekday(e.weekday),
-    time: e.time,
-    type: "dance",
-    lat: e.lat,
-    lon: e.lon,
-    url: e.url,
-    maps: e.maps
-  }))),
-
-  // 🌍 FESTIVALS
-  ...((data.dance?.festivals || []).map(f => ({
-    title: f.title,
-    city: f.city,
-    date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
-    type: "festival"
-  })))
-
-]
-.map(e => ({
-  ...e,
-  date: e.date
-    ? new Date(e.date + "T12:00:00")
-    : new Date(getNextDateFromWeekday(e.weekday) + "T12:00:00")
-}))
-.filter(e => e.date)
-
-/* FILTER AB HEUTE */
-
-const todayStart = new Date()
-todayStart.setHours(0,0,0,0)
-
-const filteredEvents = events
-  .filter(e => e.date >= todayStart)
-  .sort((a,b)=> a.date - b.date)
-
-/* SPLIT */
-
-const todayEvents = filteredEvents.filter(e =>
-  isSameDay(e.date, nowDate) && e.type !== "festival"
-)
-
-const weekEvents = filteredEvents.filter(e =>
-  !isSameDay(e.date, nowDate) &&
-  inNext7Days(e.date) &&
-  e.type !== "festival"
-)
-
-const laterEvents = filteredEvents.filter(e => {
-  const diff = (e.date - nowDate) / (1000*60*60*24)
-  return diff > 7 && e.type !== "festival"
-})
-
-const festivals = filteredEvents.filter(e =>
-  e.type === "festival"
-)
-
-/* RENDER */
+const grouped = prepareEvents(data)
 
 let html = ""
 
@@ -1511,48 +1410,47 @@ html += `
 <div class="dayHeader">▸ 🔥 Heute</div>
 <div class="dayEvents" style="display:block">
   ${
-    todayEvents.length
-      ? todayEvents.map(renderEventCard).join("")
+    grouped.today.length
+      ? grouped.today.map(renderEventCard).join("")
       : "<div style='opacity:.6'>Kein Event heute</div>"
   }
 </div>
 `
 
 /* WOCHE */
-if(weekEvents.length){
+if(grouped.week.length){
   html += `
   <div class="dayHeader" onclick="toggleDay(this)">
     ▸ ⭐ Diese Woche
   </div>
   <div class="dayEvents">
-    ${weekEvents.map(renderEventCard).join("")}
+    ${grouped.week.map(renderEventCard).join("")}
   </div>`
 }
 
 /* DEMNÄCHST */
-if(laterEvents.length){
+if(grouped.later.length){
   html += `
   <div class="dayHeader" onclick="toggleDay(this)">
     ▸ 🧭 Demnächst
   </div>
   <div class="dayEvents">
-    ${laterEvents.map(renderEventCard).join("")}
+    ${grouped.later.map(renderEventCard).join("")}
   </div>`
 }
 
 /* FESTIVALS */
-if(festivals.length){
+if(grouped.festivals.length){
   html += `
   <div class="dayHeader" onclick="toggleDay(this)">
     ▸ 🌍 Festivals
   </div>
-  <div class="dayEvents" style="display:none">
-    ${festivals.map(renderEventCard).join("")}
+  <div class="dayEvents">
+    ${grouped.festivals.map(renderEventCard).join("")}
   </div>`
 }
 
-document.getElementById("eventsBlock").innerHTML =
-  html || "<div style='opacity:.6'>Keine Events gefunden</div>"
+document.getElementById("eventsBlock").innerHTML = html
 
 
   
