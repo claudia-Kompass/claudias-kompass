@@ -1255,8 +1255,13 @@ return`
 <div class="card">
 
 <strong>
-  ${e.type === "market" ? "🏘 " : ""}
-  ${e.type === "regional" ? "📍 " : ""}
+  ${
+    e.type === "market" ? "🏘 " :
+    e.type === "regional" ? "📍 " :
+    e.title.toLowerCase().includes("markt") ? "🏘 " :
+    e.title.toLowerCase().includes("fest") ? "📍 " :
+    ""
+  }
   ${e.title}
 </strong>
 
