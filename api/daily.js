@@ -905,7 +905,7 @@ function enrichEvent(e){
 const rawEvents = (await loadEvents()).map(enrichEvent)
 
 const eventsClean = rawEvents
-.filter(e => true)
+  .filter(e => e.category !== "dance")
   .map(e => ({
     ...e,
     maps: e.maps || buildMaps(e)
