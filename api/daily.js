@@ -1016,7 +1016,9 @@ all = all.map(e => {
 // 🔹 3. FILTER
 all = all.filter(e =>
   e.title &&
-  e.city
+  e.city &&
+  (e.distance < 200 || !e.lat) &&
+  isFutureOrToday(e.date)
 )
 
 // 🔹 4. DEDUPE
