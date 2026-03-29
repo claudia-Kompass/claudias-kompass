@@ -1332,6 +1332,7 @@ const now = new Date()
    EVENTS – FINAL VERSION
 ========================= */
 
+
 const nowDate = new Date()
 
 const isSameDay = (d1, d2) =>
@@ -1343,6 +1344,8 @@ const inNext7Days = (date) => {
   return diff > 0 && diff <= 7
 }
 
+/* EVENTS CLEAN */
+
 const events = (data.events || [])
   .map(e => ({
     ...e,
@@ -1350,7 +1353,10 @@ const events = (data.events || [])
   }))
   .filter(e => e.date)
   .sort((a,b)=> new Date(a.date) - new Date(b.date))
-}
+
+const todayEvents = events.filter(e =>
+  isSameDay(e.date, nowDate) && e.type !== "festival"
+)
 
 const weekEvents = events.filter(e =>
   !isSameDay(e.date, nowDate) &&
@@ -1414,7 +1420,7 @@ if(festivals.length){
 }
 
 document.getElementById("eventsBlock").innerHTML =
-  html || "<div style='opacity:.6'>Keine Events gefunden</div>"
+  html || "<div style='opacity:.6'>Keine Events gefunden</div>"  
 
 
 /* META */
