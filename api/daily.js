@@ -1013,6 +1013,18 @@ all = all.map(e => {
   return e
 })
 
+function isFutureOrToday(dateStr){
+  if(!dateStr) return true
+
+  const today = new Date()
+  today.setHours(0,0,0,0)
+
+  const d = new Date(dateStr)
+  d.setHours(0,0,0,0)
+
+  return d >= today
+}
+     
 // 🔹 3. FILTER
 all = all.filter(e =>
   e.title &&
