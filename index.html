@@ -1350,7 +1350,7 @@ const events = (data.events || [])
   }))
   .filter(e => e.date)
   .sort((a,b)=> new Date(a.date) - new Date(b.date))
-
+}
 
 const weekEvents = events.filter(e =>
   !isSameDay(e.date, nowDate) &&
