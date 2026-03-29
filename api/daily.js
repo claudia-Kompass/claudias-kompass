@@ -995,8 +995,9 @@ function normalize(e, source="local"){
 
 // 🔹 1. ALLE DATEN REIN
 let all = [
-  ...rawEvents.map(e => normalize(e, "local")),
-  ...danceDB.map(e => normalize(e, "local"))
+  ...eventsClean.map(e => normalize(e, "local")),
+  ...danceDB.map(e => normalize(e, "local")),
+  ...(discovery || []).map(e => normalize(e, "discovery"))
 ]
 // discovery optional drauf
 all = [
