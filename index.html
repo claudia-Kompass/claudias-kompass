@@ -1458,62 +1458,6 @@ document.getElementById("eventsBlock").innerHTML = html
 
 
 /* META */
-const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
-const date = now.toLocaleDateString("de-DE")
-
-document.getElementById("meta").innerHTML =
-"<b>" + weekday + "</b> • " + date
-
-
-/* RADAR */
-buildRadar(data).then(radar => {
-
-  const temp = data.weather?.temp || "--"
-
-  const line = `
-☀️ ${temp}°C
-${radar.today ? " • 🔥 <b>" + radar.today.title + "</b>" : ""}
-${radar.next ? " • 📅 " + radar.next.title : ""}
-${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
-${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
-`
-
-document.getElementById("dailyRadar").innerHTML =
-line || "Heute ruhig – kein Event gefunden"
-
-})
-   
- /* TRAVEL */
-if(data.travelRadar?.length){
-  travelList = data.travelRadar
-  travelIndex = 0
-  renderTravel()
-}
-
-/* LANGUAGE */
-langTexts = data.language || []
-renderLanguage()
-
-/* UKULELE */
-if(data.ukulele){
-  ukeSongs = Array.isArray(data.ukulele) ? data.ukulele : [data.ukulele]
-  ukeIndex = 0
-  renderUkulele(ukeSongs[ukeIndex])
-}
-
-/* RECIPE */
-loadRecipes(data)
-
-/* WEATHER */
-renderWeather(data)  
-
-}
-
-   
-  
-
-
-/* META */
 
 const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
 const date = now.toLocaleDateString("de-DE")
