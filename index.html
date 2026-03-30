@@ -869,7 +869,8 @@ function prepareEvents(data){
 
   let date = e.date
 
-  if(!date && e.if(!date && e.weekday != null)
+ if(!date && e.weekday != null){
+  date = getNextDateFromWeekday(e.weekday)
   }
 
   return {
