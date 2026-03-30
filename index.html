@@ -1408,6 +1408,81 @@ const now = new Date()
 
 renderMarkets(data)
 
+/* EVENTS */
+const grouped = prepareEvents(data)
+
+let html = ""
+
+html += `
+<div class="dayHeader">▸ 🔥 Heute</div>
+<div class="dayEvents" style="display:block">
+  ${
+    grouped.today.length
+      ? grouped.today.map(renderEventCard).join("")
+      : "<div style='opacity:.6'>Kein Event heute</div>"
+  }
+</div>
+`
+
+if(grouped.week.length){
+  html += `
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ ⭐ Diese Woche
+  </div>
+  <div class="dayEvents">
+    ${grouped.week.map(renderEventCard).join("")}
+  </div>`
+}
+
+if(grouped.later.length){
+  html += `
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ 🧭 Demnächst
+  </div>
+  <div class="dayEvents">
+    ${grouped.later.map(renderEventCard).join("")}
+  </div>`
+}
+
+if(grouped.festivals.length){
+  html += `
+  <div class="dayHeader" onclick="toggleDay(this)">
+    ▸ 🌍 Festivals
+  </div>
+  <div class="dayEvents">
+    ${grouped.festivals.map(renderEventCard).join("")}
+  </div>`
+}
+
+document.getElementById("eventsBlock").innerHTML = html
+
+
+/* META */
+const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
+const date = now.toLocaleDateString("de-DE")
+
+document.getElementById("meta").innerHTML =
+"<b>" + weekday + "</b> • " + date
+
+
+/* RADAR */
+buildRadar(data).then(radar => {
+
+  const temp = data.weather?.temp || "--"
+
+  const line = `
+☀️ ${temp}°C
+${radar.today ? " • 🔥 <b>" + radar.today.title + "</b>" : ""}
+${radar.next ? " • 📅 " + radar.next.title : ""}
+${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
+${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
+`
+
+document.getElementById("dailyRadar").innerHTML =
+line || "Heute ruhig – kein Event gefunden"
+
+})
+   
  /* TRAVEL */
 if(data.travelRadar?.length){
   travelList = data.travelRadar
@@ -1435,62 +1510,6 @@ renderWeather(data)
 }
 
    
-/* =======================
-   EVENTS – FINAL VERSION
-========================= */
-
-const grouped = prepareEvents(data)
-
-let html = ""
-
-/* HEUTE */
-html += `
-<div class="dayHeader">▸ 🔥 Heute</div>
-<div class="dayEvents" style="display:block">
-  ${
-    grouped.today.length
-      ? grouped.today.map(renderEventCard).join("")
-      : "<div style='opacity:.6'>Kein Event heute</div>"
-  }
-</div>
-`
-
-/* WOCHE */
-if(grouped.week.length){
-  html += `
-  <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ ⭐ Diese Woche
-  </div>
-  <div class="dayEvents">
-    ${grouped.week.map(renderEventCard).join("")}
-  </div>`
-}
-
-/* DEMNÄCHST */
-if(grouped.later.length){
-  html += `
-  <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ 🧭 Demnächst
-  </div>
-  <div class="dayEvents">
-    ${grouped.later.map(renderEventCard).join("")}
-  </div>`
-}
-
-/* FESTIVALS */
-if(grouped.festivals.length){
-  html += `
-  <div class="dayHeader" onclick="toggleDay(this)">
-    ▸ 🌍 Festivals
-  </div>
-  <div class="dayEvents">
-    ${grouped.festivals.map(renderEventCard).join("")}
-  </div>`
-}
-
-document.getElementById("eventsBlock").innerHTML = html
-
-
   
 
 
