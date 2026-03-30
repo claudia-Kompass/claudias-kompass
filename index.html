@@ -1406,6 +1406,35 @@ document.getElementById("versionTag").innerText = "v" + data.version;
 
 const now = new Date()
 
+renderMarkets(data)
+
+ /* TRAVEL */
+if(data.travelRadar?.length){
+  travelList = data.travelRadar
+  travelIndex = 0
+  renderTravel()
+}
+
+/* LANGUAGE */
+langTexts = data.language || []
+renderLanguage()
+
+/* UKULELE */
+if(data.ukulele){
+  ukeSongs = Array.isArray(data.ukulele) ? data.ukulele : [data.ukulele]
+  ukeIndex = 0
+  renderUkulele(ukeSongs[ukeIndex])
+}
+
+/* RECIPE */
+loadRecipes(data)
+
+/* WEATHER */
+renderWeather(data)  
+
+}
+
+   
 /* =======================
    EVENTS – FINAL VERSION
 ========================= */
@@ -1579,21 +1608,8 @@ if(data.regional && data.regional.length){
 
 
 
-   
-/* CRYPTO */
 
-renderMarkets(data)
 
-   langTexts = data.language || []
-renderLanguage()
-}
-
-/* TRAVEL */
-if(data.travelRadar?.length){
-  travelList = data.travelRadar
-  travelIndex = 0
-  renderTravel()
-         }
 
 
 
