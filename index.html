@@ -851,7 +851,7 @@ function prepareEvents(data){
   const all = [
 
   ...(data.events || []),
-  ...(data.regionalEvents || []),
+  ...(data.regionalEvents || data.regional || [])
   ...(data.marketsEvents || []),
 
   ...(data.dance?.today || []).map(mapDance),
