@@ -1299,23 +1299,19 @@ res.status(200).json({
   news: news || [],
   financeNews: financeNews || [],
 
-  // 🔥 WICHTIG
-  regional: regional || regionalNews || [],
+  regional: regional || [],
 
-  // 🔥 WICHTIG
-  events: events || marketsEvents || [],
+  events: finalFeed || { today: [], week: [] },
 
-  // 🔥 DANCE IMMER SICHER
   dance: {
-    today: (dance?.today || []),
-    week: (dance?.week || []),
-    festivals: (dance?.festivals || [])
+    today: finalFeed?.dance || [],
+    week: finalFeed?.week || [],
+    festivals: finalFeed?.festivals || []
   },
 
-  // 🔥 SPRACHE FIX
-  language: language || languageData || [],
+  language: languages || [],
 
-  travel: travelRadar || travel || [],
+  travel: travel || [],
 
   quote: quote || null,
 
@@ -1323,7 +1319,7 @@ res.status(200).json({
   weather: weather || {},
 
   recipes: recipes || [],
-  recipe: recipe || null
+  recipe: recipeToday || null
 
 })
 
