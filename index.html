@@ -1108,132 +1108,135 @@ function renderWeather(data){
    
 function renderMarkets(data){
 
-function sparkline(arr){
-if(!arr || arr.length < 2) return ""
-const min = Math.min(...arr)
-const max = Math.max(...arr)
-const blocks = "▁▂▃▄▅▆▇"
-return arr.map(v=>{
-const i = Math.floor((v - min) / (max - min || 1) * 6)
-return blocks[i]
-}).join("")
-}
-   
-let html = `<table class="marketTable">`
+  try{
 
-const rows = [
+    if(!data || !data.markets){
+      document.getElementById("marketsBlock").innerHTML =
+        "<div style='opacity:.6'>Keine Marktdaten</div>"
+      return
+    }
 
-{
-  name: "DAX",
-  value: data.markets?.dax?.value && data.markets.dax.value !== "-"
-    ? data.markets.dax.value
-    : "keine Live-Daten",
-  sub: data.markets?.dax?.time || "",
-  trend: data.markets?.dax?.trend,
-  link: "https://www.boerse.de/index/DAX"
-},
+    let html = `<table class="marketTable">`
 
-{
-name:"EUR/USD",
-value:data.markets?.eurusd?.value,
-trend:data.markets?.eurusd?.trend,
-link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
-},
+    const rows = [
 
-{
-name:"Gold",
-value: data.markets?.gold?.usd && data.markets.gold.usd !== "-"
-  ? "$" + data.markets.gold.usd
-  : "keine Live-Daten",
+      {
+        name: "DAX",
+        value: data.markets?.dax?.value && data.markets.dax.value !== "-"
+          ? data.markets.dax.value
+          : "keine Live-Daten",
+        sub: data.markets?.dax?.time || "",
+        trend: data.markets?.dax?.trend,
+        link: "https://www.boerse.de/index/DAX"
+      },
 
-sub: data.markets?.gold?.eur && data.markets.gold.eur !== "-"
-  ? "€" + data.markets.gold.eur
-  : "",
-trend:data.markets?.gold?.trend,
-link:"https://www.finanzen.net/rohstoffe/goldpreis"
-},
+      {
+        name:"EUR/USD",
+        value:data.markets?.eurusd?.value || "—",
+        trend:data.markets?.eurusd?.trend,
+        link:"https://www.finanzen.net/devisen/euro-dollar-kurs"
+      },
 
-{
-  name: "Öl",
-  value: data.markets?.oil?.usd && data.markets.oil.usd !== "-"
-    ? "$" + data.markets.oil.usd
-    : "keine Live-Daten",
-  sub: data.markets?.oil?.eur && data.markets.oil.eur !== "-"
-    ? "€" + data.markets.oil.eur
-    : "",
-  trend: data.markets?.oil?.trend,
-  link: "https://www.finanzen.net/rohstoffe/oelpreis"
-},
+      {
+        name:"Gold",
+        value: data.markets?.gold?.usd
+          ? "$" + data.markets.gold.usd
+          : "keine Live-Daten",
+        sub: data.markets?.gold?.eur
+          ? "€" + data.markets.gold.eur
+          : "",
+        trend:data.markets?.gold?.trend,
+        link:"https://www.finanzen.net/rohstoffe/goldpreis"
+      },
 
-{
-  name: "Bitcoin",
-  value: data.markets?.bitcoin?.usd
-    ? "$" + data.markets.bitcoin.usd
-    : "—",
-  sub: data.markets?.bitcoin?.eur
-    ? "€" + data.markets.bitcoin.eur
-    : "",
-  trend: data.markets?.bitcoin?.trend,
-  link: "https://coinmarketcap.com/currencies/bitcoin/"
-},
-{
-  name: "Nexo",
-  value: data.markets?.nexo?.usd
-    ? "$" + data.markets.nexo.usd
-    : "—",
-  sub: data.markets?.nexo?.eur
-    ? "€" + data.markets.nexo.eur
-    : "",
-  trend: data.markets?.nexo?.trend,
-  link: "https://coinmarketcap.com/currencies/nexo/"
-   }
+      {
+        name: "Öl",
+        value: data.markets?.oil?.usd
+          ? "$" + data.markets.oil.usd
+          : "keine Live-Daten",
+        sub: data.markets?.oil?.eur
+          ? "€" + data.markets.oil.eur
+          : "",
+        trend: data.markets?.oil?.trend,
+        link: "https://www.finanzen.net/rohstoffe/oelpreis"
+      },
+
+      {
+        name: "Bitcoin",
+        value: data.markets?.bitcoin?.usd
+          ? "$" + data.markets.bitcoin.usd
+          : "—",
+        sub: data.markets?.bitcoin?.eur
+          ? "€" + data.markets.bitcoin.eur
+          : "",
+        trend: data.markets?.bitcoin?.trend,
+        link: "https://coinmarketcap.com/currencies/bitcoin/"
+      },
+
+      {
+        name: "Nexo",
+        value: data.markets?.nexo?.usd
+          ? "$" + data.markets.nexo.usd
+          : "—",
+        sub: data.markets?.nexo?.eur
+          ? "€" + data.markets.nexo.eur
+          : "",
+        trend: data.markets?.nexo?.trend,
+        link: "https://coinmarketcap.com/currencies/nexo/"
+      }
+
+    ]
+
+    rows.forEach(r=>{
+
+      html += `
+
+      <tr>
+
+      <td class="marketName">
+      ${r.name}
+      </td>
+
+      <td class="marketValue">
+
+      <div>
+      ${r.value}
+      </div>
+
+      ${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
+
+      </td>
+
+      <td class="marketTrend">
+      ${ampel(r.trend || "none")}
+      </td>
+
+      <td class="marketLink">
+      <a href="${r.link}" target="_blank" class="news-link">
+      Info →
+      </a>
+      </td>
+
+      </tr>
+
+      `
+    })
+
+    html += `</table>`
+
+    document.getElementById("marketsBlock").innerHTML = html
+
+  }catch(e){
+
+    document.getElementById("marketsBlock").innerHTML =
+      "<div style='opacity:.6'>Fehler in Marktdaten</div>"
+
+  }
+
+         }
+  
 
 
-]
-
-rows.forEach(r=>{
-
-html += `
-
-<tr>
-
-<td class="marketName">
-${r.name}
-</td>
-
-<td class="marketValue">
-
-<div>
-${typeof r.value === "string" && r.value !== "-" && r.value !== ""
-  ? r.value
-  : "keine Live-Daten"}
-</div>
-
-${r.sub ? `<div class="marketSub">${r.sub}</div>` : ""}
-
-</td>
-
-<td class="marketTrend">
-${ampel(r.trend || "none")}
-</td>
-
-<td class="marketLink">
-<a href="${r.link}" target="_blank" class="news-link">
-Info →
-</a>
-</td>
-
-</tr>
-
-`
-
-})
-
-html += `</table>`
-
-document.getElementById("marketsBlock").innerHTML = html
-
-}
 
    
 function formatDate(date){
