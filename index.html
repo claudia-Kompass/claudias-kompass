@@ -1848,20 +1848,27 @@ async function loadData(){
 
   document.getElementById("dailyRadar").innerHTML = "⏳ Lade Daten..."
 
+try{
+
+  const res = await fetch("/api/daily")
+  const data = await res.json()
+
+  console.log("DATA:", data)
+
   try{
-
-    const res = await fetch("/api/daily")
-
-    const data = await res.json()
-
     render(data)
-
-  }catch(err){
-
-    document.getElementById("dailyRadar").innerHTML =
-      "⚠️ Daten konnten nicht geladen werden"
-
+  }catch(e){
+    console.error("RENDER CRASH:", e)
   }
+
+}catch(err){
+
+  console.error("FETCH ERROR:", err)
+
+  document.getElementById("dailyRadar").innerHTML =
+    "⚠️ Daten konnten nicht geladen werden"
+
+}
 
 }
    
