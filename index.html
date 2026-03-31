@@ -1415,6 +1415,8 @@ data.events = data.events || []
 data.regional = data.regional || []
 data.travel = data.travel || []
 data.language = data.language || []
+   travelList = data.travel || []
+langTexts = data.language || []
 data.financeNews = data.financeNews || []
 data.news = data.news || []
    
@@ -1797,6 +1799,9 @@ document.getElementById("recipeCounter").textContent =
 loadRecipes(data)
    
 renderWeather(data)
+
+   renderTravel()
+renderLanguage()
 
 }
 
