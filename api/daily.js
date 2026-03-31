@@ -1301,13 +1301,12 @@ res.status(200).json({
 
   regional: regional || [],
 
-  events: finalFeed?.today || [],
-
-weekEvents: finalFeed?.week || [],
-
-dance: finalFeed?.dance || [],
-
-festivals: finalFeed?.festivals || [],
+  events: {
+  today: finalFeed?.today || [],
+  week: finalFeed?.week || [],
+  dance: finalFeed?.dance || [],
+  festivals: finalFeed?.festivals || []
+},
 
   language: languages || [],
 
