@@ -1417,7 +1417,13 @@ data.events = data.events || []
 data.regional = data.regional || data.regionalEvents || []
 data.travel = data.travel || []
 data.language = data.language || []
-   travelList = data.travel || []
+
+travelList = data.travel || []
+
+if(typeof langTexts === "undefined"){
+  window.langTexts = []
+}
+
 langTexts = data.language || []
 data.financeNews = data.financeNews || []
 data.news = data.news || []
