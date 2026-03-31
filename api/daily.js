@@ -1294,29 +1294,36 @@ RESPONSE
 ======================================================= */
 res.status(200).json({
 
-  version: fullVersion,
+  version: "fix-live",
 
-  news,
-  regional,
-  regionalBusiness,
+  news: news || [],
+  financeNews: financeNews || [],
 
-  events: finalFeed.today,
-week: finalFeed.week,
-dance: finalFeed.dance,
-festivals: finalFeed.festivals,
-regional: finalFeed.regional,
+  // 🔥 WICHTIG
+  regional: regional || regionalNews || [],
 
-  markets,
-  financeNews,
-  weather,
+  // 🔥 WICHTIG
+  events: events || marketsEvents || [],
 
-  travelRadar: [travel],
-  recipe: recipeToday,
-  recipes: recipeList,
-  language,
+  // 🔥 DANCE IMMER SICHER
+  dance: {
+    today: (dance?.today || []),
+    week: (dance?.week || []),
+    festivals: (dance?.festivals || [])
+  },
 
-  ukulele: ukuleleSongs,
-  quote
+  // 🔥 SPRACHE FIX
+  language: language || languageData || [],
+
+  travel: travelRadar || travel || [],
+
+  quote: quote || null,
+
+  markets: markets || {},
+  weather: weather || {},
+
+  recipes: recipes || [],
+  recipe: recipe || null
 
 })
 
