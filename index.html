@@ -1857,7 +1857,10 @@ try{
 
   const res = await fetch("/api/daily")
   const data = await res.json()
-
+console.log("DATA KOMPLETT:", data)
+console.log("EVENTS:", data.events)
+console.log("TODAY:", data.events?.today)
+console.log("DANCE:", data.events?.dance)
   console.log("DATA:", data)
 
   try{
