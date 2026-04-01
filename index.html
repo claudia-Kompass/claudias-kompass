@@ -1802,7 +1802,8 @@ document.getElementById("recipeCounter").textContent =
 loadRecipes(data)
    
 renderWeather(data)
-renderEvents(data.events)
+renderEvents(data.events.today)
+renderWeek(data.events.week) 
 renderTravel()
 renderLanguage()
 renderDance(data.events.dance)
