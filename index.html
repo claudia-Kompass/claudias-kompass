@@ -854,8 +854,8 @@ function prepareEvents(data){
   ...(data.regionalEvents || data.regional || []),
   ...(data.marketsEvents || []),
 
-  ...(data.dance?.today || []).map(mapDance),
-  ...(data.dance?.week || []).map(mapDance),
+...(data.regionalEvents || data.regional || []),
+...(data.marketsEvents || []),
 
   ...(data.dance?.festivals || []).map(f => ({
     title: f.title,
