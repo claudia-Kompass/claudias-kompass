@@ -1757,7 +1757,11 @@ if(!recipes.length) return
 
 const today = data.recipe
 
-recipeIndex = recipes.findIndex(r => r.title === today.title)
+if(today && today.title){
+  recipeIndex = recipes.findIndex(r => r.title === today.title)
+}else{
+  recipeIndex = 0
+}
 
 if(recipeIndex < 0) recipeIndex = 0
 
