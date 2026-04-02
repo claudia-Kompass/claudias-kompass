@@ -1826,7 +1826,11 @@ loadRecipes(data)
 renderWeather(data)
 renderTravel()
 renderLanguage()
-renderDance(data.dance)
+renderDance({
+  today: data.events?.today || [],
+  week: data.events?.week || [],
+  festivals: data.events?.festivals || []
+})
 }
 
 function toggleLang(card){
