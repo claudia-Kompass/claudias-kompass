@@ -873,7 +873,11 @@ function prepareEvents(data){
   const now = new Date()
   now.setHours(0,0,0,0)
 
-  const all = data.events || []
+  const all = [
+    ...(data.events?.today || []),
+    ...(data.events?.week || []),
+    ...(data.events?.dance || [])
+  ]
      
 .map(e => {
 
