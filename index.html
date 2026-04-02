@@ -789,7 +789,8 @@ box-shadow:0 8px 18px rgba(0,0,0,0.25);
 <script>
 
 function normalizeData(data) {
-  return {
+  return data
+}
   news: data.news || [],
   finance: data.financeNews || [],
   regional: data.regional || [],
