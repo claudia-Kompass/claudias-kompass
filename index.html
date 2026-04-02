@@ -873,23 +873,8 @@ function prepareEvents(data){
   const now = new Date()
   now.setHours(0,0,0,0)
 
-  const all = [
-
-  ...(data.events || []),
-  ...(data.regionalEvents || data.regional || []),
-  ...(data.marketsEvents || []),
-
-...(data.regionalEvents || data.regional || []),
-...(data.marketsEvents || []),
-
-  ...(data.dance?.festivals || []).map(f => ({
-    title: f.title,
-    city: f.city,
-    date: f.date || `2026-${String(f.month).padStart(2,"0")}-01`,
-    type: "festival"
-  }))
-
-]
+  const all = data.events || []
+     
 .map(e => {
 
   let date = e.date
