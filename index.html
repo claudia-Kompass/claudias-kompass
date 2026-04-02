@@ -788,33 +788,8 @@ box-shadow:0 8px 18px rgba(0,0,0,0.25);
 
 <script>
 
-function normalizeData(data) {
-  return data
-}
-  news: data.news || [],
-  finance: data.financeNews || [],
-  regional: data.regional || [],
-
-  language: data.language || [],
-  ukulele: data.ukulele || [],
-  recipes: data.recipes || [],
-
-    events: [
-      ...(data.events?.today || []),
-      ...(data.events?.week || []),
-      ...(data.events?.dance || [])
-    ],
-
-    dance: {
-  today: data.events?.today || [],
-  week: data.events?.week || [],
-  festivals: data.events?.festivals || []
-}
-
-    markets: data.markets || null,
-    weather: data.weather || null,
-    quote: data.quote || null
-  }
+function normalizeData(data){
+  return data || {}
 }
    
 let ukeSongs = []
