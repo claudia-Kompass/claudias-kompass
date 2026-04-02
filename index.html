@@ -957,7 +957,10 @@ function getUserPosition(){
 async function buildRadar(data){
 
   const events = [
-  ...(data.events || []),
+  ...(data.events?.today || []),
+  ...(data.events?.week || []),
+  ...(data.events?.dance || [])
+]
   ...(data.regionalEvents || []),
   ...(data.marketsEvents || [])
 ].map(e => ({
