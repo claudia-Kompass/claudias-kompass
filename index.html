@@ -1888,7 +1888,7 @@ async function loadData(){
 try{
 
   const res = await fetch("/api/daily")
-  const data = await res.json()
+  const data = normalizeData(await res.json())
 console.log("DATA KOMPLETT:", data)
 console.log("EVENTS:", data.events)
 console.log("TODAY:", data.events?.today)
