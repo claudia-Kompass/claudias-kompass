@@ -788,25 +788,8 @@ box-shadow:0 8px 18px rgba(0,0,0,0.25);
 
 <script>
 
-function normalizeData(data){
-  return data || {}
-}
-   
-let ukeSongs = []
-let ukeIndex = 0
-
-let travelList = []
-let travelIndex = 0
-
-let userPos = null
-
-
-/* =========================
-   GLOBAL EVENT ENGINE + RADAR
-========================= */
-
 function getNextDateFromWeekday(weekday){
-  if(weekday === undefined) return null
+  if(weekday === null || weekday === undefined) return null
 
   const today = new Date()
   const result = new Date()
@@ -814,42 +797,40 @@ function getNextDateFromWeekday(weekday){
   const diff = (weekday + 7 - today.getDay()) % 7
   result.setDate(today.getDate() + diff)
 
-  return result.toISOString().split("T")[0]
+  return result
 }
 
-function calcDistance(lat1, lon1, lat2, lon2){
-if(lat1 == null || lon1 == null || lat2 == null || lon2 == null){
-  return null
-}
+function parseEvent(e){
 
-  const R = 6371
-  const toRad = v => v * Math.PI / 180
+  let date = null
 
-  const dLat = toRad(lat2-lat1)
-  const dLon = toRad(lon2-lon1)
-
-  const a =
-    Math.sin(dLat/2)**2 +
-    Math.cos(toRad(lat1)) *
-    Math.cos(toRad(lat2)) *
-    Math.sin(dLon/2)**2
-
-  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))
-}
-
-function mapDance(e){
-  return {
-    title: e.title,
-    city: e.city,
-    location: e.location,
-    date: getNextDateFromWeekday(e.weekday),
-    time: e.time,
-    type: "dance",
-    lat: e.lat,
-    lon: e.lon,
-    url: e.url,
-    maps: e.maps
+  if(e.date){
+    date = new Date(e.date)
   }
+
+  if(!date && e.weekday !== null && e.weekday !== undefined){
+    date = getNextDateFromWeekday(e.weekday)
+  }
+
+  if(!date || isNaN(date.getTime())) return null
+
+  return {
+    ...e,
+    date
+  }
+}
+
+function buildEventList(data){
+
+  const raw = [
+    ...(data.events.today || []),
+    ...(data.events.week || []),
+    ...(data.events.dance || [])
+  ]
+
+  return raw
+    .map(parseEvent)
+    .filter(Boolean)
 }
 
 function prepareEvents(data){
