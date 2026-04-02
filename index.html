@@ -790,9 +790,13 @@ box-shadow:0 8px 18px rgba(0,0,0,0.25);
 
 function normalizeData(data) {
   return {
-    news: data.news || [],
-    finance: data.financeNews || [],
-    regional: data.regional || [],
+  news: data.news || [],
+  finance: data.financeNews || [],
+  regional: data.regional || [],
+
+  language: data.language || [],
+  ukulele: data.ukulele || [],
+  recipes: data.recipes || [],
 
     events: [
       ...(data.events?.today || []),
