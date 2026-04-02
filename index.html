@@ -1884,6 +1884,23 @@ async function loadData(){
 
   document.getElementById("dailyRadar").innerHTML = "⏳ Lade Daten..."
 
+  try{
+    const res = await fetch("/api/daily")
+    const raw = await res.json()
+
+    const data = normalizeData(raw)   // ← DAS ist der Fix
+
+    render(data)
+
+  }catch(err){
+    console.error(err)
+    document.getElementById("dailyRadar").innerHTML =
+      "⚠️ Daten konnten nicht geladen werden"
+  }
+}
+
+  document.getElementById("dailyRadar").innerHTML = "⏳ Lade Daten..."
+
 try{
 
   const res = await fetch("/api/daily")
