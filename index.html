@@ -838,26 +838,24 @@ function prepareEvents(data){
   const now = new Date()
   now.setHours(0,0,0,0)
 
-  const all = [
-    ...(data.events?.today || []),
-    ...(data.events?.week || []),
-    ...(data.events?.dance || [])
-  ]
-     
-.map(e => {
+  const all = buildEventList(data)
 
-  let date = e.date
+  const sameDay = (a,b) =>
+    a.toDateString() === b.toDateString()
 
- if(!date && e.weekday != null){
-  date = getNextDateFromWeekday(e.weekday)
-  }
+  const diffDays = d =>
+    (d - now) / (1000*60*60*24)
 
   return {
-    ...e,
-    date: date ? new Date(date + "T12:00:00") : null
+    today: all.filter(e => sameDay(e.date, now)),
+    week: all.filter(e => {
+      const diff = diffDays(e.date)
+      return diff > 0 && diff <= 7
+    }),
+    later: all.filter(e => diffDays(e.date) > 7),
+    festivals: (data.events.festivals || []).map(parseEvent).filter(Boolean)
   }
-
-})
+}
 .filter(e => e.date instanceof Date && !isNaN(e.date.getTime()))
 
   const isSameDay = (d1,d2)=>
