@@ -804,7 +804,11 @@ function normalizeData(data) {
       ...(data.events?.dance || [])
     ],
 
-    dance: data.events?.dance || [],
+    dance: {
+  today: data.events?.today || [],
+  week: data.events?.week || [],
+  festivals: data.events?.festivals || []
+}
 
     markets: data.markets || null,
     weather: data.weather || null,
