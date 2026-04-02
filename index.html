@@ -788,6 +788,26 @@ box-shadow:0 8px 18px rgba(0,0,0,0.25);
 
 <script>
 
+function normalizeData(data) {
+  return {
+    news: data.news || [],
+    finance: data.financeNews || [],
+    regional: data.regional || [],
+
+    events: [
+      ...(data.events?.today || []),
+      ...(data.events?.week || []),
+      ...(data.events?.dance || [])
+    ],
+
+    dance: data.events?.dance || [],
+
+    markets: data.markets || null,
+    weather: data.weather || null,
+    quote: data.quote || null
+  }
+}
+   
 let ukeSongs = []
 let ukeIndex = 0
 
