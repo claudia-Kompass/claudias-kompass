@@ -838,10 +838,32 @@ function prepareEvents(data){
   const now = new Date()
   now.setHours(0,0,0,0)
 
-  const all = buildEventList(data)
+  const all = [
+    ...(data.events?.today || []),
+    ...(data.events?.week || []),
+    ...(data.events?.dance || [])
+  ]
+  .map(e => {
 
-  const sameDay = (a,b) =>
-    a.toDateString() === b.toDateString()
+    let date = e.date
+
+    if(!date && e.weekday !== null && e.weekday !== undefined){
+      date = getNextDateFromWeekday(e.weekday)
+    }
+
+    const d = date ? new Date(date) : null
+
+    if(!d || isNaN(d.getTime())) return null
+
+    return {
+      ...e,
+      date: d
+    }
+
+  })
+  .filter(Boolean)
+
+  const sameDay = (a,b)=> a.toDateString() === b.toDateString()
 
   const diffDays = d =>
     (d - now) / (1000*60*60*24)
@@ -853,29 +875,7 @@ function prepareEvents(data){
       return diff > 0 && diff <= 7
     }),
     later: all.filter(e => diffDays(e.date) > 7),
-    festivals: (data.events.festivals || []).map(parseEvent).filter(Boolean)
-  }
-}
-.filter(e => e.date instanceof Date && !isNaN(e.date.getTime()))
-
-  const isSameDay = (d1,d2)=>
-    d1.toDateString() === d2.toDateString()
-
-  const diffDays = d =>
-    (d - now) / (1000*60*60*24)
-
-  return {
-    today: all.filter(e => isSameDay(e.date, now) && e.type !== "festival"),
-    week: all.filter(e =>
-      diffDays(e.date) > 0 &&
-      diffDays(e.date) <= 7 &&
-      e.type !== "festival"
-    ),
-    later: all.filter(e =>
-      diffDays(e.date) > 7 &&
-      e.type !== "festival"
-    ),
-    festivals: all.filter(e => e.type === "festival")
+    festivals: (data.events?.festivals || [])
   }
 }
    
