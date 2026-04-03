@@ -1794,7 +1794,6 @@ document.getElementById("recipeCounter").textContent =
 
 loadRecipes(data)
 
-renderWeather(data)
 renderTravel()
 renderLanguage()
 renderDance({
@@ -1802,6 +1801,8 @@ renderDance({
   week: data.events?.dance || [],
   festivals: data.events?.festivals || []
 })
+
+renderWeather(data)
 }
 
 function toggleLang(card){
