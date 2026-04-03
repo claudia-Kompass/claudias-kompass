@@ -1003,7 +1003,43 @@ function ampel(trend){
   return '<span class="ampel yellow"></span>';
 }
 
+function getSurpriseEvent(data){
 
+  const all = [
+    ...(data.events?.today || []),
+    ...(data.events?.week || []),
+    ...(data.events?.dance || [])
+  ].map(e => {
+
+    let date = e.date
+
+    if(!date && e.weekday !== undefined){
+      const d = new Date()
+      const diff = (e.weekday + 7 - d.getDay()) % 7
+      d.setDate(d.getDate() + diff)
+      date = d
+    }
+
+    return {
+      ...e,
+      date: date ? new Date(date) : null
+    }
+
+  }).filter(e => e.date)
+
+  const now = new Date()
+
+  const upcoming = all.filter(e => {
+    const diff = (e.date - now) / (1000*60*60*24)
+    return diff >= 0 && diff <= 14
+  })
+
+  if(!upcoming.length) return null
+
+  return upcoming[Math.floor(Math.random() * upcoming.length)]
+}
+
+   
 function renderWeather(data){
 
   const now = document.getElementById("weatherNow")
