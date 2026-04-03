@@ -1320,6 +1320,8 @@ res.status(200).json({
   recipes: recipes || [],
   recipe: recipeToday || null
 
+  ukulele: ukuleleSongs 
+
 })
 
 }catch(err){
