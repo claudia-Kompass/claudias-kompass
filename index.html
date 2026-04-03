@@ -1441,20 +1441,20 @@ document.getElementById("meta").innerHTML =
 buildRadar(data).then(radar => {
 
   const temp = data.weather?.temp || "--"
+  const surprise = getSurpriseEvent(data)
 
   const line = `
 ☀️ ${temp}°C
 ${radar.today ? " • 🔥 <b>" + radar.today.title + "</b>" : ""}
 ${radar.next ? " • 📅 " + radar.next.title : ""}
 ${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
-${radar.surprise ? " • ✨ " + radar.surprise.title : ""}
+${surprise ? " • ✨ " + surprise.title : ""}
 `
 
-document.getElementById("dailyRadar").innerHTML =
-line || "Heute ruhig – kein Event gefunden"
+  document.getElementById("dailyRadar").innerHTML =
+    line || "Heute ruhig"
 
 })
-
 /* =========================
    REST UNVERÄNDERT
 ========================= */
