@@ -1410,7 +1410,13 @@ const now = new Date()
 renderMarkets(data)
 
 /* EVENTS */
-const grouped = prepareEvents(data)
+const grouped = prepareEvents({
+  events: [
+    ...data.events.today,
+    ...data.events.week,
+    ...data.events.dance
+  ]
+})
 
 let html = ""
 
