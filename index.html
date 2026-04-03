@@ -932,94 +932,56 @@ function getUserPosition(){
 /* =========================
    RADAR BUILDER
 ========================= */
-
 async function buildRadar(data){
 
   const events = [
-  ...(data.events?.today || []),
-  ...(data.events?.week || []),
-  ...(data.events?.dance || [])
-]
-  ...(data.regionalEvents || []),
-  ...(data.marketsEvents || [])
-].map(e => ({
-  ...e,
-  date: e.date ? new Date(e.date) : null
-}))
-  const user = await getUserPosition()  // ← FEHLTE BEI DIR
+    ...(data.events?.today || []),
+    ...(data.events?.week || []),
+    ...(data.events?.dance || [])
+  ].map(e => ({
+    ...e,
+    date: e.date ? new Date(e.date) : null
+  }))
+
+  const user = await getUserPosition()
 
   const today = new Date()
 
-  /* DISTANCE */
   if(user){
+    events.forEach(e=>{
+      if(e.lat && e.lon){
+        e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
+      }
+    })
+  }
 
-  // 1. Distance berechnen
-  events.forEach(e=>{
-    if(e.lat && e.lon){
-      e.distance = calcDistance(user.lat, user.lon, e.lat, e.lon)
-    }
-  })
-
-  // 2. Distance in Dance schreiben
-  ;(data.dance || []).forEach(d => {
-
-    const match = events.find(e =>
-      e.city === d.city &&
-      Math.abs(
-        new Date(e.date) - new Date(getNextDateFromWeekday(d.weekday))
-      ) < 86400000
-    )
-
-    if(match && match.distance){
-      d.distance = match.distance
-    }
-
-  })
-
-     }
-
-  /* SORT */
   const sorted = events
     .filter(e => e.date)
     .sort((a,b)=> new Date(a.date) - new Date(b.date))
 
-  /* TODAY */
   const todayEvent = sorted.find(e =>
     new Date(e.date).toDateString() === today.toDateString()
   )
 
-  /* NEXT */
   const nextEvent = sorted.find(e =>
     new Date(e.date) > today
   )
 
-  /* NEAREST */
   const nearest = user
     ? [...events]
         .filter(e => e.distance)
         .sort((a,b)=>a.distance - b.distance)[0]
     : null
 
-  /* SURPRISE */
- const upcomingShort = sorted.filter(e => {
-  const d = new Date(e.date)
-  const diff = (d - today) / (1000 * 60 * 60 * 24)
-  return diff >= 0 && diff <= 14
-})
-
-let surprise = null
-
-if (!todayEvent && !nextEvent && upcomingShort.length) {
-  surprise = upcomingShort[Math.floor(Math.random()*upcomingShort.length)]
-}
-
   return {
     today: todayEvent,
     next: nextEvent,
-    nearest,
-    surprise
+    nearest
   }
 }
+
+
+  
    
 function weatherIcon(code){
 
