@@ -1292,7 +1292,7 @@ RESPONSE
 ======================================================= */
 res.status(200).json({
   version: "fix-live",
-
+quote: quote || null,
   news: news || [],
   financeNews: financeNews || [],
   regional: regional || [],
