@@ -1302,14 +1302,13 @@ res.status(200).json({
   regional: regional || [],
 
   events: {
-  today: finalFeed?.today || [],
-  week: finalFeed?.week || [],
-  dance: finalFeed?.dance || [],
-  festivals: finalFeed?.festivals || []
-},
+    today: finalFeed?.today || [],
+    week: finalFeed?.week || [],
+    dance: finalFeed?.dance || [],
+    festivals: finalFeed?.festivals || []
+  },
 
   language: languages || [],
-
   travel: travel || [],
 
   quote: quote || null,
@@ -1318,9 +1317,10 @@ res.status(200).json({
   weather: weather || {},
 
   recipes: recipes || [],
-  recipe: recipeToday || null
+  recipe: recipeToday || null,
 
-  ukulele: ukuleleSongs 
+  // 🔥 DAS HIER FEHLT BEI DIR
+  ukulele: ukuleleSongs || []
 
 })
 
