@@ -1027,9 +1027,7 @@ function isFutureOrToday(dateStr){
      
 // 🔹 3. FILTER (BASIS)
 all = all.filter(e =>
-  e.title &&
-  e.city &&
-  (e.distance === null || e.distance < 200)
+  e.title && e.city
 )
 
 
