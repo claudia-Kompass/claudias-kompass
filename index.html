@@ -1769,7 +1769,11 @@ function showRecipe(r){
 document.getElementById("recipeTitle").textContent = r.title
 
 document.getElementById("recipeIngredients").textContent =
-Array.isArray(r.ingredients) ? r.ingredients.join(" • ") : r.ingredients
+r.ingredients
+  ? (Array.isArray(r.ingredients)
+      ? r.ingredients.join(" • ")
+      : r.ingredients)
+  : "—"
 
 document.getElementById("recipePrep").textContent = r.prep
 document.getElementById("recipeCook").textContent = r.cook
