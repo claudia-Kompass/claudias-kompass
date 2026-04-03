@@ -1293,37 +1293,36 @@ console.log("FIRST ITEM:", finalFeed[0])
 RESPONSE
 ======================================================= */
 res.status(200).json({
-
   version: "fix-live",
 
   news: news || [],
   financeNews: financeNews || [],
-
   regional: regional || [],
 
   events: {
     today: finalFeed?.today || [],
     week: finalFeed?.week || [],
     dance: finalFeed?.dance || [],
-    festivals: finalFeed?.festivals || []
+    festivals: finalFeed?.festivals || [],
+    regional: finalFeed?.regional || []
   },
 
   language: languages || [],
-  travel: travel || [],
 
-  quote: quote || null,
-
-  markets: markets || {},
-  weather: weather || {},
+  // 👉 WICHTIG: IMMER GLEICHER TYP
+  travel: travel || null,
 
   recipes: recipes || [],
   recipe: recipeToday || null,
 
-  // 🔥 DAS HIER FEHLT BEI DIR
-  ukulele: ukuleleSongs || []
+  // 👉 DAS HAT DIR GEFEHLT
+  ukulele: ukuleleSongs || [],
 
+  markets: markets || {},
+
+  // 👉 NIEMALS undefined
+  weather: weather || { temp: 0, trend: {} }
 })
-
 }catch(err){
 
 console.error("API ERROR",err)
