@@ -1,6 +1,13 @@
 module.exports = [
 
 {
+  title: "Travel",
+  text: "Entdecke die Welt",
+  image: "/images/travel-collage.png",
+  hero: true
+},
+  
+{
 title:"Azoren – Portugal",
 text:"Vulkankrater, heiße Quellen und spektakuläre Atlantikblicke.",
 url:"https://www.visitazores.com",
