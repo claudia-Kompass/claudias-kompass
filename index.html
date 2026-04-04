@@ -793,7 +793,25 @@ let ukeIndex = 0
 
 let travelIndex = 0
 let travelList = []
+const imageMap = {
+  "new york": "https://images.unsplash.com/photo-1496440737103-cd596325d314",
+  "bora bora": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+  "kyoto": "https://images.unsplash.com/photo-1504788363733-507549153474",
+  "azoren": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+  "paris": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34"
+}
 
+function getTravelImage(t){
+  const title = (t?.title || "").toLowerCase()
+
+  for(const key in imageMap){
+    if(title.includes(key)){
+      return imageMap[key]
+    }
+  }
+
+  return "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+}
    
 function getNextDateFromWeekday(weekday){
   if(weekday === null || weekday === undefined) return null
