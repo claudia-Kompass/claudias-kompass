@@ -802,15 +802,21 @@ const imageMap = {
 }
 
 function getTravelImage(t){
-  const title = (t?.title || "").toLowerCase()
 
-  for(const key in imageMap){
-    if(title.includes(key)){
-      return imageMap[key]
-    }
+  const title = (t?.title || "")
+  const text = (t?.text || "")
+
+  // 🔥 bessere Keywords extrahieren
+  let query = title
+
+  if(title.includes("–")){
+    query = title.split("–")[0]
   }
 
-  return "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+  // 👉 Verstärkung (macht Bilder massiv besser)
+  const enhanced = query + " landmark travel photography"
+
+  return `https://source.unsplash.com/1200x700/?${encodeURIComponent(enhanced)}`
 }
    
 function getNextDateFromWeekday(weekday){
