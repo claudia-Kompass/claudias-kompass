@@ -1405,8 +1405,7 @@ data.language = data.language || []
 data.financeNews = data.financeNews || []
 data.news = data.news || []
 
-let travelIndex = 0
-let travelList = Array.isArray(data.travel)
+travelList = Array.isArray(data.travel)
   ? data.travel
   : (data.travel ? [data.travel] : [])
 window.langTexts = data.language || []
