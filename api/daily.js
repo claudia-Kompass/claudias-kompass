@@ -1308,8 +1308,9 @@ quote: quote || null,
   language: languages || [],
 
   // 👉 WICHTIG: IMMER GLEICHER TYP
-  travel: travel || null,
-
+  travel: travelData
+travelToday: randomTravel   // für Tageshighlight
+   
   recipes: recipes || [],
   recipe: recipeToday || null,
 
