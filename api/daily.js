@@ -1309,7 +1309,7 @@ quote: quote || null,
 
   // 👉 WICHTIG: IMMER GLEICHER TYP
   travel: travelData
-travelToday: randomTravel   // für Tageshighlight
+travelToday: randomTravel,
    
   recipes: recipes || [],
   recipe: recipeToday || null,
