@@ -1794,7 +1794,16 @@ document.getElementById("recipeCounter").textContent =
 
 loadRecipes(data)
 
-renderTravel()
+window.nextTravel = function(){
+
+  travelIndex++
+
+  if(travelIndex >= travelList.length){
+    travelIndex = 0
+  }
+
+  renderTravel()
+}   
 renderLanguage()
 renderDance({
   today: [],
