@@ -851,15 +851,6 @@ function parseEvent(e){
   }
 }
 
-function getTravelImage(t){
-
-  const query = encodeURIComponent(
-    (t?.title || "") + " travel"
-  )
-
-  return `https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=60`
-}
-   
 function buildEventList(data){
 
   const raw = [
