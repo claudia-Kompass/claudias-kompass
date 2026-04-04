@@ -1325,7 +1325,7 @@ return`
 </strong>
 
 <div style="opacity:.8">
-${e.city ?? ""}${e.location ? " • "+e.location : ""}${e.distance ? " • 📍 "+e.distance+" km" : ""}
+${e.city ?? ""}${e.location ? " • "+e.location : ""}${e.distance && e.distance < 500 ? " • 📍 " + e.distance + " km" : ""}
 </div>
 
 <div style="opacity:.8">
