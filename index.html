@@ -828,15 +828,12 @@ function parseEvent(e){
 }
 
 function getTravelImage(t){
-  if(t?.image) return t.image
-
   const query = encodeURIComponent(
-    (t?.title || "") + " travel landscape"
+    (t?.title || "") + " landmark city skyline nature"
   )
 
   return `https://source.unsplash.com/800x600/?${query}`
 }
-
    
 function buildEventList(data){
 
