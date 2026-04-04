@@ -1308,8 +1308,8 @@ quote: quote || null,
   language: languages || [],
 
   // 👉 WICHTIG: IMMER GLEICHER TYP
-  travel: travelData, 
-travelToday: randomTravel,
+  travel: travelDB || [],
+travelToday: travel || null,
    
   recipes: recipes || [],
   recipe: recipeToday || null,
