@@ -1591,7 +1591,7 @@ if(data.regional?.length){
 
 function renderTravel(){
 
-const t = travelList[travelIndex]
+const t = data.travelToday || travelList[travelIndex]
 
 document.getElementById("travelBlock").innerHTML = `
 
