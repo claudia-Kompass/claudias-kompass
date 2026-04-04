@@ -811,21 +811,7 @@ function getTravelImage(t){
 
   query = query.toLowerCase()
 
-  const map = {
-    "azoren": "azores islands portugal",
-    "new york": "new york skyline",
-    "bora bora": "bora bora lagoon",
-    "kyoto": "kyoto temple",
-    "paris": "eiffel tower paris"
-  }
-
-  for(const key in map){
-    if(query.includes(key)){
-      query = map[key]
-    }
-  }
-
-  return `https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80`
+  return `https://source.unsplash.com/featured/1200x700/?${encodeURIComponent(query)}&${Date.now()}`
 }
    
 function getNextDateFromWeekday(weekday){
