@@ -1308,7 +1308,7 @@ quote: quote || null,
   language: languages || [],
 
   // 👉 WICHTIG: IMMER GLEICHER TYP
-  travel: travelData
+  travel: travelData, 
 travelToday: randomTravel,
    
   recipes: recipes || [],
