@@ -1611,7 +1611,53 @@ if(data.regional?.length){
 function renderTravel(data){
 
 const t = travelList[travelIndex] || data.travelToday
-   
+
+// 👉 HERO (dein Collage Bild)
+if(t.hero){
+
+document.getElementById("travelBlock").innerHTML = `
+
+<div style="position:relative;margin-bottom:16px;">
+
+<img src="${t.image}" style="
+width:100%;
+height:260px;
+object-fit:cover;
+border-radius:12px;
+">
+
+<div style="
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.45);
+padding:14px 22px;
+border-radius:10px;
+text-align:center;
+">
+
+<div style="font-size:26px;font-weight:600;">
+${t.title}
+</div>
+
+<div style="opacity:.9">
+${t.text}
+</div>
+
+</div>
+</div>
+
+<button class="uke-btn" onclick="nextTravel()">
+▶ Next
+</button>
+
+`
+
+return
+}
+
+// 👉 NORMALE CARDS (dein bestehender Code)
 document.getElementById("travelBlock").innerHTML = `
 
 <div class="newsItem">
@@ -1619,11 +1665,11 @@ document.getElementById("travelBlock").innerHTML = `
 <img src="${t.image}" class="travel-image">
 
 <div style="font-weight:600;font-size:18px">
-${t?.title || "Santorini – Griechenland"}
+${t?.title}
 </div>
 
 <div class="newsSource">
-${t?.text || "Weiße Häuser über dem Ägäischen Meer."}
+${t?.text}
 </div>
 
 <a href="${t?.url || '#'}" target="_blank" class="news-link">
