@@ -2006,9 +2006,8 @@ function showRecipe(r){
   const img = document.getElementById("recipeImage")
 
   img.src =
-    r.image ||
-    `https://source.unsplash.com/800x600/?${encodeURIComponent(r.title + ",food")}`
-
+  r.image ||
+  `https://source.unsplash.com/800x600/?${encodeURIComponent(r.title + ",food")}&t=${Date.now()}`
   img.onerror = () => {
     img.src = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
   }
