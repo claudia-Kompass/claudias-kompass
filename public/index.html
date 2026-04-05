@@ -1624,11 +1624,6 @@ if(data.regional?.length){
 
 
 
-
-
-
-
-
 /* =========================
    TRAVEL
 ========================= */
@@ -1637,50 +1632,24 @@ function renderTravel(data){
 
   const t = travelList[travelIndex]
 
-  // 🔥 HERO BLOCK
-  if(t?.hero){
-    document.getElementById("travelBlock").innerHTML = `
+  document.getElementById("travelBlock").innerHTML = `
 
-      <div class="newsItem">
+    <div class="travel-card">
 
-        <div style="position:relative">
+      <img src="${t.image}" alt="Travel">
 
-          <img src="${t.image}" 
-               style="width:100%;border-radius:12px;object-fit:cover">
-
-          <div style="
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            background:rgba(0,0,0,0.4);
-            padding:20px 30px;
-            border-radius:12px;
-            text-align:center;
-          ">
-
-            <div style="font-size:28px;font-weight:600">
-              ${t.title}
-            </div>
-
-            <div style="opacity:.85">
-              ${t.text}
-            </div>
-
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="uke-btn" onclick="nextTravel()">
-          ▶ Next
-        </button>
-
+      <div class="travel-text">
+        <h3>${t.title}</h3>
+        <p>${t.text}</p>
       </div>
-    `
-    return
-  }
+
+      <button class="uke-btn" onclick="nextTravel()">
+        ▶ Next
+      </button>
+
+    </div>
+  `
+}
 
   // 🔁 NORMALER BLOCK
   document.getElementById("travelBlock").innerHTML = `
