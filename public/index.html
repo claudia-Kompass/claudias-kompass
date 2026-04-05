@@ -2001,12 +2001,7 @@ document.getElementById("recipeTitle").textContent = r.title
 
 // Bild
 document.getElementById("recipeImage").src =
-  r.image || "https://source.unsplash.com/800x600/?food";
-
-// Zutaten als Tags
-// Bild
-document.getElementById("recipeImage").src =
-  r.image || "https://source.unsplash.com/800x600/?food";
+r.image || `https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800`
 
 // Zutaten als Tags
 document.getElementById("recipeIngredients").innerHTML =
