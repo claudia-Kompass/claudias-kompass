@@ -1,7 +1,7 @@
 module.exports = [
 
 {
-  text: "Wo der Blick weiter wird als der Horizont.",
+  text: "Wo Du merkst, dass Weite mehr ist als Entfernung.",
   image: "/images/travel-collage.png",
 },
   
