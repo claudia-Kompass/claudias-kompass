@@ -1535,8 +1535,9 @@ travelList = Array.isArray(data.travel)
   : (data.travel ? [data.travel] : [])
 window.langTexts = data.language || []
    
-document.getElementById("versionTag").innerText = "v" + data.version;
-
+document.getElementById("versionTag").innerText = data.version.startsWith("v")
+  ? data.version
+  : "v" + data.version;
 const now = new Date()
 
 renderMarkets(data)
