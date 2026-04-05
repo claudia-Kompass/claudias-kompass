@@ -1291,7 +1291,7 @@ console.log("FIRST ITEM:", finalFeed[0])
 RESPONSE
 ======================================================= */
 res.status(200).json({
-  version: "fix-live",
+version: fullVersion,
 quote: quote || null,
   news: news || [],
   financeNews: financeNews || [],
