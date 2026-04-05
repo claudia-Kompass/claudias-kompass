@@ -695,45 +695,25 @@ blockquote {
 .card,
 .newsItem,
 .languageCard,
-#recipeBlock {
+#recipeBlock{
 
-  background: rgba(255,255,255,0.035);
-  padding:16px;
-  border-radius:12px;
-  margin:14px 0;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+
+  padding:18px;
+  border-radius:14px;
+
+  margin:16px 0;
+
+  border:1px solid rgba(255,255,255,0.06);
+
   transition: all 0.2s ease;
 }
 
-/* Hover nur für klickbare */
 .card:hover,
-.languageCard:hover {
+.languageCard:hover{
   background: rgba(255,255,255,0.08);
-  transform: scale(1.01);
-}
-
-.todayCard{
-  background: linear-gradient(
-    135deg,
-    rgba(230,194,122,0.15),
-    rgba(255,255,255,0.05)
-  );
-  border:1px solid rgba(230,194,122,0.4);
-}
-
-.dayHeader:first-of-type{
-  font-size:18px;
-}
-
-.dayEvents .card:first-child{
-  border-left:3px solid #e6c27a;
-}
-
-   .dayHeader{
-  margin-top:18px;
-   }
-   
-.card{
-  backdrop-filter: blur(6px);
+  transform: translateY(-2px);
 }
 
   
