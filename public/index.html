@@ -2125,10 +2125,32 @@ ${chords.map(c=>`<div class="uke-step">${c}</div>`).join("")}
 </div>
 
 <button class="uke-btn" onclick="startUkeTrainer(${tempo})">
-▶ Start Trainer
+▶ Play Mode
 </button>
 
 </div>
+
+const bar = document.getElementById("ukeBar")
+
+let progress = 0
+const stepWidth = 100 / steps.length
+
+ukeTrainerTimer = setInterval(()=>{
+
+  steps.forEach(s=>s.classList.remove("active"))
+  steps[index].classList.add("active")
+
+  progress += stepWidth
+  bar.style.width = progress + "%"
+
+  index++
+
+  if(index >= steps.length){
+    index = 0
+    progress = 0
+  }
+
+}, interval)
 
 <button class="uke-btn" onclick="nextSong()">
 ▶ Next Song
