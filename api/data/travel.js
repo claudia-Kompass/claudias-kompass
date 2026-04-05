@@ -1,8 +1,7 @@
 module.exports = [
 
 {
-  title: "Reiseimpuls",
-  text: "Zwischen Heimat und Horizont.",
+  text: "„Zwischen Wind, Weite und neuen Perspektiven.",
   image: "/images/travel-collage.png",
 },
   
