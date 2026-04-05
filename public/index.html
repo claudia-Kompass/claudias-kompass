@@ -2004,14 +2004,15 @@ document.getElementById("recipeImage").src =
   r.image || "https://source.unsplash.com/800x600/?food";
 
 // Zutaten als Tags
+// Bild
+document.getElementById("recipeImage").src =
+  r.image || "https://source.unsplash.com/800x600/?food";
+
+// Zutaten als Tags
 document.getElementById("recipeIngredients").innerHTML =
-  r.ingredients
+  Array.isArray(r.ingredients)
     ? r.ingredients.map(i => `<span class="recipe-tag">${i}</span>`).join("")
     : "—";
-  ? (Array.isArray(r.ingredients)
-      ? r.ingredients.join(" • ")
-      : r.ingredients)
-  : "—"
 
 document.getElementById("recipePrep").textContent = r.prep
 document.getElementById("recipeCook").textContent = r.cook
