@@ -581,9 +581,12 @@ z-index:9999;
 
 .travel-card img {
   width: 100%;
-  height: auto;
+  height: 240px;              /* FIXED HEIGHT */
   object-fit: cover;
-  display: block;
+
+  filter: brightness(0.75);
+  transform: scale(1.05);
+  transition: transform 6s ease;
 }
 
 .travel-text {
