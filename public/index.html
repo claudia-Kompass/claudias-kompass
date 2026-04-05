@@ -1851,31 +1851,37 @@ let ukeTrainerTimer = null
 
 window.startUkeTrainer = function(tempo){
 
-const steps = document.querySelectorAll(".uke-step")
+  const steps = document.querySelectorAll(".uke-step")
+  const bar = document.getElementById("ukeBar")
 
-if(!steps.length) return
+  if(!steps.length) return
 
-if(ukeTrainerTimer){
-clearInterval(ukeTrainerTimer)
-}
+  if(ukeTrainerTimer){
+    clearInterval(ukeTrainerTimer)
+  }
 
-let index = 0
-const interval = 60000 / tempo * 0.9
+  let index = 0
+  let progress = 0
 
-ukeTrainerTimer = setInterval(()=>{
+  const interval = 60000 / tempo * 0.9
+  const stepWidth = 100 / steps.length
 
-steps.forEach(s=>s.classList.remove("active"))
+  ukeTrainerTimer = setInterval(()=>{
 
-steps[index].classList.add("active")
+    steps.forEach(s=>s.classList.remove("active"))
+    steps[index].classList.add("active")
 
-index++
+    progress += stepWidth
+    bar.style.width = progress + "%"
 
-if(index >= steps.length){
-index = 0
-}
+    index++
 
-}, interval)
+    if(index >= steps.length){
+      index = 0
+      progress = 0
+    }
 
+  }, interval)
 }
 
 /* =========================
