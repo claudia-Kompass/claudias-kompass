@@ -1630,6 +1630,12 @@ if(data.regional?.length){
 
 function renderTravel(data){
 
+  if(!travelList.length){
+    document.getElementById("travelBlock").innerHTML =
+      "<div style='opacity:.6'>Kein Reiseimpuls</div>"
+    return
+  }
+
   const t = travelList[travelIndex]
 
   document.getElementById("travelBlock").innerHTML = `
@@ -1639,9 +1645,15 @@ function renderTravel(data){
       <img src="${t.image}" alt="Travel">
 
       <div class="travel-text">
-        <h3>${t.title}</h3>
-        <p>${t.text}</p>
+        <h3>${t.title || ""}</h3>
+        <p>${t.text || ""}</p>
       </div>
+
+      ${
+        t.url
+        ? `<a href="${t.url}" target="_blank" class="news-link">weiterlesen →</a>`
+        : ""
+      }
 
       <button class="uke-btn" onclick="nextTravel()">
         ▶ Next
