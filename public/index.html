@@ -854,30 +854,33 @@ blockquote {
 
 <div id="recipeBlock">
 
-<div id="recipeCounter" style="opacity:.7;margin-bottom:8px"></div>
+  <img id="recipeImage" class="recipe-image" src="">
 
-<div style="font-weight:600;font-size:18px" id="recipeTitle"></div>
+  <div class="recipe-header">
+    <div class="recipe-title" id="recipeTitle"></div>
+    <div class="recipe-counter" id="recipeCounter"></div>
+  </div>
 
-<div class="newsSource" id="recipeIngredients"></div>
+  <div id="recipeIngredients" class="recipe-tags"></div>
 
-<br>
+  <div class="recipe-step">
+    <b>Vorbereitung</b>
+    <div id="recipePrep"></div>
+  </div>
 
-<b>Vorbereitung</b>
-<div id="recipePrep"></div>
+  <div class="recipe-step">
+    <b>Zubereitung</b>
+    <div id="recipeCook"></div>
+  </div>
 
-<b>Zubereitung</b>
-<div id="recipeCook"></div>
+  <div class="recipe-meta">
+    <div>🔥 <span id="recipeTemp"></span></div>
+    <div>⏱ <span id="recipeTime"></span></div>
+    <div>🔄 <span id="recipeShake"></span></div>
+    <div>🍽 <span id="recipePortion"></span></div>
+  </div>
 
-<br>
-
-🔥 <span id="recipeTemp"></span><br>
-⏱ <span id="recipeTime"></span><br>
-🔄 <span id="recipeShake"></span><br>
-🍽 <span id="recipePortion"></span> Portionen
-
-<br>
-
-<button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
+  <button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
 
 </div>
 
