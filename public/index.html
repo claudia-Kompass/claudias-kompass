@@ -1869,26 +1869,30 @@ if(data.news && data.news.length){
     FINANCE NEWS 
 =================== */
   
-/* FINANCE NEWS */
+/* =================
+   FINANCE NEWS + RADAR
+=================== */
+
+let financeHTML = ""
+
 if(data.financeNews && data.financeNews.length){
 
-  document.getElementById("financeNewsBlock").innerHTML =
-    data.financeNews.slice(0,3).map(n => `
-      <div class="newsItem">
-        <div style="font-weight:600">${n.title}</div>
-        <a href="${n.url}" target="_self" class="news-link">weiterlesen →</a>
-        <div class="newsSource">${n.source}</div>
-      </div>
-    `).join("")
+  financeHTML += data.financeNews.slice(0,3).map(n => `
+    <div class="newsItem">
+      <div style="font-weight:600">${n.title}</div>
+      <a href="${n.url}" target="_self" class="news-link">weiterlesen →</a>
+      <div class="newsSource">${n.source}</div>
+    </div>
+  `).join("")
 
 }else{
 
-  document.getElementById("financeNewsBlock").innerHTML =
-    "<div style='opacity:.7'>Keine aktuellen Finanznews.</div>"
+  financeHTML += `
+    <div style='opacity:.7'>Keine aktuellen Finanznews.</div>
+  `
 }
 
-
-/* 🔎 FINANCE EXTRAS – IMMER ANZEIGEN */
+/* 🔎 RADAR als letzte Karte */
 
 const financeSources = [
   {name:"Finanzen100", url:"https://www.finanzen100.de"},
@@ -1902,26 +1906,26 @@ const financeSources = [
 const highlight =
   financeSources[Math.floor(Math.random()*financeSources.length)]
 
-document.getElementById("financeExtras").innerHTML = `
-  <div class="finance-extras">
+financeHTML += `
+  <div class="newsItem">
 
-    <div class="finance-highlight">
-      🔎 Radar:
-      <a href="${highlight.url}" target="_blank" class="finance-link">
-        ${highlight.name}
-      </a>
+    <div style="font-weight:600">
+      🔎 Radar: ${highlight.name}
     </div>
 
-    <div class="finance-links">
+    <div style="margin-top:8px">
       ${financeSources.map(s => `
-        <a href="${s.url}" target="_blank" class="finance-link">
+        <a href="${s.url}" target="_blank" class="news-link">
           ${s.name}
         </a>
-      `).join("")}
+      `).join(" • ")}
     </div>
 
   </div>
 `
+
+document.getElementById("financeNewsBlock").innerHTML = financeHTML
+
 
 
 /* REGIONAL */
