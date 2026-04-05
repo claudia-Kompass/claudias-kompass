@@ -4,7 +4,6 @@ module.exports = [
   title: "Travel",
   text: "Entdecke die Welt",
   image: "/images/travel-collage.png",
-  hero: true
 },
   
 {
