@@ -1865,6 +1865,10 @@ if(data.news && data.news.length){
 }
 
 
+/* =================
+    FINANCE NEWS 
+=================== */
+  
 /* FINANCE NEWS */
 if(data.financeNews && data.financeNews.length){
 
@@ -1877,9 +1881,48 @@ if(data.financeNews && data.financeNews.length){
       </div>
     `).join("")
 
-  
+}else{
+
+  document.getElementById("financeNewsBlock").innerHTML =
+    "<div style='opacity:.7'>Keine aktuellen Finanznews.</div>"
 }
 
+
+/* 🔎 FINANCE EXTRAS – IMMER ANZEIGEN */
+
+const financeSources = [
+  {name:"Finanzen100", url:"https://www.finanzen100.de"},
+  {name:"Tagesschau Wirtschaft", url:"https://www.tagesschau.de/wirtschaft"},
+  {name:"Handelsblatt", url:"https://www.handelsblatt.com"},
+  {name:"FAZ Finanzen", url:"https://www.faz.net/aktuell/finanzen"},
+  {name:"ntv Börse", url:"https://www.n-tv.de/wirtschaft"},
+  {name:"BBC Business", url:"https://www.bbc.com/news/business"}
+]
+
+const highlight =
+  financeSources[Math.floor(Math.random()*financeSources.length)]
+
+document.getElementById("financeExtras").innerHTML = `
+  <div class="finance-extras">
+
+    <div class="finance-highlight">
+      🔎 Radar:
+      <a href="${highlight.url}" target="_blank" class="finance-link">
+        ${highlight.name}
+      </a>
+    </div>
+
+    <div class="finance-links">
+      ${financeSources.map(s => `
+        <a href="${s.url}" target="_blank" class="finance-link">
+          ${s.name}
+        </a>
+      `).join("")}
+    </div>
+
+  </div>
+`
+}
 
 /* REGIONAL */
 if(data.regional?.length){
