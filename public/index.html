@@ -2001,29 +2001,33 @@ showRecipe(recipes[recipeIndex])
 
 function showRecipe(r){
 
-document.getElementById("recipeTitle").textContent = r.title
+  document.getElementById("recipeTitle").textContent = r.title
 
-// Bild
-document.getElementById("recipeImage").src =
-r.image || `https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800`
+  const img = document.getElementById("recipeImage")
 
-// Zutaten als Tags
-document.getElementById("recipeIngredients").innerHTML =
-  Array.isArray(r.ingredients)
-    ? r.ingredients.map(i => `<span class="recipe-tag">${i}</span>`).join("")
-    : "—";
+  img.src =
+    r.image ||
+    `https://source.unsplash.com/800x600/?${encodeURIComponent(r.title + ",food")}`
 
-document.getElementById("recipePrep").textContent = r.prep
-document.getElementById("recipeCook").textContent = r.cook
+  img.onerror = () => {
+    img.src = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
+  }
 
-document.getElementById("recipeTemp").textContent = r.temp
-document.getElementById("recipeTime").textContent = r.time
-document.getElementById("recipeShake").textContent = r.shake
-document.getElementById("recipePortion").textContent = r.portion
+  document.getElementById("recipeIngredients").innerHTML =
+    Array.isArray(r.ingredients)
+      ? r.ingredients.map(i => `<span class="recipe-tag">${i}</span>`).join("")
+      : "—"
 
-document.getElementById("recipeCounter").textContent =
-"Rezept " + (recipeIndex+1) + " / " + recipes.length
+  document.getElementById("recipePrep").textContent = r.prep
+  document.getElementById("recipeCook").textContent = r.cook
 
+  document.getElementById("recipeTemp").textContent = r.temp
+  document.getElementById("recipeTime").textContent = r.time
+  document.getElementById("recipeShake").textContent = r.shake
+  document.getElementById("recipePortion").textContent = r.portion
+
+  document.getElementById("recipeCounter").textContent =
+    "Rezept " + (recipeIndex+1) + " / " + recipes.length
 }
 
 // =========================
