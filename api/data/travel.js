@@ -2,7 +2,7 @@ module.exports = [
 
 {
   title: "Travel",
-  text: "Entdecke die Welt",
+  text: "Zwischen Heimat und Horizont.",
   image: "/images/travel-collage.png",
 },
   
