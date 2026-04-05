@@ -1,7 +1,7 @@
 module.exports = [
 
 {
-  text: "„Zwischen Wind, Weite und neuen Perspektiven.",
+  text: "Wo der Blick weiter wird als der Horizont.",
   image: "/images/travel-collage.png",
 },
   
