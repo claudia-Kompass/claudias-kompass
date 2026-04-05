@@ -765,11 +765,16 @@ blockquote {
 ====================================*/
 
 .recipe-image{
-  width:100%;
+  width:calc(100% + 36px);
+  margin-left:-18px;
+  margin-right:-18px;
+
   height:240px;
   object-fit:cover;
-  border-radius:18px;
+
+  border-radius:18px 18px 0 0;
   margin-bottom:12px;
+
   filter:brightness(0.8);
 }
 
@@ -827,8 +832,12 @@ blockquote {
 }
 
 #recipeBlock{
-  border-left:2px solid #e6c27a;
+  padding:0;
   overflow:hidden;
+}
+
+.recipe-content{
+  padding:18px;
 }
 
   
