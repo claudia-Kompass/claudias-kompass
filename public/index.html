@@ -1999,8 +1999,15 @@ function showRecipe(r){
 
 document.getElementById("recipeTitle").textContent = r.title
 
-document.getElementById("recipeIngredients").textContent =
-r.ingredients
+// Bild
+document.getElementById("recipeImage").src =
+  r.image || "https://source.unsplash.com/800x600/?food";
+
+// Zutaten als Tags
+document.getElementById("recipeIngredients").innerHTML =
+  r.ingredients
+    ? r.ingredients.map(i => `<span class="recipe-tag">${i}</span>`).join("")
+    : "—";
   ? (Array.isArray(r.ingredients)
       ? r.ingredients.join(" • ")
       : r.ingredients)
