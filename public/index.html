@@ -937,38 +937,36 @@ blockquote {
   <img id="recipeImage" class="recipe-image">
 
   <div class="recipe-content">
-    <!-- alles andere -->
+
+    <div class="recipe-header">
+      <div id="recipeTitle" class="recipe-title"></div>
+      <div id="recipeCounter" class="recipe-counter"></div>
+    </div>
+
+    <div id="recipeIngredients" class="recipe-tags"></div>
+
+    <div class="recipe-step">
+      <b>Vorbereitung</b>
+      <div id="recipePrep"></div>
+    </div>
+
+    <div class="recipe-step">
+      <b>Zubereitung</b>
+      <div id="recipeCook"></div>
+    </div>
+
+    <div class="recipe-meta">
+      <div>🔥 <span id="recipeTemp"></span></div>
+      <div>⏱ <span id="recipeTime"></span></div>
+      <div>🔄 <span id="recipeShake"></span></div>
+      <div>🍽 <span id="recipePortion"></span></div>
+    </div>
+
+    <button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
+
   </div>
 
 </div>
-
-  <div id="recipeIngredients" class="recipe-tags"></div>
-
-  <div class="recipe-step">
-    <b>Vorbereitung</b>
-    <div id="recipePrep"></div>
-  </div>
-
-  <div class="recipe-step">
-    <b>Zubereitung</b>
-    <div id="recipeCook"></div>
-  </div>
-
-  <div class="recipe-meta">
-    <div>🔥 <span id="recipeTemp"></span></div>
-    <div>⏱ <span id="recipeTime"></span></div>
-    <div>🔄 <span id="recipeShake"></span></div>
-    <div>🍽 <span id="recipePortion"></span></div>
-  </div>
-
-  <button class="uke-btn" onclick="nextRecipe()">▶ Next Recipe</button>
-
-</div>
-
-</div>
-
-
-   
 
 
 <div class="section">
