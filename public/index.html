@@ -2063,7 +2063,7 @@ function renderFinanceExtras(container, news, sources){
   `
     }
 
-  function renderTravelExtras(container, travel){
+  async function renderTravelExtras(container, travel){
 
   if(!travel || !travel.length){
     document.getElementById(container).innerHTML = ""
@@ -2071,17 +2071,26 @@ function renderFinanceExtras(container, news, sources){
   }
 
   const t = travel[travelIndex]
-
   const topic = t.title || "Reiseinspiration"
 
-  const travelSources = [
-    {name:"Lonely Planet", url:"https://www.lonelyplanet.com"},
-    {name:"National Geographic Travel", url:"https://www.nationalgeographic.com/travel"},
-    {name:"Tripadvisor", url:"https://www.tripadvisor.de"},
-    {name:"Google Travel", url:"https://www.google.com/travel"},
+  const user = await getUserPosition()
+
+  let travelSources = [
+    {name:"DERTOUR", url:"https://www.dertour.de"},
+    {name:"TUI", url:"https://www.tui.com"},
+    {name:"HolidayCheck", url:"https://www.holidaycheck.de"},
     {name:"Booking", url:"https://www.booking.com"},
-    {name:"Airbnb", url:"https://www.airbnb.de"}
+    {name:"Airbnb", url:"https://www.airbnb.de"},
+    {name:"Google Travel", url:"https://www.google.com/travel"}
   ]
+
+  // 📍 Geo Bonus (optional)
+  if(user){
+    travelSources.unshift(
+      {name:"Check24 Reisen", url:"https://www.check24.de/reisen"},
+      {name:"Ab in den Urlaub", url:"https://www.ab-in-den-urlaub.de"}
+    )
+  }
 
   document.getElementById(container).innerHTML = `
     <div class="finance-extras">
@@ -2100,7 +2109,8 @@ function renderFinanceExtras(container, news, sources){
 
     </div>
   `
-  }
+    
+}
 /* =========================
    TRAVEL
 ========================= */
