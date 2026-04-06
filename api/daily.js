@@ -1305,6 +1305,11 @@ quote: quote || null,
     regional: finalFeed?.regional || []
   },
 
+   traffic: buildTraffic({
+  today: finalFeed?.today || [],
+  week: finalFeed?.week || []
+}),
+
   language: languages || [],
 
   // 👉 WICHTIG: IMMER GLEICHER TYP
