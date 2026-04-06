@@ -2078,7 +2078,7 @@ function renderTravel(data){
 
     <div class="travel-card">
 
-      <img src="${t.image}" alt="Travel">
+      <img src="${t.image || getTravelImage(t)}" alt="Travel">
 
       <div class="travel-text">
         <h3>${t.title || ""}</h3>
