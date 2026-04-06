@@ -1945,7 +1945,25 @@ const highlight =
 
 document.getElementById("financeNewsBlock").innerHTML = financeHTML
 
+document.getElementById("financeExtras").innerHTML = `
 
+  <div class="finance-extras">
+
+    <div class="finance-highlight">
+      🔎 Heute im Fokus: ${topic}
+    </div>
+
+    <div class="finance-links">
+      ${financeSources.map(s => `
+        <a href="${s.url}" target="_blank" class="finance-link">
+          ${s.name}
+        </a>
+      `).join("")}
+    </div>
+
+  </div>
+
+`
 
 /* REGIONAL */
 if(data.regional?.length){
