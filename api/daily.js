@@ -1334,6 +1334,42 @@ all.forEach(e => {
 
   return traffic
 }   
+
+
+ const trafficList = buildTraffic({
+  today: finalFeed?.today || [],
+  week: finalFeed?.week || []
+})
+
+function getTrafficStatus(list){
+
+  if(!list.length){
+    return {
+      text: "freie Fahrt",
+      icon: "✅"
+    }
+  }
+
+  // 🔥 Priorität: Sperrung > viel Verkehr
+  const critical = list.find(e =>
+    e.text.toLowerCase().includes("sperr") ||
+    e.text.toLowerCase().includes("umleitung")
+  )
+
+  if(critical){
+    return {
+      text: critical.title,
+      icon: "🚧"
+    }
+  }
+
+  return {
+    text: "Verkehr erhöht",
+    icon: "⚠️"
+  }
+}
+
+const trafficStatus = getTrafficStatus(trafficList)
    
    
 /* =======================================================
@@ -1354,7 +1390,8 @@ quote: quote || null,
     regional: finalFeed?.regional || []
   },
 
-   traffic: buildTraffic({
+   traffic: trafficList,
+trafficStatus: trafficStatus,
   today: finalFeed?.today || [],
   week: finalFeed?.week || []
 }),
