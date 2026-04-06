@@ -740,10 +740,10 @@ try {
 }
 
 /* FALLBACK = letzter bekannter Wert */
+let lastDax = markets.dax.value
+
 if (!markets.dax.value || markets.dax.value === "-") {
-  markets.dax.value = "n/a"
-  markets.dax.time = marketDateString
-  markets.dax.trend = "yellow"
+  markets.dax.value = lastDax || "n/a"
 }
 
 /* ===================== OIL FINAL ===================== */
