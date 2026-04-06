@@ -1136,32 +1136,58 @@ function getNextDateFromWeekday(weekday){
 
 function getFinanceHighlight(news){
 
-  if(!news || !news.length) return null
+  if(!news || !news.length) return "Keine klare Entwicklung erkennbar"
 
-  const keywords = [
-    {key:"inflation", label:"Inflation"},
-    {key:"zins", label:"Zinsen"},
-    {key:"ezb", label:"EZB"},
-    {key:"fed", label:"US-Notenbank"},
-    {key:"energie", label:"Energiepreise"},
-    {key:"öl", label:"Ölmarkt"},
-    {key:"gas", label:"Gaspreise"},
-    {key:"china", label:"China"},
-    {key:"usa", label:"USA"},
-    {key:"auto", label:"Automarkt"},
-    {key:"immobilien", label:"Immobilien"},
-    {key:"wirtschaft", label:"Konjunktur"},
-    {key:"rezession", label:"Rezession"},
-    {key:"aktien", label:"Aktienmarkt"},
-    {key:"bitcoin", label:"Krypto"}
-  ]
+  const title = news[0].title
 
-  const text = news.map(n => n.title.toLowerCase()).join(" ")
+  const t = title.toLowerCase()
 
-  for(const k of keywords){
-    if(text.includes(k.key)){
-      return k.label
-    }
+  /* =====================
+     REGELN (SMARTER)
+  ===================== */
+
+  if(t.includes("e-auto") || t.includes("elektro")){
+    return "E-Mobilität gewinnt weiter an Bedeutung"
+  }
+
+  if(t.includes("sprit") || t.includes("benzin") || t.includes("energie")){
+    return "Hohe Energiepreise beeinflussen Konsum und Mobilität"
+  }
+
+  if(t.includes("inflation")){
+    return "Inflation bleibt ein treibender Faktor für die Wirtschaft"
+  }
+
+  if(t.includes("zins") || t.includes("ezb") || t.includes("fed")){
+    return "Zinsentscheidungen prägen aktuell die Märkte"
+  }
+
+  if(t.includes("china")){
+    return "China bleibt ein entscheidender Faktor für die Weltwirtschaft"
+  }
+
+  if(t.includes("immobilien")){
+    return "Immobilienmarkt zeigt strukturelle Veränderungen"
+  }
+
+  if(t.includes("rezession")){
+    return "Konjunktursorgen nehmen weiter zu"
+  }
+
+  if(t.includes("aktien") || t.includes("börse")){
+    return "Aktienmärkte reagieren sensibel auf aktuelle Entwicklungen"
+  }
+
+  if(t.includes("bitcoin") || t.includes("krypto")){
+    return "Kryptomärkte bleiben volatil und spekulativ"
+  }
+
+  /* =====================
+     FALLBACK (WICHTIG)
+  ===================== */
+
+  return title   // 👉 lieber echter Titel als leeres Label
+}
   }
 
   return "Finanzmärkte"
