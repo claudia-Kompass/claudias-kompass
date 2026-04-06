@@ -1227,12 +1227,14 @@ function renderPoliticsExtras(container, news){
   const topic = getPoliticsHighlight(news)
 
   const politicsSources = [
-    {name:"Tagesschau", url:"https://www.tagesschau.de"},
-    {name:"Spiegel", url:"https://www.spiegel.de"},
-    {name:"Zeit", url:"https://www.zeit.de"},
-    {name:"FAZ", url:"https://www.faz.net"},
-    {name:"BBC World", url:"https://www.bbc.com/news"},
-    {name:"CNN", url:"https://edition.cnn.com"}
+  {name:"Tagesschau", url:"https://www.tagesschau.de"},
+  {name:"Spiegel", url:"https://www.spiegel.de"},
+  {name:"Zeit", url:"https://www.zeit.de"},
+  {name:"FAZ", url:"https://www.faz.net"},
+  {name:"BBC World", url:"https://www.bbc.com/news"},
+  {name:"CNN", url:"https://edition.cnn.com"},
+  {name:"BILD", url:"https://m.bild.de"}   // ✅ neu
+    
   ]
 
   document.getElementById(container).innerHTML = `
