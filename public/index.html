@@ -2030,9 +2030,6 @@ const financeSources = [
   {name:"BBC Business", url:"https://www.bbc.com/news/business"}
 ]
 
-const highlight =
-  financeSources[Math.floor(Math.random()*financeSources.length)]
-
 document.getElementById("financeNewsBlock").innerHTML = financeHTML
 
 renderFinanceExtras("financeExtras", data.financeNews, financeSources)
