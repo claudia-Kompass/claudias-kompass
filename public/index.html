@@ -1167,6 +1167,29 @@ function getFinanceHighlight(news){
   return "Finanzmärkte"
 }
 
+function renderExtras(container, news, sources){
+
+  const topic = getFinanceHighlight(news)
+
+  document.getElementById(container).innerHTML = `
+    <div class="finance-extras">
+
+      <div class="finance-highlight">
+        🔎 Heute im Fokus: ${topic}
+      </div>
+
+      <div class="finance-links">
+        ${sources.map(s => `
+          <a href="${s.url}" target="_blank" class="finance-link">
+            ${s.name}
+          </a>
+        `).join("")}
+      </div>
+
+    </div>
+  `
+}
+
   
 function parseEvent(e){
 
