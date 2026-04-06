@@ -2075,14 +2075,14 @@ function renderFinanceExtras(container, news, sources){
 
   const user = await getUserPosition()
 
-  let travelSources = [
-    {name:"DERTOUR", url:"https://www.dertour.de"},
-    {name:"TUI", url:"https://www.tui.com"},
-    {name:"HolidayCheck", url:"https://www.holidaycheck.de"},
-    {name:"Booking", url:"https://www.booking.com"},
-    {name:"Airbnb", url:"https://www.airbnb.de"},
-    {name:"Google Travel", url:"https://www.google.com/travel"}
-  ]
+ let travelSources = [
+  {name:"GEO Reisen", url:"https://www.geo.de/reisen/themen/geo-saison-30021116.html"},
+  {name:"DERTOUR Magazin", url:"https://www.dertour.de/reisemagazin/natur-aktiv"},
+  {name:"Travelbook", url:"https://www.travelbook.de/"},
+  {name:"Reisemagazin Online", url:"https://reisemagazin-online.com/"},
+  {name:"SKR Reisen Blog", url:"https://www.skr.de/blog/"},
+  {name:"TUI Inspiration", url:"https://www.tui.com/blog"}
+]
 
   // 📍 Geo Bonus (optional)
   if(user){
