@@ -1286,6 +1286,50 @@ if (!markets.nexo?.usd || markets.nexo.usd === "-") {
 
 console.log("FINAL FEED LENGTH:", finalFeed.length)
 console.log("FIRST ITEM:", finalFeed[0])
+
+
+/* =========================
+   TRAFFIC BUILDER
+========================= */
+
+function buildTraffic(events){
+
+  const traffic = []
+
+  const keywords = [
+    {key:"markt", text:"Markt – Parkplatzsituation eingeschränkt", icon:"🏘"},
+    {key:"jobbörse", text:"Erhöhtes Verkehrsaufkommen", icon:"🚗"},
+    {key:"zirkus", text:"Umleitungen und Parkdruck möglich", icon:"🎪"},
+    {key:"messe", text:"Großer Besucherandrang erwartet", icon:"🚧"},
+    {key:"jakobi", text:"Großevent – Sperrungen rund um Innenstadt", icon:"🚧"},
+    {key:"automarkt", text:"Verkehr rund um Veranstaltungsfläche erhöht", icon:"🚗"}
+  ]
+
+  const all = [
+    ...(events.today || []),
+    ...(events.week || [])
+  ]
+
+  all.forEach(e => {
+
+    const title = (e.title || "").toLowerCase()
+
+    keywords.forEach(k => {
+      if(title.includes(k.key)){
+        traffic.push({
+          title: e.title,
+          text: k.text,
+          location: e.city,
+          icon: k.icon
+        })
+      }
+    })
+
+  })
+
+  return traffic
+}   
+   
    
 /* =======================================================
 RESPONSE
