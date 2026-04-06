@@ -1910,6 +1910,8 @@ if(data.news && data.news.length){
 
 let financeHTML = ""
 
+const topic = getFinanceHighlight(data.financeNews)
+    
 if(data.financeNews && data.financeNews.length){
 
   financeHTML += data.financeNews.slice(0,3).map(n => `
