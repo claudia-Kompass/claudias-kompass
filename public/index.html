@@ -1958,24 +1958,18 @@ if(data.quote){
 
 /* NEWS */
 if(data.news && data.news.length){
+if(data.news && data.news.length){
 
-  document.getElementById("newsBlock").innerHTML =
-    data.news.map(n => `
-      <div class="newsItem">
-        <div style="font-weight:600">${n.title}</div>
-        <a href="${n.url}" target="_blank" class="news-link">
-          weiterlesen →
-        </a>
-        <div class="newsSource">${n.source}</div>
-      </div>
-    `).join("")
+  document.getElementById("newsBlock").innerHTML = ...
 
 }else{
 
   document.getElementById("newsBlock").innerHTML =
     "<div style='opacity:.6'>Keine Nachrichten</div>"
+}
 
-
+/* ✅ HIER */
+renderPoliticsExtras("newsExtras", data.news)
 
 /* =================
     FINANCE NEWS 
