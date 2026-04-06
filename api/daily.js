@@ -1310,9 +1310,14 @@ function buildTraffic(events){
     ...(events.week || [])
   ]
 
-  all.forEach(e => {
+  const allowedCities = ["Ilshofen", "Schwäbisch Hall"]
 
-    const title = (e.title || "").toLowerCase()
+all.forEach(e => {
+
+  // 🔥 FILTER (entscheidend)
+  if(!e.city || !allowedCities.includes(e.city)) return
+
+  const title = (e.title || "").toLowerCase()
 
     keywords.forEach(k => {
       if(title.includes(k.key)){
