@@ -1943,24 +1943,6 @@ const financeSources = [
 const highlight =
   financeSources[Math.floor(Math.random()*financeSources.length)]
 
-financeHTML += `
-  <div class="newsItem">
-
-    <div style="font-weight:600">
-      🔎 Heute im Fokus: ${topic}
-    </div>
-
-    <div style="margin-top:8px">
-      ${financeSources.map(s => `
-        <a href="${s.url}" target="_blank" class="news-link">
-          ${s.name}
-        </a>
-      `).join(" • ")}
-    </div>
-
-  </div>
-`
-
 document.getElementById("financeNewsBlock").innerHTML = financeHTML
 
 
