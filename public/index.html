@@ -2060,6 +2060,44 @@ function renderFinanceExtras(container, news, sources){
   `
     }
 
+  function renderTravelExtras(container, travel){
+
+  if(!travel || !travel.length){
+    document.getElementById(container).innerHTML = ""
+    return
+  }
+
+  const t = travel[travelIndex]
+
+  const topic = t.title || "Reiseinspiration"
+
+  const travelSources = [
+    {name:"Lonely Planet", url:"https://www.lonelyplanet.com"},
+    {name:"National Geographic Travel", url:"https://www.nationalgeographic.com/travel"},
+    {name:"Tripadvisor", url:"https://www.tripadvisor.de"},
+    {name:"Google Travel", url:"https://www.google.com/travel"},
+    {name:"Booking", url:"https://www.booking.com"},
+    {name:"Airbnb", url:"https://www.airbnb.de"}
+  ]
+
+  document.getElementById(container).innerHTML = `
+    <div class="finance-extras">
+
+      <div class="finance-highlight">
+        🧭 Einordnung: ${topic}
+      </div>
+
+      <div class="finance-links">
+        ${travelSources.map(s => `
+          <a href="${s.url}" target="_blank" class="finance-link">
+            ${s.name}
+          </a>
+        `).join("")}
+      </div>
+
+    </div>
+  `
+  }
 /* =========================
    TRAVEL
 ========================= */
