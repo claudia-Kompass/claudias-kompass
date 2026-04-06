@@ -741,7 +741,7 @@ try {
 
 /* FALLBACK = letzter bekannter Wert */
 if (!markets.dax.value || markets.dax.value === "-") {
-  markets.dax.value = "~20.000"
+  markets.dax.value = "n/a"
   markets.dax.time = marketDateString
   markets.dax.trend = "yellow"
 }
