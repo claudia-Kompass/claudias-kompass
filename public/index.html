@@ -1135,12 +1135,7 @@ function getFinanceHighlight(news){
   if(!news || !news.length) return "Keine klare Entwicklung erkennbar"
 
   const title = news[0].title
-
   const t = title.toLowerCase()
-
-  /* =====================
-     REGELN (SMARTER)
-  ===================== */
 
   if(t.includes("e-auto") || t.includes("elektro")){
     return "E-Mobilität gewinnt weiter an Bedeutung"
@@ -1178,13 +1173,8 @@ function getFinanceHighlight(news){
     return "Kryptomärkte bleiben volatil und spekulativ"
   }
 
-  /* =====================
-     FALLBACK (WICHTIG)
-  ===================== */
-
-  return title   // 👉 lieber echter Titel als leeres Label
+  return title
 }
-  }
 
   return "Finanzmärkte"
 }
