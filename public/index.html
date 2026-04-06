@@ -1222,19 +1222,28 @@ function renderPoliticsExtras(container, news){
   `
 }
   
-function renderExtras(container, news, sources){
+function renderPoliticsExtras(container, news){
 
-  const topic = getFinanceHighlight(news)
+  const topic = getPoliticsHighlight(news)
+
+  const politicsSources = [
+    {name:"Tagesschau", url:"https://www.tagesschau.de"},
+    {name:"Spiegel", url:"https://www.spiegel.de"},
+    {name:"Zeit", url:"https://www.zeit.de"},
+    {name:"FAZ", url:"https://www.faz.net"},
+    {name:"BBC World", url:"https://www.bbc.com/news"},
+    {name:"CNN", url:"https://edition.cnn.com"}
+  ]
 
   document.getElementById(container).innerHTML = `
     <div class="finance-extras">
 
       <div class="finance-highlight">
-        🔎 Heute im Fokus: ${topic}
+        🧭 Einordnung: ${topic}
       </div>
 
       <div class="finance-links">
-        ${sources.map(s => `
+        ${politicsSources.map(s => `
           <a href="${s.url}" target="_blank" class="finance-link">
             ${s.name}
           </a>
@@ -1244,7 +1253,6 @@ function renderExtras(container, news, sources){
     </div>
   `
 }
-
   
 function parseEvent(e){
 
