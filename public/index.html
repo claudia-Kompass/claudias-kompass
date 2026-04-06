@@ -1133,6 +1133,41 @@ function getNextDateFromWeekday(weekday){
   return result
 }
 
+
+function getFinanceHighlight(news){
+
+  if(!news || !news.length) return null
+
+  const keywords = [
+    {key:"inflation", label:"Inflation"},
+    {key:"zins", label:"Zinsen"},
+    {key:"ezb", label:"EZB"},
+    {key:"fed", label:"US-Notenbank"},
+    {key:"energie", label:"Energiepreise"},
+    {key:"öl", label:"Ölmarkt"},
+    {key:"gas", label:"Gaspreise"},
+    {key:"china", label:"China"},
+    {key:"usa", label:"USA"},
+    {key:"auto", label:"Automarkt"},
+    {key:"immobilien", label:"Immobilien"},
+    {key:"wirtschaft", label:"Konjunktur"},
+    {key:"rezession", label:"Rezession"},
+    {key:"aktien", label:"Aktienmarkt"},
+    {key:"bitcoin", label:"Krypto"}
+  ]
+
+  const text = news.map(n => n.title.toLowerCase()).join(" ")
+
+  for(const k of keywords){
+    if(text.includes(k.key)){
+      return k.label
+    }
+  }
+
+  return "Finanzmärkte"
+}
+
+  
 function parseEvent(e){
 
   let date = null
