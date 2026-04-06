@@ -1523,6 +1523,24 @@ function renderTraffic(data){
   `).join("")
 }
 
+function renderTrafficStatus(data){
+
+  const el = document.getElementById("trafficTop")
+
+  if(!data?.trafficStatus){
+    el.innerHTML = ""
+    return
+  }
+
+  const t = data.trafficStatus
+
+  el.innerHTML = `
+    <div class="traffic-top">
+      ${t.icon} ${t.text}
+    </div>
+  `
+}
+
   
 function renderWeather(data){
 
