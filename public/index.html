@@ -1205,22 +1205,6 @@ function getPoliticsHighlight(news){
 
   return news[0].title
 }
-
-
-function renderPoliticsExtras(container, news){
-
-  const topic = getPoliticsHighlight(news)
-
-  document.getElementById(container).innerHTML = `
-    <div class="finance-extras">
-
-      <div class="finance-highlight">
-        🧭 Einordnung: ${topic}
-      </div>
-
-    </div>
-  `
-}
   
 function renderPoliticsExtras(container, news){
 
