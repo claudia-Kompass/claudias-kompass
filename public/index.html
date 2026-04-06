@@ -1957,9 +1957,19 @@ if(data.quote){
 ========================= */
 
 /* NEWS */
+/* NEWS */
 if(data.news && data.news.length){
 
- document.getElementById("newsBlock").innerHTML = ...
+  document.getElementById("newsBlock").innerHTML =
+    data.news.map(n => `
+      <div class="newsItem">
+        <div style="font-weight:600">${n.title}</div>
+        <a href="${n.url}" target="_blank" class="news-link">
+          weiterlesen →
+        </a>
+        <div class="newsSource">${n.source}</div>
+      </div>
+    `).join("")
 
 }else{
 
@@ -1967,7 +1977,7 @@ if(data.news && data.news.length){
     "<div style='opacity:.6'>Keine Nachrichten</div>"
 }
 
-/* ✅ HIER */
+/* ✅ IMMER DANACH */
 renderPoliticsExtras("newsExtras", data.news)
 
 /* =================
