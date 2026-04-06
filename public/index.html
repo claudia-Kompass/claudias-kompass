@@ -2076,27 +2076,27 @@ function renderTravel(data){
 
   document.getElementById("travelBlock").innerHTML = `
 
-    <div class="travel-card">
+  <div class="travel-card">
 
-      <img src="${t.image || getTravelImage(t)}" alt="Travel">
+    <img src="${t.image || getTravelImage(t)}" alt="Travel">
 
-      <div class="travel-text">
-        <h3>${t.title || ""}</h3>
-        <p>${t.text || ""}</p>
-      </div>
-
-      ${
-        t.url
-        ? `<a href="${t.url}" target="_blank" class="news-link">weiterlesen →</a>`
-        : ""
-      }
-
-      <button class="uke-btn" onclick="nextTravel()">
-        ▶ Next
-      </button>
-
+    <div class="travel-text">
+      <h3>${t.title || ""}</h3>
+      <p>${t.text || ""}</p>
     </div>
-  `
+
+    ${
+      t.url
+      ? `<a href="${t.url}" target="_blank" class="news-link">weiterlesen →</a>`
+      : ""
+    }
+
+    <button class="uke-btn" onclick="nextTravel()">
+      ▶ Next
+    </button>
+
+  </div>
+`
 }
 
 
