@@ -1175,6 +1175,35 @@ function getFinanceHighlight(news){
 
   return title
 }
+
+function getPoliticsHighlight(news){
+
+  if(!news || !news.length) return "Keine klare Entwicklung erkennbar"
+
+  const title = news[0].title.toLowerCase()
+
+  if(title.includes("krieg") || title.includes("konflikt")){
+    return "Geopolitische Spannungen bleiben ein dominanter Einflussfaktor"
+  }
+
+  if(title.includes("wahl")){
+    return "Politische Richtungsentscheidungen stehen im Fokus"
+  }
+
+  if(title.includes("klima")){
+    return "Klimapolitik gewinnt weiter an Bedeutung"
+  }
+
+  if(title.includes("migration")){
+    return "Migrationspolitik sorgt weiterhin für Spannungen"
+  }
+
+  if(title.includes("eu") || title.includes("brüssel")){
+    return "EU-Politik beeinflusst zunehmend nationale Entscheidungen"
+  }
+
+  return news[0].title
+}
   
 function renderExtras(container, news, sources){
 
