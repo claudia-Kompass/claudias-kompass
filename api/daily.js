@@ -1376,8 +1376,9 @@ const trafficStatus = getTrafficStatus(trafficList)
 RESPONSE
 ======================================================= */
 res.status(200).json({
-version: fullVersion,
-quote: quote || null,
+  version: fullVersion,
+  quote: quote || null,
+
   news: news || [],
   financeNews: financeNews || [],
   regional: regional || [],
@@ -1390,27 +1391,22 @@ quote: quote || null,
     regional: finalFeed?.regional || []
   },
 
-   traffic: trafficList,
-trafficStatus: trafficStatus,
-  today: finalFeed?.today || [],
-  week: finalFeed?.week || []
-}),
+  // 🔥 TRAFFIC
+  traffic: trafficList,
+  trafficStatus: trafficStatus,
 
   language: languages || [],
 
-  // 👉 WICHTIG: IMMER GLEICHER TYP
   travel: travelDB || [],
-travelToday: travel || null,
-   
+  travelToday: travel || null,
+
   recipes: recipes || [],
   recipe: recipeToday || null,
 
-  // 👉 DAS HAT DIR GEFEHLT
   ukulele: ukuleleSongs || [],
 
   markets: markets || {},
 
-  // 👉 NIEMALS undefined
   weather: weather || { temp: 0, trend: {} }
 })
 }catch(err){
