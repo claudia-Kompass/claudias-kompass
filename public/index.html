@@ -1484,7 +1484,37 @@ function getSurpriseEvent(data){
   return upcoming[Math.floor(Math.random() * upcoming.length)]
 }
 
-   
+function renderTraffic(data){
+
+  const container = document.getElementById("trafficBlock")
+
+  if(!data?.traffic || !data.traffic.length){
+    container.innerHTML =
+      "<div style='opacity:.6'>Keine aktuellen Einschränkungen</div>"
+    return
+  }
+
+  container.innerHTML = data.traffic.map(t => `
+    <div class="newsItem">
+      <div style="font-weight:600">
+        ${t.icon || "🚧"} ${t.title}
+      </div>
+
+      <div style="opacity:.85">
+        ${t.text || ""}
+      </div>
+
+      ${t.location ? `<div class="small">📍 ${t.location}</div>` : ""}
+
+      ${t.url
+        ? `<a href="${t.url}" target="_blank" class="news-link">Details →</a>`
+        : ""
+      }
+    </div>
+  `).join("")
+}
+
+  
 function renderWeather(data){
 
   const now = document.getElementById("weatherNow")
