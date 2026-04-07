@@ -1977,7 +1977,9 @@ document.getElementById("meta").innerHTML =
 
 buildRadar(data).then(radar => {
 
-  const temp = data.weather?.temp || "--"
+ const icon = weatherIcon(data.weather?.code || 0)
+
+const weatherPart = `${icon} ${temp}°C`
 
   // 🔥 TRAFFIC
   let trafficPart = ""
