@@ -2467,14 +2467,16 @@ window.nextTravel = function(){
   renderTravel(data)
   renderTravelExtras("travelExtras", travelList)
 }
-  
+
 renderTraffic(data)
 renderWeather(data)
-}
 
+/* ✅ HIER REIN */
 document.querySelectorAll(".sectionContent").forEach(el=>{
   el.style.maxHeight = el.scrollHeight + "px"
 })
+
+} // <-- Ende von render()
   
 function toggleLang(card){
 card.classList.toggle("open")
