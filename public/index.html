@@ -2468,6 +2468,10 @@ window.nextTravel = function(){
   renderTravelExtras("travelExtras", travelList)
 }
 
+document.querySelectorAll(".sectionContent").forEach(el=>{
+  el.style.maxHeight = el.scrollHeight + "px"
+})
+  
 renderTraffic(data)
 renderWeather(data)
 }
