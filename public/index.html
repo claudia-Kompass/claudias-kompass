@@ -2003,18 +2003,16 @@ function toggleSection(header){
   const content = section.querySelector(".sectionContent")
   const icon = header.querySelector(".toggleIcon")
 
-  section.classList.toggle("collapsed")
+  const isCollapsed = section.classList.toggle("collapsed")
 
-  if(section.classList.contains("collapsed")){
+  if(isCollapsed){
     content.style.maxHeight = "0px"
     icon.innerText = "▶"
   }else{
     content.style.maxHeight = content.scrollHeight + "px"
     icon.innerText = "▼"
   }
-
-}
-
+    }
 
 
 
