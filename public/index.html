@@ -2673,21 +2673,7 @@ function toggleDay(el){
 }
 
 function toggleSection(header){
-
-  const section = header.parentElement
-  const content = section.querySelector(".sectionContent")
-  const icon = header.querySelector(".toggleIcon")
-
-  const isCollapsed = section.classList.toggle("collapsed")
-
-  if(isCollapsed){
-    content.style.maxHeight = "0px"
-    icon.innerText = "▶"
-  }else{
-    content.style.maxHeight = content.scrollHeight + "px"
-    icon.innerText = "▼"
-  }
-}
+function toggleSection(header){
 
   const section = header.parentElement
   const content = section.querySelector(".sectionContent")
