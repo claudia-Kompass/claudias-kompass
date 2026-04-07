@@ -2476,6 +2476,10 @@ renderTraffic(data)
 renderWeather(data)
 }
 
+document.querySelectorAll(".sectionContent").forEach(el=>{
+  el.style.maxHeight = el.scrollHeight + "px"
+})
+  
 function toggleLang(card){
 card.classList.toggle("open")
 }
