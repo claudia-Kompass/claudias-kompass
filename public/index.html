@@ -1977,7 +1977,11 @@ document.getElementById("meta").innerHTML =
 
 buildRadar(data).then(radar => {
 
- const icon = weatherIcon(data.weather?.code || 0)
+  const temp = (data.weather && data.weather.temp !== undefined)
+  ? data.weather.temp
+  : "--"
+
+const icon = weatherIcon(data.weather?.code || 0)
 
 const weatherPart = `${icon} ${temp}°C`
 
