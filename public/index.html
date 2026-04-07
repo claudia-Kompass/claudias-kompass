@@ -2664,23 +2664,34 @@ renderUkulele(ukeSongs[ukeIndex])
   
 function toggleDay(el){
 
-const content = el.nextElementSibling
+  const content = el.nextElementSibling
+  if(!content) return
 
-if(!content) return
-
-if(content.style.display === "block"){
-
-content.style.display = "none"
-el.innerHTML = el.innerHTML.replace("▼","▶")
-
-}else{
-
-content.style.display = "block"
-el.innerHTML = el.innerHTML.replace("▶","▼")
-
+  if(content.style.display === "block"){
+    content.style.display = "none"
+    el.innerHTML = el.innerHTML.replace("▼","▶")
+  }else{
+    content.style.display = "block"
+    el.innerHTML = el.innerHTML.replace("▶","▼")
+  }
 }
 
 function toggleSection(header){
+
+  const section = header.parentElement
+  const content = section.querySelector(".sectionContent")
+  const icon = header.querySelector(".toggleIcon")
+
+  const isCollapsed = section.classList.toggle("collapsed")
+
+  if(isCollapsed){
+    content.style.maxHeight = "0px"
+    icon.innerText = "▶"
+  }else{
+    content.style.maxHeight = content.scrollHeight + "px"
+    icon.innerText = "▼"
+  }
+}
 
   const section = header.parentElement
   const content = section.querySelector(".sectionContent")
