@@ -1978,20 +1978,37 @@ document.getElementById("meta").innerHTML =
 buildRadar(data).then(radar => {
 
   const temp = data.weather?.temp || "--"
-  const surprise = getSurpriseEvent(data)
 
-  const line = `
-☀️ ${temp}°C
-${radar.today ? " • 🔥 <b>" + radar.today.title + "</b>" : ""}
-${radar.next ? " • 📅 " + radar.next.title : ""}
-${radar.nearest ? " • 📍 " + radar.nearest.distance + " km" : ""}
-${surprise ? " • ✨ " + surprise.title : ""}
-`
+  // 🔥 TRAFFIC
+  let trafficPart = ""
+  if(data.trafficStatus){
+    trafficPart = `${data.trafficStatus.icon} ${data.trafficStatus.text}`
+  }
+
+  // 🔥 DANCE
+  let dancePart = ""
+  if(radar.today){
+    dancePart = `💃 ${radar.today.title}`
+  }
+
+  // 🔥 EVENT
+  let eventPart = ""
+  if(radar.next){
+    eventPart = `📅 ${radar.next.title}`
+  }
+
+  const parts = [
+    `☀️ ${temp}°C`,
+    trafficPart,
+    dancePart,
+    eventPart
+  ].filter(Boolean)
 
   document.getElementById("dailyRadar").innerHTML =
-    line || "Heute ruhig"
+    parts.join(" • ")
 
 })
+  
 /* =========================
    REST UNVERÄNDERT
 ========================= */
