@@ -1998,11 +1998,11 @@ buildRadar(data).then(radar => {
   }
 
   const parts = [
-    `☀️ ${temp}°C`,
-    trafficPart,
-    dancePart,
-    eventPart
-  ].filter(Boolean)
+  weatherPart,
+  trafficPart,
+  dancePart,
+  eventPart
+].filter(Boolean)
 
   document.getElementById("dailyRadar").innerHTML =
     parts.join(" • ")
