@@ -2007,37 +2007,64 @@ document.getElementById("meta").innerHTML =
 buildRadar(data).then(radar => {
 
   const temp = (data.weather && data.weather.temp !== undefined)
-  ? data.weather.temp
-  : "--"
+    ? data.weather.temp
+    : "--"
 
-const icon = weatherIcon(data.weather?.code || 0)
+  const icon = weatherIcon(data.weather?.code || 0)
+  const weatherPart = `${icon} ${temp}°C`
 
-const weatherPart = `${icon} ${temp}°C`
-
-  // 🔥 TRAFFIC
+  /* 🚗 TRAFFIC */
   let trafficPart = ""
   if(data.trafficStatus){
     trafficPart = `${data.trafficStatus.icon} ${data.trafficStatus.text}`
   }
 
-  // 🔥 DANCE
+  /* 🔥 HEUTE EVENTS (wichtiger als next) */
+  let todayEventPart = ""
+
+  if(data.events?.today?.length){
+    const e = data.events.today[0]
+
+    todayEventPart = `📍 ${e.title}`
+  }
+
+  /* 📅 NÄCHSTES EVENT */
+  let nextEventPart = ""
+
+  if(!todayEventPart && data.events?.week?.length){
+    const e = data.events.week[0]
+    nextEventPart = `📅 ${e.title}`
+  }
+
+  /* 💃 TANZ */
   let dancePart = ""
+
   if(radar.today){
     dancePart = `💃 ${radar.today.title}`
   }
 
-  // 🔥 EVENT
-  let eventPart = ""
-  if(radar.next){
-    eventPart = `📅 ${radar.next.title}`
+  /* 🚧 WORK / ROAD HINT */
+  let roadHint = ""
+
+  if(data.traffic && data.traffic.length){
+    const critical = data.traffic.find(t =>
+      t.text.toLowerCase().includes("sperr") ||
+      t.text.toLowerCase().includes("umleitung")
+    )
+
+    if(critical){
+      roadHint = "🚧 Strecke prüfen"
+    }
   }
 
   const parts = [
-  weatherPart,
-  trafficPart,
-  dancePart,
-  eventPart
-].filter(Boolean)
+    weatherPart,
+    trafficPart,
+    roadHint,
+    todayEventPart,
+    nextEventPart,
+    dancePart
+  ].filter(Boolean)
 
   document.getElementById("dailyRadar").innerHTML =
     parts.join(" • ")
