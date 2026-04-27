@@ -1,4 +1,4 @@
-<h1>TEST DEV VERSION</h1>
+7<h1>TEST DEV VERSION</h1>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -2006,6 +2006,7 @@ document.getElementById("meta").innerHTML =
 
 buildRadar(data).then(radar => {
 
+  /* ===== 🌤 WETTER ===== */
   const temp = (data.weather && data.weather.temp !== undefined)
     ? data.weather.temp
     : "--"
@@ -2013,56 +2014,52 @@ buildRadar(data).then(radar => {
   const icon = weatherIcon(data.weather?.code || 0)
   const weatherPart = `${icon} ${temp}°C`
 
-  /* 🚗 TRAFFIC */
+
+  /* ===== 🚗 ARBEITSWEG (PRIO) ===== */
   let trafficPart = ""
+
   if(data.trafficStatus){
-    trafficPart = `${data.trafficStatus.icon} ${data.trafficStatus.text}`
+
+    const t = data.trafficStatus.text.toLowerCase()
+
+    if(t.includes("sperr") || t.includes("umleitung")){
+      trafficPart = `🚧 Strecke prüfen`
+    }
+    else if(t.includes("erhöht")){
+      trafficPart = `⚠️ Verkehr`
+    }
+    else{
+      trafficPart = `✅ frei`
+    }
   }
 
-  /* 🔥 HEUTE EVENTS (wichtiger als next) */
-  let todayEventPart = ""
+
+  /* ===== 🔥 HEUTE / 📅 NEXT ===== */
+  let eventPart = ""
 
   if(data.events?.today?.length){
     const e = data.events.today[0]
-
-    todayEventPart = `📍 ${e.title}`
+    eventPart = `🔥 ${e.title}`
   }
-
-  /* 📅 NÄCHSTES EVENT */
-  let nextEventPart = ""
-
-  if(!todayEventPart && data.events?.week?.length){
+  else if(data.events?.week?.length){
     const e = data.events.week[0]
-    nextEventPart = `📅 ${e.title}`
+    eventPart = `📅 ${e.title}`
   }
 
-  /* 💃 TANZ */
+
+  /* ===== 💃 TANZ (BONUS) ===== */
   let dancePart = ""
 
   if(radar.today){
     dancePart = `💃 ${radar.today.title}`
   }
 
-  /* 🚧 WORK / ROAD HINT */
-  let roadHint = ""
 
-  if(data.traffic && data.traffic.length){
-    const critical = data.traffic.find(t =>
-      t.text.toLowerCase().includes("sperr") ||
-      t.text.toLowerCase().includes("umleitung")
-    )
-
-    if(critical){
-      roadHint = "🚧 Strecke prüfen"
-    }
-  }
-
+  /* ===== 🧩 FINAL ===== */
   const parts = [
     weatherPart,
     trafficPart,
-    roadHint,
-    todayEventPart,
-    nextEventPart,
+    eventPart,
     dancePart
   ].filter(Boolean)
 
