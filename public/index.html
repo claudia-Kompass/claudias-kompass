@@ -2015,23 +2015,55 @@ buildRadar(data).then(radar => {
   const weatherPart = `${icon} ${temp}°C`
 
 
-  /* ===== 🚗 ARBEITSWEG (PRIO) ===== */
-  let trafficPart = ""
+  /* ===== 🚗 ARBEITSWEG LEVEL 2 ===== */
+let trafficPart = ""
 
-  if(data.trafficStatus){
+let isCritical = false
+let isBusy = false
+let hasSHAEvent = false
 
-    const t = data.trafficStatus.text.toLowerCase()
+/* 1. Backend Traffic */
+if(data.trafficStatus){
 
-    if(t.includes("sperr") || t.includes("umleitung")){
-      trafficPart = `🚧 Strecke prüfen`
-    }
-    else if(t.includes("erhöht")){
-      trafficPart = `⚠️ Verkehr`
-    }
-    else{
-      trafficPart = `✅ frei`
-    }
+  const t = data.trafficStatus.text.toLowerCase()
+
+  if(t.includes("sperr") || t.includes("umleitung")){
+    isCritical = true
   }
+  else if(t.includes("erhöht")){
+    isBusy = true
+  }
+}
+
+/* 2. EVENTS HEUTE (SHA Fokus) */
+if(data.events?.today?.length){
+
+  hasSHAEvent = data.events.today.some(e => {
+
+    if(!e.city) return false
+
+    const city = e.city.toLowerCase()
+
+    return (
+      city.includes("schwäbisch hall") ||
+      city.includes("ilshofen")
+    )
+  })
+}
+
+/* 3. ENTSCHEIDUNG */
+if(isCritical){
+  trafficPart = "🚧 kritisch – Strecke prüfen"
+}
+else if(hasSHAEvent){
+  trafficPart = "⚠️ Parkplatz knapp (Kocherwiese)"
+}
+else if(isBusy){
+  trafficPart = "⚠️ Verkehr – früher los"
+}
+else{
+  trafficPart = "✅ entspannt fahren"
+}}
 
 
   /* ===== 🔥 HEUTE / 📅 NEXT ===== */
