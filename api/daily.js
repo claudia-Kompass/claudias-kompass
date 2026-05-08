@@ -1306,9 +1306,8 @@ function buildTraffic(events){
   ]
 
   const all = [
-    ...(events.today || []),
-    ...(events.week || [])
-  ]
+  ...(events.today || [])
+]
 
   const allowedCities = ["Ilshofen", "Schwäbisch Hall"]
 
