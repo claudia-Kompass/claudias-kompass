@@ -1303,7 +1303,7 @@ function buildParkingStatus(events){
   const all = [
     ...(events.today || [])
   ]
-
+   
   const blockingKeywords = [
     "jobbörse",
     "markt",
@@ -1312,7 +1312,8 @@ function buildParkingStatus(events){
     "zirkus",
     "großevent"
   ]
-
+console.log("PARKING EVENTS", all)
+   
   const blockingEvent = all.find(e => {
 
     const title = (e.title || "").toLowerCase()
