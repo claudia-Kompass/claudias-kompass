@@ -1413,7 +1413,10 @@ function getTrafficStatus(list){
 }
 
 const trafficStatus = getTrafficStatus(trafficList)
-   
+
+ const parkingStatus = buildParkingStatus({
+  today: finalFeed?.today || []
+})  
    
 /* =======================================================
 RESPONSE
