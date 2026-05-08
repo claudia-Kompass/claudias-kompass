@@ -1440,7 +1440,8 @@ res.status(200).json({
   // 🔥 TRAFFIC
   traffic: trafficList,
   trafficStatus: trafficStatus,
-
+parkingStatus: parkingStatus,
+   
   language: languages || [],
 
   travel: travelDB || [],
