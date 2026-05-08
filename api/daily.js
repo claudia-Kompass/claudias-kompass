@@ -1292,6 +1292,50 @@ console.log("FIRST ITEM:", finalFeed[0])
    TRAFFIC BUILDER
 ========================= */
 
+function buildParkingStatus(events){
+
+  const result = {
+    available: true,
+    level: "green",
+    text: "🅿️ Kocherwiese frei"
+  }
+
+  const all = [
+    ...(events.today || [])
+  ]
+
+  const blockingKeywords = [
+    "jobbörse",
+    "markt",
+    "messe",
+    "festival",
+    "zirkus",
+    "großevent"
+  ]
+
+  const blockingEvent = all.find(e => {
+
+    const title = (e.title || "").toLowerCase()
+    const city = (e.city || "").toLowerCase()
+
+    return (
+      city.includes("schwäbisch hall") &&
+      blockingKeywords.some(k => title.includes(k))
+    )
+  })
+
+  if(blockingEvent){
+
+    result.available = false
+    result.level = "yellow"
+    result.text = "🅿️ Kocherwiese belegt"
+    result.event = blockingEvent.title
+  }
+
+  return result
+}
+
+   
 function buildTraffic(events){
 
   const traffic = []
