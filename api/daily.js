@@ -1305,13 +1305,15 @@ function buildParkingStatus(events){
   ]
    
   const blockingKeywords = [
-    "jobbörse",
-    "markt",
-    "messe",
-    "festival",
-    "zirkus",
-    "großevent"
-  ]
+  "job",
+  "börse",
+  "messe",
+  "markt",
+  "event",
+  "festival",
+  "zirkus",
+  "kocherwiese"
+]
 console.log("PARKING EVENTS", all)
    
   const blockingEvent = all.find(e => {
