@@ -1322,7 +1322,7 @@ console.log("PARKING EVENTS", all)
     const city = (e.city || "").toLowerCase()
 
     return (
-      city.includes("Schwäbisch Hall") &&
+      city.includes("Hall") &&
       blockingKeywords.some(k => title.includes(k))
     )
   })
