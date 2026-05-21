@@ -2061,13 +2061,12 @@ else if(hasSHAEvent){
 else if(isBusy){
   trafficPart = "⚠️ Verkehr – früher los"
 }
+else if(data.parkingStatus && !data.parkingStatus.available){
+  trafficPart = data.parkingStatus.text
+}
 else{
-
-  if(data.parkingStatus?.available === false){
-    trafficPart = data.parkingStatus.text
-  }else{
-    trafficPart = "✅ entspannt fahren"
-  }
+  trafficPart = "✅ entspannt fahren"
+}
 
 }
   
