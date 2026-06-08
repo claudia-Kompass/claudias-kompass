@@ -1318,14 +1318,20 @@ console.log("PARKING EVENTS", all)
    
   const blockingEvent = all.find(e => {
 
-    const title = (e.title || "").toLowerCase()
-    const city = (e.city || "").toLowerCase()
+    const blockingEvent = all.find(e => {
 
-    return (
-      city.includes("Hall") &&
-      blockingKeywords.some(k => title.includes(k))
-    )
-  })
+  const title = (e.title || "").toLowerCase()
+  const city = (e.city || "").toLowerCase()
+
+  return (
+    (
+      city.includes("schwäbisch hall") ||
+      city.includes("ilshofen") ||
+      city.includes("crailsheim")
+    ) &&
+    blockingKeywords.some(k => title.includes(k))
+  )
+})
 
   if(blockingEvent){
 
