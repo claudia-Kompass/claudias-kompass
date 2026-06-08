@@ -1315,9 +1315,6 @@ function buildParkingStatus(events){
   "kocherwiese"
 ]
 console.log("PARKING EVENTS", all)
-   
-  const blockingEvent = all.find(e => {
-
     const blockingEvent = all.find(e => {
 
   const title = (e.title || "").toLowerCase()
