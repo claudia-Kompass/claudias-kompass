@@ -8,6 +8,7 @@ const danceDB = require("./data/dance")
 const travelDB = require("./data/travel")
 
 
+
 let rssCache = null
 let rssCacheTime = 0
 
@@ -1292,6 +1293,56 @@ console.log("FIRST ITEM:", finalFeed[0])
    TRAFFIC BUILDER
 ========================= */
 
+function buildParkingStatus(events){
+
+  const result = {
+    available: true,
+    level: "green",
+    text: "🅿️ Kocherwiese frei"
+  }
+
+  const all = [
+    ...(events.today || [])
+  ]
+   
+  const blockingKeywords = [
+  "job",
+  "börse",
+  "messe",
+  "markt",
+  "event",
+  "festival",
+  "zirkus",
+  "kocherwiese"
+]
+console.log("PARKING EVENTS", all)
+    const blockingEvent = all.find(e => {
+
+  const title = (e.title || "").toLowerCase()
+  const city = (e.city || "").toLowerCase()
+
+  return (
+    (
+      city.includes("schwäbisch hall") ||
+      city.includes("ilshofen") ||
+      city.includes("crailsheim")
+    ) &&
+    blockingKeywords.some(k => title.includes(k))
+  )
+})
+
+  if(blockingEvent){
+
+    result.available = false
+    result.level = "yellow"
+    result.text = "🅿️ Kocherwiese belegt"
+    result.event = blockingEvent.title
+  }
+
+  return result
+}
+
+   
 function buildTraffic(events){
 
   const traffic = []
@@ -1306,9 +1357,8 @@ function buildTraffic(events){
   ]
 
   const all = [
-    ...(events.today || []),
-    ...(events.week || [])
-  ]
+  ...(events.today || [])
+]
 
   const allowedCities = ["Ilshofen", "Schwäbisch Hall"]
 
@@ -1370,7 +1420,10 @@ function getTrafficStatus(list){
 }
 
 const trafficStatus = getTrafficStatus(trafficList)
-   
+
+ const parkingStatus = buildParkingStatus({
+  today: finalFeed?.today || []
+})  
    
 /* =======================================================
 RESPONSE
@@ -1394,7 +1447,8 @@ res.status(200).json({
   // 🔥 TRAFFIC
   traffic: trafficList,
   trafficStatus: trafficStatus,
-
+parkingStatus: parkingStatus,
+   
   language: languages || [],
 
   travel: travelDB || [],

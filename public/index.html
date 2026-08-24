@@ -1,9 +1,12 @@
-
-<!DOCTYPE html>
-<html lang="de">
+<body>
+  
+<div style="color:red;font-size:30px">
+TEST DEV VERSION
+</div>
 <head>
 <meta charset="UTF-8">
 <title>GLOBAL SOUL</title>
+
 
 <style>
 
@@ -84,14 +87,17 @@ margin-bottom:14px;
 }
 
 .headerRow{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;   /* statt space-between */
-  gap:14px;                     /* Abstand zwischen Text & Kompass */
+    display:block;
+    width:100%;
+    text-align:center;
 }
 
-.headerRow h1{
-  margin:0;
+.masterLogo{
+    display:block;
+    width:100%;
+    max-width:430px;
+    height:auto;
+    margin:0 auto 18px auto;
 }
   
 .tagline{
@@ -650,18 +656,14 @@ z-index:9999;
   background: rgba(0,0,0,0.25);
 }
   
-##travelBlock .newsSource{
+#travelBlock .newsSource{
   font-size:22px;
   font-weight:600;
   font-style:italic;
-  line-height:1.4;
-  color:#f1d48a;
-}
-  font-weight:600;         /* leicht fett */
-  font-style:italic;       /* emotional */
   line-height:1.6;
-  color:#f1d48a;           /* Gold = Fokus */
+  color:#f1d48a;
   letter-spacing:0.3px;
+  margin-top:14px;
 }
 
 #travelBlock .newsSource{
@@ -967,9 +969,10 @@ blockquote {
 
 <header class="header">
 
-  <div class="headerRow">
-  <h1>🌍 GLOBAL SOUL</h1>
-  <span class="compass" id="compass">🧭</span>
+<div class="headerRow">
+    <img class="masterLogo"
+         src="/images/GLOBAL_SOUL_Masterlogo_transparent.png"
+         alt="GLOBAL SOUL">
 </div>
 
   <div class="subtitle">Claudia’s Daily Compass</div>
@@ -1389,6 +1392,24 @@ function buildEvents(data){
    GEO LOCATION
 ========================= */
 
+  function calcDistance(lat1, lon1, lat2, lon2){
+
+  const R = 6371
+
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+
+  const a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI/180) *
+    Math.cos(lat2 * Math.PI/180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+
+  return Math.round(R * c)
+}
+  
 function getUserPosition(){
   return new Promise(resolve=>{
     if(!navigator.geolocation){
@@ -1932,9 +1953,10 @@ renderTravel(data)
 renderTravelExtras("travelExtras", travelList)
 window.langTexts = data.language || []
    
-document.getElementById("versionTag").innerText = data.version.startsWith("v")
-  ? data.version
-  : "v" + data.version;
+document.getElementById("versionTag").innerText =
+  data.version
+    ? (data.version.startsWith("v") ? data.version : "v" + data.version)
+    : "DEV";
 const now = new Date()
 
 renderMarkets(data)
@@ -2006,38 +2028,98 @@ document.getElementById("meta").innerHTML =
 
 buildRadar(data).then(radar => {
 
+  /* ===== 🌤 WETTER ===== */
   const temp = (data.weather && data.weather.temp !== undefined)
-  ? data.weather.temp
-  : "--"
+    ? data.weather.temp
+    : "--"
 
-const icon = weatherIcon(data.weather?.code || 0)
+  const icon = weatherIcon(data.weather?.code || 0)
+  const weatherPart = `${icon} ${temp}°C`
 
-const weatherPart = `${icon} ${temp}°C`
 
-  // 🔥 TRAFFIC
-  let trafficPart = ""
-  if(data.trafficStatus){
-    trafficPart = `${data.trafficStatus.icon} ${data.trafficStatus.text}`
+/* ===== 🚗 ARBEITSWEG LEVEL 2 ===== */
+let trafficPart = ""
+
+let isCritical = false
+let isBusy = false
+let hasSHAEvent = false
+
+/* 1. Backend Traffic */
+if(data.trafficStatus){
+
+  const t = data.trafficStatus.text.toLowerCase()
+
+  if(t.includes("sperr") || t.includes("umleitung")){
+    isCritical = true
+  }
+  else if(t.includes("erhöht")){
+    isBusy = true
+  }
+}
+
+/* 2. EVENTS HEUTE (SHA Fokus) */
+if(data.events?.today?.length){
+
+  hasSHAEvent = data.events.today.some(e => {
+
+    if(!e.city) return false
+
+    const city = e.city.toLowerCase()
+
+    return (
+      city.includes("schwäbisch hall") ||
+      city.includes("ilshofen")
+    )
+  })
+}
+
+/* 3. ENTSCHEIDUNG */
+if(isCritical){
+  trafficPart = "🚧 kritisch – Strecke prüfen"
+}
+else if(hasSHAEvent){
+  trafficPart = "⚠️ Parkplatz knapp (Kocherwiese)"
+}
+else if(isBusy){
+  trafficPart = "⚠️ Verkehr – früher los"
+}
+else if(data.parkingStatus && !data.parkingStatus.available){
+  trafficPart = data.parkingStatus.text
+}
+else{
+  trafficPart = "✅ entspannt fahren"
+}
+
+}
+  
+  /* ===== 🔥 HEUTE / 📅 NEXT ===== */
+  let eventPart = ""
+
+  if(data.events?.today?.length){
+    const e = data.events.today[0]
+    eventPart = `🔥 ${e.title}`
+  }
+  else if(data.events?.week?.length){
+    const e = data.events.week[0]
+    eventPart = `📅 ${e.title}`
   }
 
-  // 🔥 DANCE
+
+  /* ===== 💃 TANZ (BONUS) ===== */
   let dancePart = ""
+
   if(radar.today){
     dancePart = `💃 ${radar.today.title}`
   }
 
-  // 🔥 EVENT
-  let eventPart = ""
-  if(radar.next){
-    eventPart = `📅 ${radar.next.title}`
-  }
 
+  /* ===== 🧩 FINAL ===== */
   const parts = [
-  weatherPart,
-  trafficPart,
-  dancePart,
-  eventPart
-].filter(Boolean)
+    weatherPart,
+    trafficPart,
+    eventPart,
+    dancePart
+  ].filter(Boolean)
 
   document.getElementById("dailyRadar").innerHTML =
     parts.join(" • ")
@@ -2675,7 +2757,6 @@ function toggleDay(el){
 }
 
 function toggleSection(header){
-function toggleSection(header){
 
   const section = header.parentElement
   const content = section.querySelector(".sectionContent")
@@ -2693,7 +2774,6 @@ function toggleSection(header){
 }
 
   
-}
 
 function renderDance(dance){
 
