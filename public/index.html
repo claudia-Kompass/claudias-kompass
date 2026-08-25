@@ -9,20 +9,36 @@
 <style>
 
 body{
-  background:linear-gradient(
-    180deg,
-    #071a2c 0%,
-    #0c2a42 55%,
-    #143a57 100%
-  );
+  background:
+    radial-gradient(circle at center,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0) 60%),
 
-  color:#e6edf3;
+    linear-gradient(
+      180deg,
+      #0b2238 0%,
+      #14324c 55%,
+      #1b4563 100%
+    );
 
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 
   font-size:16px;
   line-height:1.6;
 }
+/* Vignette */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+
+    background:
+    radial-gradient(circle,
+        rgba(255,255,255,0) 55%,
+        rgba(0,0,0,.22) 100%);
+}
+
 
 /* =========================
    TYPO SYSTEM
@@ -31,7 +47,7 @@ body{
 .section-title{
   font-size:26px;
   font-weight:600;
-  color:#e6c27a;
+  color:#e9c77a;
 }
 
 .card-title{
@@ -102,7 +118,7 @@ margin-bottom:14px;
     margin-bottom:10px;
     font-size:18px;
     font-weight:600;
-    color:#e6c27a;
+    color:#e9c77a;
     letter-spacing:0.5px;
 }
 
@@ -138,7 +154,7 @@ padding:10px 16px;
 
 background:rgba(255,255,255,0.04);
 
-border-left:2px solid #e6c27a;
+border-left:2px solid #e9c77a;
 
 border-radius:6px;
 
@@ -153,7 +169,7 @@ button{
 margin-top:14px;
 padding:8px 16px;
 border:none;
-background:#e6c27a;
+background:#e9c77a;
 color:#081626;
 border-radius:6px;
 cursor:pointer;
@@ -168,7 +184,7 @@ cursor:pointer;
 }
 
 .section h2{
-  color:#e6c27a;
+  color:#e9c77a;
   font-size:26px;
   font-weight:600;
   border-bottom:1px solid rgba(255,255,255,.15);
@@ -306,12 +322,12 @@ margin-top:6px;
 }
 
 #recipeBlock b{
-color:#e6c27a;
+color:#e9c77a;
 font-weight:600;
 }
    
 .news-link{
-color:#e6c27a;
+color:#e9c77a;
 text-decoration:none;
 font-weight:500;
 }
@@ -414,7 +430,7 @@ padding:22px;
 }
 
 .ukulele-title{
-color:#e6c27a;
+color:#e9c77a;
 font-weight:600;
 margin-bottom:14px;
 font-size:18px;
@@ -433,7 +449,7 @@ font-size:14px;
 }
 
 .uke-meta b{
-color:#e6c27a;
+color:#e9c77a;
 }
 
 .uke-trainer-row{
@@ -451,7 +467,7 @@ font-weight:600;
 }
 
 .uke-step.active{
-  background:#e6c27a;
+  background:#e9c77a;
   color:#081626;
 
   transform:scale(1.15);
@@ -465,7 +481,7 @@ margin-top:14px;
 padding:6px 0;
 background:none;
 border:none;
-color:#e6c27a;
+color:#e9c77a;
 font-size:15px;
 cursor:pointer;
 display:block;
@@ -479,7 +495,7 @@ text-decoration:underline;
 .ukulele-title{
   font-size:18px;
   font-weight:600;
-  color:#e6c27a;
+  color:#e9c77a;
 }
 
 .newsItem div:first-child{
@@ -499,7 +515,7 @@ text-decoration:underline;
 #ukeBar{
   height:100%;
   width:0%;
-  background:#e6c27a;
+  background:#e9c77a;
   transition:width linear;
 }
   
@@ -522,7 +538,7 @@ padding:6px 0;
 }
 
 .dayHeader:hover{
-color:#e6c27a;
+color:#e9c77a;
 }
 
 .dayEvents{
@@ -643,7 +659,7 @@ z-index:9999;
 }
    
 #travelBlock .newsItem{
-  border-left:2px solid #e6c27a;
+  border-left:2px solid #e9c77a;
 }
 
 .travel-card {
@@ -714,7 +730,7 @@ z-index:9999;
   padding:14px 16px;
 
   background:rgba(255,255,255,0.04);
-  border-left:2px solid #e6c27a;
+  border-left:2px solid #e9c77a;
 
   border-radius:6px;
 }
@@ -815,14 +831,14 @@ blockquote {
 }
 
 .recipe-step b{
-  color:#e6c27a;
+  color:#e9c77a;
   display:block;
   margin-bottom:6px;
   font-size:16px;   /* klarer Titel */
 }
 
 .recipe-step b{
-  color:#e6c27a;
+  color:#e9c77a;
   display:block;
   margin-bottom:4px;
 }
@@ -906,7 +922,7 @@ blockquote {
   padding: 12px 14px;
 
   background: rgba(255,255,255,0.04);
-  border-left: 2px solid #e6c27a;
+  border-left: 2px solid #e9c77a;
   border-radius: 6px;
 }
 
@@ -923,7 +939,7 @@ blockquote {
 
 .finance-link {
   font-size: 14px;
-  color: #e6c27a;
+  color: #e9c77a;
   text-decoration: none;
   opacity: 0.85;
 }
@@ -1840,7 +1856,7 @@ function renderDanceCard(e){
       ${flagFromCountry(e.country, e.city)} ${title}
     </strong>
 
-    ${isToday ? `<div style="color:#e6c27a;font-size:12px">HEUTE</div>` : ""}
+    ${isToday ? `<div style="color:#e9c77a;font-size:12px">HEUTE</div>` : ""}
 
     <div style="opacity:.8">
       ${weekdayFromNumber(e.weekday || 0)} • ${e.city}
