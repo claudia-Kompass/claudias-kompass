@@ -84,7 +84,7 @@ margin-bottom:6px;
     font-size:30px;
     font-weight:600;
     color:#eef2f6;
-    margin-top:8px;
+    margin-top:0px;
     margin-bottom:10px;
 }
 
@@ -112,10 +112,10 @@ margin-bottom:14px;
 .masterLogo{
     display:block;
     width:100%;
-    max-width:330px;
+    max-width:270px;
     height:auto;
-    margin:0 auto 18px auto;
-    margin-bottom:18px;
+    margin:0 auto 10px auto;
+    margin-bottom:8px;
 }
   
 .dailyTopics{
@@ -132,8 +132,8 @@ margin-bottom:14px;
     font-style:italic;
     color:#cfd8e3;
     opacity:.9;
-    margin-top:6px;
-    margin-bottom:38px;
+    margin-top:4px;
+    margin-bottom:20px;
     letter-spacing:.3px;
 }
 
@@ -1076,17 +1076,11 @@ blockquote {
 Claudia's Daily Compass
 </div>
 
-<div class="tagline">
-Zwischen Heimat und Horizont.
-</div>
-
 <div class="welcome">
 
     <h2 id="greeting" style="color:#ffffff;">
     🌍 Heute auf einen Blick
 </h2>
-
-    <div id="todayDate"></div>
 
    
 </div>
@@ -2139,7 +2133,7 @@ document.getElementById("meta").innerHTML =
    RADAR FIX (HEUTE FETT)
 ========================= */
 
-buildRadar(data).then(radar => {
+buildRadar(data).then(radar => {})
 
   /* ===== 🌤 WETTER ===== */
   const temp = (data.weather && data.weather.temp !== undefined)
@@ -2237,7 +2231,7 @@ else{
   document.getElementById("dailyRadar").innerHTML =
     parts.join(" • ")
 
-})
+
   
 /* =========================
    REST UNVERÄNDERT
@@ -2671,7 +2665,7 @@ document.querySelectorAll(".sectionContent").forEach(el=>{
   el.style.maxHeight = el.scrollHeight + "px"
 })
 
-} // <-- Ende von render()
+// <-- Ende von render()
   
 function toggleLang(card){
 card.classList.toggle("open")
