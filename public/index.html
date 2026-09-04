@@ -152,6 +152,16 @@ h2 {
   letter-spacing:0.5px;
 }
    
+
+#greeting{
+    color:#ffffff !important;
+}
+.welcomeText{
+    color:#d7e6f5;
+}
+
+
+
 /* =========================
    RADAR
 ========================= */
@@ -603,6 +613,29 @@ border-top:1px solid rgba(255,255,255,0.12);
 padding-top:18px;
    }
    
+.footer{
+    max-width:700px;
+    margin:50px auto 20px auto;
+    padding:0 24px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    font-size:14px;
+
+    color:#d7e6f5;      /* <-- HIER EINFÜGEN */
+
+    opacity:.85;
+}
+
+.footer,
+.footer a,
+.footerLeft,
+.footerRight{
+    color:#d7e6f5 !important;
+}
+
 /* VERSION TAG */
 
 .version{
@@ -1015,9 +1048,9 @@ Zwischen Heimat und Horizont.
 
 <div class="welcome">
 
-    <h2 id="greeting">
-        🌍 Willkommen Claudia
-    </h2>
+    <h2 id="greeting" style="color:#ffffff;">
+    🌍 Willkommen Claudia
+</h2>
 
     <div id="todayDate"></div>
 
