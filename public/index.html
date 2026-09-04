@@ -588,61 +588,72 @@ margin-left:0;
 
 .footer{
     max-width:700px;
-    margin:50px auto 10px;
-    padding:22px 24px;
+    margin:50px auto 30px;
+    padding:24px;
 
-    display:flex;
-    justify-content:space-between;
-    gap:50px;
+    text-align:center;
 
     border-top:1px solid rgba(255,255,255,.12);
 
-    color:#ffffff;
-    font-size:14px;
-}
-
-.footerLeft,
-.footerRight{
-    color:#ffffff;
-    line-height:1.7;
+    color:#fff;
 }
 
 .footerTitle{
-    font-weight:600;
-    margin-bottom:10px;
+    font-size:22px;
+    font-weight:700;
+    color:#E9C77A;
+    letter-spacing:1px;
+}
+
+.footerSubtitle{
+    font-size:16px;
+    margin-top:2px;
 }
 
 .footerCuriosity{
-    margin-top:12px;
-    opacity:.85;
+    margin:10px 0 14px;
+    font-size:13px;
+    font-style:italic;
+    opacity:.75;
+}
+
+.footerDivider{
+    width:90px;
+    height:1px;
+    background:rgba(255,255,255,.18);
+    margin:14px auto;
 }
 
 .footerLabel{
     color:#E9C77A;
     font-weight:700;
-    letter-spacing:1px;
-    margin-bottom:4px;
+    margin-top:8px;
 }
 
 .footerText{
-    color:#ffffff;
+    margin-top:3px;
+    margin-bottom:10px;
+    line-height:1.5;
+}
+
+.footerCopyright{
+    margin-top:12px;
+    opacity:.75;
+    font-size:13px;
 }
 
 .footerLinks{
-    text-align:center;
-    margin:20px 0 40px;
+    margin-top:10px;
     font-size:13px;
 }
 
 .footerLinks a{
-    color:#ffffff;
+    color:#fff;
     text-decoration:none;
-    opacity:.8;
-    transition:.25s;
+    opacity:.85;
 }
 
 .footerLinks a:hover{
-    opacity:1;
     color:#E9C77A;
 }
 
@@ -650,7 +661,6 @@ margin-left:0;
     margin:0 8px;
     opacity:.5;
 }
-
 
 /* VERSION TAG */
 
@@ -2970,61 +2980,45 @@ function renderDance(dance){
 </script>
 
 
-<div class="footer">
+<footer class="footer">
 
-    <div class="footerLeft">
-
-        <div class="footerTitle">
-            GLOBAL SOUL • Daily Compass
-        </div>
-
-        <div>
-            © 2026 Claudia Förstner
-        </div>
+    <div class="footerBrand">
+        <div class="footerTitle">GLOBAL SOUL</div>
+        <div class="footerSubtitle">Claudia's Daily Compass</div>
 
         <div class="footerCuriosity">
-            Inspired by journeys, people &amp; stories.
+            Inspired by curiosity, cultures &amp; journeys.
         </div>
 
-    </div>
+        <div class="footerDivider"></div>
 
-    <div class="footerRight">
-
-        <div class="footerLabel">
-            GLOBAL
-        </div>
-
+        <div class="footerLabel">GLOBAL</div>
         <div class="footerText">
             Mein Blick über Heimat und Horizont hinaus.
         </div>
 
-        <br>
-
-        <div class="footerLabel">
-            SOUL
-        </div>
-
+        <div class="footerLabel">SOUL</div>
         <div class="footerText">
             Die Dinge, die das Leben lebendig machen.
         </div>
 
+        <div class="footerDivider"></div>
+
+        <div class="footerCopyright">
+            © 2026 Claudia Förstner
+        </div>
+
+        <div class="footerLinks">
+            <a href="impressum.html">Impressum</a>
+            <span>•</span>
+            <a href="datenschutz.html">Datenschutz</a>
+            <span>•</span>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+
     </div>
 
-</div>
-
-<div class="footerLinks">
-
-    <a href="impressum.html">Impressum</a>
-
-    <span>•</span>
-
-    <a href="datenschutz.html">Datenschutz</a>
-
-    <span>•</span>
-
-    <a href="kontakt.html">Kontakt</a>
-
-</div>
+</footer>
 
 </body>
 </html>
