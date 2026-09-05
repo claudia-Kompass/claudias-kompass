@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>GLOBAL SOUL</title>
+<title>GLOBAL Soul</title>
 
 
 <style>
@@ -587,105 +587,67 @@ margin-left:0;
 ========================= */
 
 .footer{
+    max-width:720px;
+    margin:30px auto 30px;
+    padding-top:35px;
+    border-top:1px solid rgba(255,255,255,.12);
 
-    margin-top:40px;
-    padding:28px 0 24px;
-
-    border-top:1px solid rgba(255,255,255,.15);
-
-    text-align:center;
-
-    color:#ffffff;
-
+    text-align:left;
 }
 
-.footerLogo{
-
-    font-size:34px;
-    font-weight:700;
-
-    color:#E9C77A;
-
-    letter-spacing:1px;
-
-    margin-bottom:4px;
-
+.footer h2{
+    color:#f2c66d;
+    font-size:28px;
+    margin-bottom:10px;
 }
 
-.footerTitle{
-
-    font-size:22px;
-
-    margin-bottom:12px;
-
-}
-
-.footerTagline{
-
+.footer-tagline{
+    color:#bfc9d4;
     font-style:italic;
-
-    opacity:.8;
-
-    margin-bottom:18px;
-
+    margin-bottom:20px;
 }
 
-.footerMeaning{
-
-    line-height:1.8;
-
-    margin-bottom:18px;
-
+.footer-product{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:20px;
 }
 
-.footerGold{
-
-    color:#E9C77A;
-
-    font-weight:700;
-
+.footer p{
+    margin:12px 0;
+    line-height:1.6;
 }
 
-.footerCopyright{
-
-    opacity:.75;
-
-    margin-bottom:12px;
-
+.footer strong{
+    color:#f2c66d;
 }
 
-.footerLinks{
-
-    font-size:14px;
-
+.footer-copy{
+    margin-top:28px;
+    color:#bfc9d4;
 }
 
-.footerLinks a{
+.footer-links{
+    margin-top:18px;
+}
 
-    color:#ffffff;
-
+.footer-links a{
+    color:#d9dde4;
     text-decoration:none;
-
-    opacity:.8;
-
-    transition:.25s;
-
 }
 
-.footerLinks a:hover{
-
-    opacity:1;
-
-    color:#E9C77A;
-
-}
-
-.footerLinks span{
-
+.footer-links span{
     margin:0 10px;
+    color:#8fa0b3;
+}
 
-    opacity:.5;
+.footer{
+    margin:70px auto 30px;
+    padding-top:35px;
+    border-top:1px solid rgba(255,255,255,.12);
 
+    text-align:left;
+    color:#d9dde4;
 }
    
 /* Travel */
@@ -1068,7 +1030,7 @@ blockquote {
 <div class="headerRow">
     <img class="masterLogo"
          src="/images/global-soul-web-logo-v1.0.png"
-         alt="GLOBAL SOUL">
+         alt="GLOBAL Soul">
 </div>
 
  
@@ -2133,7 +2095,7 @@ document.getElementById("meta").innerHTML =
    RADAR FIX (HEUTE FETT)
 ========================= */
 
-buildRadar(data).then(radar => {})
+buildRadar(data).then(radar => {
 
   /* ===== 🌤 WETTER ===== */
   const temp = (data.weather && data.weather.temp !== undefined)
@@ -2197,7 +2159,6 @@ else{
   trafficPart = "✅ entspannt fahren"
 }
 
-}
   
   /* ===== 🔥 HEUTE / 📅 NEXT ===== */
   let eventPart = ""
@@ -2226,10 +2187,14 @@ else{
     trafficPart,
     eventPart,
     dancePart
-  ].filter(Boolean)
+].filter(Boolean)
 
-  document.getElementById("dailyRadar").innerHTML =
+document.getElementById("dailyRadar").innerHTML =
     parts.join(" • ")
+
+})      // schließt buildRadar.then()
+
+}       // schließt render()
 
 
   
@@ -2981,39 +2946,34 @@ function renderDance(dance){
 
 <footer class="footer">
 
-    <div class="footerLogo">
-        GLOBAL SOUL
-    </div>
+    <h2>GLOBAL Soul</h2>
 
-        <div class="footerTagline">
-        Inspired by journeys, people &amp; stories.
-    </div>
+    <p class="footer-tagline">
+        Inspired by journeys. Connected by people. Enriched bystories.
+    </p>
 
-    <div class="footerMeaning">
+    
+    <p>
+        <strong>GLOBAL</strong> · Mein Blick über Heimat und Horizont hinaus.
+    </p>
 
-        <div>
-            <span class="footerGold">GLOBAL</span>
-            · Mein Blick über Heimat und Horizont hinaus.
-        </div>
+    <p>
+        <strong>Soul</strong> · Die Dinge, die das Leben lebendig machen.
+    </p>
 
-        <div>
-            <span class="footerGold">SOUL</span>
-            · Die Dinge, die das Leben lebendig machen.
-        </div>
-
-    </div>
-
-    <div class="footerCopyright">
+    <p class="footer-copy">
         © 2026 Claudia Förstner
-    </div>
+    </p>
 
-    <div class="footerLinks">
-        <a href="#">Impressum</a>
+    <nav class="footer-links">
+        <a href="impressum.html">Impressum</a>
         <span>•</span>
-        <a href="#">Datenschutz</a>
+        <a href="datenschutz.html">Datenschutz</a>
         <span>•</span>
-        <a href="#">Kontakt</a>
-    </div>
+        <a href="kontakt.html">Kontakt</a>
+        <span>•</span>
+        <a href="Die Idee hinter GLOBAL SOUL.html">Warum GLOBAL Soul</a>
+    </nav>
 
 </footer>
 
