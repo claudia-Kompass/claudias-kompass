@@ -8,35 +8,78 @@
 
 <style>
 
-body{
-  background:
-    radial-gradient(circle at center,
-      rgba(255,255,255,0.03) 0%,
-      rgba(255,255,255,0) 60%),
+body {
+    margin: 0;
+    color: #f4f7fa;
+    font-family: "Segoe UI", sans-serif;
 
-    linear-gradient(
-      180deg,
-      #0b2238 0%,
-      #14324c 55%,
-      #1b4563 100%
-    );
+background:
 
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+/* Licht hinter dem Logo */
+radial-gradient(
+circle at 50% 10%,
+rgba(233,199,122,.22) 0%,
+rgba(233,199,122,.10) 14%,
+rgba(233,199,122,.03) 24%,
+transparent 34%
+),
 
-  font-size:16px;
-  line-height:1.6;
+/* kühles Licht links oben */
+radial-gradient(
+circle at 15% 18%,
+rgba(135,170,210,.10),
+transparent 42%
+),
+
+/* warmes Licht rechts unten */
+radial-gradient(
+circle at 85% 82%,
+rgba(233,199,122,.08),
+transparent 48%
+),
+
+/* Tiefe in der Mitte */
+radial-gradient(
+ellipse at center,
+rgba(255,255,255,.04),
+transparent 68%
+),
+
+/* GLOBAL SOUL Farbverlauf */
+linear-gradient(
+180deg,
+#274657 0%,
+#2A4C5B 20%,
+#2B5663 42%,
+#2B5A62 62%,
+#23414F 84%,
+#132734 100%
+);
 }
+
+
 /* Vignette */
 body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
 
-    background:
-    radial-gradient(circle,
-        rgba(255,255,255,0) 55%,
-        rgba(0,0,0,.22) 100%);
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+
+background:
+
+radial-gradient(
+
+circle at center top,
+
+rgba(255,255,255,0) 45%,
+
+rgba(0,0,0,.08) 75%,
+
+rgba(0,0,0,.18) 100%
+
+);
+
 }
 
 
@@ -72,6 +115,8 @@ body::before{
 max-width:700px;
 margin:0 auto;
 padding:28px 20px 40px;   /* vorher 52px → zu viel */
+position: relative;
+z-index: 2;
 }
 
 h1{
@@ -81,11 +126,14 @@ margin-bottom:6px;
 
 .subtitle{
     text-align:center;
-    font-size:30px;
+    font-size:36px;
     font-weight:600;
     color:#eef2f6;
-    margin-top:0px;
-    margin-bottom:10px;
+
+    letter-spacing:-0.4px;
+
+    margin-top:0;
+    margin-bottom:22px;
 }
 
 .meta{
@@ -101,6 +149,38 @@ border-top:1px solid rgba(255,255,255,.15);
    
 header{
 margin-bottom:14px;
+position: relative;
+overflow: visible;
+}
+
+header::before{
+
+content:"";
+
+position:absolute;
+
+left:50%;
+top:-40px;
+
+transform:translateX(-50%);
+
+width:920px;
+height:560px;
+
+background:
+radial-gradient(
+circle,
+rgba(228,196,108,.22) 0%,
+rgba(231,199,119,.10) 38%,
+transparent 78%
+);
+
+filter:blur(90px);
+
+z-index:-1;
+
+pointer-events:none;
+
 }
 
 .headerRow{
@@ -112,12 +192,16 @@ margin-bottom:14px;
 .masterLogo{
     display:block;
     width:100%;
-    max-width:270px;
+    max-width:520px;
     height:auto;
-    margin:0 auto 10px auto;
-    margin-bottom:8px;
+    margin:0 auto 4px auto;
 }
-  
+
+.subtitle{
+    margin-top:6px;
+    margin-bottom:20px;
+}
+
 .dailyTopics{
     margin-bottom:10px;
     font-size:18px;
@@ -215,6 +299,12 @@ cursor:pointer;
 content:"";
 display:block;
 height:1px;
+
+radial-gradient(
+circle at 75% 25%,
+rgba(90,130,120,.10) 0%,
+transparent 40%
+),
 
 background:linear-gradient(
 to right,
@@ -641,14 +731,6 @@ margin-left:0;
     color:#8fa0b3;
 }
 
-.footer{
-    margin:70px auto 30px;
-    padding-top:35px;
-    border-top:1px solid rgba(255,255,255,.12);
-
-    text-align:left;
-    color:#d9dde4;
-}
    
 /* Travel */
    
@@ -799,23 +881,24 @@ blockquote {
 .languageCard,
 #recipeBlock{
 
-  background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
+  background: rgba(255,255,255,0.03);
+
+  backdrop-filter: blur(10px);
 
   padding:18px;
+
   border-radius:14px;
 
   margin:16px 0;
 
   border:1px solid rgba(255,255,255,0.06);
 
-  transition: all 0.2s ease;
-}
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.04);
 
-.card:hover,
-.languageCard:hover{
-  background: rgba(255,255,255,0.08);
-  transform: translateY(-2px);
+  transition: all 0.25s ease;
+
 }
 
 /* ==================================
@@ -2194,14 +2277,6 @@ document.getElementById("dailyRadar").innerHTML =
 
 })      // schließt buildRadar.then()
 
-}       // schließt render()
-
-
-  
-/* =========================
-   REST UNVERÄNDERT
-========================= */
-
 /* QUOTE FIX */
 if(data.quote){
   document.getElementById("quoteBlock").innerHTML = `
@@ -2216,11 +2291,17 @@ if(data.quote){
   `
 }
 
+}
+  
+/* =========================
+   REST UNVERÄNDERT
+========================= */
+
+
 /* =========================
    NEWS + FINANCE + REGIONAL (FIXED)
 ========================= */
 
-/* NEWS */
 /* NEWS */
 if(data.news && data.news.length){
 
@@ -2630,7 +2711,7 @@ document.querySelectorAll(".sectionContent").forEach(el=>{
   el.style.maxHeight = el.scrollHeight + "px"
 })
 
-// <-- Ende von render()
+   // <-- render(data) ENDET HIER
   
 function toggleLang(card){
 card.classList.toggle("open")
