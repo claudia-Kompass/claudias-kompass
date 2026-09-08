@@ -875,42 +875,39 @@ blockquote {
 .languageCard,
 #recipeBlock{
 
-  background: rgba(255,255,255,0.03);
+    background:transparent;
 
-  backdrop-filter: blur(10px);
+    backdrop-filter:none;
 
-  padding:18px;
+    border:none;
 
-  border-radius:14px;
+    box-shadow:none;
 
-  margin:16px 0;
+    padding:18px;
 
-  border:1px solid rgba(255,255,255,0.06);
+    margin:22px 0;
 
-  box-shadow:
-    0 8px 24px rgba(0,0,0,.12),
-    inset 0 1px 0 rgba(255,255,255,.04);
-
-  transition: all 0.25s ease;
-
+    transition:.25s;
 }
 
 /* ==================================
    RECIPE 
 ====================================*/
 
-.recipe-image{
-  width:calc(100% + 36px);
-  margin-left:-18px;
-  margin-right:-18px;
+..recipe-image{
 
-  height:240px;
-  object-fit:cover;
+    width:100%;
 
-  border-radius:18px 18px 0 0;
-  margin-bottom:12px;
+    margin:0;
 
-  filter:brightness(0.8);
+    border-radius:18px;
+
+    height:240px;
+
+    object-fit:cover;
+
+    margin-bottom:18px;
+
 }
 
 .recipe-header{
@@ -972,7 +969,9 @@ blockquote {
 }
 
 .recipe-content{
-  padding:18px;
+
+    padding:0;
+
 }
 
 
