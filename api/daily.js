@@ -857,6 +857,9 @@ function toDate(d){
   return x
 }
 
+const now = new Date()
+now.setHours(0,0,0,0)
+
 function isToday(e){
   const start = toDate(e.date)
   const end = e.date_end ? toDate(e.date_end) : start
@@ -1063,19 +1066,6 @@ all = all.map(e => ({
 }))
 
 
-// 🔹 HELPER: DATE FILTER
-function isFutureOrToday(dateStr){
-  if(!dateStr) return true
-
-  const today = new Date()
-  today.setHours(0,0,0,0)
-
-  const d = new Date(dateStr)
-  d.setHours(0,0,0,0)
-
-  return d >= today
-}
-
 
 // 🔹 VERGANGENE EVENTS RAUS
 all = all.filter(e => isFutureOrToday(e.date))
@@ -1091,12 +1081,6 @@ all = all.filter(e => {
   return true
 })
 
-
-// 🔹 5. SORT HELPER
-function sortByDate(a,b){
-  if(!a.date || !b.date) return 0
-  return new Date(a.date) - new Date(b.date)
-}
 
 
 // 🔹 6. AUFTEILUNG (DAS IST DER GAMECHANGER)

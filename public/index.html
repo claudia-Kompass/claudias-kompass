@@ -894,7 +894,7 @@ blockquote {
    RECIPE 
 ====================================*/
 
-..recipe-image{
+.recipe-image{
 
     width:100%;
 
@@ -2232,7 +2232,7 @@ if(data.quote){
   `
 }
 
-}
+
   
 /* =========================
    REST UNVERÄNDERT
@@ -2652,8 +2652,8 @@ document.querySelectorAll(".sectionContent").forEach(el=>{
   el.style.maxHeight = el.scrollHeight + "px"
 })
 
-   // <-- render(data) ENDET HIER
-  
+}   // Ende render(data)
+
 function toggleLang(card){
 card.classList.toggle("open")
 }
@@ -2725,34 +2725,35 @@ console.log("DANCE:", data.events?.dance)
   
 }
    
-window.addEventListener("load",loadData);
-  
-let compassClicks = 0;
-
 window.addEventListener("load", () => {
 
-const compass = document.getElementById("compass");
-const version = document.getElementById("versionTag");
+    const compass = document.getElementById("compass");
+    const version = document.getElementById("versionTag");
 
-compass.addEventListener("click", () => {
+    if (compass && version) {
 
-compassClicks++;
+        compass.addEventListener("click", () => {
 
-if(compassClicks >= 3){
+            compassClicks++;
 
-version.style.opacity = "0.6";
+            if (compassClicks >= 3) {
 
-setTimeout(()=>{
-version.style.opacity = "0";
-compassClicks = 0;
-},5000);
+                version.style.opacity = "0.6";
 
-}
+                setTimeout(() => {
+                    version.style.opacity = "0";
+                    compassClicks = 0;
+                }, 5000);
 
-});
+            }
 
-});
+        });
 
+    }
+
+    loadData();
+
+});   // <-- DAS FEHLT
 
 function renderUkulele(song){
 
@@ -2852,21 +2853,21 @@ function toggleDay(el){
 
 function toggleSection(header){
 
-  const section = header.parentElement
-  const content = section.querySelector(".sectionContent")
-  const icon = header.querySelector(".toggleIcon")
+    const section = header.parentElement
+    const content = section.querySelector(".sectionContent")
+    const icon = header.querySelector(".toggleIcon")
 
-  const isCollapsed = section.classList.toggle("collapsed")
+    const isCollapsed = section.classList.toggle("collapsed")
 
-  if(isCollapsed){
-    content.style.maxHeight = "0px"
-    icon.innerText = "▶"
-  }else{
-    content.style.maxHeight = content.scrollHeight + "px"
-    icon.innerText = "▼"
-  }
+    if(isCollapsed){
+        content.style.maxHeight = "0px"
+        if(icon) icon.innerText = "▶"
+    }else{
+        content.style.maxHeight = content.scrollHeight + "px"
+        if(icon) icon.innerText = "▼"
+    }
+
 }
-
   
 
 function renderDance(dance){
