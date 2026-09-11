@@ -132,6 +132,17 @@ li{
     font-weight:600;
     font-size:17px;
     transition:.25s;
+
+    /* Button-Darstellung vollständig entfernen */
+    appearance:none;
+    -webkit-appearance:none;
+    background:transparent;
+    border:0;
+    padding:0;
+    outline:none;
+    box-shadow:none;
+    font-family:inherit;
+    cursor:pointer;
 }
 
 .back:hover{
@@ -201,4 +212,17 @@ li{
 
     font-size:17px;
 
+}
+
+.back {
+    all: unset;
+    display: inline-block;
+    color: #f1d48a;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.back:hover {
+    color: #ffffff;
 }

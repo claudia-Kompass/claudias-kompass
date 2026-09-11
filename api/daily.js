@@ -88,7 +88,6 @@ const version="41."+Math.floor(Date.now()/86400000)
 const build=(process.env.VERCEL_GIT_COMMIT_SHA||"local").slice(0,7)
 const fullVersion=version+"."+build
 
-const now=new Date()
 
    
 /* ======================

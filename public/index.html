@@ -720,6 +720,20 @@ margin-left:0;
     text-decoration:none;
 }
 
+.footer-links button{
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+    color:#d9dde4;
+    font:inherit;
+    cursor:pointer;
+}
+
+.footer-links button:hover{
+    color:#f1d48a;
+}
+
 .footer-links span{
     margin:0 10px;
     color:#8fa0b3;
@@ -1045,14 +1059,14 @@ blockquote {
 </head>
 <body>
 
-<div id="versionTag" class="version"></div>
-
+ 
 <div class="container">
 
 <header class="header">
 
 <div class="headerRow">
-    <img class="masterLogo"
+
+   <img id="masterLogo" class="masterLogo"
          src="/images/global-soul-web-logo-v1.0.png"
          alt="GLOBAL Soul">
 </div>
@@ -2046,10 +2060,11 @@ renderTravel(data)
 renderTravelExtras("travelExtras", travelList)
 window.langTexts = data.language || []
    
-document.getElementById("versionTag").innerText =
-  data.version
-    ? (data.version.startsWith("v") ? data.version : "v" + data.version)
-    : "DEV";
+window.globalSoulVersion =
+    data.version
+        ? (data.version.startsWith("v") ? data.version : "v" + data.version)
+        : "DEV";
+
 const now = new Date()
 
 renderMarkets(data)
@@ -2725,35 +2740,37 @@ console.log("DANCE:", data.events?.dance)
   
 }
    
-window.addEventListener("load", () => {
+// =====================================================
+// GLOBAL SOUL – versteckte Versionsanzeige
+// 3× Klick auf das GLOBAL SOUL Logo
+// =====================================================
 
-    const compass = document.getElementById("compass");
-    const version = document.getElementById("versionTag");
+let logoClicks = 0;
+let logoClickTimer = null;
 
-    if (compass && version) {
+document.getElementById("masterLogo").addEventListener("click", () => {
 
-        compass.addEventListener("click", () => {
+    logoClicks++;
 
-            compassClicks++;
+    clearTimeout(logoClickTimer);
 
-            if (compassClicks >= 3) {
+    logoClickTimer = setTimeout(() => {
+        logoClicks = 0;
+    }, 700);
 
-                version.style.opacity = "0.6";
+    if (logoClicks === 3) {
 
-                setTimeout(() => {
-                    version.style.opacity = "0";
-                    compassClicks = 0;
-                }, 5000);
+        logoClicks = 0;
 
-            }
-
-        });
-
+        alert(
+            "GLOBAL Soul\n\nVersion: " +
+            (window.globalSoulVersion || "DEV")
+        );
     }
+});
 
-    loadData();
+loadData();
 
-});   // <-- DAS FEHLT
 
 function renderUkulele(song){
 
@@ -2963,6 +2980,7 @@ function renderDance(dance){
   document.getElementById("danceWeek").innerHTML = html
 }
 
+
    
 </script>
 
@@ -2988,15 +3006,15 @@ function renderDance(dance){
         © 2026 Claudia Förstner
     </p>
 
-    <nav class="footer-links">
-        <a href="impressum.html">Impressum</a>
-        <span>•</span>
-        <a href="datenschutz.html">Datenschutz</a>
-        <span>•</span>
-        <a href="kontakt.html">Kontakt</a>
-        <span>•</span>
-        <a href="ueber.html">Warum GLOBAL Soul</a>
-    </nav>
+ <nav class="footer-links">
+    <button type="button" onclick="location.href='impressum.html'">Impressum</button>
+    <span>•</span>
+    <button type="button" onclick="location.href='datenschutz.html'">Datenschutz</button>
+    <span>•</span>
+    <button type="button" onclick="location.href='kontakt.html'">Kontakt</button>
+    <span>•</span>
+    <button type="button" onclick="location.href='ueber.html'">Warum GLOBAL Soul</button>
+</nav>
 
 </footer>
 

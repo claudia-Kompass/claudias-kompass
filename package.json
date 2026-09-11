@@ -2,7 +2,10 @@
   "name": "claudias-kompass",
   "version": "1.0.0",
   "private": true,
-   "dependencies": {
+  "dependencies": {
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "vercel": "^59.15.1"
   }
 }
