@@ -43,16 +43,14 @@ body{
     rgba(233,199,122,.08),
     transparent 48%),
 
-    linear-gradient(
+  linear-gradient(
     180deg,
-    #274657 0%,
-    #2A4C5B 20%,
-    #2B5663 42%,
-    #2B5A62 62%,
-    #23414F 84%,
-    #132734 100%);
-
-    min-height:100vh;
+    #16394C 0%,
+    #123246 22%,
+    #0D2B3D 45%,
+    #092333 70%,
+    #061925 100%
+);
 
 }
 
@@ -225,4 +223,21 @@ li{
 
 .back:hover {
     color: #ffffff;
+}
+
+/* =========================================
+   DAILY COMPASS – Datumszeile
+========================================= */
+
+#greeting {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+#greeting span {
+    font-size: 0.72em;
+    font-weight: 500;
+    color: #E9C77A;
+    letter-spacing: 0.2px;
 }

@@ -246,6 +246,7 @@ h2 {
 
 
 
+
 /* =========================
    RADAR
 ========================= */
@@ -1051,7 +1052,69 @@ blockquote {
   opacity:0.6;
 }
 
+/* =========================
+   FINAL GLOBAL SOUL BACKGROUND
+========================= */
+
+html {
+    background: #071B29;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 50% 10%,
+            rgba(233,199,122,.16) 0%,
+            rgba(233,199,122,.06) 18%,
+            transparent 36%
+        ),
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(90,140,175,.08),
+            transparent 42%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(233,199,122,.05),
+            transparent 48%
+        ),
+        linear-gradient(
+    180deg,
+    #16394C 0%,
+    #123246 22%,
+    #0D2B3D 45%,
+    #092333 70%,
+    #061925 100%
+);
+
+    background-attachment: fixed;
+}
   
+/* DAILY COMPASS – Datumszeile */
+
+#greeting {
+    font-size: 24px;
+    font-weight: 480
+    color: #ffffff;
+}
+
+#greeting span {
+    font-size: 0.68em;
+    font-weight: 480;
+    letter-spacing: 0.2px;
+}
+
+#greeting .today-label {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+#greeting .today-date {
+    color: #E9C77A;
+    font-weight: 600;
+}
+
+
 </style>
   
 
@@ -1078,8 +1141,9 @@ Claudia's Daily Compass
 
 <div class="welcome">
 
-    <h2 id="greeting" style="color:#ffffff;">
-    🌍 Heute auf einen Blick
+<h2 id="greeting" class="greeting">
+    <span class="greetingToday">Heute</span>
+    <span id="greetingDate" class="greetingDate"></span>
 </h2>
 
    
@@ -1087,20 +1151,14 @@ Claudia's Daily Compass
 
 </header>
 
-<div id="meta" class="meta" style="margin-top:10px"></div>
+<div id="quoteBlock"></div>
 
 <div id="dailyRadar" class="dailyRadar"></div>
-  
-<div class="section">
-<h2>✨ Zitat des Tages</h2>
-<div id="quoteBlock"></div>
-</div>
-
 
 <div class="section collapsible">
 
   <h2 onclick="toggleSection(this)">
-    📰 Politik & Weltgeschehen
+    Politik & Weltgeschehen
     <span class="toggleIcon">▼</span>
   </h2>
 
@@ -1113,55 +1171,55 @@ Claudia's Daily Compass
 
 
 <div class="section">
-<h2>📊 Überblick Finanzmärkte</h2>
+<h2>Überblick Finanzmärkte</h2>
 <div id="marketsBlock"></div>
 </div>
 
 <div class="section">
-<h2>💹 Finanz News</h2>
+<h2> Finanz News</h2>
 <div id="financeNewsBlock"></div>
 <div id="financeExtras"></div>
 </div>
 
 
 <div class="section">
-<h2>📍 Regional – Landkreis Schwäbisch Hall</h2>
+<h2>Regional – Landkreis Schwäbisch Hall</h2>
 <div id="regionalBlock"></div>
 </div>
 
 
 <div class="section">
-<h2>🏘 Events & Märkte</h2>
+<h2>Events & Märkte</h2>
 <div id="eventsBlock"></div>
 </div>
 
 <div class="section">
-<h2>💃 Dance Radar</h2>
+<h2> Dance Radar</h2>
 <div id="danceWeek"></div>
 </div>
    
 
 <div class="section">
-<h2>🌍 Reiseimpuls</h2>
+<h2>Reiseimpuls</h2>
 <div id="travelBlock"></div>
 <div id="travelExtras"></div>
 </div>
 
 
 <div class="section">
-<h2>🗣 Sprachimpuls</h2>
+<h2>Sprachimpuls</h2>
 <div id="languageBlock"></div>
 </div>
 
 
 <div class="section">
-<h2>🎸 Ukulele</h2>
+<h2>Ukulele</h2>
 <div id="ukeBlock"></div>
 </div>
    
    
 <div class="section">
-<h2>🍳 Airfryer Rezept</h2>
+<h2>Airfryer Rezept</h2>
 
 <div id="recipeBlock">
 
@@ -1200,7 +1258,7 @@ Claudia's Daily Compass
 </div>
 
 <div class="section">
-  <h2>🚗 Arbeitsweg – Ilshofen / SHA</h2>
+  <h2>Arbeitsweg – Ilshofen / SHA</h2>
   <div id="trafficBlock"></div>
 </div>
 
@@ -2056,8 +2114,9 @@ travelList = Array.isArray(data.travel)
   ? data.travel
   : (data.travel ? [data.travel] : [])
 
-renderTravel(data)
-renderTravelExtras("travelExtras", travelList)
+// renderTravel(data)
+// renderTravelExtras("travelExtras", travelList)
+
 window.langTexts = data.language || []
    
 window.globalSoulVersion =
@@ -2118,16 +2177,20 @@ if(grouped.festivals.length){
 document.getElementById("eventsBlock").innerHTML = html
 
 
-/* META */
+/* HEADER: HEUTE + DATUM */
 
-const weekday = now.toLocaleDateString("de-DE",{weekday:"long"})
-const date = now.toLocaleDateString("de-DE")
+const weekday = now.toLocaleDateString("de-DE", {
+  weekday: "long"
+})
 
-document.getElementById("meta").innerHTML =
-"<b>" + weekday + "</b> • " + date
+const date = now.toLocaleDateString("de-DE", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+})
 
-
-
+document.getElementById("greeting").innerHTML =
+    `<span class="today-label">Heute</span> · <span class="today-date">${weekday}, ${date}</span>`;
 
   
 /* =========================
@@ -2141,8 +2204,28 @@ buildRadar(data).then(radar => {
     ? data.weather.temp
     : "--"
 
-  const icon = weatherIcon(data.weather?.code || 0)
-  const weatherPart = `${icon} ${temp}°C`
+const icon = weatherIcon(data.weather?.code || 0)
+
+const weatherDescription = {
+    0: "klar",
+    1: "überwiegend klar",
+    2: "wolkig",
+    3: "bedeckt",
+    45: "neblig",
+    48: "neblig",
+    51: "leichter Nieselregen",
+    61: "leichter Regen",
+    63: "Regen",
+    65: "starker Regen",
+    71: "Schnee",
+    80: "Regenschauer",
+    81: "Regenschauer",
+    82: "starke Regenschauer",
+    95: "Gewitter"
+}[data.weather?.code] || ""
+
+const weatherPart =
+    `${icon} ${temp}°C${weatherDescription ? ` · ${weatherDescription}` : ""}`
 
 
 /* ===== 🚗 ARBEITSWEG LEVEL 2 ===== */
@@ -2183,55 +2266,65 @@ if(data.events?.today?.length){
 
 /* 3. ENTSCHEIDUNG */
 if(isCritical){
-  trafficPart = "🚧 kritisch – Strecke prüfen"
+ trafficPart = "kritisch – Strecke prüfen"
 }
 else if(hasSHAEvent){
-  trafficPart = "⚠️ Parkplatz knapp (Kocherwiese)"
+trafficPart = "Parkplatz knapp (Kocherwiese)"
 }
 else if(isBusy){
-  trafficPart = "⚠️ Verkehr – früher los"
+trafficPart = "Verkehr – früher los"
 }
 else if(data.parkingStatus && !data.parkingStatus.available){
   trafficPart = data.parkingStatus.text
 }
 else{
-  trafficPart = "✅ entspannt fahren"
+trafficPart = "entspannt fahren"
 }
 
   
-  /* ===== 🔥 HEUTE / 📅 NEXT ===== */
-  let eventPart = ""
+  /* ===== 📍 HEUTE INTERESSANT ===== */
+let eventPart = ""
 
-  if(data.events?.today?.length){
-    const e = data.events.today[0]
-    eventPart = `🔥 ${e.title}`
-  }
-  else if(data.events?.week?.length){
-    const e = data.events.week[0]
-    eventPart = `📅 ${e.title}`
-  }
+let dancePart = "";
 
+if (data.events?.dance?.length) {
+    const dance = data.events.dance[0];
 
-  /* ===== 💃 TANZ (BONUS) ===== */
-  let dancePart = ""
+dancePart = dance.title
+}
 
-  if(radar.today){
-    dancePart = `💃 ${radar.today.title}`
-  }
+if(data.events?.today?.length){
+  const e = data.events.today[0]
+  eventPart = `Heute: ${e.title}`
+}
+else if(data.events?.week?.length){
+  const e = data.events.week[0]
+  eventPart = `Demnächst: ${e.title}`
+}
+
 
 
   /* ===== 🧩 FINAL ===== */
-  const parts = [
+/* ===== FINAL RADAR ===== */
+
+const impulsePart = data.quote
+    ? "Ein Impuls"
+    : "";
+
+const parts = [
     weatherPart,
-    trafficPart,
     eventPart,
-    dancePart
-].filter(Boolean)
+    dancePart,
+    impulsePart,
+    trafficPart
+].filter(Boolean);
 
 document.getElementById("dailyRadar").innerHTML =
-    parts.join(" • ")
+    parts.join(" · ");
 
-})      // schließt buildRadar.then()
+
+    
+    // schließt buildRadar.then()
 
 /* QUOTE FIX */
 if(data.quote){
@@ -2655,8 +2748,8 @@ window.nextTravel = function(){
     travelIndex = 0
   }
 
-  renderTravel(data)
-  renderTravelExtras("travelExtras", travelList)
+ // renderTravel(data)
+// renderTravelExtras("travelExtras", travelList)
 }
 
 renderTraffic(data)
@@ -2667,7 +2760,8 @@ document.querySelectorAll(".sectionContent").forEach(el=>{
   el.style.maxHeight = el.scrollHeight + "px"
 })
 
-}   // Ende render(data)
+  })
+} // Ende render(data)
 
 function toggleLang(card){
 card.classList.toggle("open")
