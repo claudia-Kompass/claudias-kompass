@@ -221,9 +221,13 @@ li{
     cursor: pointer;
 }
 
+
 .back:hover {
     color: #ffffff;
 }
+
+} /* Ende @media (max-width:768px) */
+
 
 /* =========================================
    DAILY COMPASS – Datumszeile
@@ -240,4 +244,267 @@ li{
     font-weight: 500;
     color: #E9C77A;
     letter-spacing: 0.2px;
+}
+
+/* =========================================
+   POLITIK & WELTGESCHEHEN – COMPACT EDITORIAL
+========================================= */
+
+#newsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#newsBlock .newsItem {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(233, 199, 122, 0.18);
+}
+
+#newsBlock .newsItem:first-child {
+  padding-top: 8px;
+}
+
+#newsBlock .newsItem:last-child {
+  border-bottom: none;
+}
+
+#newsBlock .newsItem > div:first-child {
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+#newsBlock .news-link {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 0.9rem;
+}
+
+#newsBlock .newsSource {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+
+
+.quoteBox {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid #e9c77a;
+  border-radius: 6px;
+}
+
+/* Politik & Weltgeschehen – goldener Klammer-Akzent */
+.politicsSection {
+  position: relative;
+  margin-top: 14px;
+  padding: 14px 16px 14px 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  border-left: none;
+}
+
+.politicsSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  border-left: 2px solid #e9c77a;
+  border-top: 2px solid #e9c77a;
+  border-bottom: 2px solid #e9c77a;
+  border-radius: 4px 0 0 4px;
+  pointer-events: none;
+}
+
+
+/* Feine Gliederung innerhalb von Einordnung & Quellen */
+
+.politics-extras summary {
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.politics-extras .politics-highlight {
+  margin-top: 9px !important;
+  margin-bottom: 0 !important;
+  padding: 0 0 8px 0 !important;
+}
+
+.politics-extras .politics-links {
+  margin-top: 8px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* =====================================================
+   ÜBERBLICK FINANZMÄRKTE
+   ===================================================== */
+
+#marketsBlock .marketTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+}
+
+#marketsBlock .marketTable tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+#marketsBlock .marketTable td {
+  padding: 9px 6px;
+  vertical-align: middle;
+}
+
+#marketsBlock .marketTable {
+  margin-top: 10px;
+}
+
+#marketsBlock .marketValue {
+  width: 25%;
+  text-align: right;
+  font-weight: 600;
+  color: #f1f1f1;
+  line-height: 1.2;
+}
+
+#marketsBlock .marketSub {
+  margin-top: 3px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+#marketsBlock .marketTrend {
+  width: 12%;
+  text-align: center;
+  color: #e9c77a;
+  font-size: 18px;
+}
+
+#marketsBlock .marketLink {
+  width: 21%;
+  text-align: right;
+}
+
+#marketsBlock .marketLink a {
+  color: #e9c77a;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#marketsBlock .marketLink a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* =========================================
+   Finanzmärkte – kompaktere Darstellung
+   ========================================= */
+
+.marketTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.marketTable tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.marketTable td {
+  padding: 8px 6px;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.marketName {
+  width: 42%;
+  font-weight: 600;
+}
+
+.marketValue {
+  width: 28%;
+  text-align: right;
+  font-weight: 600;
+}
+
+.marketSub {
+  margin-top: 2px;
+  font-size: 12px;
+  opacity: 0.65;
+  line-height: 1.1;
+}
+
+.marketTrend {
+  width: 10%;
+  text-align: center;
+}
+
+.marketLink {
+  width: 20%;
+  text-align: right;
+}
+
+.marketLink a {
+  white-space: nowrap;
+}
+
+/* Abstand nach der letzten Marktzeile reduzieren */
+#marketsBlock {
+  margin-bottom: 10px;
+}
+
+/* Finanz-News näher an die Marktübersicht setzen */
+#financeNews,
+.financeNews {
+  margin-top: 12px;
+}
+
+/*/* =====================================================
+   FINANZMÄRKTE – NOCH KOMPAKTER
+   ===================================================== */
+
+#marketsBlock {
+  margin-top: 2px;
+}
+
+#marketsBlock .marketTable {
+  margin-top: 2px;
+}
+
+#marketsBlock .marketTable td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  line-height: 1.05;
+}
+
+#marketsBlock .marketValue {
+  line-height: 1;
+}
+
+#marketsBlock .marketSub {
+  margin-top: 1px;
+  line-height: 1;
+  font-size: 11px;
+}
+
+#marketsBlock .marketTrend {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#marketsBlock .marketLink {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+/* Abstand zwischen Marktübersicht und Finanz-News */
+#marketsBlock + .section {
+  margin-top: 04px;
 }

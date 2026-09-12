@@ -419,6 +419,40 @@ margin-left:8px;
   margin:0;
 }
 
+/* =========================
+   POLITIK – KOMPAKTE NEWS
+========================= */
+
+#newsBlock .newsItem{
+  padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+#newsBlock .newsItem:first-child{
+  padding-top:8px;
+}
+
+#newsBlock .newsItem:last-child{
+  border-bottom:none;
+}
+
+#newsBlock .newsItem > div:first-child{
+  font-weight:600;
+  line-height:1.4;
+}
+
+#newsBlock .news-link{
+  display:inline-block;
+  margin-top:6px;
+  margin-right:10px;
+}
+
+#newsBlock .newsSource{
+  display:inline-block;
+  font-size:14px;
+  opacity:.8;
+}
+
 #recipeBlock .newsSource{
 font-size:15px;
 line-height:1.6;
@@ -1155,12 +1189,11 @@ Claudia's Daily Compass
 
 <div id="dailyRadar" class="dailyRadar"></div>
 
-<div class="section collapsible">
+<div class="section collapsible politicsSection">
 
   <h2 onclick="toggleSection(this)">
     Politik & Weltgeschehen
-    <span class="toggleIcon">▼</span>
-  </h2>
+     </h2>
 
   <div class="sectionContent">
     <div id="newsBlock"></div>
@@ -1383,48 +1416,32 @@ function getFinanceHighlight(news){
   return title
 }
 
-function getPoliticsHighlight(news){
+function getPoliticsHighlight(news) {
 
-  if(!news || !news.length) return "Keine klare Entwicklung erkennbar"
-
-  const title = news[0].title.toLowerCase()
-
-  if(title.includes("krieg") || title.includes("konflikt")){
-    return "Geopolitische Spannungen bleiben ein dominanter Einflussfaktor"
-  }
-
-  if(title.includes("wahl")){
-    return "Politische Richtungsentscheidungen stehen im Fokus"
-  }
-
-  if(title.includes("klima")){
-    return "Klimapolitik gewinnt weiter an Bedeutung"
-  }
-
-  if(title.includes("migration")){
-    return "Migrationspolitik sorgt weiterhin für Spannungen"
-  }
-
-  if(title.includes("eu") || title.includes("brüssel")){
-    return "EU-Politik beeinflusst zunehmend nationale Entscheidungen"
+  if (!news || !news.length) {
+    return "Heute liegen keine politischen Meldungen zur Einordnung vor.";
   }
 
   return news[0].title
+  
 }
   
-function renderPoliticsExtras(container, news){
+function renderPoliticsExtras(container, news) {
 
   const topic = getPoliticsHighlight(news)
 
   const politicsSources = [
-  {name:"Tagesschau", url:"https://www.tagesschau.de"},
-  {name:"Spiegel", url:"https://www.spiegel.de"},
-  {name:"Zeit", url:"https://www.zeit.de"},
-  {name:"FAZ", url:"https://www.faz.net"},
-  {name:"BBC World", url:"https://www.bbc.com/news"},
-  {name:"CNN", url:"https://edition.cnn.com"},
-  {name:"BILD", url:"https://m.bild.de"}   // ✅ neu
-    
+    {name:"Tagesschau", url:"https://www.tagesschau.de"},
+    {name:"Spiegel", url:"https://www.spiegel.de"},
+    {name:"Zeit", url:"https://www.zeit.de"},
+    {name:"FAZ", url:"https://www.faz.net"},
+    {name:"BBC World", url:"https://www.bbc.com/news"},
+    {name:"CNN", url:"https://edition.cnn.com"},
+    {name:"BILD", url:"https://www.bild.de"},
+    {name:"Deutschlandfunk", url:"https://www.deutschlandfunk.de"},
+    {name:"Deutsche Welle", url:"https://www.dw.com"},
+    {name:"Reuters", url:"https://www.reuters.com"},
+    {name:"Politico Europe", url:"https://www.politico.eu"}
   ]
 
   document.getElementById(container).innerHTML = `
@@ -1436,7 +1453,7 @@ function renderPoliticsExtras(container, news){
 
       <div class="finance-links">
         ${politicsSources.map(s => `
-          <a href="${s.url}" target="_blank" class="finance-link">
+          <a href="${s.url}" target="_blank" rel="noopener" class="finance-link">
             ${s.name}
           </a>
         `).join("")}
@@ -1445,7 +1462,8 @@ function renderPoliticsExtras(container, news){
     </div>
   `
 }
-  
+
+
 function parseEvent(e){
 
   let date = null
@@ -2351,28 +2369,64 @@ if(data.quote){
    NEWS + FINANCE + REGIONAL (FIXED)
 ========================= */
 
-/* NEWS */
-if(data.news && data.news.length){
+/* =========================
+   POLITIK & WELTGESCHEHEN
+========================= */
+
+const politicsNews = (data.news || [])
+  .filter(n => n && n.title)
+  .filter((n, index, arr) =>
+    index === arr.findIndex(x =>
+      x.title.trim().toLowerCase() === n.title.trim().toLowerCase()
+    )
+  )
+
+if(politicsNews.length){
 
   document.getElementById("newsBlock").innerHTML =
-    data.news.map(n => `
-      <div class="newsItem">
-        <div style="font-weight:600">${n.title}</div>
-        <a href="${n.url}" target="_blank" class="news-link">
-          weiterlesen →
-        </a>
-        <div class="newsSource">${n.source}</div>
+    politicsNews.slice(0, 5).map(n => `
+      <div class="newsItem politics-item"
+           style="
+             padding: 12px 0;
+             margin: 0;
+             border-bottom: 1px solid rgba(255,255,255,.10);
+           ">
+
+        <div style="font-weight:600; line-height:1.4;">
+          ${n.title}
+        </div>
+
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:12px;
+          flex-wrap:wrap;
+          margin-top:5px;
+        ">
+          <a href="${n.url || '#'}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="news-link">
+            weiterlesen →
+          </a>
+
+          <span class="newsSource">
+            ${n.source || ""}
+          </span>
+        </div>
+
       </div>
     `).join("")
 
 }else{
 
   document.getElementById("newsBlock").innerHTML =
-    "<div style='opacity:.6'>Keine Nachrichten</div>"
+    "<div style='opacity:.6'>Keine aktuellen Nachrichten</div>"
+
 }
 
-/* ✅ IMMER DANACH */
-renderPoliticsExtras("newsExtras", data.news)
+/* Einordnung + Quellen */
+renderPoliticsExtras("newsExtras", politicsNews)
 
 /* =================
     FINANCE NEWS 
@@ -2388,13 +2442,53 @@ const topic = getFinanceHighlight(data.financeNews)
     
 if(data.financeNews && data.financeNews.length){
 
-  financeHTML += data.financeNews.slice(0,3).map(n => `
-    <div class="newsItem">
-      <div style="font-weight:600">${n.title}</div>
-      <a href="${n.url}" target="_self" class="news-link">weiterlesen →</a>
-      <div class="newsSource">${n.source}</div>
+const financeSeen = new Set()
+
+const uniqueFinanceNews = data.financeNews.filter(n => {
+  const key = (n.title || "")
+    .toLowerCase()
+    .replace(/[^\wäöüß ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+
+  if (!key || financeSeen.has(key)) return false
+
+  financeSeen.add(key)
+  return true
+})
+financeHTML += uniqueFinanceNews.slice(0,3).map(n => `
+  <div class="newsItem"
+       style="
+         margin:0;
+         padding:10px 0;
+         border-bottom:1px solid rgba(255,255,255,.10);
+       ">
+
+    <div style="font-weight:600; margin-bottom:3px;">
+      ${n.title}
     </div>
-  `).join("")
+
+    <div style="
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    ">
+
+      <a href="${n.url}"
+         target="_blank"
+         rel="noopener"
+         class="news-link">
+        weiterlesen →
+      </a>
+
+      <div class="newsSource" style="margin:0;">
+        ${n.source}
+      </div>
+
+    </div>
+  </div>
+`).join("")
 
 }else{
 
@@ -2523,21 +2617,26 @@ function renderTravel(data){
 
   const t = travelList[travelIndex]
 
+  const title = t.title || "Reiseimpuls"
+const text = t.text || t.de || t.en || ""
+const image = t.image || "/images/travel-collage.png"
+const url = t.url || ""
+
   document.getElementById("travelBlock").innerHTML = `
 
   <div class="travel-card">
 
-    <img src="${t.image || getTravelImage(t)}" alt="Travel">
+    <img src="${image || getTravelImage(t)}" alt="Travel">
 
     <div class="travel-text">
-      <h3>${t.title || ""}</h3>
+      <h3>${title || ""}</h3>
       <p>${t.text || ""}</p>
     </div>
 
     ${
-      t.url
-      ? `<a href="${t.url}" target="_blank" class="news-link">weiterlesen →</a>`
-      : ""
+     url
+  ? `<a href="${url}" target="_blank" class="news-link">weiterlesen →</a>`
+  : ""
     }
 
     <button class="uke-btn" onclick="nextTravel()">
@@ -2548,6 +2647,7 @@ function renderTravel(data){
 `
 }
 
+renderTravel(data)
 
 /* LANGUAGE */
 
