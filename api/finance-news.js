@@ -44,22 +44,42 @@ module.exports = async function handler(req, res) {
       fetchRSS("https://www.n-tv.de/rss")
     ])
 
-    let news = [
-      ...parse(feeds[0],"Tagesschau Wirtschaft"),
-      ...parse(feeds[1],"Reuters Markets"),
-      ...parse(feeds[2],"CoinDesk"),
-      ...parse(feeds[3],"n-tv Börse")
-    ]
+ const sourceGroups = [
+  parse(feeds[0], "Tagesschau Wirtschaft"),
+  parse(feeds[1], "Reuters Markets"),
+  parse(feeds[2], "CoinDesk"),
+  parse(feeds[3], "n-tv Börse")
+]
 
-    // 🔹 DUPLIKATE
-    const seen = new Set()
-    news = news.filter(n=>{
-      if(seen.has(n.title)) return false
-      seen.add(n.title)
-      return true
-    })
+// 🔹 DUPLIKATE ENTFERNEN
+const seen = new Set()
 
-    news = news.slice(0,3)
+sourceGroups.forEach(group => {
+  group = group.filter(n => {
+    const key = (n.title || "").trim().toLowerCase()
+
+    if (!key || seen.has(key)) return false
+
+    seen.add(key)
+    return true
+  })
+})
+
+// 🔹 AUSGEWOGENE AUSWAHL:
+// möglichst jeweils eine Meldung pro Quelle
+const news = []
+
+for (let round = 0; round < 3; round++) {
+  for (const group of sourceGroups) {
+    if (group[round]) {
+      news.push(group[round])
+    }
+
+    if (news.length >= 3) break
+  }
+
+  if (news.length >= 3) break
+}
 
     // 🔹 NEU: MARKETS (Bitcoin + Nexo)
     let markets = { bitcoin: null, nexo: null }
