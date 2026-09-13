@@ -124,13 +124,14 @@ async function fetchFeed(feed) {
 
       if (!title || !link) continue;
 
-      articles.push({
-        source: feed.name,
-        title,
-        description,
-        link,
-        pubDate,
-      });
+    articles.push({
+  source: feed.name,
+  title,
+  description,
+  url: link,
+  link,
+  pubDate,
+});
     }
 
     // -------------------------------------------------
@@ -160,13 +161,14 @@ async function fetchFeed(feed) {
 
       if (!title || !link) continue;
 
-      articles.push({
-        source: feed.name,
-        title,
-        description,
-        link,
-        pubDate,
-      });
+     articles.push({
+  source: feed.name,
+  title,
+  description,
+  url: link,
+  link,
+  pubDate,
+});
     }
 
     return articles;
