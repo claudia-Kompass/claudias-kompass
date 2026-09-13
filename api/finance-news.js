@@ -4,9 +4,16 @@ module.exports = async function handler(req, res) {
     "s-maxage=600, stale-while-revalidate=1200"
   )
 
-  async function fetchRSS(url) {
+  async function fetchFeed(url) {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 GLOBAL-SOUL-Daily-Compass/1.0",
+          "Accept":
+            "application/rss+xml, application/atom+xml, application/xml, text/xml, */*"
+        }
+      })
+
       if (!response.ok) return ""
       return await response.text()
     } catch {
@@ -15,45 +22,57 @@ module.exports = async function handler(req, res) {
   }
 
   function cleanText(value = "") {
-    return value
-      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    return String(value)
+      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/gi, "$1")
       .replace(/<[^>]+>/g, " ")
       .replace(/&amp;/g, "&")
       .replace(/&quot;/g, '"')
       .replace(/&#39;|&apos;/g, "'")
       .replace(/&lt;/g, "<")
       .replace(/&gt;/g, ">")
+      .replace(/&#x27;/gi, "'")
+      .replace(/&#x2F;/gi, "/")
+      .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
       .replace(/\s+/g, " ")
       .trim()
   }
 
-  function parse(xml, source) {
+  function getTag(block, tag) {
+    const match = block.match(
+      new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i")
+    )
+
+    return match ? cleanText(match[1]) : ""
+  }
+
+  function parseFeed(xml, source) {
     if (!xml) return []
 
-    const items = []
-    const matches = xml.match(/<item\b[\s\S]*?<\/item>/gi) || []
+    const entries =
+      xml.match(/<(item|entry)\b[\s\S]*?<\/(item|entry)>/gi) || []
 
-    for (const item of matches) {
-      const titleMatch = item.match(
-        /<title\b[^>]*>([\s\S]*?)<\/title>/i
-      )
+    const result = []
 
-      const linkMatch = item.match(
-        /<link\b[^>]*>([\s\S]*?)<\/link>/i
-      )
+    for (const entry of entries) {
+      const title = getTag(entry, "title")
 
-      const descriptionMatch = item.match(
-        /<description\b[^>]*>([\s\S]*?)<\/description>/i
-      )
+      const summary =
+        getTag(entry, "description") ||
+        getTag(entry, "summary") ||
+        getTag(entry, "content")
 
-      if (!titleMatch || !linkMatch) continue
+      let url = getTag(entry, "link")
 
-      const title = cleanText(titleMatch[1])
-      const url = cleanText(linkMatch[1])
-      const summary = cleanText(descriptionMatch?.[1] || "")
+      if (!url) {
+        const href = entry.match(
+          /<link\b[^>]*href=["']([^"']+)["'][^>]*>/i
+        )
 
-      if (title && url) {
-        items.push({
+        url = href ? cleanText(href[1]) : ""
+      }
+
+      if (title && url && /^https?:\/\//i.test(url)) {
+        result.push({
           title,
           url,
           source,
@@ -62,43 +81,42 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    return items
+    return result
   }
 
   const politicalTerms = [
-    "mél",
     "mélenchon",
     "melenchon",
     "merkel",
-    "partei",
     "wahlkampf",
-    "regierung",
-    "koalition",
-    "opposition",
-    "ministerpräsident",
+    "bundestag",
     "außenpolitik",
-    "innenpolitik",
-    "bundestag"
+    "innenpolitik"
+  ]
+
+  const feedDefinitions = [
+    {
+      url: "https://www.tagesschau.de/wirtschaft/index~rss2.xml",
+      source: "Tagesschau Wirtschaft"
+    },
+    {
+      url: "https://feeds.bbci.co.uk/news/business/rss.xml",
+      source: "BBC Business"
+    },
+    {
+      url: "https://www.coindesk.com/arc/outboundfeeds/rss/",
+      source: "CoinDesk"
+    }
   ]
 
   try {
-    const feeds = await Promise.all([
-      fetchRSS(
-        "https://www.tagesschau.de/wirtschaft/index~rss2.xml"
-      ),
-      fetchRSS(
-        "https://www.reuters.com/markets/rss"
-      ),
-      fetchRSS(
-        "https://www.coindesk.com/arc/outboundfeeds/rss/"
-      )
-    ])
+    const feeds = await Promise.all(
+      feedDefinitions.map(feed => fetchFeed(feed.url))
+    )
 
-    const all = [
-      ...parse(feeds[0], "Tagesschau Wirtschaft"),
-      ...parse(feeds[1], "Reuters Markets"),
-      ...parse(feeds[2], "CoinDesk")
-    ]
+    const all = feeds.flatMap((xml, index) =>
+      parseFeed(xml, feedDefinitions[index].source)
+    )
 
     const seen = new Set()
 
@@ -134,12 +152,12 @@ module.exports = async function handler(req, res) {
         const marketData = await marketRes.json()
 
         markets = {
-          bitcoin: marketData.bitcoin?.eur || null,
-          nexo: marketData.nexo?.eur || null
+          bitcoin: marketData.bitcoin?.eur ?? null,
+          nexo: marketData.nexo?.eur ?? null
         }
       }
     } catch {
-      // Bei einem Fehler bleiben die Werte null.
+      // Kursdaten bleiben bei einem Fehler null.
     }
 
     return res.status(200).json({
