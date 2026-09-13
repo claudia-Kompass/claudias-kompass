@@ -1,176 +1,269 @@
-module.exports = async function handler(req, res) {
-  res.setHeader(
-    "Cache-Control",
-    "s-maxage=600, stale-while-revalidate=1200"
-  )
+// =====================================================
+// FINANCE NEWS API
+// =====================================================
 
-  async function fetchFeed(url) {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 GLOBAL-SOUL-Daily-Compass/1.0",
-          "Accept":
-            "application/rss+xml, application/atom+xml, application/xml, text/xml, */*"
-        }
-      })
+const POLITICAL_TERMS = [
+  "wahl",
+  "partei",
+  "bundestag",
+  "regierung",
+  "kanzler",
+  "minister",
+  "afd",
+  "cdu",
+  "csu",
+  "spd",
+  "grüne",
+  "gruene",
+  "linke",
+  "frieden",
+  "krieg",
+  "trump",
+  "biden",
+  "putin",
+  "ukraine",
+  "gaza",
+  "israel",
+  "palästina",
+  "palaestina",
+];
 
-      if (!response.ok) return ""
-      return await response.text()
-    } catch {
-      return ""
-    }
-  }
+const FEEDS = [
+  {
+    name: "Tagesschau",
+    url: "https://www.tagesschau.de/wirtschaft/index~rss2.xml",
+  },
+  {
+    name: "BBC Business",
+    url: "https://feeds.bbci.co.uk/news/business/rss.xml",
+  },
+  {
+    name: "CoinDesk",
+    url: "https://www.coindesk.com/arc/outboundfeeds/rss/",
+  },
+  {
+    name: "Google News",
+    url: "https://news.google.com/rss/search?q=Finanzen+Wirtschaft&hl=de&gl=DE&ceid=DE:de",
+  },
+];
 
-  function cleanText(value = "") {
-    return String(value)
-      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/gi, "$1")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;|&apos;/g, "'")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&#x27;/gi, "'")
-      .replace(/&#x2F;/gi, "/")
-      .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
-      .replace(/\s+/g, " ")
-      .trim()
-  }
+// =====================================================
+// TEXT BEREINIGEN
+// =====================================================
 
-  function getTag(block, tag) {
-    const match = block.match(
-      new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i")
+function cleanText(value = "") {
+  return String(value)
+    .replace(/<!\[CDATA\[/gi, "")
+    .replace(/\]\]>/gi, "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&#(\d+);/g, (_, number) =>
+      String.fromCharCode(Number(number))
     )
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-    return match ? cleanText(match[1]) : ""
-  }
+// =====================================================
+// XML TAG AUSLESEN
+// =====================================================
 
-  function parseFeed(xml, source) {
-    if (!xml) return []
+function getTag(block, tagName) {
+  const expression = new RegExp(
+    `<${tagName}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tagName}>`,
+    "i"
+  );
 
-    const entries =
-      xml.match(/<(item|entry)\b[\s\S]*?<\/(item|entry)>/gi) || []
+  const match = block.match(expression);
+  return match ? cleanText(match[1]) : "";
+}
 
-    const result = []
+// =====================================================
+// RSS / ATOM FEED LADEN
+// =====================================================
 
-    for (const entry of entries) {
-      const title = getTag(entry, "title")
-
-      const summary =
-        getTag(entry, "description") ||
-        getTag(entry, "summary") ||
-        getTag(entry, "content")
-
-      let url = getTag(entry, "link")
-
-      if (!url) {
-        const href = entry.match(
-          /<link\b[^>]*href=["']([^"']+)["'][^>]*>/i
-        )
-
-        url = href ? cleanText(href[1]) : ""
-      }
-
-      if (title && url && /^https?:\/\//i.test(url)) {
-        result.push({
-          title,
-          url,
-          source,
-          summary: summary.slice(0, 500)
-        })
-      }
-    }
-
-    return result
-  }
-
-  const politicalTerms = [
-    "mélenchon",
-    "melenchon",
-    "merkel",
-    "wahlkampf",
-    "bundestag",
-    "außenpolitik",
-    "innenpolitik"
-  ]
-
-  const feedDefinitions = [
-    {
-      url: "https://www.tagesschau.de/wirtschaft/index~rss2.xml",
-      source: "Tagesschau Wirtschaft"
-    },
-    {
-      url: "https://feeds.bbci.co.uk/news/business/rss.xml",
-      source: "BBC Business"
-    },
-    {
-      url: "https://www.coindesk.com/arc/outboundfeeds/rss/",
-      source: "CoinDesk"
-    }
-  ]
+async function fetchFeed(feed) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 9000);
 
   try {
-    const feeds = await Promise.all(
-      feedDefinitions.map(feed => fetchFeed(feed.url))
-    )
+    const response = await fetch(feed.url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 Global Soul Finance News",
+        Accept:
+          "application/rss+xml, application/atom+xml, application/xml, text/xml",
+      },
+    });
 
-    const all = feeds.flatMap((xml, index) =>
-      parseFeed(xml, feedDefinitions[index].source)
-    )
-
-    const seen = new Set()
-
-    const financeNews = all
-      .filter(item => {
-        const key = item.title
-          .toLowerCase()
-          .replace(/\s+/g, " ")
-          .trim()
-
-        if (!key || seen.has(key)) return false
-
-        if (politicalTerms.some(term => key.includes(term))) {
-          return false
-        }
-
-        seen.add(key)
-        return true
-      })
-      .slice(0, 5)
-
-    let markets = {
-      bitcoin: null,
-      nexo: null
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`);
     }
+
+    const xml = await response.text();
+    const articles = [];
+
+    // -------------------------------------------------
+    // RSS FORMAT
+    // -------------------------------------------------
+
+    const rssItems = xml.match(/<item\b[\s\S]*?<\/item>/gi) || [];
+
+    for (const item of rssItems) {
+      const title = getTag(item, "title");
+      const description =
+        getTag(item, "description") || getTag(item, "summary");
+      const pubDate =
+        getTag(item, "pubDate") || getTag(item, "published");
+      const link = getTag(item, "link");
+
+      if (!title || !link) continue;
+
+      articles.push({
+        source: feed.name,
+        title,
+        description,
+        link,
+        pubDate,
+      });
+    }
+
+    // -------------------------------------------------
+    // ATOM FORMAT
+    // -------------------------------------------------
+
+    const atomEntries = xml.match(/<entry\b[\s\S]*?<\/entry>/gi) || [];
+
+    for (const entry of atomEntries) {
+      const title = getTag(entry, "title");
+      const description =
+        getTag(entry, "summary") || getTag(entry, "content");
+      const pubDate =
+        getTag(entry, "published") || getTag(entry, "updated");
+
+      let link = "";
+
+      const linkMatch = entry.match(
+        /<link[^>]+href=["']([^"']+)["'][^>]*\/?>/i
+      );
+
+      if (linkMatch) {
+        link = linkMatch[1];
+      } else {
+        link = getTag(entry, "link");
+      }
+
+      if (!title || !link) continue;
+
+      articles.push({
+        source: feed.name,
+        title,
+        description,
+        link,
+        pubDate,
+      });
+    }
+
+    return articles;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+// =====================================================
+// POLITISCHE MELDUNGEN HERAUSFILTERN
+// =====================================================
+
+function isPolitical(article) {
+  const text = `${article.title} ${article.description}`.toLowerCase();
+
+  return POLITICAL_TERMS.some((term) => text.includes(term));
+}
+
+// =====================================================
+// HAUPT-HANDLER
+// =====================================================
+
+export default async function handler(req, res) {
+  try {
+    const feedResults = await Promise.allSettled(
+      FEEDS.map((feed) => fetchFeed(feed))
+    );
+
+    const rssArticles = feedResults
+      .filter((result) => result.status === "fulfilled")
+      .flatMap((result) => result.value);
+
+    const financeNews = rssArticles
+      .filter((article) => !isPolitical(article))
+      .filter((article) => article.title && article.link)
+      .sort((a, b) => {
+        const dateA = new Date(a.pubDate || 0).getTime();
+        const dateB = new Date(b.pubDate || 0).getTime();
+
+        return dateB - dateA;
+      })
+      .slice(0, 20);
+
+    // =================================================
+    // MARKTDATEN
+    // =================================================
+
+    let markets = [];
 
     try {
-      const marketRes = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur"
-      )
-
-      if (marketRes.ok) {
-        const marketData = await marketRes.json()
-
-        markets = {
-          bitcoin: marketData.bitcoin?.eur ?? null,
-          nexo: marketData.nexo?.eur ?? null
+      const marketResponse = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur&include_24hr_change=true",
+        {
+          headers: {
+            "User-Agent": "Mozilla/5.0 Global Soul Finance News",
+            Accept: "application/json",
+          },
         }
+      );
+
+      if (marketResponse.ok) {
+        const marketData = await marketResponse.json();
+
+        markets = [
+          {
+            name: "Bitcoin",
+            symbol: "BTC",
+            price: marketData.bitcoin?.eur ?? null,
+            change24h: marketData.bitcoin?.eur_24h_change ?? null,
+          },
+          {
+            name: "Nexo",
+            symbol: "NEXO",
+            price: marketData.nexo?.eur ?? null,
+            change24h: marketData.nexo?.eur_24h_change ?? null,
+          },
+        ];
       }
-    } catch {
-      // Kursdaten bleiben bei einem Fehler null.
+    } catch (marketError) {
+      console.error("Marktdaten konnten nicht geladen werden:", marketError);
     }
 
     return res.status(200).json({
+      ok: true,
       financeNews,
-      markets
-    })
-  } catch {
+      markets,
+      updatedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Finance News API Fehler:", error);
+
     return res.status(200).json({
+      ok: false,
       financeNews: [],
-      markets: {
-        bitcoin: null,
-        nexo: null
-      }
-    })
+      markets: [],
+      error: "Finanzmeldungen konnten momentan nicht geladen werden.",
+      updatedAt: new Date().toISOString(),
+    });
   }
 }
