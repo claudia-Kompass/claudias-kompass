@@ -1,0 +1,312 @@
+[1mdiff --git a/api/finance-news.js b/api/finance-news.js[m
+[1mindex f2d64e6..4801587 100644[m
+[1m--- a/api/finance-news.js[m
+[1m+++ b/api/finance-news.js[m
+[36m@@ -1,42 +1,159 @@[m
+ module.exports = async function handler(req, res) {[m
+ [m
+[31m-  res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=1200")[m
+[31m-[m
+[31m-  async function fetchRSS(url){[m
+[31m-    try{[m
+[31m-      const r = await fetch(url)[m
+[31m-      if(!r.ok) return ""[m
+[31m-      return await r.text()[m
+[31m-    }catch{[m
+[32m+[m[32m  res.setHeader([m
+[32m+[m[32m    "Cache-Control",[m
+[32m+[m[32m    "s-maxage=600, stale-while-revalidate=1200"[m
+[32m+[m[32m  )[m
+[32m+[m
+[32m+[m[32m  async function fetchRSS(url) {[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      const response = await fetch(url)[m
+[32m+[m
+[32m+[m[32m      if (!response.ok) return ""[m
+[32m+[m
+[32m+[m[32m      return await response.text()[m
+[32m+[m
+[32m+[m[32m    } catch {[m
+       return ""[m
+     }[m
+   }[m
+ [m
+[31m-  function parse(xml,source){[m
+[31m-    if(!xml) return [][m
+[32m+[m[32m  function cleanText(value = "") {[m
+[32m+[m[32m    return value[m
+[32m+[m[32m      .replace(/<!\[CDATA\[(.*?)\]\]>/gs, "$1")[m
+[32m+[m[32m      .replace(/<[^>]*>/g, "")[m
+[32m+[m[32m      .replace(/&amp;/g, "&")[m
+[32m+[m[32m      .replace(/&quot;/g, '"')[m
+[32m+[m[32m      .replace(/&#39;/g, "'")[m
+[32m+[m[32m      .replace(/&lt;/g, "<")[m
+[32m+[m[32m      .replace(/&gt;/g, ">")[m
+[32m+[m[32m      .trim()[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function parseRSS(xml, source) {[m
+ [m
+[31m-    const items=[][m
+[32m+[m[32m    if (!xml) return [][m
+[32m+[m
+[32m+[m[32m    const items = [][m
+     const matches = xml.match(/<item>[\s\S]*?<\/item>/g) || [][m
+ [m
+[31m-    matches.forEach(item=>{[m
+[31m-      const t=item.match(/<title>(.*?)<\/title>/)[m
+[31m-      const l=item.match(/<link>(.*?)<\/link>/)[m
+[32m+[m[32m    for (const item of matches) {[m
+ [m
+[31m-      if(t && l){[m
+[31m-        items.push({[m
+[31m-          title:t[1].replace(/<!\[CDATA\[(.*?)\]\]>/,"$1"),[m
+[31m-          url:l[1],[m
+[31m-          source[m
+[31m-        })[m
+[31m-      }[m
+[31m-    })[m
+[32m+[m[32m      const titleMatch = item.match(/<title>([\s\S]*?)<\/title>/)[m
+[32m+[m[32m      const linkMatch = item.match(/<link>([\s\S]*?)<\/link>/)[m
+[32m+[m
+[32m+[m[32m      if (!titleMatch || !linkMatch) continue[m
+[32m+[m
+[32m+[m[32m      const title = cleanText(titleMatch[1])[m
+[32m+[m[32m      const url = cleanText(linkMatch[1])[m
+[32m+[m
+[32m+[m[32m      if (!title || !url) continue[m
+[32m+[m
+[32m+[m[32m      items.push({[m
+[32m+[m[32m        title,[m
+[32m+[m[32m        url,[m
+[32m+[m[32m        source[m
+[32m+[m[32m      })[m
+[32m+[m[32m    }[m
+ [m
+     return items[m
+   }[m
+ [m
+[31m-  try{[m
+[32m+[m[32m  function isFinanceRelevant(item) {[m
+[32m+[m
+[32m+[m[32m    const title = (item.title || "").toLowerCase()[m
+[32m+[m
+[32m+[m[32m    const financeTerms = [[m
+[32m+[m[32m      "börse",[m
+[32m+[m[32m      "aktie",[m
+[32m+[m[32m      "aktien",[m
+[32m+[m[32m      "dax",[m
+[32m+[m[32m      "dow",[m
+[32m+[m[32m      "nasdaq",[m
+[32m+[m[32m      "markt",[m
+[32m+[m[32m      "märkte",[m
+[32m+[m[32m      "zins",[m
+[32m+[m[32m      "zinsen",[m
+[32m+[m[32m      "ezb",[m
+[32m+[m[32m      "fed",[m
+[32m+[m[32m      "inflation",[m
+[32m+[m[32m      "deflation",[m
+[32m+[m[32m      "wirtschaft",[m
+[32m+[m[32m      "konjunktur",[m
+[32m+[m[32m      "rezession",[m
+[32m+[m[32m      "unternehmen",[m
+[32m+[m[32m      "quartalszahlen",[m
+[32m+[m[32m      "umsatz",[m
+[32m+[m[32m      "gewinn",[m
+[32m+[m[32m      "verlust",[m
+[32m+[m[32m      "dividende",[m
+[32m+[m[32m      "anleihe",[m
+[32m+[m[32m      "rendite",[m
+[32m+[m[32m      "euro",[m
+[32m+[m[32m      "dollar",[m
+[32m+[m[32m      "währung",[m
+[32m+[m[32m      "wechselkurs",[m
+[32m+[m[32m      "gold",[m
+[32m+[m[32m      "ölpreis",[m
+[32m+[m[32m      "energiepreise",[m
+[32m+[m[32m      "gaspreis",[m
+[32m+[m[32m      "bitcoin",[m
+[32m+[m[32m      "krypto",[m
+[32m+[m[32m      "kryptowährung",[m
+[32m+[m[32m      "immobilien",[m
+[32m+[m[32m      "bauzinsen",[m
+[32m+[m[32m      "arbeitsmarkt",[m
+[32m+[m[32m      "arbeitslosigkeit",[m
+[32m+[m[32m      "investition",[m
+[32m+[m[32m      "investitionen",[m
+[32m+[m[32m      "kapital"[m
+[32m+[m[32m    ][m
+[32m+[m
+[32m+[m[32m    const politicalTerms = [[m
+[32m+[m[32m      "wahl",[m
+[32m+[m[32m      "parlament",[m
+[32m+[m[32m      "regierung",[m
+[32m+[m[32m      "minister",[m
+[32m+[m[32m      "präsident",[m
+[32m+[m[32m      "krieg",[m
+[32m+[m[32m      "angriff",[m
+[32m+[m[32m      "sanktion",[m
+[32m+[m[32m      "migration",[m
+[32m+[m[32m      "flüchtling",[m
+[32m+[m[32m      "koalition",[m
+[32m+[m[32m      "parteitag"[m
+[32m+[m[32m    ][m
+[32m+[m
+[32m+[m[32m    const hasFinanceTerm =[m
+[32m+[m[32m      financeTerms.some(term => title.includes(term))[m
+[32m+[m
+[32m+[m[32m    const hasOnlyPoliticalFocus =[m
+[32m+[m[32m      politicalTerms.some(term => title.includes(term)) &&[m
+[32m+[m[32m      ![[m
+[32m+[m[32m        "wirtschaft",[m
+[32m+[m[32m        "börse",[m
+[32m+[m[32m        "aktie",[m
+[32m+[m[32m        "zins",[m
+[32m+[m[32m        "inflation",[m
+[32m+[m[32m        "unternehmen",[m
+[32m+[m[32m        "energie",[m
+[32m+[m[32m        "markt",[m
+[32m+[m[32m        "sanktion"[m
+[32m+[m[32m      ].some(term => title.includes(term))[m
+[32m+[m
+[32m+[m[32m    return hasFinanceTerm && !hasOnlyPoliticalFocus[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function normalizeTitle(title = "") {[m
+[32m+[m[32m    return title[m
+[32m+[m[32m      .toLowerCase()[m
+[32m+[m[32m      .replace(/[^\wäöüß ]/g, "")[m
+[32m+[m[32m      .replace(/\s+/g, " ")[m
+[32m+[m[32m      .trim()[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  try {[m
+ [m
+[31m-    // 🔹 NEWS[m
+     const feeds = await Promise.all([[m
+       fetchRSS("https://www.tagesschau.de/wirtschaft/index~rss2.xml"),[m
+       fetchRSS("https://www.reuters.com/markets/rss"),[m
+[36m@@ -44,74 +161,82 @@[m [mmodule.exports = async function handler(req, res) {[m
+       fetchRSS("https://www.n-tv.de/rss")[m
+     ])[m
+ [m
+[31m- const sourceGroups = [[m
+[31m-  parse(feeds[0], "Tagesschau Wirtschaft"),[m
+[31m-  parse(feeds[1], "Reuters Markets"),[m
+[31m-  parse(feeds[2], "CoinDesk"),[m
+[31m-  parse(feeds[3], "n-tv Börse")[m
+[31m-][m
+[32m+[m[32m    const sourceGroups = [[m
+[32m+[m[32m      parseRSS(feeds[0], "Tagesschau Wirtschaft"),[m
+[32m+[m[32m      parseRSS(feeds[1], "Reuters Markets"),[m
+[32m+[m[32m      parseRSS(feeds[2], "CoinDesk"),[m
+[32m+[m[32m      parseRSS(feeds[3], "n-tv Börse")[m
+[32m+[m[32m    ][m
+ [m
+[31m-// 🔹 DUPLIKATE ENTFERNEN[m
+[31m-const seen = new Set()[m
+[32m+[m[32m    const seen = new Set()[m
+ [m
+[31m-sourceGroups.forEach(group => {[m
+[31m-  group = group.filter(n => {[m
+[31m-    const key = (n.title || "").trim().toLowerCase()[m
+[32m+[m[32m    const filteredGroups = sourceGroups.map(group => {[m
+[32m+[m[32m      return group.filter(item => {[m
+ [m
+[31m-    if (!key || seen.has(key)) return false[m
+[32m+[m[32m        if (!isFinanceRelevant(item)) return false[m
+ [m
+[31m-    seen.add(key)[m
+[31m-    return true[m
+[31m-  })[m
+[31m-})[m
+[32m+[m[32m        const key = normalizeTitle(item.title)[m
+ [m
+[31m-// 🔹 AUSGEWOGENE AUSWAHL:[m
+[31m-// möglichst jeweils eine Meldung pro Quelle[m
+[31m-const news = [][m
+[32m+[m[32m        if (!key || seen.has(key)) return false[m
+ [m
+[31m-for (let round = 0; round < 3; round++) {[m
+[31m-  for (const group of sourceGroups) {[m
+[31m-    if (group[round]) {[m
+[31m-      news.push(group[round])[m
+[31m-    }[m
+[32m+[m[32m        seen.add(key)[m
+ [m
+[31m-    if (news.length >= 3) break[m
+[31m-  }[m
+[32m+[m[32m        return true[m
+[32m+[m[32m      })[m
+[32m+[m[32m    })[m
+[32m+[m
+[32m+[m[32m    const news = [][m
+ [m
+[31m-  if (news.length >= 3) break[m
+[31m-}[m
+[32m+[m[32m    // Möglichst unterschiedliche Quellen berücksichtigen[m
+[32m+[m[32m    for (let round = 0; round < 5; round++) {[m
+ [m
+[31m-    // 🔹 NEU: MARKETS (Bitcoin + Nexo)[m
+[31m-    let markets = { bitcoin: null, nexo: null }[m
+[32m+[m[32m      for (const group of filteredGroups) {[m
+[32m+[m
+[32m+[m[32m        if (group[round]) {[m
+[32m+[m[32m          news.push(group[round])[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        if (news.length >= 5) break[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      if (news.length >= 5) break[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    let markets = {[m
+[32m+[m[32m      bitcoin: null,[m
+[32m+[m[32m      nexo: null[m
+[32m+[m[32m    }[m
+ [m
+     try {[m
+[31m-      const marketRes = await fetch([m
+[32m+[m
+[32m+[m[32m      const marketResponse = await fetch([m
+         "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur"[m
+       )[m
+[31m-      const marketData = await marketRes.json()[m
+[32m+[m
+[32m+[m[32m      const marketData = await marketResponse.json()[m
+ [m
+       markets = {[m
+         bitcoin: marketData.bitcoin?.eur || null,[m
+         nexo: marketData.nexo?.eur || null[m
+       }[m
+ [m
+[31m-    } catch (e) {[m
+[31m-      // fallback bleibt null[m
+[32m+[m[32m    } catch {[m
+[32m+[m[32m      // Leere Marktdaten bleiben zulässig[m
+     }[m
+ [m
+[31m-    // 🔹 RESPONSE[m
+     res.status(200).json({[m
+       financeNews: news,[m
+       markets[m
+     })[m
+ [m
+[31m-  } catch (e) {[m
+[32m+[m[32m  } catch {[m
+ [m
+     res.status(200).json({[m
+       financeNews: [],[m
+[31m-      markets: { bitcoin: null, nexo: null }[m
+[32m+[m[32m      markets: {[m
+[32m+[m[32m        bitcoin: null,[m
+[32m+[m[32m        nexo: null[m
+[32m+[m[32m      }[m
+     })[m
+[31m-[m
+   }[m
+[31m-[m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m

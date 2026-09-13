@@ -1173,8 +1173,11 @@ let financeNews = []
 
 try{
 
+const protocol = req.headers["x-forwarded-proto"] || "http"
+const host = req.headers.host || "127.0.0.1:8080"
+
 const resFinance = await fetch(
-"https://claudias-kompass.vercel.app/api/finance-news"
+  `${protocol}://${host}/api/finance-news`
 )
 
 const dataFinance = await resFinance.json()

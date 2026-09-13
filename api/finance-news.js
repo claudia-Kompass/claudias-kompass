@@ -1,117 +1,158 @@
 module.exports = async function handler(req, res) {
+  res.setHeader(
+    "Cache-Control",
+    "s-maxage=600, stale-while-revalidate=1200"
+  )
 
-  res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=1200")
-
-  async function fetchRSS(url){
-    try{
-      const r = await fetch(url)
-      if(!r.ok) return ""
-      return await r.text()
-    }catch{
+  async function fetchRSS(url) {
+    try {
+      const response = await fetch(url)
+      if (!response.ok) return ""
+      return await response.text()
+    } catch {
       return ""
     }
   }
 
-  function parse(xml,source){
-    if(!xml) return []
+  function cleanText(value = "") {
+    return value
+      .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;|&apos;/g, "'")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/\s+/g, " ")
+      .trim()
+  }
 
-    const items=[]
-    const matches = xml.match(/<item>[\s\S]*?<\/item>/g) || []
+  function parse(xml, source) {
+    if (!xml) return []
 
-    matches.forEach(item=>{
-      const t=item.match(/<title>(.*?)<\/title>/)
-      const l=item.match(/<link>(.*?)<\/link>/)
+    const items = []
+    const matches = xml.match(/<item\b[\s\S]*?<\/item>/gi) || []
 
-      if(t && l){
+    for (const item of matches) {
+      const titleMatch = item.match(
+        /<title\b[^>]*>([\s\S]*?)<\/title>/i
+      )
+
+      const linkMatch = item.match(
+        /<link\b[^>]*>([\s\S]*?)<\/link>/i
+      )
+
+      const descriptionMatch = item.match(
+        /<description\b[^>]*>([\s\S]*?)<\/description>/i
+      )
+
+      if (!titleMatch || !linkMatch) continue
+
+      const title = cleanText(titleMatch[1])
+      const url = cleanText(linkMatch[1])
+      const summary = cleanText(descriptionMatch?.[1] || "")
+
+      if (title && url) {
         items.push({
-          title:t[1].replace(/<!\[CDATA\[(.*?)\]\]>/,"$1"),
-          url:l[1],
-          source
+          title,
+          url,
+          source,
+          summary: summary.slice(0, 500)
         })
       }
-    })
+    }
 
     return items
   }
 
-  try{
+  const politicalTerms = [
+    "mél",
+    "mélenchon",
+    "melenchon",
+    "merkel",
+    "partei",
+    "wahlkampf",
+    "regierung",
+    "koalition",
+    "opposition",
+    "ministerpräsident",
+    "außenpolitik",
+    "innenpolitik",
+    "bundestag"
+  ]
 
-    // 🔹 NEWS
+  try {
     const feeds = await Promise.all([
-      fetchRSS("https://www.tagesschau.de/wirtschaft/index~rss2.xml"),
-      fetchRSS("https://www.reuters.com/markets/rss"),
-      fetchRSS("https://www.coindesk.com/arc/outboundfeeds/rss/"),
-      fetchRSS("https://www.n-tv.de/rss")
+      fetchRSS(
+        "https://www.tagesschau.de/wirtschaft/index~rss2.xml"
+      ),
+      fetchRSS(
+        "https://www.reuters.com/markets/rss"
+      ),
+      fetchRSS(
+        "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      )
     ])
 
- const sourceGroups = [
-  parse(feeds[0], "Tagesschau Wirtschaft"),
-  parse(feeds[1], "Reuters Markets"),
-  parse(feeds[2], "CoinDesk"),
-  parse(feeds[3], "n-tv Börse")
-]
+    const all = [
+      ...parse(feeds[0], "Tagesschau Wirtschaft"),
+      ...parse(feeds[1], "Reuters Markets"),
+      ...parse(feeds[2], "CoinDesk")
+    ]
 
-// 🔹 DUPLIKATE ENTFERNEN
-const seen = new Set()
+    const seen = new Set()
 
-sourceGroups.forEach(group => {
-  group = group.filter(n => {
-    const key = (n.title || "").trim().toLowerCase()
+    const financeNews = all
+      .filter(item => {
+        const key = item.title
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .trim()
 
-    if (!key || seen.has(key)) return false
+        if (!key || seen.has(key)) return false
 
-    seen.add(key)
-    return true
-  })
-})
+        if (politicalTerms.some(term => key.includes(term))) {
+          return false
+        }
 
-// 🔹 AUSGEWOGENE AUSWAHL:
-// möglichst jeweils eine Meldung pro Quelle
-const news = []
+        seen.add(key)
+        return true
+      })
+      .slice(0, 5)
 
-for (let round = 0; round < 3; round++) {
-  for (const group of sourceGroups) {
-    if (group[round]) {
-      news.push(group[round])
+    let markets = {
+      bitcoin: null,
+      nexo: null
     }
-
-    if (news.length >= 3) break
-  }
-
-  if (news.length >= 3) break
-}
-
-    // 🔹 NEU: MARKETS (Bitcoin + Nexo)
-    let markets = { bitcoin: null, nexo: null }
 
     try {
       const marketRes = await fetch(
         "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,nexo&vs_currencies=eur"
       )
-      const marketData = await marketRes.json()
 
-      markets = {
-        bitcoin: marketData.bitcoin?.eur || null,
-        nexo: marketData.nexo?.eur || null
+      if (marketRes.ok) {
+        const marketData = await marketRes.json()
+
+        markets = {
+          bitcoin: marketData.bitcoin?.eur || null,
+          nexo: marketData.nexo?.eur || null
+        }
       }
-
-    } catch (e) {
-      // fallback bleibt null
+    } catch {
+      // Bei einem Fehler bleiben die Werte null.
     }
 
-    // 🔹 RESPONSE
-    res.status(200).json({
-      financeNews: news,
+    return res.status(200).json({
+      financeNews,
       markets
     })
-
-  } catch (e) {
-
-    res.status(200).json({
+  } catch {
+    return res.status(200).json({
       financeNews: [],
-      markets: { bitcoin: null, nexo: null }
+      markets: {
+        bitcoin: null,
+        nexo: null
+      }
     })
-
   }
-
 }

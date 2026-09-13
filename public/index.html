@@ -1150,10 +1150,440 @@ body {
 }
 
 
+
+/* =========================
+   FINANCE NEWS CARDS
+========================= */
+
+.finance-card{
+  display:grid;
+  grid-template-columns:180px minmax(0, 1.05fr) minmax(0, .95fr);
+  gap:24px;
+  margin:16px 0;
+  padding:18px;
+  border:1px solid rgba(233,199,122,.28);
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(8,54,75,.72), rgba(5,35,51,.86));
+}
+
+.finance-card-image{
+  min-width:0;
+}
+
+.finance-card-image img{
+  width:100%;
+  height:100%;
+  min-height:190px;
+  object-fit:cover;
+  border-radius:10px;
+  display:block;
+}
+
+.finance-card-main{
+  min-width:0;
+}
+
+.finance-card-category{
+  display:inline-block;
+  margin-bottom:10px;
+  padding:5px 11px;
+  border-radius:999px;
+  background:rgba(233,199,122,.16);
+  color:#e9c77a;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+.finance-card h3{
+  margin:0 0 10px;
+  color:#fff;
+  font-size:22px;
+  line-height:1.22;
+}
+
+.finance-summary{
+  margin:0 0 16px;
+  color:#e5edf2;
+  line-height:1.55;
+}
+
+.finance-card .news-link{
+  display:inline-block;
+  margin-right:12px;
+  color:#e9c77a;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.finance-card-analysis{
+  min-width:0;
+  padding-left:22px;
+  border-left:1px solid rgba(233,199,122,.25);
+}
+
+.finance-analysis-block{
+  margin-bottom:14px;
+}
+
+.finance-analysis-block:last-child{
+  margin-bottom:0;
+}
+
+.finance-analysis-block strong{
+  display:block;
+  margin-bottom:4px;
+  color:#e9c77a;
+  font-size:15px;
+}
+
+.finance-analysis-block p{
+  margin:0;
+  color:#e5edf2;
+  font-size:14px;
+  line-height:1.48;
+}
+
+@media (max-width:700px){
+  .finance-card{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+
+  .finance-card-image img{
+    min-height:180px;
+    max-height:240px;
+  }
+
+  .finance-card-analysis{
+    padding-left:0;
+    padding-top:18px;
+    border-left:0;
+    border-top:1px solid rgba(233,199,122,.25);
+  }
+
+  .finance-card h3{
+    font-size:20px;
+  }
+}
+
+
+
+/* =====================================================
+   FINANCE NEWS – korrigiertes Layout
+   ===================================================== */
+.finance-card {
+  display: block !important;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(233,199,122,.28);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(8,54,75,.72), rgba(5,35,51,.86));
+}
+
+.finance-card-image,
+.finance-card-image img {
+  display: none !important;
+}
+
+.finance-card-main {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.finance-card-category {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(233,199,122,.16);
+  color: #e9c77a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.finance-card h3 {
+  margin: 0 0 10px;
+  color: #e8edf0;
+  font-size: 22px;
+  line-height: 1.28;
+}
+
+.finance-summary {
+  max-width: none;
+  margin: 0;
+  color: #d0dadd;
+  line-height: 1.55;
+}
+
+.finance-card-overview {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-color: rgba(233,199,122,.34);
+}
+
+.finance-card-overview > .finance-card-category {
+  margin-bottom: 8px;
+}
+
+.finance-card-overview > h3 {
+  margin-bottom: 18px;
+}
+
+.finance-card-overview .finance-analysis-block {
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+.finance-card-overview .finance-analysis-block strong {
+  display: block;
+  margin: 0 0 4px;
+  color: #e9c77a;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.finance-card-overview .finance-analysis-block p {
+  margin: 0;
+  color: #d0dadd;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.finance-card-link {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(233,199,122,.18);
+  line-height: 1.8;
+}
+
+.finance-card-link .news-link {
+  color: #e9c77a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.finance-card-link .newsSource {
+  color: #d0dadd;
+}
+
+@media (max-width: 700px) {
+  .finance-card {
+    padding: 16px;
+  }
+
+  .finance-card h3 {
+    font-size: 20px;
+  }
+}
+
+/* Finance: Weiterlesen direkt unter dem jeweiligen Artikel */
+.finance-article-link {
+  display:inline-block;
+  margin-top:12px;
+  color:#e9c77a;
+  text-decoration:none;
+  font-weight:700;
+}
+.finance-article-link:hover { text-decoration:underline; }
+
+
+/* =========================
+   REGIONAL – KOMPAKT UND FLACH
+========================= */
+#regionalBlock {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#regionalBlock .regional-item {
+  padding: 14px 0 16px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+#regionalBlock .regional-item:first-child {
+  padding-top: 8px !important;
+}
+
+#regionalBlock .regional-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0 !important;
+}
+
+#regionalBlock .regional-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #e5edf2;
+}
+
+#regionalBlock .regional-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+#regionalBlock .news-link {
+  color: #e9c77a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#regionalBlock .newsSource {
+  opacity: .8;
+}
+
 </style>
   
 
   
+
+<style id="finance-flat-final">
+/* GLOBAL SOUL Finance News – flaches Layout ohne Container */
+.finance-card,
+.finance-card-overview {
+  display: block !important;
+  margin: 0 0 26px !important;
+  padding: 0 0 22px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.finance-card:not(.finance-card-overview) {
+  border-bottom: 1px solid rgba(233,199,122,.22) !important;
+}
+
+.finance-card h3 {
+  margin: 0 0 8px !important;
+  color: #e8edf0 !important;
+  font-size: 20px !important;
+  line-height: 1.3 !important;
+  font-weight: 700 !important;
+}
+
+.finance-card-category {
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: #e9c77a !important;
+  font-size: 12px !important;
+  letter-spacing: .06em !important;
+}
+
+.finance-summary {
+  margin: 0 0 10px !important;
+  color: #d0dadd !important;
+  line-height: 1.5 !important;
+}
+
+.finance-card-link {
+  margin-top: 8px !important;
+}
+
+.finance-card-overview {
+  margin-top: 28px !important;
+  padding-top: 0 !important;
+}
+
+.finance-card-overview h3 {
+  font-size: 20px !important;
+  margin-bottom: 16px !important;
+}
+
+.finance-card-overview .finance-analysis-block {
+  margin: 0 0 14px !important;
+}
+
+.finance-card-overview .finance-analysis-block strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #e9c77a;
+  font-size: 15px;
+}
+
+.finance-card-overview .finance-analysis-block p {
+  margin: 0;
+  color: #d0dadd;
+  line-height: 1.5;
+}
+
+.finance-card-image,
+.finance-card-image img {
+  display: none !important;
+}
+</style>
+
+
+<style id="finance-balanced-final">
+/* Finance News – optisch an Politik und Regional angepasst */
+.finance-card,
+.finance-card-overview {
+  margin-bottom: 18px !important;
+  padding-bottom: 16px !important;
+}
+
+.finance-card:not(.finance-card-overview) {
+  border-bottom: 1px solid rgba(233,199,122,.18) !important;
+}
+
+.finance-card h3 {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  margin-bottom: 6px !important;
+}
+
+.finance-card-category {
+  font-size: 11px !important;
+  margin-bottom: 6px !important;
+}
+
+.finance-summary {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  margin-bottom: 7px !important;
+}
+
+.finance-card-link {
+  margin-top: 5px !important;
+  font-size: 15px !important;
+}
+
+.finance-card-overview {
+  margin-top: 20px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.finance-card-overview h3 {
+  font-size: 19px !important;
+  margin-bottom: 12px !important;
+}
+
+.finance-card-overview .finance-analysis-block {
+  margin-bottom: 10px !important;
+}
+
+.finance-card-overview .finance-analysis-block strong {
+  font-size: 14px !important;
+  margin-bottom: 2px !important;
+}
+
+.finance-card-overview .finance-analysis-block p {
+  font-size: 15px !important;
+  line-height: 1.42 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -1289,6 +1719,7 @@ Claudia's Daily Compass
 
   </div>
 
+</div>
 </div>
 
 <div class="section">
@@ -1449,7 +1880,7 @@ function renderPoliticsExtras(container, news) {
     <div class="finance-extras">
 
       <div class="finance-highlight">
-        🧭 Einordnung: ${topic}
+      Mehr News zum nachlesen:
       </div>
 
       <div class="finance-links">
@@ -2118,6 +2549,200 @@ return radar
 }
 
 
+function renderFinanceNews(news){
+
+  const container = document.getElementById("financeNewsBlock");
+  if(!container) return;
+
+  const items = Array.isArray(news)
+    ? news.filter(n => n && n.title).slice(0, 3)
+    : [];
+
+  function category(title = "") {
+    const t = title.toLowerCase();
+    if(t.includes("kupfer") || t.includes("rohstoff") || t.includes("metall")) return "ROHSTOFFE";
+    if(t.includes("erbpacht") || t.includes("immobil") || t.includes("haus") || t.includes("wohnen")) return "IMMOBILIEN";
+    if(t.includes("ki") || t.includes("künstliche intelligenz") || t.includes("technologie") || t.includes("chip")) return "TECHNOLOGIE";
+    if(t.includes("zins") || t.includes("ezb") || t.includes("fed") || t.includes("inflation")) return "GELDPOLITIK";
+    return "MARKT & KONJUNKTUR";
+  }
+
+  if(!items.length) {
+    container.innerHTML = "<div style='opacity:.6'>Keine aktuellen Finanzmeldungen</div>";
+    return;
+  }
+
+  const articles = items.map(n => {
+    const summary = n.summary || n.description || "";
+    return `
+      <article class="finance-card">
+        <div class="finance-card-main">
+          <div class="finance-card-category">${category(n.title)}</div>
+          <h3>${n.title}</h3>
+          ${summary ? `<p class="finance-summary">${summary}</p>` : ""}
+          ${n.url ? `<a href="${n.url}" target="_blank" rel="noopener noreferrer" class="news-link finance-article-link">weiterlesen →</a>` : ""}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  const categories = items.map(n => category(n.title));
+  const hasTech = categories.includes("TECHNOLOGIE");
+  const hasRaw = categories.includes("ROHSTOFFE");
+  const hasRealEstate = categories.includes("IMMOBILIEN");
+  const hasMoney = categories.includes("GELDPOLITIK");
+
+  const flow = hasTech && hasRaw
+    ? "Kapital könnte zwischen Rohstoffwerten, Energieunternehmen und Technologie beziehungsweise KI-Infrastruktur umgeschichtet werden."
+    : hasMoney
+      ? "Kapital könnte aus risikoreicheren Anlagen in Anleihen, verzinsliche Anlagen oder defensivere Branchen fließen."
+      : "Kapital könnte zwischen den betroffenen Branchen, defensiveren Anlageklassen und wachstumsorientierten Investments umgeschichtet werden.";
+
+  const impact = hasRealEstate
+    ? "Für Unternehmen und private Haushalte sind insbesondere Finanzierungskosten, Immobilienpreise, Investitionen und die allgemeine Kaufkraft relevant."
+    : "Die möglichen Auswirkungen betreffen vor allem Unternehmensgewinne, Investitionsentscheidungen, Verbraucherpreise und die Risikobereitschaft an den Märkten.";
+
+  const forecast = "Kurzfristig sind nachrichtengetriebene Reaktionen und erhöhte Schwankungen möglich. Eine nachhaltige Marktrichtung benötigt bestätigende Daten und weitere Folge­meldungen.";
+
+  container.innerHTML = `
+    ${articles}
+    <section class="finance-card finance-card-overview">
+      <div class="finance-card-category">GESAMTEINORDNUNG</div>
+      <h3>Was bedeutet das für die Märkte?</h3>
+      <div class="finance-analysis-block">
+        <strong>▥ Kapitalfluss</strong>
+        <p>${flow}</p>
+      </div>
+      <div class="finance-analysis-block">
+        <strong>⚙ Mögliche Auswirkungen</strong>
+        <p>${impact}</p>
+      </div>
+      <div class="finance-analysis-block">
+        <strong>↗ Prognose</strong>
+        <p>${forecast}</p>
+      </div>
+    </section>
+  `;
+}
+
+function renderTravel() {
+
+  const block = document.getElementById("travelBlock");
+  if(!block) return;
+
+  if(!Array.isArray(travelList) || !travelList.length) {
+    block.innerHTML = "<div style='opacity:.6'>Kein Reiseimpuls</div>";
+    return;
+  }
+
+  const t = travelList[travelIndex] || travelList[0];
+  const title = t.title || "Reiseimpuls";
+  const text = t.text || t.de || t.en || "";
+  const image = t.image || "/images/travel-collage.png";
+  const url = t.url || "";
+
+  block.innerHTML = `
+    <div class="travel-card">
+      <img src="${image}" alt="${title}">
+      <div class="travel-text">
+        <h3>${title}</h3>
+        <p>${text}</p>
+      </div>
+      ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="news-link">weiterlesen →</a>` : ""}
+      <button class="uke-btn" onclick="nextTravel()">▶ Next</button>
+    </div>
+  `;
+}
+
+window.nextTravel = function() {
+  if(!Array.isArray(travelList) || !travelList.length) return;
+  travelIndex = (travelIndex + 1) % travelList.length;
+  renderTravel();
+};
+
+
+
+function renderRegional(news) {
+  const container = document.getElementById("regionalBlock");
+  if (!container) return;
+
+  // Regionale Priorität: Ilshofen → Landkreis SHA → direktes Umland.
+  // Überregionale Treffer ohne klaren Ortsbezug werden nicht übernommen.
+  const fallback = [
+    {
+      title: "Ilshofener Herbst- und Töpfermarkt am 26. und 27. September 2026",
+      summary: "Veranstaltungshinweis der Stadt Ilshofen mit Programm und weiteren Informationen.",
+      source: "Stadt Ilshofen",
+      url: "https://www.ilshofen.de/"
+    },
+    {
+      title: "Vollsperrung der Kreisstraße K 2563 zwischen B 19 und Kupfer ab 14. September",
+      summary: "Der Landkreis informiert über Bauarbeiten, Sperrung und Umleitung.",
+      source: "Landkreis Schwäbisch Hall",
+      url: "https://www.lrasha.de/landratsamt/aktuelles/neuigkeiten/1556/vollsperrung-der-kreisstrasse-k-2563-zwischen-b-19-und-kupfer-ab-14-september-2026"
+    },
+    {
+      title: "Aktuelle Neuigkeiten aus dem Landkreis Schwäbisch Hall",
+      summary: "Amtliche Meldungen, Verkehrshinweise und weitere Informationen aus dem Landkreis.",
+      source: "Landkreis Schwäbisch Hall",
+      url: "https://www.lrasha.de/landratsamt/aktuelles/neuigkeiten/seite-1/suche-none"
+    },
+    {
+      title: "Regionale Nachrichten aus Ilshofen und Umgebung",
+      summary: "Weitere regionale Berichte aus der lokalen Presse.",
+      source: "SWP",
+      url: "https://www.swp.de/thema/ilshofen/"
+    },
+    {
+      title: "Polizei- und Sicherheitsmeldungen aus dem Landkreis",
+      summary: "Aktuelle Blaulichtmeldungen aus Schwäbisch Hall und dem Umland.",
+      source: "Presseportal",
+      url: "https://www.presseportal.de/blaulicht/r/Schw%C3%A4bisch%20Hall"
+    }
+  ];
+
+  const terms = [
+    "ilshofen", "schwäbisch hall", "schwaebisch hall", "crailsheim", "kirchberg",
+    "gaildorf", "vellberg", "gerabronn", "mainhardt", "rosengarten", "obersontheim",
+    "satteldorf", "rot am see", "wolpertshausen", "hessental", "kupfer"
+  ];
+  const textOf = item => `${item.title || ""} ${item.summary || item.description || ""}`.toLowerCase();
+  const sourceOf = item => `${item.source || ""} ${item.domain || ""}`.toLowerCase();
+  const excluded = /stuttgart|neckarsulm|heidenheim|lamborghini|audi und lamborghini|bundesliga|usa wollen entwicklung bremsen/;
+
+  const candidates = Array.isArray(news) ? news.filter(item => item && item.title) : [];
+  const relevant = candidates.map(item => {
+    const text = textOf(item);
+    let score = 0;
+    terms.forEach(term => { if (text.includes(term)) score += term === "ilshofen" ? 12 : 5; });
+    if (/swp|südwest presse|suedwest presse|swr|presseportal|landkreis|polizei/.test(sourceOf(item))) score += 2;
+    if (excluded.test(text) && !/schwäbisch hall|ilshofen|crailsheim/.test(text)) score = -100;
+    return { item, score };
+  }).filter(entry => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(entry => entry.item);
+
+  const selected = [];
+  const seen = new Set();
+  [...relevant, ...fallback].forEach(item => {
+    if (selected.length >= 5) return;
+    const key = item.title;
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    selected.push(item);
+  });
+
+  container.innerHTML = selected.map(item => `
+    <article class="regional-item">
+      <div class="regional-title">${item.title}</div>
+      ${item.summary || item.description ? `<div class="regional-summary">${item.summary || item.description}</div>` : ""}
+      <div class="regional-meta">
+        <a href="${item.url || "https://www.ilshofen.de/"}" target="_blank" rel="noopener noreferrer" class="news-link">weiterlesen →</a>
+        <span class="newsSource">${item.source || "Regionale Quelle"}</span>
+      </div>
+    </article>`).join("");
+}
+
 function render(data){
 
 if(!data) data = {}
@@ -2133,8 +2758,8 @@ travelList = Array.isArray(data.travel)
   ? data.travel
   : (data.travel ? [data.travel] : [])
 
-// renderTravel(data)
-// renderTravelExtras("travelExtras", travelList)
+travelIndex = 0
+renderTravel()
 
 window.langTexts = data.language || []
    
@@ -2430,225 +3055,39 @@ if(politicsNews.length){
 renderPoliticsExtras("newsExtras", politicsNews)
 
 /* =================
-    FINANCE NEWS 
+    FINANCE NEWS
 =================== */
+
+renderFinanceNews(data.financeNews)
+
+/* =================
+    REGIONAL
+=================== */
+
+renderRegional(data.regional)
+
+/* =================
+    DANCE RADAR
+=================== */
+
+renderDance({
+  today: data.events?.dance || [],
+  week: [],
+  festivals: data.events?.festivals || []
+})
   
 /* =================
    FINANCE NEWS + RADAR
 =================== */
 
-let financeHTML = ""
 
-const topic = getFinanceHighlight(data.financeNews)
+
+
     
-if(data.financeNews && data.financeNews.length){
 
-const financeSeen = new Set()
-
-const uniqueFinanceNews = data.financeNews.filter(n => {
-  const key = (n.title || "")
-    .toLowerCase()
-    .replace(/[^\wäöüß ]/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-
-  if (!key || financeSeen.has(key)) return false
-
-  financeSeen.add(key)
-  return true
-})
-financeHTML += uniqueFinanceNews.slice(0,3).map(n => `
-  <div class="newsItem"
-       style="
-         margin:0;
-         padding:10px 0;
-         border-bottom:1px solid rgba(255,255,255,.10);
-       ">
-
-    <div style="font-weight:600; margin-bottom:3px;">
-      ${n.title}
-    </div>
-
-    <div style="
-      display:flex;
-      gap:14px;
-      align-items:center;
-      flex-wrap:wrap;
-    ">
-
-      <a href="${n.url}"
-         target="_blank"
-         rel="noopener"
-         class="news-link">
-        weiterlesen →
-      </a>
-
-      <div class="newsSource" style="margin:0;">
-        ${n.source}
-      </div>
-
-    </div>
-  </div>
-`).join("")
-
-}else{
-
-  financeHTML += `
-    <div style='opacity:.7'>Keine aktuellen Finanznews.</div>
-  `
-}
-
-/* 🔎 RADAR als letzte Karte */
-
-const financeSources = [
-  {name:"Finanzen100", url:"https://www.finanzen100.de"},
-  {name:"Tagesschau Wirtschaft", url:"https://www.tagesschau.de/wirtschaft"},
-  {name:"Handelsblatt", url:"https://www.handelsblatt.com"},
-  {name:"FAZ Finanzen", url:"https://www.faz.net/aktuell/finanzen"},
-  {name:"ntv Börse", url:"https://www.n-tv.de/wirtschaft"},
-  {name:"BBC Business", url:"https://www.bbc.com/news/business"}
-]
-
-document.getElementById("financeNewsBlock").innerHTML = financeHTML
-renderFinanceExtras("financeExtras", data.financeNews, financeSources)
-  
-/* REGIONAL */
-if(data.regional?.length){
-
-  document.getElementById("regionalBlock").innerHTML =
-    data.regional.map(r => `
-      <div class="newsItem">
-        <div style="font-weight:600">${r.title}</div>
-        <a href="${r.url}" target="_blank" class="news-link">weiterlesen →</a>
-        <div class="newsSource">${r.source}</div>
-      </div>
-    `).join("")
-
-}else{
-
-  document.getElementById("regionalBlock").innerHTML =
-    "<div style='opacity:.6'>Keine Regionalmeldungen</div>"
-
-}
-
-function renderFinanceExtras(container, news, sources){
-
-  const topic = getFinanceHighlight(news)
-
-  document.getElementById(container).innerHTML = `
-    <div class="finance-extras">
-
-      <div class="finance-highlight">
-        🧭 Einordnung: ${topic}
-      </div>
-
-      <div class="finance-links">
-        ${sources.map(s => `
-          <a href="${s.url}" target="_blank" class="finance-link">
-            ${s.name}
-          </a>
-        `).join("")}
-      </div>
-
-    </div>
-  `
-    }
-
-  async function renderTravelExtras(container, travel){
-
-  if(!travel || !travel.length){
-    document.getElementById(container).innerHTML = ""
-    return
-  }
-
-  const t = travel[travelIndex]
-  const topic = t.title || "Reiseinspiration"
-
-  const user = await getUserPosition()
-
- let travelSources = [
-  {name:"GEO Reisen", url:"https://www.geo.de/reisen/themen/geo-saison-30021116.html"},
-  {name:"DERTOUR Magazin", url:"https://www.dertour.de/reisemagazin/natur-aktiv"},
-  {name:"Travelbook", url:"https://www.travelbook.de/"},
-  {name:"Reisemagazin Online", url:"https://reisemagazin-online.com/"},
-  {name:"SKR Reisen Blog", url:"https://www.skr.de/blog/"},
-
-  // 👉 HIER rein (am besten ganz unten)
-  {name:"✈️ Reisen suchen", url:"https://www.check24.de/reisen"}
-]
-
-  // 📍 Geo Bonus (optional)
-  if(user){
-    travelSources.unshift(
-      {name:"Check24 Reisen", url:"https://www.check24.de/reisen"},
-      {name:"Ab in den Urlaub", url:"https://www.ab-in-den-urlaub.de"}
-    )
-  }
-
-  document.getElementById(container).innerHTML = `
-    <div class="finance-extras">
-
-      <div class="finance-highlight">
-        🧭 Einordnung: ${topic}
-      </div>
-
-      <div class="finance-links">
-        ${travelSources.map(s => `
-          <a href="${s.url}" target="_blank" class="finance-link">
-            ${s.name}
-          </a>
-        `).join("")}
-      </div>
-
-    </div>
-  `
-    
-}
-/* =========================
-   TRAVEL
-========================= */
-
-function renderTravel(data){
-
-  if(!travelList.length){
-    document.getElementById("travelBlock").innerHTML =
-      "<div style='opacity:.6'>Kein Reiseimpuls</div>"
-    return
-  }
-
-  const t = travelList[travelIndex]
-
-  const title = t.title || "Reiseimpuls"
-const text = t.text || t.de || t.en || ""
-const image = t.image || "/images/travel-collage.png"
-const url = t.url || ""
-
-  document.getElementById("travelBlock").innerHTML = `
-
-  <div class="travel-card">
-
-    <img src="${image || getTravelImage(t)}" alt="Travel">
-
-    <div class="travel-text">
-      <h3>${title || ""}</h3>
-      <p>${t.text || ""}</p>
-    </div>
-
-    ${
-     url
-  ? `<a href="${url}" target="_blank" class="news-link">weiterlesen →</a>`
-  : ""
-    }
-
-    <button class="uke-btn" onclick="nextTravel()">
-      ▶ Next
-    </button>
-
-  </div>
-`
-}
-
-renderTravel(data)
+/* TRAVEL */
+travelIndex = 0;
+renderTravel();
 
 /* LANGUAGE */
 
@@ -2840,18 +3279,6 @@ img.onerror = () => {
 // =========================
 
 loadRecipes(data)
-
-window.nextTravel = function(){
-
-  travelIndex++
-
-  if(travelIndex >= travelList.length){
-    travelIndex = 0
-  }
-
- // renderTravel(data)
-// renderTravelExtras("travelExtras", travelList)
-}
 
 renderTraffic(data)
 renderWeather(data)
