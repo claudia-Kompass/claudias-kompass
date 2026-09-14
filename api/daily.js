@@ -1180,11 +1180,13 @@ try {
   const financeUrl = `${protocol}://${host}/api/finance-news`
 
   const resFinance = await fetch(financeUrl, {
-    headers: {
-      "Accept": "application/json"
-    }
-  })
-
+  headers: {
+    "Accept": "application/json",
+    ...(req.headers.cookie
+      ? { cookie: req.headers.cookie }
+      : {})
+  }
+})
   const responseText = await resFinance.text()
 
   if (!resFinance.ok) {
