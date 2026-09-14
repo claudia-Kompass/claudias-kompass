@@ -1170,22 +1170,32 @@ const quote = quotes[(dayIndex * quoteSeed) % quotes.length]
 /* FINANCE NEWS */
 
 let financeNews = []
+let financeNewsError = null
 
-try{
+try {
 
-const protocol = req.headers["x-forwarded-proto"] || "http"
-const host = req.headers.host || "127.0.0.1:8080"
+  const protocol = req.headers["x-forwarded-proto"] || "http"
+  const host = req.headers.host || "127.0.0.1:8080"
 
-const resFinance = await fetch(
-  `${protocol}://${host}/api/finance-news`
-)
+  const resFinance = await fetch(
+    `${protocol}://${host}/api/finance-news`
+  )
 
-const dataFinance = await resFinance.json()
+  if (!resFinance.ok) {
+    throw new Error(`finance-news HTTP ${resFinance.status}`)
+  }
 
-financeNews = dataFinance.financeNews || []
+  const dataFinance = await resFinance.json()
 
-}catch(e){
-financeNews = []
+  financeNews = dataFinance.financeNews || []
+
+} catch (e) {
+
+  console.error("FINANCE NEWS ERROR:", e)
+
+  financeNewsError = e.message || String(e)
+  financeNews = []
+
 }
 
 
@@ -1418,9 +1428,10 @@ res.status(200).json({
   version: fullVersion,
   quote: quote || null,
 
-  news: news || [],
-  financeNews: financeNews || [],
-  regional: regional || [],
+news: news || [],
+financeNews: financeNews || [],
+financeNewsError: financeNewsError,
+regional: regional || [],
 
   events: {
     today: finalFeed?.today || [],
