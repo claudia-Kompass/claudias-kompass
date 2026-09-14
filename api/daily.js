@@ -1174,18 +1174,34 @@ let financeNewsError = null
 
 try {
 
-  const protocol = req.headers["x-forwarded-proto"] || "http"
-  const host = req.headers.host || "127.0.0.1:8080"
+  const protocol = req.headers["x-forwarded-proto"] || "https"
+  const host = req.headers.host || process.env.VERCEL_URL || "127.0.0.1:8080"
 
-  const resFinance = await fetch(
-    `${protocol}://${host}/api/finance-news`
-  )
+  const financeUrl = `${protocol}://${host}/api/finance-news`
+
+  const resFinance = await fetch(financeUrl, {
+    headers: {
+      "Accept": "application/json"
+    }
+  })
+
+  const responseText = await resFinance.text()
 
   if (!resFinance.ok) {
-    throw new Error(`finance-news HTTP ${resFinance.status}`)
+    throw new Error(
+      `finance-news HTTP ${resFinance.status}: ${responseText.slice(0, 200)}`
+    )
   }
 
-  const dataFinance = await resFinance.json()
+  let dataFinance
+
+  try {
+    dataFinance = JSON.parse(responseText)
+  } catch {
+    throw new Error(
+      `finance-news liefert kein JSON: ${responseText.slice(0, 200)}`
+    )
+  }
 
   financeNews = dataFinance.financeNews || []
 
