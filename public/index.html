@@ -2580,12 +2580,13 @@ function renderFinanceNews(news){
           <div class="finance-card-category">${category(n.title)}</div>
           <h3>${n.title}</h3>
           ${summary ? `<p class="finance-summary">${summary}</p>` : ""}
-          ${n.url ? `<a href="${n.url}" target="_blank" rel="noopener noreferrer" class="news-link finance-article-link">weiterlesen →</a>` : ""}
-        </div>
+${(n.url || n.link) ? `<a href="${n.url || n.link}" target="_blank" rel="noopener noreferrer" class="news-link finance-article-link">weiterlesen →</a>` : ""}
+          </div>
       </article>
     `;
   }).join("");
 
+  
   const categories = items.map(n => category(n.title));
   const hasTech = categories.includes("TECHNOLOGIE");
   const hasRaw = categories.includes("ROHSTOFFE");
